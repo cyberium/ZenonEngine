@@ -803,5 +803,23 @@
     <ClInclude Include="Passes\RendererBase.h">
       <Filter>Passes</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeColliderComponent.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeModelComponent.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodePortalComponent.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeParticlesComponent.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeCameraComponent.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeLightComponent.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

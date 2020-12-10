@@ -196,7 +196,7 @@ void CPassDeffered_ShadowMaps::RenderScene()
 	}
 }
 
-void CPassDeffered_ShadowMaps::BindPerFrameParamsForCurrentIteration(const std::shared_ptr<const ILight3D>& Light)
+void CPassDeffered_ShadowMaps::BindPerFrameParamsForCurrentIteration(const std::shared_ptr<const ILight>& Light)
 {
 	const auto& viewport = m_ShadowPipeline->GetRenderTarget()->GetViewport();
 

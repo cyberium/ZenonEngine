@@ -83,7 +83,7 @@ EVisitResult CSceneCreateTypelessListPass::Visit(const std::shared_ptr<IGeometry
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CSceneCreateTypelessListPass::Visit(const std::shared_ptr<ILight3D>& light)
+EVisitResult CSceneCreateTypelessListPass::Visit(const std::shared_ptr<ILight>& light)
 {
 	_ASSERT(! m_NodesList.empty());
 	const auto& lastNodeElement = m_NodesList.back();

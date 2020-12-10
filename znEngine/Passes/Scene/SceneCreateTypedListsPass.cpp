@@ -117,7 +117,7 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const std::shared_ptr<IGeometry>&
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CSceneCreateTypedListsPass::Visit(const std::shared_ptr<ILight3D>& light)
+EVisitResult CSceneCreateTypedListsPass::Visit(const std::shared_ptr<ILight>& light)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
 	_ASSERT(m_LastSceneNode->GetClass() > 0);

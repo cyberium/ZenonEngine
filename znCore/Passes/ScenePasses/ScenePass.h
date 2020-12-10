@@ -19,7 +19,7 @@ public:
 	virtual EVisitResult Visit(const std::shared_ptr<IModel>& Model) override;
 	virtual EVisitResult Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs) override;
 	virtual EVisitResult Visit(const std::shared_ptr<ISceneNodeComponent>& Component) override;
-	virtual EVisitResult Visit(const std::shared_ptr<ILight3D>& light) override;
+	virtual EVisitResult Visit(const std::shared_ptr<ILight>& light) override;
 	virtual EVisitResult Visit(const std::shared_ptr<IParticleSystem>& ParticleSystem) override;
 
 protected:

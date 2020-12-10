@@ -24,14 +24,13 @@ protected:
 	void CreateNewParticle();
 	void UpdateParticle(SCPUParticle& CPUParticle, const UpdateEventArgs & e);
 
-
 public:
 	float m_Lifetime;
 	float m_LifeTimeMiddlePoint;
+
 	glm::vec4 m_Colors[3];
 	glm::vec2 m_Sizes[3];
 	
-
 private:
 	std::vector<SCPUParticle> m_CPUParticles;
 	std::vector<SGPUParticle> m_GPUParticles;

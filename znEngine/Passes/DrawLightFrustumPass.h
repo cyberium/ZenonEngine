@@ -14,7 +14,7 @@ public:
 
 	// IVisitor
 	EVisitResult Visit(const std::shared_ptr<ISceneNode>& node) override final;
-	EVisitResult Visit(const std::shared_ptr<ILight3D>& Light) override final;
+	EVisitResult Visit(const std::shared_ptr<ILight>& Light) override final;
 
 protected:
 	bool                               m_IsDirty;

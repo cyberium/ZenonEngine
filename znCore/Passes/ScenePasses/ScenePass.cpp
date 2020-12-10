@@ -49,7 +49,7 @@ EVisitResult ScenePass::Visit(const std::shared_ptr<ISceneNodeComponent>& Compon
 	return EVisitResult::Block;
 }
 
-EVisitResult ScenePass::Visit(const std::shared_ptr<ILight3D>& light)
+EVisitResult ScenePass::Visit(const std::shared_ptr<ILight>& light)
 {
 	return EVisitResult::Block;
 }

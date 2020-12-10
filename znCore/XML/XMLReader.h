@@ -22,6 +22,7 @@ public:
 
 	// Attributes
 	std::string GetStrAttribute(const std::string& AttributeName) const override;
+	bool        GetBoolAttribute(const std::string& AttributeName) const override;
 	int64       GetIntAttribute(const std::string& AttributeName) const override;
 	uint64      GetUIntAttribute(const std::string& AttributeName) const override;
 	float       GetFloatAttribute(const std::string& AttributeName) const override;
@@ -32,6 +33,7 @@ public:
 	std::vector<std::string> GetAttributes() const override;
 
 	// Values
+	bool        GetBool() const override;
 	int64       GetInt() const override;
 	uint64      GetUInt() const override;
 	float       GetFloat() const override;

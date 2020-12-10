@@ -21,7 +21,7 @@ public:
 	EVisitResult Visit(const std::shared_ptr<ISceneNode>& SceneNode) override;
 	EVisitResult Visit(const std::shared_ptr<IModel>& Model) override;
 	EVisitResult Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-	EVisitResult Visit(const std::shared_ptr<ILight3D>& light) override;
+	EVisitResult Visit(const std::shared_ptr<ILight>& light) override;
 
 private:
 	std::vector<SNodeElement> m_NodesList;

@@ -50,13 +50,14 @@ void CSceneDefault::Initialize()
 		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
-		lightComponent->SetCastShadows(true);
-		lightComponent->SetType(ELightType::Directional);
-		lightComponent->SetAmbientColor(glm::vec3(0.25f));
-		lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightComponent->SetRange(1350.0f);
-		lightComponent->SetIntensity(1.0f);
-		lightComponent->SetSpotlightAngle(30.0f);
+		lightComponent->SetLight(MakeShared(CLight));
+		lightComponent->GetLight()->SetCastShadows(true);
+		lightComponent->GetLight()->SetType(ELightType::Directional);
+		lightComponent->GetLight()->SetAmbientColor(glm::vec3(0.25f));
+		lightComponent->GetLight()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		lightComponent->GetLight()->SetRange(1000.0f);
+		lightComponent->GetLight()->SetIntensity(1.0077f);
+		lightComponent->GetLight()->SetSpotlightAngle(30.0f);
 
 		lightNode->AddComponent(cSceneNodeLightComponent, lightComponent);
 	}

@@ -6,6 +6,8 @@
 // Additional
 #include "Materials/MaterialModel.h"
 
+#include "Scene/Components/LightComponent/Light.h"
+
 #include "Scene/Components/Particles/ParticlesComponent.h"
 #include "Scene/Components/Particles/ParticleSystem.h"
 
@@ -101,11 +103,12 @@ void CSceneNodeRTSBullet::Initialize()
 
 	{
 		AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *this));
-		GetComponentT<ILightComponent3D>()->SetType(ELightType::Point);
-		GetComponentT<ILightComponent3D>()->SetAmbientColor(glm::vec3(0.0f));
-		GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 0.8f, 0.4f));
-		GetComponentT<ILightComponent3D>()->SetRange(25.0f);
-		GetComponentT<ILightComponent3D>()->SetIntensity(1.0f);
+		GetComponentT<ILightComponent3D>()->SetLight(MakeShared(CLight));
+		GetComponentT<ILightComponent3D>()->GetLight()->SetType(ELightType::Point);
+		GetComponentT<ILightComponent3D>()->GetLight()->SetAmbientColor(glm::vec3(0.0f));
+		GetComponentT<ILightComponent3D>()->GetLight()->SetColor(glm::vec3(1.0f, 0.8f, 0.4f));
+		GetComponentT<ILightComponent3D>()->GetLight()->SetRange(25.0f);
+		GetComponentT<ILightComponent3D>()->GetLight()->SetIntensity(1.0f);
 	}
 }
 

@@ -53,7 +53,7 @@ EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<ISceneNodeComponent
 	return EVisitResult::Block;
 }
 
-EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<ILight3D>& light)
+EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<ILight>& light)
 {
 	return EVisitResult::Block;
 }

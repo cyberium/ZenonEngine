@@ -21,6 +21,7 @@ ZN_INTERFACE ZN_API IXMLReader
 
 	virtual bool        IsAttributeExists(const std::string& AttributeName) const = 0;
 	virtual std::string GetStrAttribute(const std::string& AttributeName) const = 0;
+	virtual bool        GetBoolAttribute(const std::string& AttributeName) const = 0;
 	virtual int64       GetIntAttribute(const std::string& AttributeName) const = 0;
 	virtual uint64      GetUIntAttribute(const std::string& AttributeName) const = 0;
 	virtual float       GetFloatAttribute(const std::string& AttributeName) const = 0;
@@ -31,6 +32,7 @@ ZN_INTERFACE ZN_API IXMLReader
 	virtual std::vector<std::string> GetAttributes() const = 0;
 	
 	// Values
+	virtual bool        GetBool  () const = 0;
 	virtual int64       GetInt   () const = 0;
 	virtual uint64      GetUInt  () const = 0;
 	virtual float       GetFloat () const = 0;
@@ -51,6 +53,7 @@ ZN_INTERFACE ZN_API IXMLWriter
 
 	virtual void SetName(const std::string& Value) = 0;
 	virtual void SetStrAttribute(std::string Value, const std::string& AttributeName) = 0;
+	virtual void SetBoolAttribute(bool Value, const std::string& AttributeName) = 0;
 	virtual void SetIntAttribute(int64 Value, const std::string& AttributeName) = 0;
 	virtual void SetUIntAttribute(uint64 Value, const std::string& AttributeName) = 0;
 	virtual void SetFloatAttribute(float Value, const std::string& AttributeName) = 0;
@@ -62,6 +65,7 @@ ZN_INTERFACE ZN_API IXMLWriter
 
 	// Values
 	virtual void SetValue(const std::string& Value) = 0;
+	virtual void SetBool(bool Value) = 0;
 	virtual void SetInt(int64 Value) = 0;
 	virtual void SetUInt(uint64 Value) = 0;
 	virtual void SetFloat(float Value) = 0;

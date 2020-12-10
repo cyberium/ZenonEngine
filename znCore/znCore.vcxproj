@@ -197,6 +197,12 @@
     <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h" />
     <ClInclude Include="..\shared\Interfaces\Render\ISkeleton.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNode.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeCameraComponent.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeColliderComponent.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeLightComponent.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeModelComponent.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeParticlesComponent.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodePortalComponent.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\IUIControl.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h" />
     <ClInclude Include="..\shared\Interfaces\Types\Guid.h" />

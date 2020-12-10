@@ -5,7 +5,7 @@
 
 #include "Scene/Components/CameraComponent.h"
 #include "Scene/Components/ColliderComponent.h"
-#include "Scene/Components/LightComponent.h"
+#include "Scene/Components/LightComponent/LightComponent.h"
 #include "Scene/Components/ModelComponent/ModelComponent.h"
 #include "Scene/Components/ReactPhysicsComponent.h"
 #include "Scene/Components/Particles/ParticlesComponent.h"

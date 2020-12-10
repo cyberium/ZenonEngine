@@ -195,7 +195,6 @@ void CColliderComponent::OnMessage(const ISceneNodeComponent* Component, Compone
 		}
 		break;
 	}
-
 }
 
 

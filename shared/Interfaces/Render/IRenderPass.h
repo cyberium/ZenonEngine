@@ -10,7 +10,7 @@ ZN_INTERFACE ISceneNode;
 ZN_INTERFACE IModel;
 ZN_INTERFACE IGeometry;
 ZN_INTERFACE IMaterial;
-ZN_INTERFACE ILight3D;
+ZN_INTERFACE ILight;
 ZN_INTERFACE IParticleSystem;
 // FORWARD END
 
@@ -90,13 +90,13 @@ ZN_INTERFACE ZN_API IRenderPassCreateTypelessList
 
 	struct ZN_API SLightElement
 	{
-		SLightElement(const std::shared_ptr<const ISceneNode>& SceneNode, const std::shared_ptr<const ILight3D>& Light)
+		SLightElement(const std::shared_ptr<const ISceneNode>& SceneNode, const std::shared_ptr<const ILight>& Light)
 			: SceneNode(SceneNode)
 			, Light(Light)
 		{}
 
 		const std::shared_ptr<const ISceneNode> SceneNode;
-		const std::shared_ptr<const ILight3D> Light;
+		const std::shared_ptr<const ILight> Light;
 	};
 
 	struct ZN_API SParticleSystemElement

@@ -78,7 +78,9 @@ void ModelBase::AddAnimation(const std::string& AnimationName, const std::shared
 	const auto& it = m_Animations.find(AnimationName);
 	if (it != m_Animations.end())
 		throw CException("Animation '%s' already exists in model '%s'", AnimationName.c_str(), GetFileName().c_str());
+
 	std::dynamic_pointer_cast<IAnimationInternal>(Animation)->SetName(AnimationName);
+
 	m_Animations.insert(std::make_pair(AnimationName, Animation));
 }
 

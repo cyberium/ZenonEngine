@@ -88,6 +88,8 @@
     <ClCompile Include="Scene\Camera\FreeCameraController.cpp" />
     <ClCompile Include="Scene\Camera\RTSCameraController.cpp" />
     <ClCompile Include="Scene\Components\Animations\Animation.cpp" />
+    <ClCompile Include="Scene\Components\LightComponent\Light.cpp" />
+    <ClCompile Include="Scene\Components\LightComponent\LightComponent.cpp" />
     <ClCompile Include="Scene\Components\ModelComponent\ModelComponent.cpp" />
     <ClCompile Include="Scene\Components\ModelComponent\Skeleton.cpp" />
     <ClCompile Include="Scene\Components\ModelComponent\SkeletonAnimation.cpp" />
@@ -96,7 +98,6 @@
     <ClCompile Include="Scene\Components\Particles\ParticleSystem.cpp" />
     <ClCompile Include="Scene\Components\CameraComponent.cpp" />
     <ClCompile Include="Scene\Components\ColliderComponent.cpp" />
-    <ClCompile Include="Scene\Components\LightComponent.cpp" />
     <ClCompile Include="Scene\Components\ReactPhysicsComponent.cpp" />
     <ClCompile Include="Scene\EngineSceneExtender.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
@@ -189,6 +190,8 @@
     <ClInclude Include="Scene\Camera\RTSCameraController.h" />
     <ClInclude Include="Scene\Components\Animations\AnimatedValueSingle.h" />
     <ClInclude Include="Scene\Components\Animations\Animation.h" />
+    <ClInclude Include="Scene\Components\LightComponent\Light.h" />
+    <ClInclude Include="Scene\Components\LightComponent\LightComponent.h" />
     <ClInclude Include="Scene\Components\ModelComponent\ModelComponent.h" />
     <ClInclude Include="Scene\Components\ModelComponent\Skeleton.h" />
     <ClInclude Include="Scene\Components\ModelComponent\SkeletonAnimation.h" />
@@ -197,7 +200,6 @@
     <ClInclude Include="Scene\Components\Particles\ParticleSystem.h" />
     <ClInclude Include="Scene\Components\CameraComponent.h" />
     <ClInclude Include="Scene\Components\ColliderComponent.h" />
-    <ClInclude Include="Scene\Components\LightComponent.h" />
     <ClInclude Include="Scene\Components\ReactPhysicsComponent.h" />
     <ClInclude Include="Scene\EngineSceneExtender.h" />
     <ClInclude Include="Scene\SceneBase.h" />

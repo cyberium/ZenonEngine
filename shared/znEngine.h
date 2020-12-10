@@ -19,7 +19,8 @@
 
 // Scene nodes components
 #include "../znEngine/Scene/Components/ColliderComponent.h"
-#include "../znEngine/Scene/Components/LightComponent.h"
+#include "../znEngine/Scene/Components/LightComponent/Light.h"
+#include "../znEngine/Scene/Components/LightComponent/LightComponent.h"
 #include "../znEngine/Scene/Components/ModelComponent/ModelComponent.h"
 #include "../znEngine/Scene/Components/CameraComponent.h"
 #include "../znEngine/Scene/Components/Particles/ParticlesComponent.h"

@@ -130,6 +130,9 @@
     <Filter Include="Scene\Components\Animations">
       <UniqueIdentifier>{ce72550d-0d10-47d8-a100-4cebda6c01f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Components\Light">
+      <UniqueIdentifier>{4826d896-6602-41df-9829-552816e611d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -377,9 +380,6 @@
     <ClCompile Include="Passes\DrawLightFrustumPass.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\LightComponent.cpp">
-      <Filter>Scene\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Components\CameraComponent.cpp">
       <Filter>Scene\Components</Filter>
     </ClCompile>
@@ -406,6 +406,12 @@
     </ClCompile>
     <ClCompile Include="Scene\Components\Animations\Animation.cpp">
       <Filter>Scene\Components\Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\LightComponent\LightComponent.cpp">
+      <Filter>Scene\Components\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\LightComponent\Light.cpp">
+      <Filter>Scene\Components\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -661,9 +667,6 @@
     <ClInclude Include="Passes\DrawLightFrustumPass.h">
       <Filter>Passes</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\LightComponent.h">
-      <Filter>Scene\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Components\CameraComponent.h">
       <Filter>Scene\Components</Filter>
     </ClInclude>
@@ -693,6 +696,12 @@
     </ClInclude>
     <ClInclude Include="Scene\Components\Animations\Animation.h">
       <Filter>Scene\Components\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\LightComponent\LightComponent.h">
+      <Filter>Scene\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\LightComponent\Light.h">
+      <Filter>Scene\Components\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

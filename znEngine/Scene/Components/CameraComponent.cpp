@@ -218,7 +218,7 @@ const glm::vec3 & CCameraComponent::GetCameraUpDirection() const
 //
 void CCameraComponent::OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message)
 {
-	if (Component == nullptr && Message == UUID_OnWorldTransformChanged)
+	if (Message == UUID_OnWorldTransformChanged)
 	{
 		UpdateView();
 	}

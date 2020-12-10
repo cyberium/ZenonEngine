@@ -9,7 +9,7 @@ ZN_INTERFACE IModel;
 ZN_INTERFACE IGeometry;
 ZN_INTERFACE IMaterial;
 ZN_INTERFACE ISceneNodeComponent;
-ZN_INTERFACE ILight3D;
+ZN_INTERFACE ILight;
 ZN_INTERFACE IParticleSystem;
 // FORWARD END
 
@@ -39,6 +39,6 @@ ZN_INTERFACE ZN_API IVisitor
 	virtual EVisitResult Visit(const std::shared_ptr<IModel>& Model) = 0;
 	virtual EVisitResult Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
 	virtual EVisitResult Visit(const std::shared_ptr<ISceneNodeComponent>& Component) = 0;
-	virtual EVisitResult Visit(const std::shared_ptr<ILight3D>& Light) = 0;
+	virtual EVisitResult Visit(const std::shared_ptr<ILight>& Light) = 0;
 	virtual EVisitResult Visit(const std::shared_ptr<IParticleSystem>& ParticleSystem) = 0;
 };

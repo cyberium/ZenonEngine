@@ -21,19 +21,20 @@ public:
 	// IXMLWriter
 	void SetName(const std::string& Value) override;
 
-
-	virtual void SetStrAttribute(std::string Value, const std::string& AttributeName) override;
-	virtual void SetIntAttribute(int64 Value, const std::string& AttributeName) override;
-	virtual void SetUIntAttribute(uint64 Value, const std::string& AttributeName) override;
-	virtual void SetFloatAttribute(float Value, const std::string& AttributeName) override;
-	virtual void SetDoubleAttribute(double Value, const std::string& AttributeName) override;
-	virtual void SetVec2Attribute(glm::vec2 Value, const std::string& AttributeName) override;
-	virtual void SetVec3Attribute(glm::vec3 Value, const std::string& AttributeName) override;
-	virtual void SetVec4Attribute(glm::vec4 Value, const std::string& AttributeName) override;
+	void SetStrAttribute(std::string Value, const std::string& AttributeName) override;
+	void SetBoolAttribute(bool Value, const std::string& AttributeName) override;
+	void SetIntAttribute(int64 Value, const std::string& AttributeName) override;
+	void SetUIntAttribute(uint64 Value, const std::string& AttributeName) override;
+	void SetFloatAttribute(float Value, const std::string& AttributeName) override;
+	void SetDoubleAttribute(double Value, const std::string& AttributeName) override;
+	void SetVec2Attribute(glm::vec2 Value, const std::string& AttributeName) override;
+	void SetVec3Attribute(glm::vec3 Value, const std::string& AttributeName) override;
+	void SetVec4Attribute(glm::vec4 Value, const std::string& AttributeName) override;
 	std::vector<std::pair<std::string, std::string>> GetAttributes() const override;
 
 	// Values
 	void SetValue(const std::string& Value) override;
+	void SetBool(bool Value) override;
 	void SetInt(int64 Value) override;
 	void SetUInt(uint64 Value) override;
 	void SetFloat(float Value) override;

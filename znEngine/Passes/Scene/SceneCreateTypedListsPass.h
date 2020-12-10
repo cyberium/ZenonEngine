@@ -29,7 +29,7 @@ public:
 	EVisitResult Visit(const std::shared_ptr<ISceneNode>& SceneNode) override;
 	EVisitResult Visit(const std::shared_ptr<IModel>& Model) override;
 	EVisitResult Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-	EVisitResult Visit(const std::shared_ptr<ILight3D>& light) override;
+	EVisitResult Visit(const std::shared_ptr<ILight>& light) override;
 	EVisitResult Visit(const std::shared_ptr<IParticleSystem>& ParticleSystem) override;
 
 private:
@@ -42,6 +42,6 @@ private:
 	std::shared_ptr<ISceneNode>         m_LastSceneNode;
 	std::shared_ptr<IModel>             m_LastModel;
 	std::shared_ptr<IGeometry>          m_LastGeometry;
-	std::shared_ptr<ILight3D>           m_LastLight;
+	std::shared_ptr<ILight>           m_LastLight;
 	std::shared_ptr<IParticleSystem>    m_LastParticleSystem;
 };

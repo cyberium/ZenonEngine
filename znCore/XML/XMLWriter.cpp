@@ -70,6 +70,11 @@ void CXMLWriter::SetStrAttribute(std::string AttributeValue, const std::string& 
 	m_Attributes.push_back(std::make_pair(AttributeName, AttributeValue));
 }
 
+void CXMLWriter::SetBoolAttribute(bool AttributeValue, const std::string & AttributeName)
+{
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
+}
+
 void CXMLWriter::SetIntAttribute(int64 AttributeValue, const std::string & AttributeName)
 {
 	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
@@ -118,6 +123,11 @@ std::vector< std::pair<std::string, std::string>> CXMLWriter::GetAttributes() co
 void CXMLWriter::SetValue(const std::string& Value)
 {
 	m_Value = Value;
+}
+
+void CXMLWriter::SetBool(bool Value)
+{
+	SetValue(ValueToString(Value));
 }
 
 void CXMLWriter::SetInt(int64 Value)

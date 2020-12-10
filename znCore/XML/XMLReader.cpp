@@ -74,6 +74,10 @@ std::string CXMLReader::GetStrAttribute(const std::string & AttributeName) const
 	return attrIt->second;
 }
 
+bool CXMLReader::GetBoolAttribute(const std::string & AttributeName) const
+{
+	return StringToValue<bool>(GetStrAttribute(AttributeName));
+}
 
 int64 CXMLReader::GetIntAttribute(const std::string & AttributeName) const
 {
@@ -115,6 +119,11 @@ glm::vec4 CXMLReader::GetVec4Attribute(const std::string & AttributeName) const
 //
 // Values
 //
+bool CXMLReader::GetBool() const
+{
+	return StringToValue<bool>(GetValue());
+}
+
 int64 CXMLReader::GetInt() const
 {
 	return StringToValue<int64>(GetValue());

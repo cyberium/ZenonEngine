@@ -66,12 +66,12 @@ EVisitResult CDrawLightFrustumPass::Visit(const std::shared_ptr<ISceneNode>& nod
 	return EVisitResult::AllowVisitChilds;
 }
 
-EVisitResult CDrawLightFrustumPass::Visit(const std::shared_ptr<ILight3D>& Light)
+EVisitResult CDrawLightFrustumPass::Visit(const std::shared_ptr<ILight>& Light)
 {
 	if (false == Light->IsEnabled())
 		return EVisitResult::Block;
 
-	if (Light->GetGPULightStruct().Type == ELightType::Point)
+	if (Light->GetType() == ELightType::Point)
 		return EVisitResult::Block;
 
 	{
