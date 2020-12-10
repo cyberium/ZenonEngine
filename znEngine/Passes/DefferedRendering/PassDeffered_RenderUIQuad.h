@@ -1,13 +1,12 @@
 #pragma once
 
-#include "PassDeffered_DoRenderScene.h"
-#include "PassDeffered_ShadowMaps.h"
+#include "PassDeffered_MergeShadowMaps.h"
 
 class ZN_API CPassDeffered_RenderUIQuad
 	: public RenderPassPipelined
 {
 public:
-	CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, std::shared_ptr<CPassDeffered_DoRenderScene> DefferedRender, std::shared_ptr<CPassDeffered_ShadowMaps> DefferedRenderPrepareLights);
+	CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneCreateTypelessListPass, std::shared_ptr<IRenderTarget> GBufferRenderTarget, std::shared_ptr<ITexture> MergedShadowTexture);
 	virtual ~CPassDeffered_RenderUIQuad();
 
 	// IRenderPass
@@ -18,7 +17,7 @@ public:
 
 
 protected:
-	void FillLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ShadowMaps::SLightResult& LightResult);
+	void FillLightParamsForCurrentIteration(const RenderEventArgs& e, const IRenderPassCreateTypelessList::SLightElement& LightElement);
 
 
 private: 
@@ -30,8 +29,9 @@ private:
 	IShaderParameter* m_ShadowMapTextureParameter;
 
 private:
-	std::shared_ptr<CPassDeffered_DoRenderScene> m_DefferedRender;
-	std::shared_ptr<CPassDeffered_ShadowMaps> m_Deffered_Lights;
+	std::shared_ptr<IRenderPassCreateTypelessList> m_SceneCreateTypelessListPass;
+	std::shared_ptr<IRenderTarget> m_GBufferRenderTarget;
+	std::shared_ptr<ITexture> m_MergedShadowTexture;
 
 	std::shared_ptr<IGeometry> m_QuadGeometry;
 };

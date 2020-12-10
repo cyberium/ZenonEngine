@@ -198,13 +198,10 @@ void CRendererForward::DoUpdateLights()
 	std::vector<SGPULightVS> lightsVS;
 	for (const auto& lightIt : m_SceneCreateTypelessListPass->GetLightList())
 	{
-		auto lightOwner = lightIt.SceneNode;
-		const auto& lightStruct = lightIt.Light->GetGPULightStruct();
-
 		SGPULightVS lightVS;
-		lightVS.Light = lightStruct;
-		lightVS.LightPositionVS                 = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightOwner->GetPosition(), 1.0f);
-		lightVS.LightDirectionVS = glm::normalize(m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightOwner->GetRotationEuler(), 0.0f));
+		lightVS.Light = lightIt.Light->GetGPULightStruct();
+		lightVS.LightPositionVS                 = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightIt.SceneNode->GetPosition(), 1.0f);
+		lightVS.LightDirectionVS = glm::normalize(m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightIt.SceneNode->GetRotationEuler(), 0.0f));
 		lightVS.IsEnabled = lightIt.Light->IsEnabled();
 		lightVS.IsCastShadow = lightIt.Light->IsCastShadows();
 		lightsVS.push_back(lightVS);

@@ -33,6 +33,7 @@
     <ClCompile Include="NativeWindows\NativeWindow_Proxy.cpp" />
     <ClCompile Include="NativeWindows\NativeWindow_WindowsSpecific.cpp" />
     <ClCompile Include="Passes\DefferedRendering\PassDeffered_DoRenderScene.cpp" />
+    <ClCompile Include="Passes\DefferedRendering\PassDeffered_MergeShadowMaps.cpp" />
     <ClCompile Include="Passes\DefferedRendering\PassDeffered_ShadowMaps.cpp" />
     <ClCompile Include="Passes\DefferedRendering\PassDeffered_RenderUIQuad.cpp" />
     <ClCompile Include="Passes\DefferedRendering\RendererDeffered.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="NativeWindows\NativeWindow_Proxy.h" />
     <ClInclude Include="NativeWindows\NativeWindow_WindowsSpecific.h" />
     <ClInclude Include="Passes\DefferedRendering\PassDeffered_DoRenderScene.h" />
+    <ClInclude Include="Passes\DefferedRendering\PassDeffered_MergeShadowMaps.h" />
     <ClInclude Include="Passes\DefferedRendering\PassDeffered_ShadowMaps.h" />
     <ClInclude Include="Passes\DefferedRendering\PassDeffered_RenderUIQuad.h" />
     <ClInclude Include="Passes\DefferedRendering\RendererDeffered.h" />

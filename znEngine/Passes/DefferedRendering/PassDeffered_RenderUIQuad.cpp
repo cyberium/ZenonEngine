@@ -18,24 +18,14 @@ struct __declspec(align(16)) SGPULightVS
 	// 16 bytes
 };
 
-struct __declspec(align(16)) SGPUDefferedLightVS
-{
-	SGPULightVS LightVS;
-	// 96 bytes
-	glm::mat4   LightViewMatrix;
-	// 64 bytes
-	glm::mat4   LightProjectionMatrix;
-	// 64 bytes
 
-};
-
-
-CPassDeffered_RenderUIQuad::CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, std::shared_ptr<CPassDeffered_DoRenderScene> DefferedRender, std::shared_ptr<CPassDeffered_ShadowMaps> DefferedRenderPrepareLights)
+CPassDeffered_RenderUIQuad::CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneCreateTypelessListPass, std::shared_ptr<IRenderTarget> GBufferRenderTarget, std::shared_ptr<ITexture> MergedShadowTexture)
 	: RenderPassPipelined(RenderDevice)
-	, m_DefferedRender(DefferedRender)
-	, m_Deffered_Lights(DefferedRenderPrepareLights)
+	, m_SceneCreateTypelessListPass(SceneCreateTypelessListPass)
+	, m_GBufferRenderTarget(GBufferRenderTarget)
+	, m_MergedShadowTexture(MergedShadowTexture)
 {
-	m_GPUDefferedLightVSBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SGPUDefferedLightVS());
+	m_GPUDefferedLightVSBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SGPULightVS());
 }
 
 CPassDeffered_RenderUIQuad::~CPassDeffered_RenderUIQuad()
@@ -49,21 +39,20 @@ CPassDeffered_RenderUIQuad::~CPassDeffered_RenderUIQuad()
 //
 void CPassDeffered_RenderUIQuad::Render(RenderEventArgs& e)
 {
-	for (const auto& lightResult : m_Deffered_Lights->GetLightResult())
-	{
-		if (false == lightResult.IsEnabled)
-			continue;
 
-		FillLightParamsForCurrentIteration(e, lightResult);
+	m_ShadowMapTextureParameter->SetTexture(m_MergedShadowTexture);
+	m_ShadowMapTextureParameter->Bind();
+
+	for (const auto& lightIt : m_SceneCreateTypelessListPass->GetLightList())
+	{
+		FillLightParamsForCurrentIteration(e, lightIt);
 
 		m_GPUDefferedLightVSParameter->Bind();
-		m_ShadowMapTextureParameter->Bind();
-
 		m_QuadGeometry->Render(GetPipeline().GetVertexShaderPtr());
-
-		m_ShadowMapTextureParameter->Unbind();
 		m_GPUDefferedLightVSParameter->Unbind();
 	}
+
+	m_ShadowMapTextureParameter->Unbind();
 }
 
 
@@ -103,11 +92,11 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::ConfigurePipel
 	GetPipeline().GetBlendState()->SetBlendMode(additiveBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	
-	GetPipeline().SetTexture(0, m_DefferedRender->GetTexture0());
-	GetPipeline().SetTexture(1, m_DefferedRender->GetTexture1());
-	GetPipeline().SetTexture(2, m_DefferedRender->GetTexture2());
-	GetPipeline().SetTexture(3, m_DefferedRender->GetTexture3());
-	GetPipeline().SetTexture(4, m_DefferedRender->GetTextureDepthStencil());
+	GetPipeline().SetTexture(0, m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
+	GetPipeline().SetTexture(1, m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color1));
+	GetPipeline().SetTexture(2, m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color2));
+	GetPipeline().SetTexture(3, m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color3));
+	GetPipeline().SetTexture(4, m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
 
 	return shared_from_this();
 }
@@ -117,36 +106,21 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::ConfigurePipel
 //
 // Protected
 //
-void CPassDeffered_RenderUIQuad::FillLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ShadowMaps::SLightResult& LightResult)
+void CPassDeffered_RenderUIQuad::FillLightParamsForCurrentIteration(const RenderEventArgs& e, const IRenderPassCreateTypelessList::SLightElement& LightElement)
 {
 	const ICameraComponent3D* camera = e.Camera;
 	_ASSERT(camera != nullptr);
 
-	auto lightOwner = LightResult.SceneNode;
-
-	SGPUDefferedLightVS lightResult;
+	SGPULightVS lightResult;
 
 	// GPULightVS
-	lightResult.LightVS.Light = LightResult.LightNode->GetGPULightStruct();
-	lightResult.LightVS.LightPositionVS =                 camera->GetViewMatrix() * glm::vec4(lightOwner->GetPosition(), 1.0f);
-	lightResult.LightVS.LightDirectionVS = glm::normalize(camera->GetViewMatrix() * glm::vec4(lightOwner->GetRotationEuler(), 0.0f));
-	lightResult.LightVS.IsEnabled = LightResult.IsEnabled;
-	lightResult.LightVS.IsCastShadow = LightResult.IsCastShadow;
-
-	// GPUDefferedLightVS
-	if (LightResult.IsCastShadow)
-	{
-		lightResult.LightViewMatrix = LightResult.LightNode->GetViewMatrix();
-		lightResult.LightProjectionMatrix = LightResult.LightNode->GetProjectionMatrix();
-	}
+	lightResult.Light = LightElement.Light->GetGPULightStruct();
+	lightResult.LightPositionVS =                 camera->GetViewMatrix() * glm::vec4(LightElement.SceneNode->GetPosition(), 1.0f);
+	lightResult.LightDirectionVS = glm::normalize(camera->GetViewMatrix() * glm::vec4(LightElement.SceneNode->GetRotationEuler(), 0.0f));
+	lightResult.IsEnabled = LightElement.Light->IsEnabled();
+	lightResult.IsCastShadow = LightElement.Light->IsCastShadows();
 
 	// GPUDefferedLightVS
 	m_GPUDefferedLightVSBuffer->Set(lightResult);
 	m_GPUDefferedLightVSParameter->SetConstantBuffer(m_GPUDefferedLightVSBuffer);
-
-	// ShadowMapTexture
-	if (LightResult.IsCastShadow)
-	{
-		m_ShadowMapTextureParameter->SetTexture(LightResult.ShadowTexture);
-	}
 }

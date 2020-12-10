@@ -33,21 +33,6 @@ void CSceneRTS::Initialize()
 {
 	SceneBase::Initialize();
 
-	// Light
-	/*{
-		auto lightNode = CreateSceneNodeT<ISceneNode>();
-		lightNode->SetName("Light");
-		lightNode->SetTranslate(glm::vec3(-300.0f, 500.0f, -500.0f) / 3.0f);
-		lightNode->SetRotation(glm::vec3(0.5f, -0.5f, 0.5f));
-
-		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
-		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(500.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.1f);
-		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
-	}*/
-
 	std::shared_ptr<IParticleComponent3D> particles = MakeShared(CParticlesComponent, *GetRootSceneNode());
 	GetRootSceneNode()->AddComponentT(particles);
 
@@ -56,7 +41,7 @@ void CSceneRTS::Initialize()
 	// Light
 	{
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
-		lightNode->SetName("Light2");
+		lightNode->SetName("Light");
 		lightNode->SetLocalPosition(glm::vec3(150.0f, 150.0f, 150.0f));
 		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.85f, -0.5f));
 
@@ -73,6 +58,27 @@ void CSceneRTS::Initialize()
 		lightNode->AddComponent(cSceneNodeLightComponent, lightComponent);
 	}
 
+
+	// Light 2
+	/*{
+		auto lightNode = CreateSceneNodeT<ISceneNode>();
+		lightNode->SetName("Light2");
+		lightNode->SetLocalPosition(glm::vec3(150.0f, 150.0f, 150.0f));
+		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.5f, 0.5f));
+
+		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
+		lightComponent->SetLight(MakeShared(CLight));
+		lightComponent->GetLight()->SetCastShadows(true);
+		lightComponent->GetLight()->SetType(ELightType::Directional);
+		lightComponent->GetLight()->SetAmbientColor(glm::vec3(0.25f));
+		lightComponent->GetLight()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		lightComponent->GetLight()->SetRange(1000.0f);
+		lightComponent->GetLight()->SetIntensity(1.0077f);
+		lightComponent->GetLight()->SetSpotlightAngle(30.0f);
+
+		lightNode->AddComponent(cSceneNodeLightComponent, lightComponent);
+	}*/
+
 	// Camera
 	{
 		float aspect = static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight());
@@ -83,7 +89,7 @@ void CSceneRTS::Initialize()
 
 		SetCameraController(MakeShared(CFreeCameraController));
 		GetCameraController()->SetCamera(cameraNode->GetComponentT<ICameraComponent3D>());
-		GetCameraController()->GetCamera()->SetPerspectiveProjection(75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
+		GetCameraController()->GetCamera()->SetPerspectiveProjection(75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 2500.0f);
 		//GetCameraController()->GetCamera()->SetOrthographicProjection(aspect, -55, 55, 55, -55, -10.0f, 1.0f);
 		
 		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(0.0f));

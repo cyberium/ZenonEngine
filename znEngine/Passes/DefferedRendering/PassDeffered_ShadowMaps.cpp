@@ -70,9 +70,9 @@ void CPassDeffered_ShadowMaps::CreateShadowPipeline()
 	m_ShadowPipeline = shadowPipeline;
 }
 
-const std::vector<CPassDeffered_ShadowMaps::SLightResult>& CPassDeffered_ShadowMaps::GetLightResult() const
+const std::vector<CPassDeffered_ShadowMaps::SShadowMap>& CPassDeffered_ShadowMaps::GetShadowMaps() const
 {
-	return m_LightResult;
+	return m_ShadowMaps;
 }
 
 
@@ -85,38 +85,38 @@ void CPassDeffered_ShadowMaps::PreRender(RenderEventArgs& e)
 	RenderPass::PreRender(e);
 
 	m_CurrentShadowMapTexture = 0;
-	m_LightResult.clear();
+	m_ShadowMaps.clear();
 }
 
 void CPassDeffered_ShadowMaps::Render(RenderEventArgs& e)
 {
 	for (const auto& lightIt : m_SceneCreateTypelessListPass->GetLightList())
 	{
-		SLightResult lightResult;
-		lightResult.IsEnabled = lightIt.Light->IsEnabled();
-		lightResult.SceneNode = lightIt.SceneNode;
-		lightResult.LightNode = lightIt.Light;
-		lightResult.IsLightEnabled = lightIt.Light->IsEnabled();
-		lightResult.IsCastShadow = lightIt.Light->IsCastShadows();
+		if (false == lightIt.Light->IsEnabled())
+			continue;
 
-		if (lightResult.IsCastShadow)
+		if (false == lightIt.Light->IsCastShadows())
+			continue;
+
+		SShadowMap shadowMap;
+		shadowMap.SceneNode = lightIt.SceneNode;
+		shadowMap.LightNode = lightIt.Light;
+
+		m_ShadowPipeline->Bind();
 		{
-			m_ShadowPipeline->Bind();
-			{
-				m_ShadowRenderTarget->Clear();
+			m_ShadowRenderTarget->Clear();
 
-				BindPerFrameParamsForCurrentIteration(lightIt.Light);
+			BindPerFrameParamsForCurrentIteration(lightIt.Light);
 
-				RenderScene();
+			RenderScene();
 
-				auto shadowTexture = GetShadowMapTexture();
-				shadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
-				lightResult.ShadowTexture = shadowTexture;
-			}
-			m_ShadowPipeline->UnBind();
+			auto shadowTexture = GetShadowMapTexture();
+			shadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+			shadowMap.ShadowTexture = shadowTexture;
 		}
+		m_ShadowPipeline->UnBind();
 
-		m_LightResult.push_back(lightResult);
+		m_ShadowMaps.push_back(shadowMap);
 	}
 }
 

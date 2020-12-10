@@ -413,6 +413,9 @@
     <ClCompile Include="Scene\Components\LightComponent\Light.cpp">
       <Filter>Scene\Components\Light</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\DefferedRendering\PassDeffered_MergeShadowMaps.cpp">
+      <Filter>Passes\DefferedRendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -702,6 +705,9 @@
     </ClInclude>
     <ClInclude Include="Scene\Components\LightComponent\Light.h">
       <Filter>Scene\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DefferedRendering\PassDeffered_MergeShadowMaps.h">
+      <Filter>Passes\DefferedRendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

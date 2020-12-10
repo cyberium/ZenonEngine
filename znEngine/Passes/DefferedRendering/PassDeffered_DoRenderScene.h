@@ -12,11 +12,6 @@ public:
 	void SetEnviorementTexture(std::shared_ptr<ITexture> Texture);
 
 	// CPassDeffered_DoRenderScene
-	std::shared_ptr<ITexture> GetTexture0() const;
-	std::shared_ptr<ITexture> GetTexture1() const;
-	std::shared_ptr<ITexture> GetTexture2() const;
-	std::shared_ptr<ITexture> GetTexture3() const;
-	std::shared_ptr<ITexture> GetTextureDepthStencil() const;
 	std::shared_ptr<IRenderTarget> GetGBufferRenderTarget() const;
 
 	// IRenderPass

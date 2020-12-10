@@ -25,31 +25,6 @@ void CPassDeffered_DoRenderScene::SetEnviorementTexture(std::shared_ptr<ITexture
 //
 // CPassDeffered_DoRenderScene
 //
-std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTexture0() const
-{
-	return m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
-}
-
-std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTexture1() const
-{
-	return m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color1);
-}
-
-std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTexture2() const
-{
-	return m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color2);
-}
-
-std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTexture3() const
-{
-	return m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color3);
-}
-
-std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTextureDepthStencil() const
-{
-	return m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil);
-}
-
 std::shared_ptr<IRenderTarget> CPassDeffered_DoRenderScene::GetGBufferRenderTarget() const
 {
 	return m_GBufferRenderTarget;
@@ -116,7 +91,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 
 	// Pixel shader
 	{
-		auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Deffered.hlsl", "PS_main");
+		auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_MaterialModel.hlsl", "PS_main");
 		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 	}
 

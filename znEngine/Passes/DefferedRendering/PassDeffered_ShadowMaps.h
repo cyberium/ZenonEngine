@@ -6,17 +6,10 @@ class ZN_API CPassDeffered_ShadowMaps
 	: public RenderPass
 {
 public:
-	struct SLightResult
+	struct SShadowMap
 	{
-		SLightResult()
-			: IsEnabled(false)
-		{}
-
-		bool                               IsEnabled;
 		std::shared_ptr<const ISceneNode>  SceneNode;
-		std::shared_ptr<const ILight>    LightNode;
-		bool                               IsLightEnabled;
-		bool                               IsCastShadow;
+		std::shared_ptr<const ILight>      LightNode;
 		std::shared_ptr<ITexture>          ShadowTexture;
 	};
 
@@ -25,7 +18,7 @@ public:
 	virtual ~CPassDeffered_ShadowMaps();
 
 	void CreateShadowPipeline();
-	const std::vector<SLightResult>& GetLightResult() const;
+	const std::vector<SShadowMap>& GetShadowMaps() const;
 
 	// IRenderPass
 	void PreRender(RenderEventArgs& e) override;
@@ -59,8 +52,8 @@ private:
 	// Per object bones
 	IShaderParameter* m_ShaderBonesBufferParameter;
 
-private: // Result
-	std::vector<SLightResult> m_LightResult;
+private:
+	std::vector<SShadowMap> m_ShadowMaps;
 
 	mutable size_t m_CurrentShadowMapTexture;
 	std::vector <std::shared_ptr<ITexture>> m_ShadowMapsTexturesCache;
