@@ -5,6 +5,8 @@
 
 // Additional
 #include "ModelsLoaderHelper.h"
+#include "Scene/Components/Animations/Animation.h"
+#include "Scene/Components/ModelComponent/Skeleton.h"
 
 namespace
 {

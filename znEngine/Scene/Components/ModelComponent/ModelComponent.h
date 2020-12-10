@@ -16,11 +16,11 @@ public:
 	bool IsCastShadows() const  override;
 
 	// Skeleton functional
-	std::shared_ptr<ISkeletonComponentBone3D> GetRootBone() const override;
-	std::shared_ptr<ISkeletonComponentBone3D> GetBone(size_t Index) const override;
-	const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetBones() const override;
-	std::shared_ptr<IStructuredBuffer> GetBonesBuffer() const override;
-	std::vector<glm::mat4> CreatePose(size_t BoneStartIndex = 0, size_t BonesCount = 0) const override;
+	//std::shared_ptr<ISkeletonComponentBone3D> GetRootBone() const override;
+	const SBoneInstance& GetCalculatedBone(size_t Index) const override;
+	const std::vector<SBoneInstance>& GetCalculatedBones() const override;
+	std::shared_ptr<IStructuredBuffer> GetBonesSkinBuffer() const override;
+	void CreatePose(size_t BoneStartIndex = 0, size_t BonesCount = 0) override;
 
 	// Animation functional
 	void PlayAnimation(const std::string& AnimationName, bool Loop) override;
@@ -41,9 +41,10 @@ public:
 
 protected:
 	virtual void InitializeBones();
-	virtual void AddBone(std::shared_ptr<ISkeletonComponentBone3D> Bone);
-
+	void CalculateBone(size_t Index, const std::shared_ptr<ISkeletonBone>& Bone);
+	glm::mat4 CalculateBoneLocalMatrix(const std::shared_ptr<ISkeletonBone>& Bone);
 	void ResetBones();
+
 	void PauseAnimation();
 	void ResetAnimation();
 
@@ -52,9 +53,12 @@ private:
 	bool m_IsCastShadows;
 
 	// Bones
-	std::shared_ptr<ISkeletonComponentBone3D> m_RootBone;
-	std::vector<std::shared_ptr<ISkeletonComponentBone3D>> m_Bones;
-	std::vector<glm::mat4> m_BonesList;
+	std::vector<SBoneInstance> m_BonesCalculated;
+	std::vector<glm::mat4> m_BonesCalculatedSkinMatrices;
+
+	//std::shared_ptr<ISkeletonComponentBone3D> m_RootBone;
+	//std::vector<std::shared_ptr<ISkeletonComponentBone3D>> m_Bones;
+	//std::vector<glm::mat4> m_BonesList;
 	std::shared_ptr<IStructuredBuffer> m_StructuredBuffer;
 
 	// Animation

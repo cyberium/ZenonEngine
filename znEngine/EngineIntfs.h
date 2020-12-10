@@ -185,6 +185,21 @@ ZN_INTERFACE ZN_API IUIControlCommon
 };
 
 
+enum class ZN_API ETextAlignHorizontal : uint32
+{
+	Left,
+	Center,
+	Right
+};
+
+enum class ZN_API ETextAlignVertical : uint32
+{
+	Top,
+	Center,
+	Bottom
+};
+
+
 ZN_INTERFACE ZN_API IUIControlText
 	: public virtual IUIControl
 {
@@ -197,8 +212,14 @@ ZN_INTERFACE ZN_API IUIControlText
 	virtual void SetText(std::string Text) = 0;
 	virtual std::string GetText() const = 0;
 
-	virtual void SetOffset(glm::vec2 Offset) = 0;
-	virtual glm::vec2 GetOffset() const = 0;
+	virtual void SetTextAlignHorizontal(ETextAlignHorizontal TextAlignHorizontal) = 0;
+	virtual ETextAlignHorizontal GetTextAlignHorizontal() const = 0;
+
+	virtual void SetTextAlignVertical(ETextAlignVertical TextAlignVertical) = 0;
+	virtual ETextAlignVertical GetTextAlignVertical() const = 0;
+
+	//virtual void SetOffset(glm::vec2 Offset) = 0;
+	//virtual glm::vec2 GetOffset() const = 0;
 
 	virtual void SetColor(glm::vec4 Color) = 0;
 	virtual glm::vec4 GetColor() const = 0;

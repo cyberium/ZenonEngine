@@ -194,7 +194,7 @@ void CSceneDefault::Load3D()
 		znMdlFile->Save();
 
 		node->GetComponentT<IModelComponent>()->SetModel(originalSkeletonModel);
-		node->GetComponentT<IModelComponent>()->PlayAnimation("death", true);
+		node->GetComponentT<IModelComponent>()->PlayAnimation("run", true);
 	}
 
 	//--------------------------------------------------------------------------

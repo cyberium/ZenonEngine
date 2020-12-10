@@ -182,7 +182,7 @@ void CPassDeffered_ShadowMaps::RenderScene()
 		// Bones begin
 		if (m_ShaderBonesBufferParameter)
 		{
-			m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
+			m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesSkinBuffer());
 			m_ShaderBonesBufferParameter->Bind();
 		}
 

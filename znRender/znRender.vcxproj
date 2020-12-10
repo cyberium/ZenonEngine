@@ -82,10 +82,6 @@
     <ClCompile Include="GeometryBase.cpp" />
     <ClCompile Include="MaterialBase.cpp" />
     <ClCompile Include="ModelBase.cpp" />
-    <ClCompile Include="Models\Animation.cpp" />
-    <ClCompile Include="Models\Skeleton.cpp" />
-    <ClCompile Include="Models\SkeletonAnimation.cpp" />
-    <ClCompile Include="Models\SkeletonBone.cpp" />
     <ClCompile Include="PipelineStateBase.cpp" />
     <ClCompile Include="Primitives\Geometry.cpp" />
     <ClCompile Include="RasterizerStateBase.cpp" />
@@ -113,11 +109,6 @@
     <ClInclude Include="DepthStencilStateBase.h" />
     <ClInclude Include="GeometryBase.h" />
     <ClInclude Include="MaterialBase.h" />
-    <ClInclude Include="Models\AnimatedValueSingle.h" />
-    <ClInclude Include="Models\Animation.h" />
-    <ClInclude Include="Models\Skeleton.h" />
-    <ClInclude Include="Models\SkeletonAnimation.h" />
-    <ClInclude Include="Models\SkeletonBone.h" />
     <ClInclude Include="PipelineStateBase.h" />
     <ClInclude Include="Primitives\Geometry.h" />
     <ClInclude Include="ModelBase.h" />

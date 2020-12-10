@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#define ENABLE_HDR
+//#define ENABLE_HDR
 
 // General
 #include "RendererForward.h"
@@ -66,7 +66,13 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
 
 	auto skyboxPass = MakeShared(CSkyboxPass, m_RenderDevice);
-	skyboxPass->ConfigurePipeline(HDRRenderTarget);
+	skyboxPass->ConfigurePipeline(
+#ifdef ENABLE_HDR
+		HDRRenderTarget
+#else
+		OutputRenderTarget
+#endif
+	);
 
 	m_MaterialModelPass = MakeShared(CPassForward_DoRenderScene, m_RenderDevice, m_Scene);
 	m_MaterialModelPass->ConfigurePipeline(
@@ -122,10 +128,12 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	//
 	// POSTPROCESS
 	//
-	auto inputTexture = HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
+	
 
 #ifdef ENABLE_HDR
 	
+	auto inputTexture = HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
+
 	//auto glowEmissiveRT = CreateHDRRenderTarget(HDRRenderTarget);
 	//Add3DPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, glowEmissiveRT, ClearFlags::Color));
 
@@ -154,8 +162,11 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	//Add3DPass(hdrPass);
 
 	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, accumTextures->GetOutputTexture())->ConfigurePipeline(OutputRenderTarget));
-	
-	//Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, inputTexture)->ConfigurePipeline(OutputRenderTarget));
+
+#else
+	auto inputTexture = OutputRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
+
+	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, inputTexture)->ConfigurePipeline(OutputRenderTarget));
 #endif
 
 
@@ -165,7 +176,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	//
 	Add3DPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
-	//Add3DPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	Add3DPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawLightFrustumPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 
 

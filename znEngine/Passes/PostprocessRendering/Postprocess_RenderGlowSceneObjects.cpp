@@ -77,7 +77,7 @@ EVisitResult CPassPostprocess_RenderGlowSceneObjects::Visit(const std::shared_pt
 		auto modelsComponent = SceneNode->GetComponentT<IModelComponent>();
 		if (modelsComponent != nullptr)
 			if (m_ShaderBonesBufferParameter)
-				m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
+				m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesSkinBuffer());
 
 		return Base3DPass::Visit(SceneNode);
 	}

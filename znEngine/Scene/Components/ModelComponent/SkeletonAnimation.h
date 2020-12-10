@@ -1,8 +1,8 @@
 #pragma once
 
-#include "AnimatedValueSingle.h"
+#include "../Animations/AnimatedValueSingle.h"
 
-class CSkeletonAnimation
+class ZN_API CSkeletonAnimation
 	: public ISkeletonAnimation
 	, public IObjectLoadSave
 {

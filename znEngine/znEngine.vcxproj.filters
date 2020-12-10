@@ -127,6 +127,9 @@
     <Filter Include="NativeWindows">
       <UniqueIdentifier>{cfe67249-b3e6-463f-a7cd-5770ee4ab305}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Components\Animations">
+      <UniqueIdentifier>{ce72550d-0d10-47d8-a100-4cebda6c01f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -292,9 +295,6 @@
     <ClCompile Include="Scene\EngineSceneExtender.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\ModelComponent\SkeletonComponentBone.cpp">
-      <Filter>Scene\Components\ModelComponent</Filter>
-    </ClCompile>
     <ClCompile Include="Materials\MaterialUIControl.cpp">
       <Filter>Materials\UI materials</Filter>
     </ClCompile>
@@ -394,6 +394,18 @@
     </ClCompile>
     <ClCompile Include="Passes\PostprocessRendering\Postprocess_RenderGlowSceneObjects.cpp">
       <Filter>Passes\PostprocessRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ModelComponent\Skeleton.cpp">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ModelComponent\SkeletonAnimation.cpp">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ModelComponent\SkeletonBone.cpp">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Animations\Animation.cpp">
+      <Filter>Scene\Components\Animations</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -567,9 +579,6 @@
     <ClInclude Include="Scene\EngineSceneExtender.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\ModelComponent\SkeletonComponentBone.h">
-      <Filter>Scene\Components\ModelComponent</Filter>
-    </ClInclude>
     <ClInclude Include="Materials\MaterialUIControl.h">
       <Filter>Materials\UI materials</Filter>
     </ClInclude>
@@ -669,6 +678,21 @@
     </ClInclude>
     <ClInclude Include="Passes\PostprocessRendering\Postprocess_RenderGlowSceneObjects.h">
       <Filter>Passes\PostprocessRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ModelComponent\Skeleton.h">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ModelComponent\SkeletonAnimation.h">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ModelComponent\SkeletonBone.h">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Animations\AnimatedValueSingle.h">
+      <Filter>Scene\Components\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Animations\Animation.h">
+      <Filter>Scene\Components\Animations</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

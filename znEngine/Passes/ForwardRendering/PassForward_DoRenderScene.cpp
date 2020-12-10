@@ -85,7 +85,7 @@ EVisitResult CPassForward_DoRenderScene::Visit(const std::shared_ptr<ISceneNode>
 		auto modelsComponent = SceneNode->GetComponentT<IModelComponent>();
 		if (modelsComponent != nullptr)
 			if (m_ShaderBonesBufferParameter)
-				m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
+				m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesSkinBuffer());
 
 		return Base3DPass::Visit(SceneNode);
 	}

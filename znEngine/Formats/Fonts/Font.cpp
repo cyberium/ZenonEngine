@@ -31,6 +31,11 @@ std::shared_ptr<IGeometry> CFont::GetGeometry() const
 	return m_Geometry;
 }
 
+glm::vec2 CFont::GetSize(const std::string& String) const
+{
+	return glm::vec2(GetWidth(String), GetHeight());
+}
+
 uint32 CFont::GetWidth(char Char) const
 {
 	unsigned char uChar = static_cast<unsigned char>(Char);

@@ -23,6 +23,7 @@ ZN_INTERFACE ZN_API IRenderPrimitivesFactory
 	virtual std::shared_ptr<IGeometry> CreateLine(const glm::vec3& _dest) = 0; // Create a line
 	virtual std::shared_ptr<IGeometry> CreateLines(size_t count = 100) = 0;
 	virtual std::shared_ptr<IGeometry> CreateLines(const std::vector<glm::vec3>& Points) = 0;
+	virtual std::shared_ptr<IGeometry> CreateLines2(const std::vector<glm::vec3>& Points) = 0;
 	virtual std::shared_ptr<IGeometry> CreatePlane(const glm::vec3& N = glm::vec3(0, 1, 0)) = 0; // Create a plane in 3D.
 	virtual std::shared_ptr<IGeometry> CreateSphere(float Radius = 1.0f) = 0;
 	virtual std::shared_ptr<IGeometry> CreateCube() = 0;

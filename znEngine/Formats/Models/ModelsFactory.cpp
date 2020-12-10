@@ -81,6 +81,8 @@ std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::shared_ptr<IFile>
 	if (ModelFile == nullptr)
 		throw CException("Can't load nullptr file.");
 
+	ModelFile->seek(0);
+
 	// Find existsing cached
 	{
 		std::lock_guard<std::mutex> lock(m_LockMutex);

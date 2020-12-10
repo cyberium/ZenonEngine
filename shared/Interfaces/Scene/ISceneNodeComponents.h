@@ -181,6 +181,20 @@ ZN_INTERFACE ZN_API ISkeletonComponentBoneInternal3D
 
 
 
+struct SBoneInstance
+{
+	SBoneInstance()
+		: Bone(nullptr)
+		, IsCalculated(false)
+		, BoneMatrix(glm::mat4(1.0f))
+	{}
+
+	const ISkeletonBone* Bone;
+	bool IsCalculated;
+	glm::mat4 BoneMatrix;
+};
+
+
 //
 // MODELS COMPONENT 3D
 //
@@ -198,11 +212,11 @@ ZN_INTERFACE ZN_API IModelComponent
 	virtual bool IsCastShadows() const = 0;
 
 	// Bones functional
-	virtual std::shared_ptr<ISkeletonComponentBone3D> GetRootBone() const = 0;
-	virtual std::shared_ptr<ISkeletonComponentBone3D> GetBone(size_t Index) const = 0;
-	virtual const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetBones() const = 0;
-	virtual std::shared_ptr<IStructuredBuffer> GetBonesBuffer() const = 0;
-	virtual std::vector<glm::mat4> CreatePose(size_t BoneStartIndex = 0, size_t BonesCount = 0) const = 0;
+	//virtual std::shared_ptr<ISkeletonComponentBone3D> GetRootBone() const = 0;
+	virtual const SBoneInstance& GetCalculatedBone(size_t Index) const = 0;
+	virtual const std::vector<SBoneInstance>& GetCalculatedBones() const = 0;
+	virtual std::shared_ptr<IStructuredBuffer> GetBonesSkinBuffer() const = 0;
+	virtual void CreatePose(size_t BoneStartIndex = 0, size_t BonesCount = 0) = 0;
 
 	// Animation functional
 	virtual void PlayAnimation(const std::string& AnimationName, bool Loop) = 0;

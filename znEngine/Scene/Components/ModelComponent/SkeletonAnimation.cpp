@@ -39,7 +39,7 @@ glm::mat4 CSkeletonAnimation::GetRootBoneMatrix() const
 	return m_RootBoneMatrix;
 }
 
-bool CSkeletonAnimation::IsBoneAnimated(const std::string & BoneName, uint32 FrameIndex) const
+bool CSkeletonAnimation::IsBoneAnimated(const std::string& BoneName, uint32 FrameIndex) const
 {
 	const auto& boneIt = m_BonesTransformAnimation.find(BoneName);
 	if (boneIt == m_BonesTransformAnimation.end())
@@ -51,7 +51,7 @@ bool CSkeletonAnimation::IsBoneAnimated(const std::string & BoneName, uint32 Fra
 	return true;
 }
 
-glm::mat4 CSkeletonAnimation::CalculateBoneMatrix(const std::string & BoneName, uint32 FrameIndex) const
+glm::mat4 CSkeletonAnimation::CalculateBoneMatrix(const std::string& BoneName, uint32 FrameIndex) const
 {
 	const auto& boneIt = m_BonesTransformAnimation.find(BoneName);
 	if (boneIt == m_BonesTransformAnimation.end())

@@ -1,6 +1,6 @@
 #pragma once
 
-class CSkeleton
+class ZN_API CSkeleton
 	: public ISkeleton
 	, public ISkeletonInternal
 	, public IObjectLoadSave

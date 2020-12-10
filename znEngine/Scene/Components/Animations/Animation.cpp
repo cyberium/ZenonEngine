@@ -4,7 +4,7 @@
 #include "Animation.h"
 
 // Additional
-#include "SkeletonAnimation.h"
+#include "Scene/Components/ModelComponent/SkeletonAnimation.h"
 
 CAnimation::CAnimation(const std::shared_ptr<IXMLReader>& Reader)
 {

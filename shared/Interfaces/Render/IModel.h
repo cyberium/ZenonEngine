@@ -27,7 +27,8 @@ ZN_INTERFACE ZN_API ISkeletonBone
 
 	virtual std::string GetName() const = 0;
 	virtual int32 GetParentIndex() const = 0;
-	
+	virtual bool IsRootBone() const = 0;
+
 	virtual void SetLocalMatrix(const glm::mat4& Matrix) = 0;
 	virtual glm::mat4 GetLocalMatrix() const = 0;
 
@@ -36,8 +37,6 @@ ZN_INTERFACE ZN_API ISkeletonBone
 
 	virtual void SetSkinMatrix(const glm::mat4& Matrix) = 0;
 	virtual glm::mat4 GetSkinMatrix() const = 0;
-
-	virtual glm::mat4 CalculateBontMatrix(const IModelComponent* ModelsComponent) const = 0;
 };
 
 ZN_INTERFACE ZN_API ISkeleton

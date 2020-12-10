@@ -41,6 +41,11 @@ int32 CSkeletonBone::GetParentIndex() const
 	return m_ParentIndex;
 }
 
+bool CSkeletonBone::IsRootBone() const
+{
+	return GetParentIndex() == -1;
+}
+
 void CSkeletonBone::SetLocalMatrix(const glm::mat4 & Matrix)
 {
 	m_LocalTransform = Matrix;
@@ -71,52 +76,6 @@ glm::mat4 CSkeletonBone::GetSkinMatrix() const
 	return m_SkinMatrix;
 }
 
-glm::mat4 CSkeletonBone::CalculateBontMatrix(const IModelComponent* ModelsComponent) const
-{
-	glm::mat4 m(1.0f);
-
-	m *= GetPivotMatrix();
-	{
-		if (ModelsComponent->IsAnimationPlayed())
-		{
-			const IAnimation* currentAnimation = ModelsComponent->GetCurrentAnimation();
-			_ASSERT(currentAnimation != nullptr);
-
-			const auto& skeletonAnimation = currentAnimation->GetSkeletonAnimation();
-			if (skeletonAnimation != nullptr)
-			{
-				if (IsRootBone())
-					m *= glm::inverse(currentAnimation->GetSkeletonAnimation()->GetRootBoneMatrix());
-
-				size_t currentAnimationIndex = ModelsComponent->GetCurrentAnimationFrame();
-				if (skeletonAnimation->IsBoneAnimated(GetName(), currentAnimationIndex))
-				{
-					m *= skeletonAnimation->CalculateBoneMatrix(GetName(), currentAnimationIndex);
-				}
-				else
-				{
-					m *= GetLocalMatrix();
-				}
-			}
-			else
-			{
-				if (IsRootBone())
-					m *= glm::inverse(ModelsComponent->GetModel()->GetSkeleton()->GetRootBoneLocalTransform());
-				m *= GetLocalMatrix();
-			}
-		}
-		else
-		{
-			if (IsRootBone())
-				m *= glm::inverse(ModelsComponent->GetModel()->GetSkeleton()->GetRootBoneLocalTransform());
-			m *= GetLocalMatrix();
-		}
-	}
-	m *= glm::inverse(GetPivotMatrix());
-
-	return m;
-}
-
 
 
 //
@@ -139,8 +98,6 @@ void CSkeletonBone::Load(const std::shared_ptr<IByteBuffer>& Buffer)
 	Buffer->read(&m_LocalTransform);
 	Buffer->read(&m_PivotMatrix);
 	Buffer->read(&m_SkinMatrix);
-
-	//m_CalculatedMatrixes.Load(Buffer);
 }
 
 void CSkeletonBone::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
@@ -150,8 +107,6 @@ void CSkeletonBone::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 	Buffer->write(&m_LocalTransform);
 	Buffer->write(&m_PivotMatrix);
 	Buffer->write(&m_SkinMatrix);
-	
-	//m_CalculatedMatrixes.Save(Buffer);
 }
 
 void CSkeletonBone::Load(const std::shared_ptr<IXMLReader>& Reader)
@@ -161,9 +116,6 @@ void CSkeletonBone::Load(const std::shared_ptr<IXMLReader>& Reader)
 	m_LocalTransform = Utils::StringToMatrix(Reader->GetStrAttribute("LocalTransform"));
 	m_PivotMatrix = Utils::StringToMatrix(Reader->GetStrAttribute("PivotMatrix"));
 	m_SkinMatrix = Utils::StringToMatrix(Reader->GetStrAttribute("FuckingMatrix"));
-
-	//std::shared_ptr<CByteBuffer> byteBuffer = MakeShared(CByteBuffer, Utils::Base64_Decode(Reader->GetValue()));
-	//m_CalculatedMatrixes.Load(byteBuffer);
 }
 
 void CSkeletonBone::Save(const std::shared_ptr<IXMLWriter>& Writer) const
@@ -173,19 +125,4 @@ void CSkeletonBone::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	Writer->SetStrAttribute(Utils::MatrixToString(m_LocalTransform), "LocalTransform");
 	Writer->SetStrAttribute(Utils::MatrixToString(m_PivotMatrix), "PivotMatrix");
 	Writer->SetStrAttribute(Utils::MatrixToString(m_SkinMatrix), "FuckingMatrix");
-
-	//std::shared_ptr<CByteBuffer> byteBuffer = MakeShared(CByteBuffer);
-	//m_CalculatedMatrixes.Save(byteBuffer);
-	//Writer->SetValue(Utils::Base64_Encode(byteBuffer->getData(), byteBuffer->getSize()));
-
-}
-
-
-
-//
-// Private
-//
-bool CSkeletonBone::IsRootBone() const
-{
-	return m_ParentIndex == -1;
 }

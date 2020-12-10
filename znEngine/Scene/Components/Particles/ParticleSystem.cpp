@@ -3,7 +3,8 @@
 // General
 #include "ParticleSystem.h"
 
-
+// Additional
+#include "Scene/Components/Animations/AnimatedValueSingle.h" // For interpolations
 namespace
 {
 	glm::mat4 CalcSpreadMatrix(float Spread1, float Spread2, float w, float l)

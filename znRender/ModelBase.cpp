@@ -3,9 +3,6 @@
 // General
 #include "ModelBase.h"
 
-// Additional
-#include "Models/SkeletonAnimation.h"
-
 
 ModelBase::ModelBase(IRenderDevice& RenderDevice)
 	: Object(RenderDevice.GetBaseManager())

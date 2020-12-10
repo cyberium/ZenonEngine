@@ -6,8 +6,9 @@
 namespace
 {
 	const char* cDefaultText = "<empty>";
-	const glm::vec2  cDefaultOffset = glm::vec2(0.0f, 0.0f);
-	const glm::vec4  cDefaultColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	const 
+
+	const glm::vec4 cDefaultColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 CUIControlText::CUIControlText(IScene& Scene)
@@ -25,16 +26,22 @@ void CUIControlText::Initialize()
 
 	m_Font = GetBaseManager().GetManager<IznFontsManager>()->GetMainFont();
 
-	m_TextProperty = MakeShared(CProperty<std::string>, "Text", "Text of this node", cDefaultText);
+	m_TextProperty = MakeShared(CProperty<std::string>, "Text", "descr", cDefaultText);
 	m_TextProperty->SetValueChangedCallback([this](const std::string& NewValue) {
-		SetSize(glm::vec2(GetFont()->GetWidth(NewValue), GetFont()->GetHeight()) + GetOffset() * 2.0f);
+		SetSize(GetFont()->GetSize(NewValue));
 	});
 	GetProperties()->AddProperty(m_TextProperty);
 
-	m_OffsetProperty = MakeShared(CProperty<glm::vec2>, "Offset", "Offset of first string character relatieve to local transform.", cDefaultOffset);
-	GetProperties()->AddProperty(m_OffsetProperty);
+	m_TextAlignHorizontalProperty = MakeShared(CProperty<ETextAlignHorizontal>, "TextAlignHorizontal", "Text align horizontal.", ETextAlignHorizontal::Left);
+	GetProperties()->AddProperty(m_TextAlignHorizontalProperty);
 
-	m_ColorProperty = MakeShared(CProperty<glm::vec4>, "Color", "Color of text", cDefaultColor);
+	m_TextAlignVerticalProperty = MakeShared(CProperty<ETextAlignVertical>, "TextAlignVertical", "Text align vertical.", ETextAlignVertical::Top);
+	GetProperties()->AddProperty(m_TextAlignVerticalProperty);
+
+	//m_OffsetProperty = MakeShared(CProperty<glm::vec2>, "Offset", "Offset of first string character relatieve to local transform.", cDefaultOffset);
+	//GetProperties()->AddProperty(m_OffsetProperty);
+
+	m_ColorProperty = MakeShared(CProperty<glm::vec4>, "Color", "Color of text", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	GetProperties()->AddProperty(m_ColorProperty);
 }
 
@@ -63,7 +70,28 @@ std::string CUIControlText::GetText() const
 	return m_TextProperty->Get();
 }
 
-void CUIControlText::SetOffset(glm::vec2 Offset)
+void CUIControlText::SetTextAlignHorizontal(ETextAlignHorizontal TextAlignHorizontal)
+{
+	m_TextAlignHorizontalProperty->Set(TextAlignHorizontal);
+}
+
+ETextAlignHorizontal CUIControlText::GetTextAlignHorizontal() const
+{
+	return m_TextAlignHorizontalProperty->Get();
+}
+
+void CUIControlText::SetTextAlignVertical(ETextAlignVertical TextAlignVertical)
+{
+	m_TextAlignVerticalProperty->Set(TextAlignVertical);
+}
+
+ETextAlignVertical CUIControlText::GetTextAlignVertical() const
+{
+	return m_TextAlignVerticalProperty->Get();
+}
+
+
+/*void CUIControlText::SetOffset(glm::vec2 Offset)
 {
 	m_OffsetProperty->Set(Offset);
 }
@@ -71,7 +99,7 @@ void CUIControlText::SetOffset(glm::vec2 Offset)
 glm::vec2 CUIControlText::GetOffset() const
 {
 	return m_OffsetProperty->Get();
-}
+}*/
 
 void CUIControlText::SetColor(glm::vec4 Color)
 {

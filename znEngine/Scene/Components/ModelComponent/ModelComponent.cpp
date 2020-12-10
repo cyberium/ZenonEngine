@@ -3,9 +3,6 @@
 // General
 #include "ModelComponent.h"
 
-// Additional
-#include "SkeletonComponentBone.h"
-
 CModelComponent::CModelComponent(const ISceneNode& OwnerNode)
     : CComponentBase(OwnerNode)
 	
@@ -98,7 +95,7 @@ bool CModelComponent::IsCastShadows() const
 //
 // Bones functional
 //
-std::shared_ptr<ISkeletonComponentBone3D> CModelComponent::GetRootBone() const
+/*std::shared_ptr<ISkeletonComponentBone3D> CModelComponent::GetRootBone() const
 {
 	return m_RootBone;
 }
@@ -113,26 +110,46 @@ std::shared_ptr<ISkeletonComponentBone3D> CModelComponent::GetBone(size_t Index)
 const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& CModelComponent::GetBones() const
 {
 	return m_Bones;
+}*/
+
+const SBoneInstance& CModelComponent::GetCalculatedBone(size_t Index) const
+{
+	return m_BonesCalculated[Index];
 }
 
-std::shared_ptr<IStructuredBuffer> CModelComponent::GetBonesBuffer() const
+const std::vector<SBoneInstance>& CModelComponent::GetCalculatedBones() const
+{
+	return m_BonesCalculated;
+}
+
+std::shared_ptr<IStructuredBuffer> CModelComponent::GetBonesSkinBuffer() const
 {
 	return m_StructuredBuffer;
 }
 
-std::vector<glm::mat4> CModelComponent::CreatePose(size_t BoneStartIndex, size_t BonesCount) const
+void CModelComponent::CreatePose(size_t BoneStartIndex, size_t BonesCount)
 {
-	if (BonesCount == 0)
-		BonesCount = m_Bones.size();
+	const std::shared_ptr<ISkeletonBone>& rootBone = GetModel()->GetSkeleton()->GetRootBone();
+	const std::vector<std::shared_ptr<ISkeletonBone>>& bones = GetModel()->GetSkeleton()->GetBones();
 
-	const glm::mat4& rootBoneMatrix = GetModel()->GetSkeleton()->GetRootBone()->GetLocalMatrix();
+	if (BonesCount == 0)
+		BonesCount = bones.size() - BoneStartIndex;
 
 	_ASSERT(BoneStartIndex + BonesCount - 1 < m_Bones.size());
-	std::vector<glm::mat4> result;
-	result.reserve(BonesCount);
-	for (size_t i = BoneStartIndex; i < BoneStartIndex + BonesCount; i++)
-		result.push_back(rootBoneMatrix * m_Bones[i]->GetCalculatedMatrix() * m_Bones[i]->GetProtoBone().GetSkinMatrix());
-	return result;
+	
+	for (size_t i = 0; i < bones.size(); i++)
+	{
+		if ((i >= BoneStartIndex) && i < (BoneStartIndex + BonesCount))
+		{
+			m_BonesCalculatedSkinMatrices[i] = rootBone->GetLocalMatrix() * m_BonesCalculated[i].BoneMatrix * bones[i]->GetSkinMatrix();
+		}
+		else
+		{
+			m_BonesCalculatedSkinMatrices[i] = glm::mat4(1.0f);
+		}
+	}
+
+	m_StructuredBuffer->Set(m_BonesCalculatedSkinMatrices);
 }
 
 
@@ -204,8 +221,23 @@ uint32 CModelComponent::GetCurrentAnimationFrame() const
 void CModelComponent::Update(const UpdateEventArgs & e)
 {
 	__super::Update(e);
+	
+	if (m_Model == nullptr)
+		return;
 
-	if (false == m_Bones.empty())
+	if (auto skeleton = m_Model->GetSkeleton())
+	{
+		for (auto& b : m_BonesCalculated)
+			b = SBoneInstance();
+
+		const auto& bones = skeleton->GetBones();
+		for (size_t i = 0; i < bones.size(); i++)
+			CalculateBone(i, bones[i]);	
+		
+		CreatePose();
+	}
+
+	/*if (false == m_Bones.empty())
 	{
 		for (const auto& b : m_Bones)
 			std::dynamic_pointer_cast<ISkeletonComponentBoneInternal3D>(b)->Reset();
@@ -215,7 +247,7 @@ void CModelComponent::Update(const UpdateEventArgs & e)
 
 		m_BonesList = CreatePose();
 		m_StructuredBuffer->Set(m_BonesList);
-	}
+	}*/
 
 	if ((m_CurrentAnimation != nullptr) && (false == m_IsAnimationPaused))
 	{
@@ -333,50 +365,82 @@ void CModelComponent::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 
 void CModelComponent::InitializeBones()
 {
-	m_RootBone = nullptr;
-	m_Bones.clear();
-
-	if (GetModel()->GetSkeleton() == nullptr)
-		return;
-
-	for (const auto& boneProto : GetModel()->GetSkeleton()->GetBones())
+	if (auto skeleton = m_Model->GetSkeleton())
 	{
-		std::shared_ptr<CSkeletonComponentBone3D> bone = MakeShared(CSkeletonComponentBone3D, boneProto);
-		AddBone(bone);
+		const auto& bones = skeleton->GetBones();
+		m_BonesCalculated.resize(bones.size());
+		m_BonesCalculatedSkinMatrices.resize(bones.size());
 
-		// Resolve root bone
-		if (boneProto->GetParentIndex() == -1)
-		{
-			if (m_RootBone != nullptr)
-				throw CException("ModelComponent: Unable to set '%s' as root bone, because '%s' already root.", boneProto->GetName().c_str(), m_RootBone->GetName().c_str());
-			m_RootBone = bone;
-			Log::Green("ModelComponent: '%s' is root bone.", m_RootBone->GetName().c_str());
-		}
-	}
-
-	for (const auto& bone : GetBones())
-		std::dynamic_pointer_cast<ISkeletonComponentBoneInternal3D>(bone)->SetParentAndChildsInternals(GetBones());
-
-	if (false == GetBones().empty())
-	{
-		m_BonesList.resize(m_Bones.size());
-		m_StructuredBuffer = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 256, sizeof(glm::mat4), EAccess::CPUWrite);
+		m_StructuredBuffer = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, bones.size(), sizeof(glm::mat4), EAccess::CPUWrite);
 	}
 }
 
-void CModelComponent::AddBone(std::shared_ptr<ISkeletonComponentBone3D> Bone)
+void CModelComponent::CalculateBone(size_t BoneIndex, const std::shared_ptr<ISkeletonBone>& Bone)
 {
-	m_Bones.push_back(Bone);
+	SBoneInstance& boneInstance = m_BonesCalculated[BoneIndex];
+
+	if (boneInstance.IsCalculated)
+		return;
+
+	int32 parentIndex = Bone->GetParentIndex();
+	if (parentIndex != -1)
+		CalculateBone(parentIndex, GetModel()->GetSkeleton()->GetBone(parentIndex));
+
+	boneInstance.BoneMatrix = CalculateBoneLocalMatrix(Bone);
+
+	if (parentIndex != -1)
+		boneInstance.BoneMatrix = m_BonesCalculated[parentIndex].BoneMatrix * boneInstance.BoneMatrix;
+
+	boneInstance.Bone = Bone.get();
+	boneInstance.IsCalculated = true;
+}
+
+glm::mat4 CModelComponent::CalculateBoneLocalMatrix(const std::shared_ptr<ISkeletonBone>& Bone)
+{
+	glm::mat4 m(1.0f);
+
+	m *= Bone->GetPivotMatrix();
+	{
+		if (const IAnimation* currentAnimation = GetCurrentAnimation())
+		{
+			if (const auto& skeletonAnimation = currentAnimation->GetSkeletonAnimation())
+			{
+				if (Bone->IsRootBone())
+					m *= glm::inverse(currentAnimation->GetSkeletonAnimation()->GetRootBoneMatrix());
+
+				if (skeletonAnimation->IsBoneAnimated(Bone->GetName(), GetCurrentAnimationFrame()))
+				{
+					m *= skeletonAnimation->CalculateBoneMatrix(Bone->GetName(), GetCurrentAnimationFrame());
+				}
+				else
+				{
+					m *= Bone->GetLocalMatrix();
+				}
+			}
+			else
+			{
+				if (Bone->IsRootBone())
+					m *= glm::inverse(GetModel()->GetSkeleton()->GetRootBoneLocalTransform());
+				m *= Bone->GetLocalMatrix();
+			}
+		}
+		else
+		{
+			if (Bone->IsRootBone())
+				m *= glm::inverse(GetModel()->GetSkeleton()->GetRootBoneLocalTransform());
+			m *= Bone->GetLocalMatrix();
+		}
+	}
+	m *= glm::inverse(Bone->GetPivotMatrix());
+
+	return m;
 }
 
 void CModelComponent::ResetBones()
 {
-	m_RootBone = nullptr;
-	m_Bones.clear();
-	m_BonesList.clear();
+	m_BonesCalculated.clear();
+	m_BonesCalculatedSkinMatrices.clear();
 }
-
-
 
 // Animations
 

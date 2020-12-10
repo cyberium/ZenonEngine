@@ -1,7 +1,5 @@
 #pragma once
 
-#include "AnimatedValueSingle.h"
-
 class ZN_API CSkeletonBone
 	: public ISkeletonBone
 	, public IObjectLoadSave
@@ -15,14 +13,13 @@ public:
 	// ISkeletonBone
 	std::string GetName() const override;
 	int32 GetParentIndex() const override;
+	bool IsRootBone() const override;
 	void SetLocalMatrix(const glm::mat4& Matrix) override;
 	glm::mat4 GetLocalMatrix() const override;
 	void SetPivotMatrix(const glm::mat4& Matrix) override;
 	glm::mat4 GetPivotMatrix() const override;
 	void SetSkinMatrix(const glm::mat4& Matrix) override;
 	glm::mat4 GetSkinMatrix() const override;
-
-	glm::mat4 CalculateBontMatrix(const IModelComponent* ModelsComponent) const override;
 
 	// IObjectLoadSave
 	std::shared_ptr<IObject> Copy() const override;
@@ -31,9 +28,6 @@ public:
 	void Save(const std::shared_ptr<IByteBuffer>& Buffer) const override;
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
-
-protected:
-	bool IsRootBone() const;
 
 private:
 	std::string          m_Name;

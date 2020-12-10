@@ -145,7 +145,7 @@ void CPassDeffered_DoRenderScene::DoRenderSceneNode(const std::shared_ptr<const 
 	auto modelsComponent = SceneNode->GetComponentT<IModelComponent>();
 	if (modelsComponent != nullptr)
 		if (m_ShaderBonesBufferParameter)
-			m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
+			m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesSkinBuffer());
 }
 
 void CPassDeffered_DoRenderScene::DoRenderGeometry(const std::shared_ptr<const IGeometry>& Geometry, const std::shared_ptr<const IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
