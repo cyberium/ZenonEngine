@@ -32,11 +32,11 @@ std::shared_ptr<ICameraComponent3D> CCameraControllerBase::GetCamera() const
 
 Ray CCameraControllerBase::ScreenToRay(const Viewport& Viewport, const glm::vec2& screenPoint) const
 {
-	glm::vec4 viewport = glm::vec4(Viewport.GetX(), Viewport.GetY(), Viewport.GetWidth(), Viewport.GetHeight());
 	glm::vec3 nearSource = glm::vec3((float)screenPoint.x, (float)Viewport.GetHeight() - (float)screenPoint.y, 0.0f);
 	glm::vec3 farSource = glm::vec3((float)screenPoint.x, (float)Viewport.GetHeight() - (float)screenPoint.y, 1.0f);
-	glm::vec3 nearPoint = glm::unProject(nearSource, GetCamera()->GetViewMatrix(), GetCamera()->GetProjectionMatrix(), viewport);
-	glm::vec3 farPoint = glm::unProject(farSource, GetCamera()->GetViewMatrix(), GetCamera()->GetProjectionMatrix(), viewport);
+
+	glm::vec3 nearPoint = glm::unProject(nearSource, GetCamera()->GetViewMatrix(), GetCamera()->GetProjectionMatrix(), Viewport.GetGLMViewport());
+	glm::vec3 farPoint = glm::unProject(farSource, GetCamera()->GetViewMatrix(), GetCamera()->GetProjectionMatrix(), Viewport.GetGLMViewport());
 
 	glm::vec3 direction = farPoint - nearPoint;
 	direction = glm::normalize(direction);
@@ -88,6 +88,12 @@ glm::vec3 CCameraControllerBase::RayToPlane(const Ray & Ray, const Plane & Plane
 	}
 
 	return glm::vec3(Math::MinFloat);
+}
+
+glm::vec2 CCameraControllerBase::WorldToScreen(const Viewport& Viewport, const glm::vec3 & WorldPoint) const
+{
+	glm::vec3 screenCoords = glm::project(WorldPoint, GetCamera()->GetViewMatrix(), GetCamera()->GetProjectionMatrix(), Viewport.GetGLMViewport());
+	return glm::vec2(screenCoords.x, Viewport.GetHeight() - screenCoords.y);
 }
 
 

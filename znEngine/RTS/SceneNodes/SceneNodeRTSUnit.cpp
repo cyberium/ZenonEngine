@@ -8,7 +8,7 @@
 
 CSceneNodeRTSUnit::CSceneNodeRTSUnit(IScene & Scene)
 	: CSceneNode(Scene)
-	, m_Health(75.0f)
+	, m_Health(100.0f)
 	, m_MaxHealth(100.0f)
 	, m_Speed(0.15f)
 

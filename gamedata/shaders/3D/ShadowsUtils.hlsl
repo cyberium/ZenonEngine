@@ -13,18 +13,16 @@ float ShadowBlur(Texture2D Texture, sampler Sampler, float2 Coords, int Steps, i
 }
 
 
-float IsShadowed(float4x4 LightProjectionMatrix, float4x4 LightViewMatrix, Texture2D TextureShadow, float4 PModel)
+float IsShadowed(float4x4 LightProjectionMatrix, float4x4 LightViewMatrix, float4 ModelMatrix, Texture2D TextureShadow)
 {
 	const float4x4 mvpl = mul(LightProjectionMatrix, LightViewMatrix);
-	const float4 lightViewPosition = mul(mvpl, PModel);
+	const float4 lightViewPosition = mul(mvpl, ModelMatrix);
 
 	const float2 projectTexCoord = float2(
-		(lightViewPosition.x / lightViewPosition.w) * 0.5f + 0.5f,
+		 (lightViewPosition.x / lightViewPosition.w) * 0.5f + 0.5f,
 		-(lightViewPosition.y / lightViewPosition.w) * 0.5f + 0.5f
 		);
 	const float lightDepthValue = (lightViewPosition.z / lightViewPosition.w);
-
-
 
 	float w;
 	float h;
@@ -32,7 +30,7 @@ float IsShadowed(float4x4 LightProjectionMatrix, float4x4 LightViewMatrix, Textu
 
 	const int textureSize = w; //4096.0f;
 	const float2 shadowBlurStep = float2(1.0f, 1.0f) / w;
-	const int cBlurFrom = 1;
+	const int cBlurFrom = 0;
 	const float cBlurFromPow2 = ((cBlurFrom * 2) + 1) * ((cBlurFrom * 2) + 1);
 
 	float sum = 0.0f;

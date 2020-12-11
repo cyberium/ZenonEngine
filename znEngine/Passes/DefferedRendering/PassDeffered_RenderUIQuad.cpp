@@ -47,8 +47,11 @@ void CPassDeffered_RenderUIQuad::Render(RenderEventArgs& e)
 	{
 		FillLightParamsForCurrentIteration(e, lightIt);
 
+		m_GPUDefferedLightVSParameter->SetConstantBuffer(m_GPUDefferedLightVSBuffer);
 		m_GPUDefferedLightVSParameter->Bind();
+
 		m_QuadGeometry->Render(GetPipeline().GetVertexShaderPtr());
+		
 		m_GPUDefferedLightVSParameter->Unbind();
 	}
 
@@ -122,5 +125,4 @@ void CPassDeffered_RenderUIQuad::FillLightParamsForCurrentIteration(const Render
 
 	// GPUDefferedLightVS
 	m_GPUDefferedLightVSBuffer->Set(lightResult);
-	m_GPUDefferedLightVSParameter->SetConstantBuffer(m_GPUDefferedLightVSBuffer);
 }

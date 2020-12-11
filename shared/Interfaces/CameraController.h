@@ -22,10 +22,15 @@ ZN_INTERFACE ZN_API ICameraController
 
 	virtual std::shared_ptr<ICameraComponent3D> GetCamera() const = 0;
 	virtual Ray ScreenToRay(const Viewport& Viewport, const glm::vec2& screenPoint) const = 0;
+	
+	// To world position
 	virtual glm::vec3 ScreenToWorld(const Viewport& Viewport, const glm::vec2& screenPoint) const = 0;
 	virtual glm::vec3 ScreenToPlane(const Viewport& Viewport, const glm::vec2& screenPoint, const Plane& Plane) const = 0;
 	virtual glm::vec3 RayToWorld(const Ray& Ray) const = 0;
 	virtual glm::vec3 RayToPlane(const Ray& Ray, const Plane& Plane) const = 0;
+
+	// To screen position
+	virtual glm::vec2 WorldToScreen(const Viewport& Viewport, const glm::vec3& WorldPoint) const = 0;
 
 	// Input events
 	virtual bool OnKeyPressed(KeyEventArgs& e) = 0;

@@ -75,36 +75,76 @@ std::string CPropertyBase::GetPropertyTypeName(const IProperty* Property) const
 	if (Property == nullptr)
 		throw CException("Property is nullptr.");
 
-	if (dynamic_cast<const CProperty<float>*>(Property))
+	if (dynamic_cast<const CProperty<bool>*>(Property))
+	{
+		return "Bool";
+	}
+	else if (dynamic_cast<const CProperty<int64>*>(Property))
+	{
+		return "Int";
+	}
+	else if (dynamic_cast<const CProperty<uint64>*>(Property))
+	{
+		return "UInt";
+	}
+	else if (dynamic_cast<const CProperty<float>*>(Property))
+	{
 		return "Float";
+	}
 	else if (dynamic_cast<const CProperty<glm::vec2>*>(Property))
+	{
 		return "Vec2";
-	else if (dynamic_cast<const CProperty<glm::vec3>*>(Property) || dynamic_cast<const CPropertyWrapped<glm::vec3>*>(Property))
+	}
+	else if (dynamic_cast<const CProperty<glm::vec3>*>(Property))
+	{
 		return "Vec3";
+	}
 	else if (dynamic_cast<const CProperty<glm::vec4>*>(Property))
+	{
 		return "Vec4";
+	}
 	else if (dynamic_cast<const CProperty<std::string>*>(Property))
+	{
 		return "String";
+	}
 	else if (dynamic_cast<const CPropertiesGroup*>(Property))
+	{
 		return "Group";
-	else
-		throw CException("Unknown property type '%s'", GetName().c_str());
+	}
+
+	throw CException("Unknown property type '%s'", GetName().c_str());
 }
 
 std::shared_ptr<IProperty> CPropertyBase::CreateNewPropety(std::string PropertyName, std::string TypeName)
 {
-	if (TypeName == "Float")
+	if (TypeName == "Bool")
+	{
+		return MakeShared(CProperty<bool>, PropertyName, "someDescription", false);
+	}
+	else if (TypeName == "Float")
+	{
 		return MakeShared(CProperty<float>, PropertyName, "someDescription", 0.0f);
+	}
 	else if (TypeName == "Vec2")
+	{
 		return MakeShared(CProperty<glm::vec2>, PropertyName, "someDescription", glm::vec2(0.0f));
+	}
 	else if (TypeName == "Vec3")
+	{
 		return MakeShared(CProperty<glm::vec3>, PropertyName, "someDescription", glm::vec3(0.0f));
+	}
 	else if (TypeName == "Vec4")
+	{
 		return MakeShared(CProperty<glm::vec4>, PropertyName, "someDescription", glm::vec4(0.0f));
+	}
 	else if (TypeName == "String")
+	{
 		return MakeShared(CProperty<std::string>, PropertyName, "someDescription", "");
+	}
 	else if (TypeName == "Group")
+	{
 		return MakeShared(CPropertiesGroup, PropertyName, "someDescription");
+	}
 	else
 		throw CException("Unknown property type '%s'", TypeName);
 }

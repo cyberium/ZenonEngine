@@ -133,6 +133,9 @@
     <Filter Include="Scene\Components\Light">
       <UniqueIdentifier>{4826d896-6602-41df-9829-552816e611d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RTS\Passes">
+      <UniqueIdentifier>{b714615d-012c-4434-804a-da7435bf2c31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -415,6 +418,9 @@
     </ClCompile>
     <ClCompile Include="Passes\DefferedRendering\PassDeffered_MergeShadowMaps.cpp">
       <Filter>Passes\DefferedRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="RTS\Passes\UIRTSUnitPass.cpp">
+      <Filter>RTS\Passes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -708,6 +714,9 @@
     </ClInclude>
     <ClInclude Include="Passes\DefferedRendering\PassDeffered_MergeShadowMaps.h">
       <Filter>Passes\DefferedRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="RTS\Passes\UIRTSUnitPass.h">
+      <Filter>RTS\Passes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

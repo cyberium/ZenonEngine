@@ -17,6 +17,7 @@ public:
 
 	// Skeleton functional
 	//std::shared_ptr<ISkeletonComponentBone3D> GetRootBone() const override;
+	const SBoneInstance& GetCalculatedBone(const std::string& BoneName) const override;
 	const SBoneInstance& GetCalculatedBone(size_t Index) const override;
 	const std::vector<SBoneInstance>& GetCalculatedBones() const override;
 	std::shared_ptr<IStructuredBuffer> GetBonesSkinBuffer() const override;

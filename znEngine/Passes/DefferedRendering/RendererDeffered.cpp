@@ -24,6 +24,8 @@
 #include "Passes/UI/UIFontPass.h"
 #include "Passes/UI/UIControlPass.h"
 
+#include "RTS/Passes/UIRTSUnitPass.h"
+
 CRendererDeffered::CRendererDeffered(IBaseManager& BaseManager, IScene& Scene)
 	: RendererBase(BaseManager, Scene)
 {
@@ -157,13 +159,14 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 
 	Add3DPass(MakeShared(CSkyboxPass, m_RenderDevice)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 	Add3DPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
-	Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	//Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	//Add3DPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 	//Add3DPass(MakeShared(CDrawLightFrustumPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 
 	//
 	// UI
 	//
+	AddUIPass(MakeShared(CUIRTSUnitPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	AddUIPass(MakeShared(CUIControlPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	AddUIPass(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 }

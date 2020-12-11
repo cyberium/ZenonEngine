@@ -37,6 +37,7 @@ ZN_INTERFACE ZN_API IModelComponent
 
 	// Bones functional
 	//virtual std::shared_ptr<ISkeletonComponentBone3D> GetRootBone() const = 0;
+	virtual const SBoneInstance& GetCalculatedBone(const std::string& BoneName) const = 0;
 	virtual const SBoneInstance& GetCalculatedBone(size_t Index) const = 0;
 	virtual const std::vector<SBoneInstance>& GetCalculatedBones() const = 0;
 	virtual std::shared_ptr<IStructuredBuffer> GetBonesSkinBuffer() const = 0;

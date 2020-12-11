@@ -61,9 +61,9 @@ float4 PS_Deferred_MergeShadows(VS_Output VSOut
 #endif
 	
 	const float4 PView = ScreenToView(float4(texCoord, depth, 1.0f));
-
-	const float4 PModel = mul(PF.InverseView, PView);
-	float shadowFactor = IsShadowed(LightProjectionMatrix, LightViewMatrix, ShadowMapTexture, PModel);
+	const float4 ModelMatrix = mul(PF.InverseView, PView);
+	
+	float shadowFactor = IsShadowed(LightProjectionMatrix, LightViewMatrix, ModelMatrix, ShadowMapTexture);
 	//shadowFactor -= 0.1f;
 	//shadowFactor = saturate(shadowFactor);
 	

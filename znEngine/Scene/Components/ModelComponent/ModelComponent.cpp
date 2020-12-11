@@ -112,6 +112,22 @@ const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& CModelComponent::G
 	return m_Bones;
 }*/
 
+const SBoneInstance& CModelComponent::GetCalculatedBone(const std::string & BoneName) const
+{
+	for (const auto& b : m_BonesCalculated)
+	{
+		if (b.Bone != nullptr)
+		{
+			if (b.Bone->GetName() == BoneName)
+			{
+				return b;
+			}
+		}
+	}
+
+	throw CException("Bone '%s' not found.", BoneName.c_str());
+}
+
 const SBoneInstance& CModelComponent::GetCalculatedBone(size_t Index) const
 {
 	return m_BonesCalculated[Index];

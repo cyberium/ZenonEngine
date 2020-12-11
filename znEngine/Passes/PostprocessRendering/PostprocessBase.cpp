@@ -81,7 +81,7 @@ std::shared_ptr<IRenderTarget> CPassPostprocessBase::CreateRenderTarget(std::sha
 
 	auto rt = GetRenderDevice().GetObjectsFactory().CreateRenderTarget();
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color0, outputTexture);
-	rt->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+	//rt->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
 
 	m_IsCustomRenderTarget = true;
 

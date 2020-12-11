@@ -1,6 +1,5 @@
 #include "CommonInclude.hlsl"
 #include "Light.hlsl"
-#include "3D/ShadowsUtils.hlsl"
 
 #ifndef MULTISAMPLED
 #pragma message( "MULTISAMPLED undefined. Default to 1.")

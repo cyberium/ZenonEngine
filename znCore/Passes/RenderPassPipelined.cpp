@@ -37,6 +37,7 @@ void RenderPassPipelined::PostRender(RenderEventArgs& e)
 	m_Pipeline->UnBind();
 
 	e.PipelineState = nullptr;
+
 	__super::PostRender(e);
 }
 

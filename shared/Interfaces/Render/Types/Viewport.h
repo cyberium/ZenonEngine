@@ -85,6 +85,11 @@ public:
 		return glm::ivec2(Width, Height);
 	}
 
+	glm::ivec4 GetGLMViewport() const
+	{
+		return glm::vec4(X, Y, Width, Height);
+	}
+
 private:
 	uint32 X;
 	uint32 Y;
