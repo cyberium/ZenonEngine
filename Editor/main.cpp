@@ -7,8 +7,8 @@
 #include "BugTrap/BugTrap.h"
 
 #include "Editor.h"
-#include "Editor3DFrame.h"
-#include "Editor3DPreviewScene.h"
+#include "Editor3D/Editor3DFrame.h"
+#include "Editor3D/Editor3DPreviewScene.h"
 
 void main_internal(int argc, char *argv[])
 {

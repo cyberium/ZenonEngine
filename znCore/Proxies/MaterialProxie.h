@@ -3,7 +3,7 @@
 #include "../ObjectsFactories/Object.h"
 
 class ZN_API MaterialProxie 
-	: public IMaterial
+	: virtual public IMaterial
 	, protected IMaterialDataOwner
 	, public Object
 {

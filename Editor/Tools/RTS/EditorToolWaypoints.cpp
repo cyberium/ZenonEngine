@@ -4,7 +4,7 @@
 #include "EditorToolWaypoints.h"
 
 // Additional
-#include "Passes/DrawWaypointsPass.h"
+#include "Editor3D/EditorPasses/DrawWaypointsPass.h"
 
 
 CEditorToolWaypoints::CEditorToolWaypoints(IEditor& Editor)

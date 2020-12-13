@@ -3,6 +3,8 @@
 // General
 #include "UIControlRTSTowersPanel.h"
 
+// Additional
+#include "Materials/MaterialUIControl.h"
 
 namespace
 {

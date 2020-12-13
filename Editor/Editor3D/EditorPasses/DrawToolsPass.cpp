@@ -4,7 +4,7 @@
 #include "DrawToolsPass.h"
 
 // Additional
-#include "Materials/MaterialEditorTool.h"
+#include "Editor3D/EditorMaterials/MaterialEditorTool.h"
 
 CDrawToolsPass::CDrawToolsPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: Base3DPass(Scene)

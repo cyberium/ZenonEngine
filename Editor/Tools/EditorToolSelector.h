@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EditorToolBase.h"
-#include "Passes/DrawSelectionPass.h"
+#include "Editor3D/EditorPasses/DrawSelectionPass.h"
 
 class CEditorToolSelector
 	: public IEditorToolSelector
@@ -43,6 +43,6 @@ private:
 
 	bool m_IsSelecting2D;
 	glm::vec2 m_SelectionPrevPos;
-	std::shared_ptr<IUIControl> m_SelectionTexture;
+	std::shared_ptr<IUIControlCommon> m_SelectionTexture;
 	std::shared_ptr<CDrawSelectionPass> m_DrawSelectionPass;
 };

@@ -15,18 +15,6 @@
     <Filter Include="Tools\RTS">
       <UniqueIdentifier>{6c6065dd-c080-4888-a750-25d3e8433b16}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI">
-      <UniqueIdentifier>{6ed13eb3-1657-450f-84ff-07cd6253e504}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3D">
-      <UniqueIdentifier>{72c27b49-4bcb-47f0-aec6-118b1a67b28d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3D\Passes">
-      <UniqueIdentifier>{31ae868f-f71f-445a-b2dd-b32b1b388d09}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3D\Materials">
-      <UniqueIdentifier>{343a6465-19c2-49c5-971e-aca91ad1d194}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -70,6 +58,18 @@
     <Filter Include="ResourcesBrowser\TreeViewItems">
       <UniqueIdentifier>{947fb2a1-e948-48d3-b147-64ae9fa95879}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor3D">
+      <UniqueIdentifier>{72c27b49-4bcb-47f0-aec6-118b1a67b28d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI">
+      <UniqueIdentifier>{6ed13eb3-1657-450f-84ff-07cd6253e504}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor3D\EditorMaterials">
+      <UniqueIdentifier>{343a6465-19c2-49c5-971e-aca91ad1d194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor3D\EditorPasses">
+      <UniqueIdentifier>{31ae868f-f71f-445a-b2dd-b32b1b388d09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -78,27 +78,15 @@
     <ClCompile Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.cpp">
       <Filter>Widgets\ZenonWindow3D</Filter>
     </ClCompile>
-    <ClCompile Include="Editor3DFrame.cpp">
-      <Filter>3D</Filter>
-    </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp">
       <Filter>Widgets\ZenonLogViewer</Filter>
-    </ClCompile>
-    <ClCompile Include="EditedScene.cpp">
-      <Filter>3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\DrawSelectionPass.cpp">
-      <Filter>3D\Passes</Filter>
     </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.cpp">
       <Filter>Widgets\ZenonWindowMinimal3D</Filter>
     </ClCompile>
-    <ClCompile Include="Editor3DPreviewScene.cpp">
-      <Filter>3D</Filter>
-    </ClCompile>
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="EditorUIFrame.cpp">
-      <Filter>UI</Filter>
+      <Filter>EditorUI</Filter>
     </ClCompile>
     <ClCompile Include="Tools\EditorToolBase.cpp">
       <Filter>Tools</Filter>
@@ -124,12 +112,6 @@
     <ClCompile Include="Tools\EditorTools.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\DrawToolsPass.cpp">
-      <Filter>3D\Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Materials\MaterialEditorTool.cpp">
-      <Filter>3D\Materials</Filter>
-    </ClCompile>
     <ClCompile Include="EditorWindowsShell.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.cpp">
       <Filter>Widgets\ZenonTreeView</Filter>
@@ -141,13 +123,10 @@
       <Filter>Widgets\ZenonTreeView</Filter>
     </ClCompile>
     <ClCompile Include="DragUtils.cpp">
-      <Filter>UI</Filter>
+      <Filter>EditorUI</Filter>
     </ClCompile>
     <ClCompile Include="Tools\RTS\EditorToolRTSGround.cpp">
       <Filter>Tools\RTS</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\DrawWaypointsPass.cpp">
-      <Filter>3D\Passes</Filter>
     </ClCompile>
     <ClCompile Include="Tools\RTS\EditorToolWaypoints.cpp">
       <Filter>Tools\RTS</Filter>
@@ -200,6 +179,27 @@
     <ClCompile Include="ResourcesBrowser\TreeViewItems\TextureTreeViewItem.cpp">
       <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClCompile>
+    <ClCompile Include="Editor3D\Editor3DFrame.cpp">
+      <Filter>Editor3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor3D\Editor3DPreviewScene.cpp">
+      <Filter>Editor3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor3D\EditorPasses\DrawSelectionPass.cpp">
+      <Filter>Editor3D\EditorPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor3D\EditorPasses\DrawToolsPass.cpp">
+      <Filter>Editor3D\EditorPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor3D\EditorPasses\DrawWaypointsPass.cpp">
+      <Filter>Editor3D\EditorPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor3D\EditorMaterials\MaterialEditorTool.cpp">
+      <Filter>Editor3D\EditorMaterials</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor3D\EditedScene.cpp">
+      <Filter>Editor3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -214,23 +214,11 @@
     <ClInclude Include="_widgetZenonWindow3D.h">
       <Filter>Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Editor3DFrame.h">
-      <Filter>3D</Filter>
-    </ClInclude>
     <ClInclude Include="_widgetZenonLogViewer.h">
       <Filter>Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="EditedScene.h">
-      <Filter>3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\DrawSelectionPass.h">
-      <Filter>3D\Passes</Filter>
-    </ClInclude>
     <ClInclude Include="_widgetZenonWindowMinimal3D.h">
       <Filter>Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor3DPreviewScene.h">
-      <Filter>3D</Filter>
     </ClInclude>
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorQtInterfaces.h">
@@ -261,12 +249,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="EditorWindowsShell.h" />
-    <ClInclude Include="Passes\DrawToolsPass.h">
-      <Filter>3D\Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Materials\MaterialEditorTool.h">
-      <Filter>3D\Materials</Filter>
-    </ClInclude>
     <ClInclude Include="_widgetZenonTreeView.h">
       <Filter>Widgets</Filter>
     </ClInclude>
@@ -280,13 +262,10 @@
       <Filter>Widgets\ZenonTreeView</Filter>
     </ClInclude>
     <ClInclude Include="DragUtils.h">
-      <Filter>UI</Filter>
+      <Filter>EditorUI</Filter>
     </ClInclude>
     <ClInclude Include="Tools\RTS\EditorToolRTSGround.h">
       <Filter>Tools\RTS</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\DrawWaypointsPass.h">
-      <Filter>3D\Passes</Filter>
     </ClInclude>
     <ClInclude Include="Tools\RTS\EditorToolWaypoints.h">
       <Filter>Tools\RTS</Filter>
@@ -321,6 +300,27 @@
     <ClInclude Include="ResourcesBrowser\TreeViewItems\TextureTreeViewItem.h">
       <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClInclude>
+    <ClInclude Include="Editor3D\Editor3DFrame.h">
+      <Filter>Editor3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor3D\Editor3DPreviewScene.h">
+      <Filter>Editor3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor3D\EditorPasses\DrawSelectionPass.h">
+      <Filter>Editor3D\EditorPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor3D\EditorPasses\DrawToolsPass.h">
+      <Filter>Editor3D\EditorPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor3D\EditorPasses\DrawWaypointsPass.h">
+      <Filter>Editor3D\EditorPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor3D\EditorMaterials\MaterialEditorTool.h">
+      <Filter>Editor3D\EditorMaterials</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor3D\EditedScene.h">
+      <Filter>Editor3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.h">
@@ -333,7 +333,7 @@
       <Filter>Widgets\ZenonWindowMinimal3D</Filter>
     </QtMoc>
     <QtMoc Include="EditorUIFrame.h">
-      <Filter>UI</Filter>
+      <Filter>EditorUI</Filter>
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.h">
       <Filter>Widgets\ZenonTreeView</Filter>
@@ -377,7 +377,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="EditorUIFrame.ui">
-      <Filter>UI</Filter>
+      <Filter>EditorUI</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>

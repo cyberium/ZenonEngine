@@ -4,7 +4,7 @@
 #include "EditorToolRTSGround.h"
 
 // Additional
-#include "Materials/MaterialEditorTool.h"
+#include "Editor3D/EditorMaterials/MaterialEditorTool.h"
 
 
 struct SRTSProto

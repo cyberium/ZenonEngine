@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../Materials/MaterialUIControl.h"
-
 class ZN_API CUIControlCommon
 	: public CUIControl
 	, public IUIControlCommon

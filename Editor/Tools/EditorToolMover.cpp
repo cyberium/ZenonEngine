@@ -4,7 +4,7 @@
 #include "EditorToolMover.h"
 
 // Additional
-#include "Materials/MaterialEditorTool.h"
+#include "Editor3D/EditorMaterials/MaterialEditorTool.h"
 
 CEditorToolMover::CEditorToolMover(IEditor& Editor)
 	: CEditorToolBase(Editor)

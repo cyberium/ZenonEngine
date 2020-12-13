@@ -3,6 +3,9 @@
 // General
 #include "UIRTSUnitPass.h"
 
+// Additional
+#include "Materials/MaterialUIControl.h"
+
 namespace
 {
 	const glm::vec2 outlineHPBarSize = glm::vec2(50.0f, 7.0f);

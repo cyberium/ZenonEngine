@@ -2,8 +2,6 @@
 
 #include "Tools/EditorTools.h"
 #include "EditorWindowsShell.h"
-#include "EditorUIFrame.h"
-#include "Editor3DFrame.h"
 
 class CEditor
 	: public IEditor

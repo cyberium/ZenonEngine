@@ -4,7 +4,7 @@
 #include "EditorToolRotator.h"
 
 // Additional
-#include "Materials/MaterialEditorTool.h"
+#include "Editor3D/EditorMaterials/MaterialEditorTool.h"
 
 CEditorToolRotator::CEditorToolRotator(IEditor& Editor)
 	: CEditorToolBase(Editor)

@@ -4,7 +4,7 @@
 #include "Editor3DFrame.h"
 
 // Additional
-#include "Passes/DrawToolsPass.h"
+#include "Editor3D/EditorPasses/DrawToolsPass.h"
 
 CEditor3DFrame::CEditor3DFrame(IEditor& Editor, IRenderWindow& RenderWindow)
 	: SceneBase(Editor.GetBaseManager(), RenderWindow)

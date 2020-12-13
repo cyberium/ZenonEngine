@@ -178,7 +178,6 @@ ZN_INTERFACE ZN_API ISceneNodeRTSPath
 	virtual std::shared_ptr<ISceneNodeRTSPoint> GetPoint(size_t Index) const = 0;
 };
 
-class CMaterialUIControl; // TODO: Remove me
 
 ZN_INTERFACE ZN_API IUIControlCommon
 	: public virtual IUIControl
@@ -187,7 +186,7 @@ ZN_INTERFACE ZN_API IUIControlCommon
 	{
 		glm::vec2                           Translate;
 		glm::vec2                           Size;
-		std::shared_ptr<CMaterialUIControl> Material;
+		std::shared_ptr<IMaterialUIControl> Material;
 		std::shared_ptr<IGeometry>          Geom;
 	};
 

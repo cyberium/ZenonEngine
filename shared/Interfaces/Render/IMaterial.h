@@ -40,6 +40,18 @@ ZN_INTERFACE ZN_API IMaterialDataOwner
 };
 
 
+ZN_INTERFACE ZN_API IMaterialUIControl
+	: public virtual IMaterial
+{
+	virtual ~IMaterialUIControl() {}
+
+	virtual void SetColor(glm::vec4 color) = 0;
+	virtual glm::vec4 GetColor() const = 0;
+	virtual void SetTexture(std::shared_ptr<ITexture> Texture) = 0;
+	virtual std::shared_ptr<ITexture> GetTexture() const = 0;
+};
+
+
 ZN_INTERFACE ZN_API IMaterialsCreator
 {
 	virtual ~IMaterialsCreator() {}

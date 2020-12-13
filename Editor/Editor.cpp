@@ -3,6 +3,10 @@
 // General
 #include "Editor.h"
 
+// Additional
+#include "EditorUIFrame.h"
+#include "Editor3D/Editor3DFrame.h"
+
 CEditor::CEditor(IBaseManager & BaseManager)
 	: m_BaseManager(BaseManager)
 	, m_EditorUIFrame(nullptr)

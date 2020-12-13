@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Materials/MaterialUIControl.h"
-
 class ZN_API CUIRTSUnitPass
 	: public BaseUIPass
 {
@@ -26,6 +24,6 @@ private:
 	std::shared_ptr<IGeometry> m_HPBarOutlineGeometry;
 	std::shared_ptr<IGeometry> m_HPBarGeometry;
 
-	std::shared_ptr<CMaterialUIControl> m_HPBarOutlineMaterial;
-	std::shared_ptr<CMaterialUIControl> m_HPBarMaterial;
+	std::shared_ptr<IMaterialUIControl> m_HPBarOutlineMaterial;
+	std::shared_ptr<IMaterialUIControl> m_HPBarMaterial;
 };

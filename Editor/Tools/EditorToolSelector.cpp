@@ -126,8 +126,16 @@ const SelectedNodes& CEditorToolSelector::GetSelectedNodes() const
 //
 void CEditorToolSelector::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	m_SelectionTexture = GetScene().CreateUIControlTCast<IUIControl>(); // TOIDO
-	//m_SelectionTexture->GetProperties()->GetPropertyT<glm::vec4>("Color")->Set(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
+	m_SelectionTexture = GetScene().CreateUIControlTCast<IUIControlCommon>(); // TOIDO
+
+	auto selectionMaterial = MakeShared(CMaterialUIControl, GetRenderDevice());
+	selectionMaterial->SetColor(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
+
+	IUIControlCommon::SSubgeometry subGeometry;
+	subGeometry.Translate = glm::vec2(0.0f);
+	subGeometry.Size = glm::vec2(1.0f);
+	subGeometry.Geom = GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f));
+	subGeometry.Material = selectionMaterial;
 
 	m_DrawSelectionPass = MakeShared(CDrawSelectionPass, GetRenderDevice(), *this);
 	m_DrawSelectionPass->ConfigurePipeline(RenderTarget);

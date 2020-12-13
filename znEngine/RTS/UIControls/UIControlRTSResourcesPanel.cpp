@@ -3,6 +3,9 @@
 // General
 #include "UIControlRTSResourcesPanel.h"
 
+// Additional
+#include "Materials/MaterialUIControl.h"
+
 namespace
 {
 	struct SUISpreadsheetCell
@@ -63,7 +66,7 @@ void CUIControlRTSResourcesPanel::Initialize()
 	m_GoldText->SetText("888 $");
 	m_GoldText->SetColor(glm::vec4(0.8f, 0.8f, 0.1f, 1.0f));
 
-	std::shared_ptr<CMaterialUIControl> material = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
+	auto material = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
 	material->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Interface Pack/Spritesheet/interfacePack_sheet@2.png"));
 
 

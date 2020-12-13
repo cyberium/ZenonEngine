@@ -120,10 +120,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DragUtils.cpp" />
-    <ClCompile Include="EditedScene.cpp" />
     <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="Editor3DFrame.cpp" />
-    <ClCompile Include="Editor3DPreviewScene.cpp" />
+    <ClCompile Include="Editor3D\EditedScene.cpp" />
+    <ClCompile Include="Editor3D\Editor3DFrame.cpp" />
+    <ClCompile Include="Editor3D\Editor3DPreviewScene.cpp" />
+    <ClCompile Include="Editor3D\EditorMaterials\MaterialEditorTool.cpp" />
+    <ClCompile Include="Editor3D\EditorPasses\DrawSelectionPass.cpp" />
+    <ClCompile Include="Editor3D\EditorPasses\DrawToolsPass.cpp" />
+    <ClCompile Include="Editor3D\EditorPasses\DrawWaypointsPass.cpp" />
     <ClCompile Include="EditorWindowsShell.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -132,10 +136,6 @@
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
     <ClCompile Include="EditorUIFrame.cpp" />
-    <ClCompile Include="Materials\MaterialEditorTool.cpp" />
-    <ClCompile Include="Passes\DrawSelectionPass.cpp" />
-    <ClCompile Include="Passes\DrawToolsPass.cpp" />
-    <ClCompile Include="Passes\DrawWaypointsPass.cpp" />
     <ClCompile Include="ResourcesBrowser\EditorResourceBrowser.cpp" />
     <ClCompile Include="ResourcesBrowser\Filesystem\ResourceFile.cpp" />
     <ClCompile Include="ResourcesBrowser\Filesystem\ResourcesFilesystem.cpp" />
@@ -219,17 +219,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DragUtils.h" />
-    <ClInclude Include="EditedScene.h" />
     <ClInclude Include="Editor.h" />
-    <ClInclude Include="Editor3DFrame.h" />
-    <ClInclude Include="Editor3DPreviewScene.h" />
+    <ClInclude Include="Editor3D\EditedScene.h" />
+    <ClInclude Include="Editor3D\Editor3DFrame.h" />
+    <ClInclude Include="Editor3D\Editor3DPreviewScene.h" />
+    <ClInclude Include="Editor3D\EditorMaterials\MaterialEditorTool.h" />
+    <ClInclude Include="Editor3D\EditorPasses\DrawSelectionPass.h" />
+    <ClInclude Include="Editor3D\EditorPasses\DrawToolsPass.h" />
+    <ClInclude Include="Editor3D\EditorPasses\DrawWaypointsPass.h" />
     <ClInclude Include="EditorInterfaces.h" />
     <ClInclude Include="EditorQtInterfaces.h" />
     <ClInclude Include="EditorWindowsShell.h" />
-    <ClInclude Include="Materials\MaterialEditorTool.h" />
-    <ClInclude Include="Passes\DrawSelectionPass.h" />
-    <ClInclude Include="Passes\DrawToolsPass.h" />
-    <ClInclude Include="Passes\DrawWaypointsPass.h" />
     <ClInclude Include="ResourcesBrowser\EditorResourceBrowser.h" />
     <ClInclude Include="ResourcesBrowser\Filesystem\ResourceFile.h" />
     <ClInclude Include="ResourcesBrowser\Filesystem\ResourcesFilesystem.h" />

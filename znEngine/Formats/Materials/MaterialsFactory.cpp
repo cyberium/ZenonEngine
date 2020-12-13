@@ -6,6 +6,9 @@
 // Additional
 #include "Materials/MaterialModel.h"
 
+#include "Materials/MaterialDebug.h"
+#include "Materials/MaterialUIControl.h"
+
 CMaterialsFactory::CMaterialsFactory(IBaseManager & BaseManager)
 	: m_BaseManager(BaseManager)
 {
@@ -33,6 +36,14 @@ std::shared_ptr<IMaterial> CMaterialsFactory::CreateMaterial(std::string ObjectT
 	if (ObjectType == "MaterialModel")
 	{
 		return MakeShared(MaterialModel, m_BaseManager);
+	}
+	else if (ObjectType == "MaterialDebug")
+	{
+		return MakeShared(MaterialDebug, m_BaseManager.GetApplication().GetRenderDevice());
+	}
+	else if (ObjectType == "MaterialUIControl")
+	{
+		return MakeShared(CMaterialUIControl, m_BaseManager.GetApplication().GetRenderDevice());
 	}
 
 	throw CException("Unknown material type '%s'.", ObjectType);

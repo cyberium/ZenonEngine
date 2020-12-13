@@ -4,7 +4,7 @@
 #include "UIControlRTSTowerBtn.h"
 
 // Additional
-#include "Materials/MaterialModel.h"
+#include "Materials/MaterialUIControl.h"
 
 namespace
 {

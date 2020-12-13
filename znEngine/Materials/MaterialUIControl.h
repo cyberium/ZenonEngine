@@ -18,14 +18,15 @@ namespace
 
 class ZN_API CMaterialUIControl
 	: public MaterialProxieT<SMaterialUIControlProperties>
+	, public IMaterialUIControl
 {
 public:
 	CMaterialUIControl(IRenderDevice& RenderDevice);
 	virtual ~CMaterialUIControl();
 
-	// CMaterialUIControl
-	void SetColor(glm::vec4 color);
-	glm::vec4 GetColor() const;
-	void SetTexture(std::shared_ptr<ITexture> Texture);
-	std::shared_ptr<ITexture> GetTexture() const;
+	// IMaterialUIControl
+	void SetColor(glm::vec4 color) override;
+	glm::vec4 GetColor() const override;
+	void SetTexture(std::shared_ptr<ITexture> Texture) override;
+	std::shared_ptr<ITexture> GetTexture() const override;
 };

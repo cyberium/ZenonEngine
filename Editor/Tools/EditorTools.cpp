@@ -4,7 +4,7 @@
 #include "EditorTools.h"
 
 // Additional
-#include "Passes/DrawToolsPass.h"
+#include "Editor3D/EditorPasses/DrawToolsPass.h"
 
 CEditorTools::CEditorTools(IEditor& Editor)
 	: m_Editor(Editor)

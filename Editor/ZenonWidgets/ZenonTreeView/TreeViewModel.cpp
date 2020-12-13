@@ -4,7 +4,7 @@
 #include "TreeViewModel.h"
 
 // Additional
-#include "ResourcesBrowser/FolderTreeViewItem.h"
+#include "ResourcesBrowser/TreeViewItems/FolderTreeViewItem.h"
 
 namespace
 {
