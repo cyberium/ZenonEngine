@@ -85,7 +85,7 @@ namespace
 const char* cXMLRootNodeSignature = "xml";
 // CONST END
 
-CXMLManager::CXMLManager(IBaseManager& BaseManager)
+CXMLManager::CXMLManager(const IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {
 }

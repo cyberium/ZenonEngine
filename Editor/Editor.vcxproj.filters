@@ -61,7 +61,13 @@
     <Filter Include="ResourcesBrowser">
       <UniqueIdentifier>{0190977d-9e8d-4905-8354-6f12520d08bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ResourcesBrowser\Resources">
+    <Filter Include="SceneBrowser">
+      <UniqueIdentifier>{88acffd3-2ae2-4660-9c36-620579904b80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourcesBrowser\Filesystem">
+      <UniqueIdentifier>{32119e13-d98f-496c-9e3c-3487896f8898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourcesBrowser\TreeViewItems">
       <UniqueIdentifier>{947fb2a1-e948-48d3-b147-64ae9fa95879}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -134,9 +140,6 @@
     <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewModel.cpp">
       <Filter>Widgets\ZenonTreeView</Filter>
     </ClCompile>
-    <ClCompile Include="EditorResourceBrowser.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="DragUtils.cpp">
       <Filter>UI</Filter>
     </ClCompile>
@@ -170,23 +173,32 @@
     <ClCompile Include="main.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="ResourcesBrowser\ResourcesFilesystem.cpp">
+    <ClCompile Include="SceneBrowser\EditorSceneBrowser.cpp">
+      <Filter>SceneBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneBrowser\SceneNodeTreeViewItem.cpp">
+      <Filter>SceneBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcesBrowser\EditorResourceBrowser.cpp">
       <Filter>ResourcesBrowser</Filter>
     </ClCompile>
-    <ClCompile Include="ResourcesBrowser\ModelTreeViewItem.cpp">
-      <Filter>ResourcesBrowser\Resources</Filter>
+    <ClCompile Include="ResourcesBrowser\Filesystem\ResourcesFilesystem.cpp">
+      <Filter>ResourcesBrowser\Filesystem</Filter>
     </ClCompile>
-    <ClCompile Include="ResourcesBrowser\FolderTreeViewItem.cpp">
-      <Filter>ResourcesBrowser</Filter>
+    <ClCompile Include="ResourcesBrowser\Filesystem\ResourceFile.cpp">
+      <Filter>ResourcesBrowser\Filesystem</Filter>
     </ClCompile>
-    <ClCompile Include="ResourcesBrowser\SceneNodeTreeViewItem.cpp">
-      <Filter>ResourcesBrowser</Filter>
+    <ClCompile Include="ResourcesBrowser\TreeViewItems\FolderTreeViewItem.cpp">
+      <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClCompile>
-    <ClCompile Include="ResourcesBrowser\NodeProtoTreeViewItem.cpp">
-      <Filter>ResourcesBrowser\Resources</Filter>
+    <ClCompile Include="ResourcesBrowser\TreeViewItems\ModelTreeViewItem.cpp">
+      <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClCompile>
-    <ClCompile Include="ResourcesBrowser\TextureTreeViewItem.cpp">
-      <Filter>ResourcesBrowser\Resources</Filter>
+    <ClCompile Include="ResourcesBrowser\TreeViewItems\NodeProtoTreeViewItem.cpp">
+      <Filter>ResourcesBrowser\TreeViewItems</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcesBrowser\TreeViewItems\TextureTreeViewItem.cpp">
+      <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -267,9 +279,6 @@
     <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewItem.h">
       <Filter>Widgets\ZenonTreeView</Filter>
     </ClInclude>
-    <ClInclude Include="EditorResourceBrowser.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="DragUtils.h">
       <Filter>UI</Filter>
     </ClInclude>
@@ -282,26 +291,35 @@
     <ClInclude Include="Tools\RTS\EditorToolWaypoints.h">
       <Filter>Tools\RTS</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesBrowser\ResourcesFilesystem.h">
+    <ClInclude Include="SceneBrowser\EditorSceneBrowser.h">
+      <Filter>SceneBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBrowser\SceneNodeTreeViewItem.h">
+      <Filter>SceneBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcesBrowser\EditorResourceBrowser.h">
       <Filter>ResourcesBrowser</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesBrowser\ResourcesFilesystemIntfs.h">
-      <Filter>ResourcesBrowser</Filter>
+    <ClInclude Include="ResourcesBrowser\Filesystem\ResourcesFilesystem.h">
+      <Filter>ResourcesBrowser\Filesystem</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesBrowser\ModelTreeViewItem.h">
-      <Filter>ResourcesBrowser\Resources</Filter>
+    <ClInclude Include="ResourcesBrowser\Filesystem\ResourcesFilesystemIntfs.h">
+      <Filter>ResourcesBrowser\Filesystem</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesBrowser\FolderTreeViewItem.h">
-      <Filter>ResourcesBrowser</Filter>
+    <ClInclude Include="ResourcesBrowser\Filesystem\ResourceFile.h">
+      <Filter>ResourcesBrowser\Filesystem</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesBrowser\SceneNodeTreeViewItem.h">
-      <Filter>ResourcesBrowser</Filter>
+    <ClInclude Include="ResourcesBrowser\TreeViewItems\FolderTreeViewItem.h">
+      <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesBrowser\NodeProtoTreeViewItem.h">
-      <Filter>ResourcesBrowser\Resources</Filter>
+    <ClInclude Include="ResourcesBrowser\TreeViewItems\ModelTreeViewItem.h">
+      <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesBrowser\TextureTreeViewItem.h">
-      <Filter>ResourcesBrowser\Resources</Filter>
+    <ClInclude Include="ResourcesBrowser\TreeViewItems\NodeProtoTreeViewItem.h">
+      <Filter>ResourcesBrowser\TreeViewItems</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcesBrowser\TreeViewItems\TextureTreeViewItem.h">
+      <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -44,6 +44,21 @@ public:
 		return ValueToString<T>(value);
 	}
 
+	void CopyTo(const std::shared_ptr<IProperty>& Other) const override
+	{
+		__super::CopyTo(Other);
+
+		if (IsNonCopyable())
+			return;
+
+		std::shared_ptr<IPropertyT<T>> otherAsPropertyT = std::dynamic_pointer_cast<IPropertyT<T>>(Other);
+		if (otherAsPropertyT == nullptr)
+			return;
+			//throw CException("Unable copy '%s' property to '%s' property, because this is IPropertyT<%s>, but other is not.", GetName().c_str(), Other->GetName(), GetPropertyTypeName(this).c_str());
+
+		otherAsPropertyT->Set(Get());
+	}
+
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override
 	{
 		if (IsSyntetic())

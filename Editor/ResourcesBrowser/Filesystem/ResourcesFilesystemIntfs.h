@@ -6,7 +6,6 @@ enum class EResourceFileType
 	Directory
 };
 
-
 ZN_INTERFACE IResourceFile
 {
 	virtual ~IResourceFile() {}

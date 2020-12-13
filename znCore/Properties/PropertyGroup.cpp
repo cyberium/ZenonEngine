@@ -44,18 +44,45 @@ std::string CPropertiesGroup::ToString() const
 	throw CException("Incorrect behaviour");
 }
 
+void CPropertiesGroup::CopyTo(const std::shared_ptr<IProperty>& Other) const
+{
+	__super::CopyTo(Other);
+
+	if (IsNonCopyable())
+		return;
+
+	std::shared_ptr<IPropertiesGroup> otherAsPropertiesGroup = std::dynamic_pointer_cast<IPropertiesGroup>(Other);
+	if (otherAsPropertiesGroup == nullptr)
+		throw CException("Unable copy '%s' property to '%s' property, because this is IPropertiesGroup, but other is not.", GetName().c_str(), Other->GetName());
+
+	// Copy childs properties
+	for (const auto& prop : GetProperties())
+	{
+		const auto& otherProperties = otherAsPropertiesGroup->GetProperties();
+		const auto& otherChildIt = otherProperties.find(prop.first);
+		if (otherChildIt == otherProperties.end())
+			throw CException("Subproperty '%s' of '%s' not found in '%s'", prop.first.c_str(), GetName().c_str(), Other->GetName().c_str());
+
+		prop.second->CopyTo(otherChildIt->second);
+	}
+}
+
 void CPropertiesGroup::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	__super::Load(Reader);
 
 	for (const auto& childReader : Reader->GetChilds())
 	{
-		std::string storedPropertyName = childReader->GetName();
-		auto prop = GetProperty(storedPropertyName);
+		auto prop = GetProperty(childReader->GetName());
 
 		if (prop == nullptr)
-			prop = CreateNewPropety(storedPropertyName, childReader->GetStrAttribute("Type"));
+		{
+			//prop = CreateNewPropety(storedPropertyName, childReader->GetStrAttribute("Type"));
 
+			Log::Error("Property '%s' exists in XML file, but not found in C++. Skipping.", childReader->GetName().c_str());
+			continue;
+		}
+			
 		prop->Load(childReader);
 
 		AddProperty(prop);
@@ -65,7 +92,6 @@ void CPropertiesGroup::Load(const std::shared_ptr<IXMLReader>& Reader)
 void CPropertiesGroup::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	__super::Save(Writer);
-
 
 	for (const auto& prop : GetProperties())
 	{

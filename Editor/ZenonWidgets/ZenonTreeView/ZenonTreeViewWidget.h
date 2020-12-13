@@ -51,8 +51,7 @@ protected:
 	void mouseMoveEventInternal(QMouseEvent* event);
 
 private:
-	std::shared_ptr<CznQTTreeViewModel> m_Model;
-	//std::shared_ptr<CSceneBrowserTreeModel> m_Model;
+	std::shared_ptr<CznTreeViewModel> m_Model;
 	std::shared_ptr<QMenu> m_ContextMenu;
 	bool m_LockForSelectionChangedEvent;
 	bool m_StartDragging;

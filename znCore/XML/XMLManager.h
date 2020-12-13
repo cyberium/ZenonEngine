@@ -3,7 +3,7 @@
 class ZN_API CXMLManager
 {
 public:
-	CXMLManager(IBaseManager& BaseManager);
+	CXMLManager(const IBaseManager& BaseManager);
 	virtual ~CXMLManager();
 
 	// IXML
@@ -19,6 +19,6 @@ public:
 	std::shared_ptr<IFile>      SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::shared_ptr<IFile>& File);
 
 private:
-	IBaseManager& m_BaseManager;
+	const IBaseManager& m_BaseManager;
 };
 

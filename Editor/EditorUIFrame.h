@@ -1,7 +1,9 @@
 #pragma once
 
 #include "EditorQtInterfaces.h"
-#include "EditorResourceBrowser.h"
+
+#include "SceneBrowser/EditorSceneBrowser.h"
+#include "ResourcesBrowser/EditorResourceBrowser.h"
 
 #include <QMainWindow>
 
@@ -46,6 +48,7 @@ protected:
 	void OnSceneClose();
 
 private:
+	CEditorSceneBrowser m_EditorSceneBrowser;
 	CEditorResourceBrowser m_EditorResourceBrowser;
 	//std::shared_ptr<CPropertiesController> m_PropertiesController;
 	

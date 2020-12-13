@@ -5,11 +5,9 @@
 
 struct STowerDescription
 {
-	std::string                            Name;
-	uint32                                 Cost;
-
-	std::string                            XMLPath;
-	std::shared_ptr<ISceneNode>            SceneNode;
+	std::string                            TowerName;
+	std::string                            TowerIcon;
+	uint32                                 TowerCost;
 	std::shared_ptr<CUIControlRTSTowerBtn> UIButton;
 };
 
@@ -24,7 +22,7 @@ public:
 	// CUIControl
 	void Initialize() override;
 
-	void AddTowerButton(std::string Name, std::string TowerXMLName, std::string TowerTextureName, uint32 TowerCost, IScene& Scene);
+	void AddTowerButton(std::string TowerName, std::string TowerIcon, uint32 TowerCost, IScene& Scene);
 	const std::vector<STowerDescription>& GetTowerButtons();
 	void SetTowerButtonClickCallback(std::function<bool(const STowerDescription&)> Func);
 

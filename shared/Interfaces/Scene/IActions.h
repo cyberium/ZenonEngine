@@ -10,14 +10,23 @@ ZN_INTERFACE ZN_API IProperty
 
 	virtual std::string GetName() const = 0;
 	virtual void        SetName(const std::string& Name) = 0;
+
 	virtual std::string GetDescription() const = 0;
 	virtual void        SetDescription(const std::string& Description) = 0;
+
 	virtual void        SetSyntetic(bool Value) = 0;
 	virtual bool        IsSyntetic() const = 0;
+
+	virtual void        SetNonCopyable(bool Value) = 0;
+	virtual bool        IsNonCopyable() const = 0;
+
 	virtual void        ResetToDefault() = 0;
 	virtual bool        IsDefault() const = 0;
+
 	virtual void        FromString(const std::string& String, bool BlockCallback = false) = 0;
 	virtual std::string ToString() const = 0;
+
+	virtual void        CopyTo(const std::shared_ptr<IProperty>& Other) const = 0;
 	virtual void        Load(const std::shared_ptr<IXMLReader>& Reader) = 0;
 	virtual void        Save(const std::shared_ptr<IXMLWriter>& Writer) const = 0;
 };

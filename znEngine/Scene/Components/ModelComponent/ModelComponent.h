@@ -1,8 +1,8 @@
 #pragma once
 
 class ZN_API CModelComponent
-	: public IModelComponent
-	, public CComponentBase
+	: public CComponentBase
+	, public IModelComponent
 {
 public:
 	CModelComponent(const ISceneNode& OwnerNode);

@@ -7,12 +7,20 @@
 #include "Materials/MaterialModel.h"
 #include "Scene/Components/Particles/ParticlesComponent.h"
 
+namespace
+{
+	const float cAttackDamageMinDefault = 2.0f;
+	const float cAttackDamageMaxDefault = 4.0f;
+	const float cAttackSpeedDefault = 60.0f;
+	const float cAttackRangeDefault = 50.0f;
+}
 
 CSceneNodeRTSTower::CSceneNodeRTSTower(IScene & Scene)
 	: CSceneNode(Scene)
-	, m_AttackDamage(1.0f)
-	, m_AttackInterval(666.0f)
-	, m_AttackRange(50.0f)
+	, m_AttackDamageMin(cAttackDamageMinDefault)
+	, m_AttackDamageMax(cAttackDamageMaxDefault)
+	, m_AttackSpeed(cAttackSpeedDefault)
+	, m_AttackRange(cAttackRangeDefault)
 
 	, m_LastAttackTime(0.0f)
 {
@@ -20,17 +28,22 @@ CSceneNodeRTSTower::CSceneNodeRTSTower(IScene & Scene)
 	{
 		auto towerPropsGroup = MakeShared(CPropertiesGroup, "Tower", "descr");
 
-		auto AttackDamage = MakeShared(CPropertyWrapped<float>, "AttackDamage", "descr", 10.0f);
-		AttackDamage->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackDamage, this, std::placeholders::_1));
-		AttackDamage->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackDamage, this));
-		towerPropsGroup->AddProperty(AttackDamage);
+		auto attackDamageMin = MakeShared(CPropertyWrapped<float>, "AttackDamageMin", "descr", cAttackDamageMinDefault);
+		attackDamageMin->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackDamageMin, this, std::placeholders::_1));
+		attackDamageMin->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackDamageMin, this));
+		towerPropsGroup->AddProperty(attackDamageMin);
 
-		auto AttackInterval = MakeShared(CPropertyWrapped<float>, "AttackInterval", "descr", 1.0f);
-		AttackInterval->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackInterval, this, std::placeholders::_1));
-		AttackInterval->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackInterval, this));
+		auto attackDamageMax = MakeShared(CPropertyWrapped<float>, "AttackDamageMax", "descr", cAttackDamageMaxDefault);
+		attackDamageMax->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackDamageMax, this, std::placeholders::_1));
+		attackDamageMax->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackDamageMax, this));
+		towerPropsGroup->AddProperty(attackDamageMax);
+
+		auto AttackInterval = MakeShared(CPropertyWrapped<float>, "AttackSpeed", "descr", cAttackSpeedDefault);
+		AttackInterval->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackSpeed, this, std::placeholders::_1));
+		AttackInterval->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackSpeed, this));
 		towerPropsGroup->AddProperty(AttackInterval);
 
-		auto AttackRange = MakeShared(CPropertyWrapped<float>, "AttackRange", "descr", 250.0f);
+		auto AttackRange = MakeShared(CPropertyWrapped<float>, "AttackRange", "descr", cAttackRangeDefault);
 		AttackRange->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackRange, this, std::placeholders::_1));
 		AttackRange->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackRange, this));
 		towerPropsGroup->AddProperty(AttackRange);
@@ -47,24 +60,34 @@ CSceneNodeRTSTower::~CSceneNodeRTSTower()
 //
 // ISceneNodeRTSTower 
 //
-void CSceneNodeRTSTower::SetAttackDamage(float Value)
+void CSceneNodeRTSTower::SetAttackDamageMin(float AttackDamageMin)
 {
-	m_AttackDamage = Value;
+	m_AttackDamageMin = AttackDamageMin;
 }
 
-float CSceneNodeRTSTower::GetAttackDamage() const
+float CSceneNodeRTSTower::GetAttackDamageMin() const
 {
-	return m_AttackDamage;
+	return m_AttackDamageMin;
 }
 
-void CSceneNodeRTSTower::SetAttackInterval(float Value)
+void CSceneNodeRTSTower::SetAttackDamageMax(float AttackDamageMax)
 {
-	m_AttackInterval = Value;
+	m_AttackDamageMax = AttackDamageMax;
 }
 
-float CSceneNodeRTSTower::GetAttackInterval() const
+float CSceneNodeRTSTower::GetAttackDamageMax() const
 {
-	return m_AttackInterval;
+	return m_AttackDamageMax;
+}
+
+void CSceneNodeRTSTower::SetAttackSpeed(float AttackSpeed)
+{
+	m_AttackSpeed = AttackSpeed;
+}
+
+float CSceneNodeRTSTower::GetAttackSpeed() const
+{
+	return m_AttackSpeed;
 }
 
 void CSceneNodeRTSTower::SetAttackRange(float Value)
@@ -91,7 +114,7 @@ void CSceneNodeRTSTower::Update(const UpdateEventArgs & e)
 {
 	__super::Update(e);
 
-	if (m_LastAttackTime + m_AttackInterval > e.TotalTime)
+	if (m_LastAttackTime + GetAttackIntervalMS() > e.TotalTime)
 		return;
 
 	auto currentTarget = GetCurrentTarget();
@@ -103,6 +126,16 @@ void CSceneNodeRTSTower::Update(const UpdateEventArgs & e)
 	bullet->SetTarget(currentTarget);
 
 	m_LastAttackTime = e.TotalTime;
+}
+
+
+
+//
+// Protected
+//
+float CSceneNodeRTSTower::GetAttackIntervalMS() const
+{
+	return 60.0f / GetAttackSpeed() * 1000.0f;
 }
 
 std::shared_ptr<ISceneNodeRTSUnit> CSceneNodeRTSTower::GetCurrentTarget()

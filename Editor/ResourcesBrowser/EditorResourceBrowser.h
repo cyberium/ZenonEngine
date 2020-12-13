@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EditorQtInterfaces.h"
-#include "ResourcesBrowser/ResourcesFilesystemIntfs.h"
+#include "ResourcesBrowser/Filesystem/ResourcesFilesystemIntfs.h"
 
 class CEditorResourceBrowser
 {
@@ -12,8 +12,10 @@ public:
 	// CEditorResourceBrowser
 	void Initialize();
 
-	void InitializeSceneBrowser();
-	void UpdateSceneBrowser();
+
+private:
+	bool OnSelectTreeItem(const IznTreeViewItem * Item);
+	bool OnStartDraggingTreeItem(const IznTreeViewItem * Item, CByteBuffer * Value);
 
 private:
 	IBaseManager& GetBaseManager() const;
@@ -22,5 +24,4 @@ private:
 
 private:
 	IEditor& m_Editor;
-	bool IsAttachedTest;
 };

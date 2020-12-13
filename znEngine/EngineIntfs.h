@@ -132,10 +132,25 @@ ZN_INTERFACE ZN_API ISceneNodeRTSTower
 {
 	virtual ~ISceneNodeRTSTower() {}
 
-	virtual void SetAttackDamage(float Value) = 0;
-	virtual float GetAttackDamage() const = 0;
-	virtual void SetAttackInterval(float Value) = 0;
-	virtual float GetAttackInterval() const = 0;
+	/**
+	  * AttackDamage
+	  * Attack damage in range min to max.
+	  * Example: 
+	  *    AttackDamage: 12 - 16
+	*/
+	virtual void SetAttackDamageMin(float AttackDamageMin) = 0;
+	virtual float GetAttackDamageMin() const = 0;
+	virtual void SetAttackDamageMax(float AttackDamageMax) = 0;
+	virtual float GetAttackDamageMax() const = 0;
+
+
+	/**
+	  * Attack speed.
+	  * Formula is: AttackSpeed = 60 / interval (interval = 60 / AttackSpeed)
+	*/
+	virtual void SetAttackSpeed(float Value) = 0;
+	virtual float GetAttackSpeed() const = 0;
+
 	virtual void SetAttackRange(float Value) = 0;
 	virtual float GetAttackRange() const = 0;
 };

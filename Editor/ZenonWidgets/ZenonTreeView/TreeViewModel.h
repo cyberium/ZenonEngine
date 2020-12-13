@@ -5,12 +5,12 @@
 #include <QAbstractItemModel>
 #include <QModelIndex>
 
-class CznQTTreeViewModel
+class CznTreeViewModel
 	: public QAbstractItemModel
 {
 public:
-	CznQTTreeViewModel(QObject *parent = nullptr);
-	virtual ~CznQTTreeViewModel();
+	CznTreeViewModel(QObject *parent = nullptr);
+	virtual ~CznTreeViewModel();
 
 	// CznQTTreeViewModel
 	void AddToRoot(std::shared_ptr<IznTreeViewItem> Item) const;

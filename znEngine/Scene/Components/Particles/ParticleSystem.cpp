@@ -56,24 +56,28 @@ namespace
 
 
 
-CParticleSystem::CParticleSystem(const ISceneNode& SceneNode)
-	: m_IsEnableCreatingNewParticles(true)
+CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
+	: m_BaseManager(BaseManager)
+
+	, m_IsEnableCreatingNewParticles(true)
 	, m_Texture(nullptr)
 
 	, m_GravityDirection(glm::vec3(0.0f, -1.0f, 0.0f))
-	, m_GravityValue(0.0f)
-	, m_Deaccelerate(0.02f)
-	, m_OwnerNode(SceneNode)
+	, m_GravityPowerSEC(0.0f)
+
+	, m_DeaccelerateSEC(1.2f)
 
 	, m_LastParticleTime(0.0f)
-	, m_ParticleInterval(15.0f)
-{
-	m_Lifetime = 700.0f;
-	m_LifeTimeMiddlePoint = 0.5f;
+	, m_EmmiterSpawnIntervalMS(15.0f)
 
-	m_Colors[0] = glm::vec4(5.0f, 0.0f, 0.0f, 1.0f);
-	m_Colors[1] = glm::vec4(3.0f, 3.0f, 0.0f, 1.0f);
-	m_Colors[2] = glm::vec4(0.0f, 5.0f, 0.0f, 1.0f);
+	, m_OwnerNode(nullptr)
+{
+	m_LifetimeMS = 700.0f;
+	m_LifetimeMiddlePoint = 0.5f;
+
+	m_Colors[0] = glm::vec4(1.0f, 0.7f, 0.3f, 1.0f);
+	m_Colors[1] = glm::vec4(0.7f, 1.0f, 0.1f, 1.0f);
+	m_Colors[2] = glm::vec4(0.3f, 0.2f, 0.7f, 1.0f);
 
 	m_Sizes[0] = glm::vec2(4.0f);
 	m_Sizes[1] = glm::vec2(2.0f);
@@ -91,30 +95,39 @@ CParticleSystem::~CParticleSystem()
 //
 void CParticleSystem::Update(const UpdateEventArgs & e)
 {
-	for (auto pIt = m_CPUParticles.begin(); pIt != m_CPUParticles.end(); )
+	for (auto pIt = m_Particles.begin(); pIt != m_Particles.end(); )
 	{
 		auto& p = *pIt;
-		if (p.CurrentLifeTime > p.MaxLifeTime)
+		if (p.CurrentLifeTimeMS > p.MaxLifeTimeMS)
 		{
-			pIt = m_CPUParticles.erase(pIt);
+			pIt = m_Particles.erase(pIt);
 			continue;
 		}
 
-		p.CurrentLifeTime += e.DeltaTime;
+		p.CurrentLifeTimeMS += e.DeltaTime;
 		UpdateParticle(p, e);
 		pIt++;
 	}
 
-	m_GPUParticles.resize(m_CPUParticles.size());
-	for (size_t i = 0; i < m_CPUParticles.size(); i++)
-		m_GPUParticles[i] = m_CPUParticles.at(i).ToGPUParticle();
+	m_GPUParticles.resize(m_Particles.size());
+	for (size_t i = 0; i < m_Particles.size(); i++)
+		m_GPUParticles[i] = m_Particles.at(i).ToGPUParticle();
 
-	if (IsEnableCreatingNewParticles() && (m_LastParticleTime + m_ParticleInterval < e.TotalTime))
+	if (IsEnableCreatingNewParticles() && (m_LastParticleTime + m_EmmiterSpawnIntervalMS < e.TotalTime))
 	{
 		CreateNewParticle();
 		m_LastParticleTime = e.TotalTime;
 	}
+}
 
+void CParticleSystem::SetNode(const ISceneNode* Node)
+{
+	m_OwnerNode = Node;
+}
+
+const ISceneNode* CParticleSystem::GetNode() const
+{
+	return m_OwnerNode;
 }
 
 const std::vector<SGPUParticle>& CParticleSystem::GetGPUParticles() const
@@ -142,9 +155,90 @@ std::shared_ptr<ITexture> CParticleSystem::GetTexture() const
 	return m_Texture;
 }
 
-std::shared_ptr<IBlendState> CParticleSystem::GetBlendState() const
+
+//
+// IObjectLoadSave
+//
+void CParticleSystem::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	return std::shared_ptr<IBlendState>();
+	auto lifeTimeXMLReader = Reader->GetChild("LifeTime");
+	m_LifetimeMS = lifeTimeXMLReader->GetFloat();
+
+	auto lifeTimeMiddlePointXMLReader = Reader->GetChild("LifeTimeMiddlePoint");
+	m_LifetimeMiddlePoint = lifeTimeMiddlePointXMLReader->GetFloat();
+
+	auto colorsXMLReader = Reader->GetChild("Colors");
+	m_Colors[0] = colorsXMLReader->GetChild("Start")->GetVec4();
+	m_Colors[1] = colorsXMLReader->GetChild("Middle")->GetVec4();
+	m_Colors[1] = colorsXMLReader->GetChild("End")->GetVec4();
+
+	auto sizesXMLReader = Reader->GetChild("Sizes");
+	m_Sizes[0] = sizesXMLReader->GetChild("Start")->GetVec2();
+	m_Sizes[1] = sizesXMLReader->GetChild("Middle")->GetVec2();
+	m_Sizes[1] = sizesXMLReader->GetChild("End")->GetVec2();
+
+	if (auto textureXMLReader = Reader->GetChild("Texture"))
+	{
+		auto texture = m_BaseManager.GetManager<IznTexturesFactory>()->LoadTexture2D(textureXMLReader->GetValue());
+		SetTexture(texture);
+	}
+
+	auto gravityXMLReader = Reader->GetChild("Gravity");
+	m_GravityDirection = gravityXMLReader->GetChild("Direction")->GetVec3();
+	m_GravityPowerSEC = gravityXMLReader->GetChild("Power")->GetFloat();
+
+	m_DeaccelerateSEC = Reader->GetChild("Deaccelerate")->GetFloat();
+}
+
+void CParticleSystem::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	auto lifeTimeXMLWriter = Writer->CreateChild("LifeTime");
+	lifeTimeXMLWriter->SetFloat(m_LifetimeMS);
+
+	auto lifeTimeMiddlePointXMLWriter = Writer->CreateChild("LifeTimeMiddlePoint");
+	lifeTimeMiddlePointXMLWriter->SetFloat(m_LifetimeMiddlePoint);
+
+	auto colorsGroupXMLWriter = Writer->CreateChild("Colors");
+	{
+		auto startColorXMLWriter = colorsGroupXMLWriter->CreateChild("Start");
+		startColorXMLWriter->SetVec4(m_Colors[0]);
+
+		auto middleColorXMLWriter = colorsGroupXMLWriter->CreateChild("Middle");
+		middleColorXMLWriter->SetVec4(m_Colors[1]);
+
+		auto endColorXMLWriter = colorsGroupXMLWriter->CreateChild("End");
+		endColorXMLWriter->SetVec4(m_Colors[2]);
+	}
+
+	auto sizesGroupXMLWriter = Writer->CreateChild("Sizes");
+	{
+		auto startSizeXMLWriter = sizesGroupXMLWriter->CreateChild("Start");
+		startSizeXMLWriter->SetVec2(m_Sizes[0]);
+
+		auto middleSizeXMLWriter = sizesGroupXMLWriter->CreateChild("Middle");
+		middleSizeXMLWriter->SetVec2(m_Sizes[1]);
+
+		auto endSizeXMLWriter = sizesGroupXMLWriter->CreateChild("End");
+		endSizeXMLWriter->SetVec2(m_Sizes[2]);
+	}
+
+	if (m_Texture)
+	{
+		auto textureXMLWriter = Writer->CreateChild("Texture");
+		textureXMLWriter->SetValue(m_Texture->GetFilename());
+	}
+
+	auto gravityXMLWriter = Writer->CreateChild("Gravity");
+	{
+		auto gravityDirection = gravityXMLWriter->CreateChild("Direction");
+		gravityDirection->SetVec3(m_GravityDirection);
+
+		auto gravityPowerXMLWriter = gravityXMLWriter->CreateChild("Power");
+		gravityPowerXMLWriter->SetFloat(m_GravityPowerSEC);
+	}
+
+	auto deaccelerateXMLWriter = Writer->CreateChild("Deaccelerate");
+	deaccelerateXMLWriter->SetFloat(m_DeaccelerateSEC);
 }
 
 
@@ -154,35 +248,48 @@ std::shared_ptr<IBlendState> CParticleSystem::GetBlendState() const
 //
 void CParticleSystem::CreateNewParticle()
 {
-	SCPUParticle p(m_Lifetime);
+	SParticle p(m_LifetimeMS);
 	p.Color = m_Colors[0];
 	p.Size = m_Sizes[0];
 
-	p.Position = m_OwnerNode.GetPosition();
+	p.Position = m_OwnerNode->GetPosition();
 	p.StartPosition = p.Position;
-	p.Direction = glm::vec3(0.0f, 1.0f, 0.0f);
+	p.Direction = glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f));
 	//p.Direction = Random::UnitVector3f();// CalcSpreadMatrix(glm::two_pi<float>(), 0.0f, 1.0, 1.0f) * glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
-	p.Direction = glm::normalize(p.Direction);
-	p.Speed = 0.0 * Random::Range(0.5f, 1.5f);
+	p.SpeedSEC = 0.0 * Random::Range(0.5f, 1.5f);
 
-	m_CPUParticles.push_back(p);
+	m_Particles.push_back(p);
 }
 
-void CParticleSystem::UpdateParticle(SCPUParticle& P, const UpdateEventArgs & e)
+void CParticleSystem::UpdateParticle(SParticle& P, const UpdateEventArgs & e)
 {
-	float l = P.CurrentLifeTime / P.MaxLifeTime;
-	P.Color = InterpolateParticleValue(l, m_LifeTimeMiddlePoint, m_Colors[0], m_Colors[1], m_Colors[2]);
-	P.Size = InterpolateParticleValue(l, m_LifeTimeMiddlePoint, m_Sizes[0], m_Sizes[1], m_Sizes[2]);
+	float l = P.CurrentLifeTimeMS / P.MaxLifeTimeMS;
+	P.Color = InterpolateParticleValue(l, m_LifetimeMiddlePoint, m_Colors[0], m_Colors[1], m_Colors[2]);
+	P.Size = InterpolateParticleValue(l, m_LifetimeMiddlePoint, m_Sizes[0], m_Sizes[1], m_Sizes[2]);
 
+	// Speed influence only by deaccelerate
 	{
-		float speed = P.Speed;
-		speed -= m_Deaccelerate * float(e.DeltaTimeMultiplier);
-		if (speed < 0.0f)
-			speed = 0.0f;
-		P.Speed = speed;
+		float deaccelerateByFrame = (P.SpeedSEC / 60.0f) * float(e.DeltaTimeMultiplier);
+
+		P.SpeedSEC -= deaccelerateByFrame;
+		if (P.SpeedSEC < 0.0f)
+			P.SpeedSEC = 0.0f;
 	}
 
-	if (P.Position.y > 1.5f)
-		P.Position += (P.Direction * P.Speed * float(e.DeltaTimeMultiplier)) + (m_GravityDirection * m_GravityValue * float(e.DeltaTimeMultiplier));
+	glm::vec3 positionChange = glm::vec3(0.0f);
+
+	// Affect by speed
+	{
+		float speedByFrame = (P.SpeedSEC / 60.0f) * float(e.DeltaTimeMultiplier);
+		positionChange += (P.Direction * speedByFrame);
+	}
+
+	// Affect by gravity
+	{
+		float gravityPowerByFrame = (m_GravityPowerSEC / 60.0f) * float(e.DeltaTimeMultiplier);
+		positionChange += (m_GravityDirection * gravityPowerByFrame);
+	}
+
+	P.Position += positionChange;
 }
 

@@ -124,7 +124,6 @@
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Editor3DFrame.cpp" />
     <ClCompile Include="Editor3DPreviewScene.cpp" />
-    <ClCompile Include="EditorResourceBrowser.cpp" />
     <ClCompile Include="EditorWindowsShell.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -137,12 +136,15 @@
     <ClCompile Include="Passes\DrawSelectionPass.cpp" />
     <ClCompile Include="Passes\DrawToolsPass.cpp" />
     <ClCompile Include="Passes\DrawWaypointsPass.cpp" />
-    <ClCompile Include="ResourcesBrowser\ModelTreeViewItem.cpp" />
-    <ClCompile Include="ResourcesBrowser\NodeProtoTreeViewItem.cpp" />
-    <ClCompile Include="ResourcesBrowser\ResourcesFilesystem.cpp" />
-    <ClCompile Include="ResourcesBrowser\SceneNodeTreeViewItem.cpp" />
-    <ClCompile Include="ResourcesBrowser\FolderTreeViewItem.cpp" />
-    <ClCompile Include="ResourcesBrowser\TextureTreeViewItem.cpp" />
+    <ClCompile Include="ResourcesBrowser\EditorResourceBrowser.cpp" />
+    <ClCompile Include="ResourcesBrowser\Filesystem\ResourceFile.cpp" />
+    <ClCompile Include="ResourcesBrowser\Filesystem\ResourcesFilesystem.cpp" />
+    <ClCompile Include="ResourcesBrowser\TreeViewItems\FolderTreeViewItem.cpp" />
+    <ClCompile Include="ResourcesBrowser\TreeViewItems\ModelTreeViewItem.cpp" />
+    <ClCompile Include="ResourcesBrowser\TreeViewItems\NodeProtoTreeViewItem.cpp" />
+    <ClCompile Include="ResourcesBrowser\TreeViewItems\TextureTreeViewItem.cpp" />
+    <ClCompile Include="SceneBrowser\EditorSceneBrowser.cpp" />
+    <ClCompile Include="SceneBrowser\SceneNodeTreeViewItem.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -223,19 +225,21 @@
     <ClInclude Include="Editor3DPreviewScene.h" />
     <ClInclude Include="EditorInterfaces.h" />
     <ClInclude Include="EditorQtInterfaces.h" />
-    <ClInclude Include="EditorResourceBrowser.h" />
     <ClInclude Include="EditorWindowsShell.h" />
     <ClInclude Include="Materials\MaterialEditorTool.h" />
     <ClInclude Include="Passes\DrawSelectionPass.h" />
     <ClInclude Include="Passes\DrawToolsPass.h" />
     <ClInclude Include="Passes\DrawWaypointsPass.h" />
-    <ClInclude Include="ResourcesBrowser\ModelTreeViewItem.h" />
-    <ClInclude Include="ResourcesBrowser\NodeProtoTreeViewItem.h" />
-    <ClInclude Include="ResourcesBrowser\ResourcesFilesystem.h" />
-    <ClInclude Include="ResourcesBrowser\ResourcesFilesystemIntfs.h" />
-    <ClInclude Include="ResourcesBrowser\SceneNodeTreeViewItem.h" />
-    <ClInclude Include="ResourcesBrowser\FolderTreeViewItem.h" />
-    <ClInclude Include="ResourcesBrowser\TextureTreeViewItem.h" />
+    <ClInclude Include="ResourcesBrowser\EditorResourceBrowser.h" />
+    <ClInclude Include="ResourcesBrowser\Filesystem\ResourceFile.h" />
+    <ClInclude Include="ResourcesBrowser\Filesystem\ResourcesFilesystem.h" />
+    <ClInclude Include="ResourcesBrowser\Filesystem\ResourcesFilesystemIntfs.h" />
+    <ClInclude Include="ResourcesBrowser\TreeViewItems\FolderTreeViewItem.h" />
+    <ClInclude Include="ResourcesBrowser\TreeViewItems\ModelTreeViewItem.h" />
+    <ClInclude Include="ResourcesBrowser\TreeViewItems\NodeProtoTreeViewItem.h" />
+    <ClInclude Include="ResourcesBrowser\TreeViewItems\TextureTreeViewItem.h" />
+    <ClInclude Include="SceneBrowser\EditorSceneBrowser.h" />
+    <ClInclude Include="SceneBrowser\SceneNodeTreeViewItem.h" />
     <ClInclude Include="Tools\EditorToolBase.h" />
     <ClInclude Include="Tools\EditorToolDragger.h" />
     <ClInclude Include="Tools\EditorToolMover.h" />

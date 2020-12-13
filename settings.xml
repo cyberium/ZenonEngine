@@ -3,8 +3,8 @@
 	<Settings Type="Group">
 		<Video Type="Group">
 			<WindowSize Type="Vec2">1280.000000, 1024.000000</WindowSize>
-			<VSyncEnabled Type="Group">false</VSyncEnabled>
-			<MultisampleEnabled Type="Group">false</MultisampleEnabled>
+			<VSyncEnabled Type="Bool">false</VSyncEnabled>
+			<MultisampleEnabled Type="Bool">false</MultisampleEnabled>
 		</Video>
 		<FileSystem Type="Group">
 			<UserdataPath Type="String">O:/ZenonEngine_userdata/</UserdataPath>

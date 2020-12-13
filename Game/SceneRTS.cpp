@@ -142,6 +142,8 @@ void CSceneRTS::Initialize()
 	}
 
 
+	m_TowersStorage = MakeShared(CTowersStorage, GetBaseManager());
+
 
 	{
 		auto uiControlRTSResourcesPanel = CreateUIControlTCast<CUIControlRTSResourcesPanel>();
@@ -152,12 +154,15 @@ void CSceneRTS::Initialize()
 
 	{
 		m_UIControlRTSTowersPanel = CreateUIControlTCast<CUIControlRTSTowersPanel>();
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower 1", "sceneNodesProtos/tower1.znobj", "sceneNodesProtos/tower1.png", 100, *this);
+		for (const auto& towerXMLProto : m_TowersStorage->GetTowerPrototypes())
+			m_UIControlRTSTowersPanel->AddTowerButton(towerXMLProto.TowerName, towerXMLProto.TowerIcon, towerXMLProto.TowerCost, *this);
+
+		/*m_UIControlRTSTowersPanel->AddTowerButton("Tower 1", "sceneNodesProtos/tower1.znobj", "sceneNodesProtos/tower1.png", 100, *this);
 		m_UIControlRTSTowersPanel->AddTowerButton("Tower 2", "sceneNodesProtos/tower2.znobj", "sceneNodesProtos/tower2.png", 100, *this);
 		m_UIControlRTSTowersPanel->AddTowerButton("Tower A", "sceneNodesProtos/towerA.znobj", "sceneNodesProtos/towerA.png", 100, *this);
 		m_UIControlRTSTowersPanel->AddTowerButton("Tower B", "sceneNodesProtos/towerB.znobj", "sceneNodesProtos/towerB.png", 100, *this);
 		m_UIControlRTSTowersPanel->AddTowerButton("Tower C", "sceneNodesProtos/towerC.znobj", "sceneNodesProtos/towerC.png", 100, *this);
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower E", "sceneNodesProtos/towerE.znobj", "sceneNodesProtos/towerE.png", 100, *this);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower E", "sceneNodesProtos/towerE.znobj", "sceneNodesProtos/towerE.png", 100, *this);*/
 
 		m_UIControlRTSTowersPanel->SetLocalPosition(glm::vec2(
 			(GetRenderWindow().GetWindowWidth()         -  m_UIControlRTSTowersPanel->GetSize().x),
@@ -297,10 +302,10 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 {
 	auto filesManager = GetBaseManager().GetManager<IFilesManager>();
 
-	/*auto fileNameStruct = Utils::SplitFilename(ModelName);
+	auto fileNameStruct = Utils::SplitFilename(ModelName);
 	auto existingXMLModel = fileNameStruct.NameWithoutExtension + ".znxmdl";
 	if (filesManager->IsFileExists(existingXMLModel))
-		return GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(existingXMLModel);*/
+		return GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(existingXMLModel);
 
 	CznFBXLoaderParams fbxLoaderParams;
 	fbxLoaderParams.TexturesPathRoot = "Toon_RTS/models/textures/";
@@ -465,8 +470,10 @@ bool CSceneRTS::OnTowerButtonClicked(const STowerDescription& TowerDesription)
 	if (m_CurrentTowerNode)
 		m_CurrentTowerNode->MakeMeOrphan();
 
-	m_CurrentTowerNode = std::dynamic_pointer_cast<ISceneNode>(TowerDesription.SceneNode->Copy());
-	
+	std::shared_ptr<ISceneNode> newTowerNode = m_TowersStorage->CreateTower(TowerDesription.TowerName, *this);
+	GetRootSceneNode()->AddChild(newTowerNode);
+
+	m_CurrentTowerNode = newTowerNode;
 
 	return true;
 }

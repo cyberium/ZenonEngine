@@ -16,7 +16,7 @@ ZenonTreeViewWidget::ZenonTreeViewWidget(QWidget * parent)
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
 	// SceneNodeTreeView: Main settings
-	m_Model = MakeShared(CznQTTreeViewModel, this);
+	m_Model = MakeShared(CznTreeViewModel, this);
 	this->setModel(m_Model.get());
 
 	// SceneNodeTreeView: Selection settings
@@ -185,7 +185,7 @@ void ZenonTreeViewWidget::onCustomContextMenu(const QPoint& point)
 
 	std::string title;
 	std::vector<std::shared_ptr<IPropertyAction>> actions;
-	if (false == m_OnContextMenu(item, &title, &actions))
+	if (false == m_OnContextMenu(item, &title, &actions)) // TODO: try/catch
 		return;
 
 	// Create actions to the context menu 
@@ -218,6 +218,7 @@ void ZenonTreeViewWidget::onCurrentChanged(const QModelIndex& current, const QMo
 	if (m_OnSelectedItemChange == nullptr)
 		return;
 
+	// TODO: try/catch
 	m_OnSelectedItemChange(static_cast<IznTreeViewItem*>(current.internalPointer()));
 }
 
@@ -235,6 +236,7 @@ void ZenonTreeViewWidget::onSelectionChanged(const QItemSelection& selected, con
 		selectedNodes.push_back(static_cast<IznTreeViewItem*>(Index.internalPointer()));
 	});
 
+	// TODO: try/catch
 	m_OnSelectionChange(selectedNodes);
 }
 

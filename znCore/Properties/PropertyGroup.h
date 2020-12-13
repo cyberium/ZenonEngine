@@ -13,8 +13,11 @@ public:
 	// IProperty
 	void ResetToDefault() override;
 	bool IsDefault() const override;
+
 	void FromString(const std::string& String, bool BlockCallback) override;
 	std::string ToString() const override;
+
+	void CopyTo(const std::shared_ptr<IProperty>& Other) const override;
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 

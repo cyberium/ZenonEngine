@@ -47,6 +47,7 @@ void CSceneNode::Initialize()
 	{
 		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.", "");
 		nameProperty->SetSyntetic(true);
+		nameProperty->SetNonCopyable(true);
 		nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
 		nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
 		GetProperties()->AddProperty(nameProperty);
@@ -55,6 +56,7 @@ void CSceneNode::Initialize()
 	// Transform properties
 	{
 		std::shared_ptr<IPropertiesGroup> propertiesGroup = MakeShared(CPropertiesGroup, "Transform", "Transorm of this 3D node. Like translation, rotation and scale.");
+		propertiesGroup->SetNonCopyable(true);
 
 		m_PositionProperty = MakeShared(CPropertyWrappedVec3, "Translate", "Relative position to parent.", glm::vec3(0.0f));
 		m_PositionProperty->SetValueSetter(std::bind(&CSceneNode::SetPosition, this, std::placeholders::_1));
@@ -455,7 +457,7 @@ void CSceneNode::CopyTo(std::shared_ptr<IObject> Destination) const
 	destCast->m_WorldTransform = m_WorldTransform;
 	destCast->m_InverseWorldTransform = m_InverseWorldTransform;
 
-	destCast->m_PropertiesGroup;// TODO
+	GetProperties()->CopyTo(destCast->GetProperties());
 
 	for (const auto& c : GetComponents())
 	{

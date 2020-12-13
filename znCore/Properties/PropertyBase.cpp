@@ -7,6 +7,7 @@ CPropertyBase::CPropertyBase(std::string Name, std::string Description)
 	: m_Name(Name)
 	, m_Description(Description)
 	, m_IsSyntetic(false)
+	, m_IsNonCopyable(false)
 {}
 
 CPropertyBase::~CPropertyBase()
@@ -50,6 +51,26 @@ void CPropertyBase::SetSyntetic(bool Value)
 bool CPropertyBase::IsSyntetic() const
 {
 	return m_IsSyntetic;
+}
+
+void CPropertyBase::SetNonCopyable(bool Value)
+{
+	m_IsNonCopyable = Value;
+}
+
+bool CPropertyBase::IsNonCopyable() const
+{
+	return m_IsNonCopyable;
+}
+
+void CPropertyBase::CopyTo(const std::shared_ptr<IProperty>& Other) const
+{
+	if (IsNonCopyable())
+		return;
+
+	Other->SetName(GetName());
+	Other->SetDescription(GetDescription());
+	Other->SetSyntetic(IsSyntetic());
 }
 
 void CPropertyBase::Load(const std::shared_ptr<IXMLReader>& Reader)
@@ -145,6 +166,6 @@ std::shared_ptr<IProperty> CPropertyBase::CreateNewPropety(std::string PropertyN
 	{
 		return MakeShared(CPropertiesGroup, PropertyName, "someDescription");
 	}
-	else
-		throw CException("Unknown property type '%s'", TypeName);
+
+	throw CException("Unknown property type '%s'", TypeName);
 }

@@ -15,7 +15,7 @@ CSceneNodeRTSBullet::CSceneNodeRTSBullet(IScene & Scene)
 	: CSceneNode(Scene)
 
 	, m_Damage(10.0f)
-	, m_Speed(1.0f)
+	, m_Speed(60.0f)
 
 	, m_Target(std::weak_ptr<ISceneNodeRTSUnit>())
 	, m_TargetLastPosition(0.0f)
@@ -38,7 +38,8 @@ void CSceneNodeRTSBullet::SetTarget(std::shared_ptr<ISceneNodeRTSUnit> Target)
 		std::shared_ptr<IParticleComponent3D> particles = MakeShared(CParticlesComponent, *this);
 		AddComponentT(particles);
 
-		m_ParticleSystem = MakeShared(CParticleSystem, *this);
+		m_ParticleSystem = MakeShared(CParticleSystem, GetBaseManager());
+		m_ParticleSystem->SetNode(this);
 		m_ParticleSystem->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("star_09.png"));
 
 		//std::dynamic_pointer_cast<CParticleSystem>(m_ParticleSystem)->m_Lifetime = glm::length(Target->GetTranslationAbs().xz - GetTranslationAbs().xz) / GetSpeed() * 60.0f;
@@ -120,7 +121,7 @@ void CSceneNodeRTSBullet::Update(const UpdateEventArgs & e)
 	
 	glm::vec3 direction = glm::normalize(destinationPoint - GetPosition());
 
-	float speedMult = GetSpeed() * float(e.DeltaTimeMultiplier);
+	float speedMult = (GetSpeed() / 60.0f) * float(e.DeltaTimeMultiplier);
 
 	glm::vec3 newPosition = GetPosition();
 	newPosition += direction * speedMult;

@@ -151,7 +151,7 @@ void CModelComponent::CreatePose(size_t BoneStartIndex, size_t BonesCount)
 	if (BonesCount == 0)
 		BonesCount = bones.size() - BoneStartIndex;
 
-	_ASSERT(BoneStartIndex + BonesCount - 1 < m_Bones.size());
+	//_ASSERT(BoneStartIndex + BonesCount - 1 < m_Bones.size());
 	
 	for (size_t i = 0; i < bones.size(); i++)
 	{
@@ -252,18 +252,6 @@ void CModelComponent::Update(const UpdateEventArgs & e)
 		
 		CreatePose();
 	}
-
-	/*if (false == m_Bones.empty())
-	{
-		for (const auto& b : m_Bones)
-			std::dynamic_pointer_cast<ISkeletonComponentBoneInternal3D>(b)->Reset();
-
-		for (const auto& b : m_Bones)
-			std::dynamic_pointer_cast<ISkeletonComponentBoneInternal3D>(b)->Calculate(this, e.CameraForCulling);
-
-		m_BonesList = CreatePose();
-		m_StructuredBuffer->Set(m_BonesList);
-	}*/
 
 	if ((m_CurrentAnimation != nullptr) && (false == m_IsAnimationPaused))
 	{

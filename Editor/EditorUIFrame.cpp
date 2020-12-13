@@ -7,6 +7,7 @@
 CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 	: QMainWindow(nullptr)
 	, m_Editor(Editor)
+	, m_EditorSceneBrowser(Editor)
 	, m_EditorResourceBrowser(Editor)
 {
 	dynamic_cast<IEditorPrivate&>(m_Editor).SetUIFrame(this);
@@ -76,10 +77,8 @@ bool CEditorUIFrame::InitializeEditorFrame()
 {
 	getMainEditor()->SetEditor(&m_Editor);
 
-	//getUI().NewPropsWidget->setActiveObject(getSceneViewer());
-
+	m_EditorSceneBrowser.Initialize();
 	m_EditorResourceBrowser.Initialize();
-	m_EditorResourceBrowser.InitializeSceneBrowser();
 
 	return true;
 }
@@ -218,7 +217,7 @@ void CEditorUIFrame::OnSceneNodeAdded(std::shared_ptr<ISceneNode> ParentNode, st
 {
 	if (IsChildOf(GetEditor().Get3DFrame().GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditor().Get3DFrame().GetEditedRootNode3D(), ParentNode))
 	{
-		m_EditorResourceBrowser.UpdateSceneBrowser();
+		m_EditorSceneBrowser.Update();
 	}
 }
 
@@ -227,7 +226,7 @@ void CEditorUIFrame::OnSceneNodeRemoved(std::shared_ptr<ISceneNode> ParentNode, 
 	if (IsChildOf(GetEditor().Get3DFrame().GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditor().Get3DFrame().GetEditedRootNode3D(), ParentNode))
 	{
 		m_Editor.GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).RemoveNode(ChildNode);
-		m_EditorResourceBrowser.UpdateSceneBrowser();
+		m_EditorSceneBrowser.Update();
 	}
 }
 
@@ -251,7 +250,7 @@ void CEditorUIFrame::OnSceneLoadFromFile()
 
 		sceneLoadSave->LoadFromFile(fileName);
 
-		m_EditorResourceBrowser.UpdateSceneBrowser();
+		m_EditorSceneBrowser.Update();
 	}
 	catch (const CException& e)
 	{
@@ -273,7 +272,7 @@ void CEditorUIFrame::OnSceneSaveToFile()
 
 		sceneLoadSave->SaveToFile(fileName);
 
-		m_EditorResourceBrowser.UpdateSceneBrowser();
+		m_EditorSceneBrowser.Update();
 	}
 	catch (const CException& e)
 	{
@@ -291,7 +290,7 @@ void CEditorUIFrame::OnSceneClose()
 
 		sceneLoadSave->ResetScene();
 
-		m_EditorResourceBrowser.UpdateSceneBrowser();
+		m_EditorSceneBrowser.Update();
 	}
 	catch (const CException& e)
 	{

@@ -62,5 +62,5 @@ private:
 	std::shared_ptr<IRenderPassCreateTypelessList> m_SceneCreateTypelessListPass;
 
 private: // consts
-	const float cShadowTextureSize = 4096.0f;
+	const size_t cShadowTextureSize = 4096;
 };

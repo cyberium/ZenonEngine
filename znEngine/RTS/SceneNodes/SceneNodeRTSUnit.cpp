@@ -10,7 +10,7 @@ CSceneNodeRTSUnit::CSceneNodeRTSUnit(IScene & Scene)
 	: CSceneNode(Scene)
 	, m_Health(100.0f)
 	, m_MaxHealth(100.0f)
-	, m_Speed(0.15f)
+	, m_Speed(9.0f)
 
 	// Path
 	, m_PathCurrentPoint(0)
@@ -167,7 +167,7 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 	glm::vec3 direction = glm::normalize(nextPoint->GetPosition() - GetPosition());
 
 	glm::vec3 newPosition = GetPosition();
-	newPosition += direction * GetMovementSpeed() * float(e.DeltaTimeMultiplier);
+	newPosition += direction * (GetMovementSpeed() / 60.0f) * float(e.DeltaTimeMultiplier);
 
 	// Translations
 	SetPosition(newPosition);
@@ -177,7 +177,7 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 	t *= glm::conjugate(glm::toQuat(glm::lookAt(GetPosition(), GetPosition() + direction, glm::vec3(0.0f, 1.0f, 0.0f))));
 	SetRotationQuaternion(t);
 
-	if (glm::distance(GetPosition(), nextPoint->GetPosition()) < GetMovementSpeed() * float(e.DeltaTimeMultiplier) * 2.0f)
+	if (glm::distance(GetPosition(), nextPoint->GetPosition()) < (GetMovementSpeed() / 60.0f) * float(e.DeltaTimeMultiplier) * 2.0f)
 	{
 		m_PathCurrentPoint++;
 	}

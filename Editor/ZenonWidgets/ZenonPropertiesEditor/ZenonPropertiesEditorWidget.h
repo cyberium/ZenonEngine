@@ -21,7 +21,6 @@ public:
 
 private slots:
 	void valueChanged(QtProperty *property, const QVariant &value);
-	
 
 private:
 	QtVariantProperty * CreateVariantProperty(QVariant::Type PropType, std::shared_ptr<IProperty> Property);
@@ -31,7 +30,9 @@ private:
 
 private:
 	std::shared_ptr<QtVariantEditorFactory>    m_VariantEditorFactory;
+
 	std::shared_ptr<QtVariantPropertyManager>  m_VariantManager;
 	std::shared_ptr<QtGroupPropertyManager>    m_GroupPropertyManager;
+
 	std::shared_ptr<ISceneNode>                m_SceneNode;
 };

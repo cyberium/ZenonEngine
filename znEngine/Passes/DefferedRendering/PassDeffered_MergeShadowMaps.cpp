@@ -74,7 +74,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_MergeShadowMaps::ConfigurePi
 		auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_MergeShadows.hlsl", "PS_Deferred_MergeShadows");
 		
 		m_ShadowMapParameter = pixelShader->GetShaderParameterByName("GPUDefferedMergeShadowMaps");
-		_ASSERT(m_GPUDefferedLightVSParameter);
+		_ASSERT(m_ShadowMapParameter);
 
 		m_ShadowMapTextureParameter = pixelShader->GetShaderParameterByName("ShadowMapTexture");
 		_ASSERT(m_ShadowMapTextureParameter);

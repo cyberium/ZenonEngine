@@ -80,27 +80,17 @@ void CUIControlRTSTowersPanel::Initialize()
 	}*/
 }
 
-void CUIControlRTSTowersPanel::AddTowerButton(std::string Name, std::string TowerXMLName, std::string TowerTextureName, uint32 TowerCost, IScene& Scene)
+void CUIControlRTSTowersPanel::AddTowerButton(std::string TowerName, std::string TowerIcon, uint32 TowerCost, IScene& Scene)
 {
 	STowerDescription towerDescription;
-	towerDescription.Name = Name;
-	towerDescription.Cost = TowerCost;
-	towerDescription.XMLPath = TowerXMLName;
+	towerDescription.TowerName = TowerName;
+	towerDescription.TowerIcon = TowerIcon;
+	towerDescription.TowerCost = TowerCost;
 
-	{
-		CXMLManager xmlManager(GetBaseManager());
-		auto reader = xmlManager.CreateReaderFromFile(TowerXMLName);
-		_ASSERT(false == reader->GetChilds().empty());
-		auto firstXMLChild = reader->GetChilds()[0];
-
-		towerDescription.SceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNodeFactory>()->LoadSceneNode3DXML(firstXMLChild, Scene);
-		towerDescription.SceneNode->MakeMeOrphan();
-	}
-
-	std::shared_ptr<CUIControlRTSTowerBtn> towerBtnNode = GetScene().CreateUIControlTCast<CUIControlRTSTowerBtn>(shared_from_this());
-	towerBtnNode->SetTowerTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D(TowerTextureName));
-	towerBtnNode->SetOnClickCallback(std::bind(&CUIControlRTSTowersPanel::OnTowerButtonClick, this, std::placeholders::_1, std::placeholders::_2));
-	towerDescription.UIButton = towerBtnNode;
+	std::shared_ptr<CUIControlRTSTowerBtn> currenTowerBtn = GetScene().CreateUIControlTCast<CUIControlRTSTowerBtn>(shared_from_this());
+	currenTowerBtn->SetTowerTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D(TowerIcon));
+	currenTowerBtn->SetOnClickCallback(std::bind(&CUIControlRTSTowersPanel::OnTowerButtonClick, this, std::placeholders::_1, std::placeholders::_2));
+	towerDescription.UIButton = currenTowerBtn;
 
 	m_TowerButtons.push_back(towerDescription);
 
@@ -108,11 +98,11 @@ void CUIControlRTSTowersPanel::AddTowerButton(std::string Name, std::string Towe
 
 	for (size_t i = 0; i < m_TowerButtons.size(); i++)
 	{
-		const auto& towerBtnNode = m_TowerButtons.at(i);
-		towerBtnNode.UIButton->SetLocalPosition(glm::vec2(0.0f, (towerBtnNode.UIButton->GetSize().y + cDiff) * i));
+		const auto& towerBtn = m_TowerButtons.at(i);
+		currenTowerBtn->SetLocalPosition(glm::vec2(0.0f, (currenTowerBtn->GetSize().y + cDiff) * i));
 	}
 
-	glm::vec2 panelSize = glm::vec2(85.0f, towerBtnNode->GetSize().y * m_TowerButtons.size());
+	glm::vec2 panelSize = glm::vec2(85.0f, currenTowerBtn->GetSize().y * m_TowerButtons.size());
 	if (m_TowerButtons.size() > 1)
 		panelSize.y += cDiff * (m_TowerButtons.size() - 1);
 
@@ -287,7 +277,7 @@ void CUIControlRTSTowersPanel::CreateWindowGeometry(glm::vec2 Size)
 	}
 }
 
-void CUIControlRTSTowersPanel::OnTowerButtonClick(const IUIControl * Node, glm::vec2 PosInsideButton)
+void CUIControlRTSTowersPanel::OnTowerButtonClick(const IUIControl* Node, glm::vec2 PosInsideButton)
 {
 	const auto& towerButton = std::find_if(m_TowerButtons.begin(), m_TowerButtons.end(), [Node](const STowerDescription& TowerDescription) {
 		return TowerDescription.UIButton.get() == Node;

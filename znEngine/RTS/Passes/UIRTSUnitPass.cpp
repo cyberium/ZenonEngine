@@ -8,6 +8,8 @@ namespace
 	const glm::vec2 outlineHPBarSize = glm::vec2(50.0f, 7.0f);
 	const glm::vec2 inlineHPBarSize = glm::vec2(45.0f, 3.0f);
 
+	const glm::vec3 hpBarOutlineColor = glm::vec3(0.1f, 0.2f, 0.1f);
+
 	const glm::vec3 hpBarColorLow = glm::vec3(0.745f, 0.0f, 0.0f);
 	const glm::vec3 hpBarColorMiddle = glm::vec3(1.0f, 0.55f, 0.1f);
 	const glm::vec3 hpBarColorHigh = glm::vec3(0.4f, 0.8f, 0.0f);
@@ -32,10 +34,9 @@ CUIRTSUnitPass::CUIRTSUnitPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: BaseUIPass(Scene)
 {
 	m_HPBarOutlineMaterial = MakeShared(CMaterialUIControl, GetRenderDevice());
-	m_HPBarOutlineMaterial->SetColor(glm::vec4(0.1f, 0.2f, 0.1f, 1.0f));
+	m_HPBarOutlineMaterial->SetColor(glm::vec4(hpBarOutlineColor, 1.0f));
 
 	m_HPBarMaterial = MakeShared(CMaterialUIControl, GetRenderDevice());
-	m_HPBarMaterial->SetColor(glm::vec4(0.2f, 1.0f, 0.1f, 1.0f));
 
 	m_HPBarOutlineGeometry = GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(outlineHPBarSize);
 	m_HPBarGeometry = GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(inlineHPBarSize);
@@ -91,18 +92,6 @@ void CUIRTSUnitPass::Render(RenderEventArgs & e)
 		if (auto colliderComonent = unit->GetComponentT<IColliderComponent>())
 		{
 			unitCoords.y += colliderComonent->GetWorldBounds().getRadius();
-			/*try
-			{
-				const glm::mat4& rootBoneMatrix = modelsComponent->GetModel()->GetSkeleton()->GetRootBone()->GetLocalMatrix();
-				const glm::mat4& boneMatrix = modelsComponent->GetCalculatedBone("Bip001 HeadNub").BoneMatrix;
-				glm::mat4 resultBoneMatrix = unit->GetWorldTransfom() * rootBoneMatrix * boneMatrix;
-
-				unitCoords = resultBoneMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-			}
-			catch (const CException& e)
-			{
-
-			}*/
 		}
 
 		glm::vec2 screenCoords = cameraController->WorldToScreen(viewport, unitCoords);
