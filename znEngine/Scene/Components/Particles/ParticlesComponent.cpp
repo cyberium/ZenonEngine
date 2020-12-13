@@ -42,6 +42,11 @@ std::shared_ptr<IParticleSystem> CParticlesComponent::Detach(std::shared_ptr<IPa
 	return particleSystem;
 }
 
+void CParticlesComponent::DeleteAllParticleSystem()
+{
+	m_ParticleSystems.clear();
+}
+
 const std::vector<std::shared_ptr<IParticleSystem>>& CParticlesComponent::GetParticleSystems() const
 {
 	return m_ParticleSystems;

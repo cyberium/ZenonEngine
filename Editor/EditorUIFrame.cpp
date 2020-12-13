@@ -192,10 +192,13 @@ void CEditorUIFrame::OnSelectNode()
 	{
 		getSceneViewer()->ClearSelection();
 	}
-	if (selectedNodes.size() == 1)
+	else if (selectedNodes.size() == 1)
 	{
-		getSceneViewer()->SelectItem(GetEditor().GetFirstSelectedNode());
-		GetEditor().GetTools().OnNodeSelected(GetEditor().GetFirstSelectedNode());
+		auto firstSelectedNode = GetEditor().GetFirstSelectedNode();
+		getSceneViewer()->SelectItem(firstSelectedNode);
+		GetEditor().GetTools().OnNodeSelected(firstSelectedNode);
+
+		getUI().NewPropsWidget->SetProperties(firstSelectedNode->GetProperties());
 	}
 	else
 	{
@@ -203,8 +206,6 @@ void CEditorUIFrame::OnSelectNode()
 		for (const auto& selectedNode : selectedNodes)
 			getSceneViewer()->SelectItem(selectedNode, false);
 	}
-
-	getUI().NewPropsWidget->setTest(GetEditor().GetFirstSelectedNode());
 }
 
 

@@ -336,6 +336,9 @@
     <ClCompile Include="Passes\RendererBase.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
+    <ClCompile Include="Properties\PropertyGroupProxy.cpp">
+      <Filter>Properties</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -820,6 +823,9 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeLightComponent.h">
       <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Properties\PropertyGroupProxy.h">
+      <Filter>Properties</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

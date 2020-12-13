@@ -14,10 +14,10 @@ class ZenonPropertiesEditorWidget
 {
 	Q_OBJECT
 public:
-	ZenonPropertiesEditorWidget(QWidget *parent = 0);
+	ZenonPropertiesEditorWidget(QWidget * parent = nullptr);
 	virtual ~ZenonPropertiesEditorWidget();
 
-	void setTest(std::shared_ptr<ISceneNode> SceneNode);
+	void SetProperties(std::shared_ptr<IPropertiesGroup> Properties);
 
 private slots:
 	void valueChanged(QtProperty *property, const QVariant &value);
@@ -34,5 +34,5 @@ private:
 	std::shared_ptr<QtVariantPropertyManager>  m_VariantManager;
 	std::shared_ptr<QtGroupPropertyManager>    m_GroupPropertyManager;
 
-	std::shared_ptr<ISceneNode>                m_SceneNode;
+	std::shared_ptr<IPropertiesGroup>          m_PropertiesGroup;
 };

@@ -320,7 +320,16 @@ std::shared_ptr<ISceneNodeComponent> CSceneNode::GetComponent(ObjectClass Compon
 
 std::shared_ptr<ISceneNodeComponent> CSceneNode::AddComponent(ObjectClass ComponentID, std::shared_ptr<ISceneNodeComponent> Component)
 {
+	const auto& componentIt = m_Components.find(ComponentID);
+	if (componentIt != m_Components.end())
+		throw CException("Component with id '%d' already exists in node '%s'", ComponentID, GetName().c_str());
+
 	m_Components[ComponentID] = Component;
+	
+	// Add proxy properties
+	auto copmonentPropertiesProxy = MakeShared(CPropertyGroupProxy, Component->GetProperties());
+	GetProperties()->AddProperty(copmonentPropertiesProxy);
+
 	return Component;
 }
 

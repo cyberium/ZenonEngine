@@ -16,6 +16,9 @@ public:
 private:
 	bool OnSelectTreeItem(const IznTreeViewItem * Item);
 	bool OnStartDraggingTreeItem(const IznTreeViewItem * Item, CByteBuffer * Value);
+	bool OnContextMenuTreeItem(const IznTreeViewItem* Item, std::string * ContextMenuTitle, std::vector<std::shared_ptr<IPropertyAction>> * ResultActions);
+
+	bool CreateNewParticle() const;
 
 private:
 	IBaseManager& GetBaseManager() const;

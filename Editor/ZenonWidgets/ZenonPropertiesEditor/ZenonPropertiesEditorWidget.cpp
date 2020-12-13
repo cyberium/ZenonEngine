@@ -22,40 +22,39 @@ ZenonPropertiesEditorWidget::~ZenonPropertiesEditorWidget()
 	unsetFactoryForManager(m_VariantManager.get());
 }
 
-void ZenonPropertiesEditorWidget::setTest(std::shared_ptr<ISceneNode> SceneNode)
+void ZenonPropertiesEditorWidget::SetProperties(std::shared_ptr<IPropertiesGroup> Properties)
 {
-	if (m_SceneNode == SceneNode)
+	if (m_PropertiesGroup == Properties)
 		return;
 
-	m_SceneNode.reset();
+	m_PropertiesGroup.reset();
 	this->clear();
 	m_VariantManager->clear();
 	m_GroupPropertyManager->clear();
 
-
 	disconnect(m_VariantManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));
 
-	if (SceneNode == nullptr)
+	if (Properties == nullptr)
 		return;
 
-	if (m_SceneNode != nullptr)
+	if (m_PropertiesGroup != nullptr)
 	{
-		DisconnectEvents(m_SceneNode->GetProperties());
+		DisconnectEvents(m_PropertiesGroup);
 
-		for (const auto& c : m_SceneNode->GetComponents())
-			DisconnectEvents(c.second->GetProperties());
+		//for (const auto& c : m_SceneNode->GetComponents())
+		//	DisconnectEvents(c.second->GetProperties());
 	}
 
 
-	m_SceneNode = SceneNode;
+	m_PropertiesGroup = Properties;
 
-	if (auto prop = CreateProperty(m_SceneNode->GetProperties()))
+	if (auto prop = CreateProperty(m_PropertiesGroup))
 		addProperty(prop);
 
-	for (const auto& c : m_SceneNode->GetComponents())
-		if (auto prop = CreateProperty(c.second->GetProperties()))
-			addProperty(prop);
-
+	//for (const auto& c : m_SceneNode->GetComponents())
+	//	if (auto prop = CreateProperty(c.second->GetProperties()))
+	//		addProperty(prop);
+	
 	connect(m_VariantManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));
 }
 
@@ -100,12 +99,12 @@ void ZenonPropertiesEditorWidget::valueChanged(QtProperty * Property, const QVar
 
 	if (tokenFirst == "Properties")
 	{
-		auto property = FindProperty(m_SceneNode->GetProperties(), tokenSecond);
+		auto property = FindProperty(m_PropertiesGroup, tokenSecond);
 		if (property == nullptr)
 			throw CException("Property path '%s' not found.", fullPropertyPath.c_str());
 		property->FromString(propertyStringValue);
 	}
-	else
+	/*else
 	{
 		const auto& components = m_SceneNode->GetComponents();
 		const auto& compIt = std::find_if(components.begin(), components.end(), [&tokenFirst](const std::pair<ObjectClass, std::shared_ptr<ISceneNodeComponent>>& ComponentMapIt) {
@@ -118,7 +117,7 @@ void ZenonPropertiesEditorWidget::valueChanged(QtProperty * Property, const QVar
 		if (componentProperty == nullptr)
 			throw CException("Property path '%s' not found.", fullPropertyPath.c_str());
 		componentProperty->FromString(propertyStringValue);
-	}
+	}*/
 }
 
 

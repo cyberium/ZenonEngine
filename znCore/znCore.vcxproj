@@ -130,6 +130,7 @@
     <ClCompile Include="Properties\PropertyAction.cpp" />
     <ClCompile Include="Properties\PropertyBase.cpp" />
     <ClCompile Include="Properties\PropertyGroup.cpp" />
+    <ClCompile Include="Properties\PropertyGroupProxy.cpp" />
     <ClCompile Include="Proxies\GeometryProxie.cpp" />
     <ClCompile Include="Proxies\MaterialProxie.cpp" />
     <ClCompile Include="Proxies\ModelProxie.cpp" />
@@ -289,6 +290,7 @@
     <ClInclude Include="Properties\PropertyAction.h" />
     <ClInclude Include="Properties\PropertyBase.h" />
     <ClInclude Include="Properties\PropertyGroup.h" />
+    <ClInclude Include="Properties\PropertyGroupProxy.h" />
     <ClInclude Include="Proxies\GeometryProxie.h" />
     <ClInclude Include="Proxies\MaterialProxie.h" />
     <ClInclude Include="Proxies\MaterialProxieT.h" />

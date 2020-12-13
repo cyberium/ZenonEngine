@@ -68,6 +68,9 @@ void CPropertyBase::CopyTo(const std::shared_ptr<IProperty>& Other) const
 	if (IsNonCopyable())
 		return;
 
+	if (Other->IsNonCopyable())
+		return;
+
 	Other->SetName(GetName());
 	Other->SetDescription(GetDescription());
 	Other->SetSyntetic(IsSyntetic());

@@ -136,6 +136,7 @@ void CEditorToolSelector::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 	subGeometry.Size = glm::vec2(1.0f);
 	subGeometry.Geom = GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f));
 	subGeometry.Material = selectionMaterial;
+	m_SelectionTexture->AddSubgeometry(subGeometry);
 
 	m_DrawSelectionPass = MakeShared(CDrawSelectionPass, GetRenderDevice(), *this);
 	m_DrawSelectionPass->ConfigurePipeline(RenderTarget);

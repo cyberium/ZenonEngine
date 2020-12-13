@@ -82,6 +82,119 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 	m_Sizes[0] = glm::vec2(4.0f);
 	m_Sizes[1] = glm::vec2(2.0f);
 	m_Sizes[2] = glm::vec2(0.1f);
+
+
+	m_PropertiesGroup = MakeShared(CPropertiesGroup, "Properties", "Properties");
+
+	// LifeTimeMS
+	{
+		auto lifeTimeMSProperty = MakeShared(CPropertyWrapped<float>, "LifeTimeMS", "LifeTimeMS", 1000.0f);
+		lifeTimeMSProperty->SetValueSetter(std::bind(&CParticleSystem::SetLifeTimeMS, this, std::placeholders::_1));
+		lifeTimeMSProperty->SetValueGetter(std::bind(&CParticleSystem::GetLifeTimeMS, this));
+		m_PropertiesGroup->AddProperty(lifeTimeMSProperty);
+	}
+
+	// LifeTimeMiddlePoint
+	{
+		auto lifeTimeMiddlePointProperty = MakeShared(CPropertyWrapped<float>, "LifeTimeMiddlePoint", "LifeTimeMiddlePoint", 0.5f);
+		lifeTimeMiddlePointProperty->SetValueSetter(std::bind(&CParticleSystem::SetLifeTimeMiddlePoint, this, std::placeholders::_1));
+		lifeTimeMiddlePointProperty->SetValueGetter(std::bind(&CParticleSystem::GetLifeTimeMiddlePoint, this));
+		m_PropertiesGroup->AddProperty(lifeTimeMiddlePointProperty);
+	}
+
+	// Colors
+	{
+		std::shared_ptr<IPropertiesGroup> colorsPropertiesGroup = MakeShared(CPropertiesGroup, "Colors", "Colors");
+		m_PropertiesGroup->AddProperty(colorsPropertiesGroup);
+
+		{
+			auto startColorProperty = MakeShared(CPropertyWrapped<glm::vec4>, "Start", "", glm::vec4(1.0f));
+			startColorProperty->SetValueSetter(std::bind(&CParticleSystem::SetStartColor, this, std::placeholders::_1));
+			startColorProperty->SetValueGetter(std::bind(&CParticleSystem::GetStartColor, this));
+			colorsPropertiesGroup->AddProperty(startColorProperty);
+		}
+
+		{
+			auto middleColorProperty = MakeShared(CPropertyWrapped<glm::vec4>, "Middle", "", glm::vec4(1.0f));
+			middleColorProperty->SetValueSetter(std::bind(&CParticleSystem::SetMiddleColor, this, std::placeholders::_1));
+			middleColorProperty->SetValueGetter(std::bind(&CParticleSystem::GetMiddleColor, this));
+			colorsPropertiesGroup->AddProperty(middleColorProperty);
+		}
+
+		{
+			auto endColorProperty = MakeShared(CPropertyWrapped<glm::vec4>, "End", "", glm::vec4(1.0f));
+			endColorProperty->SetValueSetter(std::bind(&CParticleSystem::SetEndColor, this, std::placeholders::_1));
+			endColorProperty->SetValueGetter(std::bind(&CParticleSystem::GetEndColor, this));
+			colorsPropertiesGroup->AddProperty(endColorProperty);
+		}
+	}
+
+	// Sizes
+	{
+		std::shared_ptr<IPropertiesGroup> sizesPropertiesGroup = MakeShared(CPropertiesGroup, "Sizes", "Sizes");
+		m_PropertiesGroup->AddProperty(sizesPropertiesGroup);
+
+		{
+			auto startSizeProperty = MakeShared(CPropertyWrapped<glm::vec2>, "Start", "", glm::vec2(1.0f));
+			startSizeProperty->SetValueSetter(std::bind(&CParticleSystem::SetStartSize, this, std::placeholders::_1));
+			startSizeProperty->SetValueGetter(std::bind(&CParticleSystem::GetStartSize, this));
+			sizesPropertiesGroup->AddProperty(startSizeProperty);
+		}
+
+		{
+			auto middleSizeProperty = MakeShared(CPropertyWrapped<glm::vec2>, "Middle", "", glm::vec2(1.0f));
+			middleSizeProperty->SetValueSetter(std::bind(&CParticleSystem::SetMiddleSize, this, std::placeholders::_1));
+			middleSizeProperty->SetValueGetter(std::bind(&CParticleSystem::GetMiddleSize, this));
+			sizesPropertiesGroup->AddProperty(middleSizeProperty);
+		}
+
+		{
+			auto endSizeProperty = MakeShared(CPropertyWrapped<glm::vec2>, "End", "", glm::vec2(1.0f));
+			endSizeProperty->SetValueSetter(std::bind(&CParticleSystem::SetEndSize, this, std::placeholders::_1));
+			endSizeProperty->SetValueGetter(std::bind(&CParticleSystem::GetEndSize, this));
+			sizesPropertiesGroup->AddProperty(endSizeProperty);
+		}
+	}
+
+
+	// Texture
+	{
+		auto textureFileNameProperty = MakeShared(CPropertyWrapped<std::string>, "Texture", "Texture", "");
+		textureFileNameProperty->SetValueSetter(std::bind(&CParticleSystem::SetTextureFilename, this, std::placeholders::_1));
+		textureFileNameProperty->SetValueGetter(std::bind(&CParticleSystem::GetTextureFilename, this));
+		m_PropertiesGroup->AddProperty(textureFileNameProperty);
+	}
+
+
+	// Gravity
+	{
+		std::shared_ptr<IPropertiesGroup> gravityPropertiesGroup = MakeShared(CPropertiesGroup, "Gravity", "Gravity");
+		m_PropertiesGroup->AddProperty(gravityPropertiesGroup);
+
+		// Direction
+		{
+			auto gravityDirectionProperty = MakeShared(CPropertyWrapped<glm::vec3>, "Direction", "Direction", glm::vec3(0.0f, -1.0f, 0.0f));
+			gravityDirectionProperty->SetValueSetter(std::bind(&CParticleSystem::SetGravityDirection, this, std::placeholders::_1));
+			gravityDirectionProperty->SetValueGetter(std::bind(&CParticleSystem::GetGravityDirection, this));
+			gravityPropertiesGroup->AddProperty(gravityDirectionProperty);
+		}
+
+		// PowerSEC
+		{
+			auto gravityPowerSECProperty = MakeShared(CPropertyWrapped<float>, "PowerSEC", "PowerSEC", 0.1f);
+			gravityPowerSECProperty->SetValueSetter(std::bind(&CParticleSystem::SetGravityPowerSEC, this, std::placeholders::_1));
+			gravityPowerSECProperty->SetValueGetter(std::bind(&CParticleSystem::GetGravityPowerSEC, this));
+			gravityPropertiesGroup->AddProperty(gravityPowerSECProperty);
+		}
+	}
+
+	// DeaccelerateSEC
+	{
+		auto deaccelerateSECProperty = MakeShared(CPropertyWrapped<float>, "DeaccelerateSEC", "DeaccelerateSEC", 0.01f);
+		deaccelerateSECProperty->SetValueSetter(std::bind(&CParticleSystem::SetDeaccelerateSEC, this, std::placeholders::_1));
+		deaccelerateSECProperty->SetValueGetter(std::bind(&CParticleSystem::GetDeaccelerateSEC, this));
+		m_PropertiesGroup->AddProperty(deaccelerateSECProperty);
+	}
 }
 
 CParticleSystem::~CParticleSystem()
@@ -130,6 +243,11 @@ const ISceneNode* CParticleSystem::GetNode() const
 	return m_OwnerNode;
 }
 
+std::shared_ptr<IPropertiesGroup> CParticleSystem::GetProperties() const
+{
+	return m_PropertiesGroup;
+}
+
 const std::vector<SGPUParticle>& CParticleSystem::GetGPUParticles() const
 {
 	return m_GPUParticles;
@@ -145,6 +263,114 @@ bool CParticleSystem::IsEnableCreatingNewParticles() const
 	return m_IsEnableCreatingNewParticles;
 }
 
+// LifeTime
+
+void CParticleSystem::SetLifeTimeMS(float LifeTimeMS)
+{
+	m_LifetimeMS = LifeTimeMS;
+}
+
+float CParticleSystem::GetLifeTimeMS() const
+{
+	return m_LifetimeMS;
+}
+
+void CParticleSystem::SetLifeTimeMiddlePoint(float LifeTimeMiddlePoint)
+{
+	m_LifetimeMiddlePoint = LifeTimeMiddlePoint;
+}
+
+float CParticleSystem::GetLifeTimeMiddlePoint() const
+{
+	return m_LifetimeMiddlePoint;
+}
+
+// Colors
+
+void CParticleSystem::SetStartColor(glm::vec4 Color)
+{
+	m_Colors[0] = Color;
+}
+
+glm::vec4 CParticleSystem::GetStartColor() const
+{
+	return m_Colors[0];
+}
+
+void CParticleSystem::SetMiddleColor(glm::vec4 Color)
+{
+	m_Colors[1] = Color;
+}
+
+glm::vec4 CParticleSystem::GetMiddleColor() const
+{
+	return m_Colors[1];
+}
+
+void CParticleSystem::SetEndColor(glm::vec4 Color)
+{
+	m_Colors[2] = Color;
+}
+
+glm::vec4 CParticleSystem::GetEndColor() const
+{
+	return m_Colors[2];
+}
+
+// Sizes
+
+void CParticleSystem::SetStartSize(glm::vec2 Size)
+{
+	m_Sizes[0] = Size;
+}
+
+glm::vec2 CParticleSystem::GetStartSize() const
+{
+	return m_Sizes[0];
+}
+
+void CParticleSystem::SetMiddleSize(glm::vec2 Size)
+{
+	m_Sizes[1] = Size;
+}
+
+glm::vec2 CParticleSystem::GetMiddleSize() const
+{
+	return m_Sizes[1];
+}
+
+void CParticleSystem::SetEndSize(glm::vec2 Size)
+{
+	m_Sizes[2] = Size;
+}
+
+glm::vec2 CParticleSystem::GetEndSize() const
+{
+	return m_Sizes[2];
+}
+
+// Texture
+
+void CParticleSystem::SetTextureFilename(std::string TextureFileName)
+{
+	auto texturesFactory = m_BaseManager.GetManager<IznTexturesFactory>();
+	auto texture = texturesFactory->LoadTexture2D(TextureFileName);
+	if (texture == texturesFactory->GetDefaultTexture())
+	{
+		Log::Warn("ParticlesSystem: Unable to set '%s' texture", TextureFileName.c_str());
+		return;
+	}
+
+	SetTexture(texture);
+}
+
+std::string CParticleSystem::GetTextureFilename() const
+{
+	if (m_Texture == nullptr)
+		return "";
+	return m_Texture->GetFilename();
+}
+
 void CParticleSystem::SetTexture(const std::shared_ptr<ITexture>& Material)
 {
 	m_Texture = Material;
@@ -153,6 +379,40 @@ void CParticleSystem::SetTexture(const std::shared_ptr<ITexture>& Material)
 std::shared_ptr<ITexture> CParticleSystem::GetTexture() const
 {
 	return m_Texture;
+}
+
+// Gravity
+
+void CParticleSystem::SetGravityDirection(glm::vec3 GravityDirection)
+{
+	m_GravityDirection = GravityDirection;
+}
+
+glm::vec3 CParticleSystem::GetGravityDirection() const
+{
+	return m_GravityDirection;
+}
+
+void CParticleSystem::SetGravityPowerSEC(float GravityPowerSEC)
+{
+	m_GravityPowerSEC = GravityPowerSEC;
+}
+
+float CParticleSystem::GetGravityPowerSEC() const
+{
+	return m_GravityPowerSEC;
+}
+
+// Deaccelerate
+
+void CParticleSystem::SetDeaccelerateSEC(float DeaccelerateSEC)
+{
+	m_DeaccelerateSEC = DeaccelerateSEC;
+}
+
+float CParticleSystem::GetDeaccelerateSEC() const
+{
+	return m_DeaccelerateSEC;
 }
 
 

@@ -69,10 +69,7 @@ void CEditor3DPreviewScene::SetModel(std::shared_ptr<IModel> Model)
 
 	Clean();
 
-	auto modelComponent = m_ModelNode->GetComponentT<IModelComponent>();
-	if (modelComponent->GetModel())
-		modelComponent->ResetModel();
-
+	auto modelComponent = m_SceneNodeForModelPreview->GetComponentT<IModelComponent>();
 	modelComponent->SetModel(Model);
 
 	// Play first animation
@@ -83,7 +80,7 @@ void CEditor3DPreviewScene::SetModel(std::shared_ptr<IModel> Model)
 	if (modelBBox.IsInfinite())
 		modelBBox = BoundingBox(glm::vec3(-25.0f), glm::vec3(25.0f));
 
-	m_ModelNode->SetPosition(- modelBBox.getCenter());
+	m_SceneNodeForModelPreview->SetPosition(- modelBBox.getCenter());
 	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(modelBBox.getRadius() * 1.5f));
 	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 }
@@ -151,6 +148,24 @@ void CEditor3DPreviewScene::SetTexture(std::shared_ptr<ITexture> Texture)
 	m_TextureNode->AddSubgeometry(subGeom);
 }
 
+void CEditor3DPreviewScene::SetParticleSystem(std::shared_ptr<IParticleSystem> ParticleSystem)
+{
+	_ASSERT(Model != nullptr);
+
+	Clean();
+
+	auto particlesComponent = m_SceneNodeForParticlePreview->GetComponentT<IParticleComponent3D>();
+	particlesComponent->DeleteAllParticleSystem();
+
+	particlesComponent->Attach(ParticleSystem);
+
+	auto bbox = BoundingBox(glm::vec3(-25.0f), glm::vec3(25.0f));
+
+	m_SceneNodeForParticlePreview->SetPosition(-bbox.getCenter());
+	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(bbox.getRadius() * 1.5f));
+	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
+}
+
 
 
 //
@@ -205,8 +220,8 @@ void CEditor3DPreviewScene::Initialize()
 
 	// Model
 	{
-		m_ModelNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
-		m_ModelNode->SetName("NodeModelPreview");
+		m_SceneNodeForModelPreview = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		m_SceneNodeForModelPreview->SetName("NodeModelPreview");
 	}
 
 	// Texture
@@ -214,6 +229,12 @@ void CEditor3DPreviewScene::Initialize()
 		m_TextureNode = CreateUIControlTCast<IUIControlCommon>(nullptr);
 	}
 
+	// Particle
+	{
+		m_SceneNodeForParticlePreview = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		m_SceneNodeForParticlePreview->SetName("NodeParticlePreview");
+		m_SceneNodeForParticlePreview->AddComponent(cSceneNodeParticleComponent, MakeShared(CParticlesComponent, *m_SceneNodeForParticlePreview));
+	}
 
 	{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
@@ -264,15 +285,20 @@ void CEditor3DPreviewScene::Clean()
 		}
 	}
 
-	if (m_ModelNode != nullptr)
+	if (m_SceneNodeForModelPreview != nullptr)
 	{
-		auto modelComponent = m_ModelNode->GetComponentT<IModelComponent>();
-		if (modelComponent->GetModel())
+		if (auto modelComponent = m_SceneNodeForModelPreview->GetComponentT<IModelComponent>())
 			modelComponent->ResetModel();
 	}
 
 	if (m_TextureNode != nullptr)
 	{
 		m_TextureNode->ClearSubgeometries();
+	}
+
+	if (m_SceneNodeForParticlePreview != nullptr)
+	{
+		if (auto particlesComponent = m_SceneNodeForParticlePreview->GetComponentT<IParticleComponent3D>())
+			particlesComponent->DeleteAllParticleSystem();
 	}
 }

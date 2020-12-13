@@ -58,9 +58,45 @@ public:
 	void SetEnableCreatingNewParticles(bool Value) override;
 	bool IsEnableCreatingNewParticles() const override;
 
+	// Lifetime params
+	void SetLifeTimeMS(float LifeTimeMS);
+	float GetLifeTimeMS() const;
+	void SetLifeTimeMiddlePoint(float LifeTimeMiddlePoint);
+	float GetLifeTimeMiddlePoint() const;
+
+	// Colors
+	void SetStartColor(glm::vec4 Color);
+	glm::vec4 GetStartColor() const;
+	void SetMiddleColor(glm::vec4 Color);
+	glm::vec4 GetMiddleColor() const;
+	void SetEndColor(glm::vec4 Color);
+	glm::vec4 GetEndColor() const;
+
+	// Sizes
+	void SetStartSize(glm::vec2 Size);
+	glm::vec2 GetStartSize() const;
+	void SetMiddleSize(glm::vec2 Size);
+	glm::vec2 GetMiddleSize() const;
+	void SetEndSize(glm::vec2 Size);
+	glm::vec2 GetEndSize() const;
+	
+	// Texture
+	void SetTextureFilename(std::string TextureFileName);
+	std::string GetTextureFilename() const;
 	void SetTexture(const std::shared_ptr<ITexture>& Texture) override;
 	std::shared_ptr<ITexture> GetTexture() const override;
+	
+	// Gravity
+	void SetGravityDirection(glm::vec3 GravityDirection);
+	glm::vec3 GetGravityDirection() const;
+	void SetGravityPowerSEC(float GravityPowerSEC);
+	float GetGravityPowerSEC() const;
 
+	// Deaccelerate
+	void SetDeaccelerateSEC(float DeaccelerateSEC);
+	float GetDeaccelerateSEC() const;
+
+	std::shared_ptr<IPropertiesGroup> GetProperties() const override;
 	const std::vector<SGPUParticle>& GetGPUParticles() const override;
 
 	// IObjectLoadSave
@@ -79,6 +115,8 @@ private:
 	float m_LastParticleTime;
 
 private:
+	std::shared_ptr<IPropertiesGroup> m_PropertiesGroup;
+
 	/**
 	  * If this flag is set to true, particle transformation include owner node transformation
 	*/
@@ -90,7 +128,7 @@ private:
 	bool m_IsWaitToDissapearAllParticles;
 
 	// Emitter params
-
+	
 	float m_EmmiterSpawnIntervalMS;
 	size_t m_EmitterMaxParticlesCount;
 

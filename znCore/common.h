@@ -25,5 +25,6 @@
 #include "Properties/Properties.h"
 #include "Properties/PropertyGroup.h"
 #include "Properties/PropertyAction.h"
+#include "Properties/PropertyGroupProxy.h"
 
 #include "Log/Log.h"

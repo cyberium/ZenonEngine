@@ -247,11 +247,6 @@ private:
 };
 
 
-
-
-
-
-
 class CPropertyWrappedColor
 	: public CPropertyWrapped<ColorRBG>
 {

@@ -11,6 +11,7 @@ public:
 	// IParticleComponent3D
 	void Attach(std::shared_ptr<IParticleSystem> ParticleSystem) override;
 	std::shared_ptr<IParticleSystem> Detach(std::shared_ptr<IParticleSystem> ParticleSystem) override;
+	void DeleteAllParticleSystem() override;
 	const std::vector<std::shared_ptr<IParticleSystem>>& GetParticleSystems() const override;
 
 	// ISceneNodeComponent

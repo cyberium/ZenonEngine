@@ -56,6 +56,7 @@ ZN_INTERFACE ZN_API IParticleSystem
 	virtual void SetTexture(const std::shared_ptr<ITexture>& Texture) = 0;
 	virtual std::shared_ptr<ITexture> GetTexture() const = 0;
 
+	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 	virtual const std::vector<SGPUParticle>& GetGPUParticles() const = 0;
 };
 
@@ -66,5 +67,6 @@ ZN_INTERFACE ZN_API IParticleComponent3D
 
 	virtual void Attach(std::shared_ptr<IParticleSystem> ParticleSystem) = 0;
 	virtual std::shared_ptr<IParticleSystem> Detach(std::shared_ptr<IParticleSystem> ParticleSystem) = 0;
+	virtual void DeleteAllParticleSystem() = 0;
 	virtual const std::vector<std::shared_ptr<IParticleSystem>>& GetParticleSystems() const = 0;
 };

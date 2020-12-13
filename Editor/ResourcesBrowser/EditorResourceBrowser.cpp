@@ -240,6 +240,34 @@ bool CEditorResourceBrowser::OnStartDraggingTreeItem(const IznTreeViewItem * Ite
 	return false;
 }
 
+bool CEditorResourceBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item, std::string * ContextMenuTitle, std::vector<std::shared_ptr<IPropertyAction>> * ResultActions)
+{
+	if (Item->GetType() != ETreeViewItemType::VirtualFolder)
+		return false;
+
+	*ContextMenuTitle = "Create";
+
+	/*auto removeAction = MakeShared(CAction, "Create New particle", "");
+	removeAction->SetAction([this]() -> bool {
+		GetParent()->RemoveChild(shared_from_this());
+		return true;
+	});
+
+	removeAction->SetActionPrecondition([this]() -> bool {
+		return false == IsPersistance();
+	});
+
+	ResultActions->push_back();
+	*/
+	return false;
+}
+
+
+bool CEditorResourceBrowser::CreateNewParticle() const
+{
+	return false;
+}
+
 
 
 //
