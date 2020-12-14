@@ -26,8 +26,6 @@ void CEditorSceneBrowser::Initialize()
 	GetEditorQtUIFrame().getSceneViewer()->SetOnSelectedItemChange(std::bind(&CEditorSceneBrowser::OnSelectTreeItem, this, std::placeholders::_1));
 	GetEditorQtUIFrame().getSceneViewer()->SetOnStartDragging(std::bind(&CEditorSceneBrowser::OnStartDraggingTreeItem, this, std::placeholders::_1, std::placeholders::_2));
 	GetEditorQtUIFrame().getSceneViewer()->SetOnContexMenu(std::bind(&CEditorSceneBrowser::OnContextMenuTreeItem, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-
-	//UpdateSceneBrowser();
 }
 
 void CEditorSceneBrowser::Update()

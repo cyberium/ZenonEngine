@@ -67,8 +67,8 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 
 	, m_DeaccelerateSEC(1.2f)
 
-	, m_LastParticleTime(0.0f)
-	, m_EmmiterSpawnIntervalMS(15.0f)
+	, m_LastParticleTimeMS(0.0f)
+	, m_EmmiterSpawnIntervalMS(100.0f)
 
 	, m_OwnerNode(nullptr)
 {
@@ -108,21 +108,21 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 		m_PropertiesGroup->AddProperty(colorsPropertiesGroup);
 
 		{
-			auto startColorProperty = MakeShared(CPropertyWrapped<glm::vec4>, "Start", "", glm::vec4(1.0f));
+			auto startColorProperty = MakeShared(CPropertyWrappedVec4, "Start", "", glm::vec4(1.0f));
 			startColorProperty->SetValueSetter(std::bind(&CParticleSystem::SetStartColor, this, std::placeholders::_1));
 			startColorProperty->SetValueGetter(std::bind(&CParticleSystem::GetStartColor, this));
 			colorsPropertiesGroup->AddProperty(startColorProperty);
 		}
 
 		{
-			auto middleColorProperty = MakeShared(CPropertyWrapped<glm::vec4>, "Middle", "", glm::vec4(1.0f));
+			auto middleColorProperty = MakeShared(CPropertyWrappedVec4, "Middle", "", glm::vec4(1.0f));
 			middleColorProperty->SetValueSetter(std::bind(&CParticleSystem::SetMiddleColor, this, std::placeholders::_1));
 			middleColorProperty->SetValueGetter(std::bind(&CParticleSystem::GetMiddleColor, this));
 			colorsPropertiesGroup->AddProperty(middleColorProperty);
 		}
 
 		{
-			auto endColorProperty = MakeShared(CPropertyWrapped<glm::vec4>, "End", "", glm::vec4(1.0f));
+			auto endColorProperty = MakeShared(CPropertyWrappedVec4, "End", "", glm::vec4(1.0f));
 			endColorProperty->SetValueSetter(std::bind(&CParticleSystem::SetEndColor, this, std::placeholders::_1));
 			endColorProperty->SetValueGetter(std::bind(&CParticleSystem::GetEndColor, this));
 			colorsPropertiesGroup->AddProperty(endColorProperty);
@@ -135,21 +135,21 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 		m_PropertiesGroup->AddProperty(sizesPropertiesGroup);
 
 		{
-			auto startSizeProperty = MakeShared(CPropertyWrapped<glm::vec2>, "Start", "", glm::vec2(1.0f));
+			auto startSizeProperty = MakeShared(CPropertyWrappedVec2, "Start", "", glm::vec2(1.0f));
 			startSizeProperty->SetValueSetter(std::bind(&CParticleSystem::SetStartSize, this, std::placeholders::_1));
 			startSizeProperty->SetValueGetter(std::bind(&CParticleSystem::GetStartSize, this));
 			sizesPropertiesGroup->AddProperty(startSizeProperty);
 		}
 
 		{
-			auto middleSizeProperty = MakeShared(CPropertyWrapped<glm::vec2>, "Middle", "", glm::vec2(1.0f));
+			auto middleSizeProperty = MakeShared(CPropertyWrappedVec2, "Middle", "", glm::vec2(1.0f));
 			middleSizeProperty->SetValueSetter(std::bind(&CParticleSystem::SetMiddleSize, this, std::placeholders::_1));
 			middleSizeProperty->SetValueGetter(std::bind(&CParticleSystem::GetMiddleSize, this));
 			sizesPropertiesGroup->AddProperty(middleSizeProperty);
 		}
 
 		{
-			auto endSizeProperty = MakeShared(CPropertyWrapped<glm::vec2>, "End", "", glm::vec2(1.0f));
+			auto endSizeProperty = MakeShared(CPropertyWrappedVec2, "End", "", glm::vec2(1.0f));
 			endSizeProperty->SetValueSetter(std::bind(&CParticleSystem::SetEndSize, this, std::placeholders::_1));
 			endSizeProperty->SetValueGetter(std::bind(&CParticleSystem::GetEndSize, this));
 			sizesPropertiesGroup->AddProperty(endSizeProperty);
@@ -173,7 +173,7 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 
 		// Direction
 		{
-			auto gravityDirectionProperty = MakeShared(CPropertyWrapped<glm::vec3>, "Direction", "Direction", glm::vec3(0.0f, -1.0f, 0.0f));
+			auto gravityDirectionProperty = MakeShared(CPropertyWrappedVec3, "Direction", "Direction", glm::vec3(0.0f, -1.0f, 0.0f));
 			gravityDirectionProperty->SetValueSetter(std::bind(&CParticleSystem::SetGravityDirection, this, std::placeholders::_1));
 			gravityDirectionProperty->SetValueGetter(std::bind(&CParticleSystem::GetGravityDirection, this));
 			gravityPropertiesGroup->AddProperty(gravityDirectionProperty);
@@ -210,26 +210,27 @@ void CParticleSystem::Update(const UpdateEventArgs & e)
 {
 	for (auto pIt = m_Particles.begin(); pIt != m_Particles.end(); )
 	{
-		auto& p = *pIt;
-		if (p.CurrentLifeTimeMS > p.MaxLifeTimeMS)
+		if (pIt->ParticleCreationTimeMS + pIt->MaxLifeTimeMS < e.TotalTime)
 		{
 			pIt = m_Particles.erase(pIt);
 			continue;
 		}
-
-		p.CurrentLifeTimeMS += e.DeltaTime;
-		UpdateParticle(p, e);
 		pIt++;
+	}
+
+	for (auto& p : m_Particles)
+	{
+		UpdateParticle(p, e);
 	}
 
 	m_GPUParticles.resize(m_Particles.size());
 	for (size_t i = 0; i < m_Particles.size(); i++)
 		m_GPUParticles[i] = m_Particles.at(i).ToGPUParticle();
 
-	if (IsEnableCreatingNewParticles() && (m_LastParticleTime + m_EmmiterSpawnIntervalMS < e.TotalTime))
+	if (IsEnableCreatingNewParticles() && (m_LastParticleTimeMS + m_EmmiterSpawnIntervalMS < e.TotalTime))
 	{
-		CreateNewParticle();
-		m_LastParticleTime = e.TotalTime;
+		CreateNewParticle(e);
+		m_LastParticleTimeMS = e.TotalTime;
 	}
 }
 
@@ -506,30 +507,32 @@ void CParticleSystem::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 // Protected
 //
-void CParticleSystem::CreateNewParticle()
+void CParticleSystem::CreateNewParticle(const UpdateEventArgs& e)
 {
-	SParticle p(m_LifetimeMS);
+	SParticle p(e.TotalTime, m_LifetimeMS);
 	p.Color = m_Colors[0];
 	p.Size = m_Sizes[0];
 
 	p.Position = m_OwnerNode->GetPosition();
 	p.StartPosition = p.Position;
 	p.Direction = glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f));
-	//p.Direction = Random::UnitVector3f();// CalcSpreadMatrix(glm::two_pi<float>(), 0.0f, 1.0, 1.0f) * glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
-	p.SpeedSEC = 0.0 * Random::Range(0.5f, 1.5f);
+	p.Direction = Random::UnitVector3f();// CalcSpreadMatrix(glm::two_pi<float>(), 0.0f, 1.0, 1.0f) * glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
+	p.SpeedSEC = 5.0f * Random::Range(0.5f, 1.5f);
+
+	UpdateParticle(p, e);
 
 	m_Particles.push_back(p);
 }
 
 void CParticleSystem::UpdateParticle(SParticle& P, const UpdateEventArgs & e)
 {
-	float l = P.CurrentLifeTimeMS / P.MaxLifeTimeMS;
+	float l = (e.TotalTime - P.ParticleCreationTimeMS) / P.MaxLifeTimeMS;
 	P.Color = InterpolateParticleValue(l, m_LifetimeMiddlePoint, m_Colors[0], m_Colors[1], m_Colors[2]);
 	P.Size = InterpolateParticleValue(l, m_LifetimeMiddlePoint, m_Sizes[0], m_Sizes[1], m_Sizes[2]);
 
 	// Speed influence only by deaccelerate
 	{
-		float deaccelerateByFrame = (P.SpeedSEC / 60.0f) * float(e.DeltaTimeMultiplier);
+		float deaccelerateByFrame = (m_DeaccelerateSEC / 60.0f) * float(e.DeltaTimeMultiplier);
 
 		P.SpeedSEC -= deaccelerateByFrame;
 		if (P.SpeedSEC < 0.0f)

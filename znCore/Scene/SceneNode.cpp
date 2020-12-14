@@ -15,7 +15,7 @@ CSceneNode::CSceneNode(IScene& Scene)
 
 	, m_IsPersistance(false)
 
-	, m_PositionLocal(0.0f)
+	, m_LocalPosition(0.0f)
 	, m_Rotation(glm::vec3(0.0f))
 	, m_RotationQuaternion(glm::quat())
 	, m_RotationKind(Euler)
@@ -58,26 +58,20 @@ void CSceneNode::Initialize()
 		std::shared_ptr<IPropertiesGroup> propertiesGroup = MakeShared(CPropertiesGroup, "Transform", "Transorm of this 3D node. Like translation, rotation and scale.");
 		propertiesGroup->SetNonCopyable(true);
 
-		m_PositionProperty = MakeShared(CPropertyWrappedVec3, "Translate", "Relative position to parent.", glm::vec3(0.0f));
-		m_PositionProperty->SetValueSetter(std::bind(&CSceneNode::SetPosition, this, std::placeholders::_1));
-		m_PositionProperty->SetValueGetter(std::bind(&CSceneNode::GetPosition, this));
-		propertiesGroup->AddProperty(m_PositionProperty);
+		m_LocalPositionProperty = MakeShared(CPropertyWrappedVec3, "Translate", "", glm::vec3(0.0f));
+		m_LocalPositionProperty->SetValueSetter(std::bind(&CSceneNode::SetPosition, this, std::placeholders::_1));
+		m_LocalPositionProperty->SetValueGetter(std::bind(&CSceneNode::GetPosition, this));
+		propertiesGroup->AddProperty(m_LocalPositionProperty);
 
-		/*std::shared_ptr<CPropertyWrappedVec3> translateAbsProperty = MakeShared(CPropertyWrappedVec3, "TranslateAbsolute", "Absolute position in world.", glm::vec3(0.0f));
-		translateAbsProperty->SetSyntetic(true);
-		translateAbsProperty->SetValueSetter(std::bind(&CSceneNode::SetPosition, this, std::placeholders::_1));
-		translateAbsProperty->SetValueGetter(std::bind(&CSceneNode::GetPosition, this));
-		propertiesGroup->AddProperty(translateAbsProperty);*/
+		m_RotationProperty = MakeShared(CPropertyWrappedVec3, "Rotate", "Rotation of this node. Relative to parent.", glm::vec3(0.0f));
+		m_RotationProperty->SetValueSetter(std::bind(&CSceneNode::SetRotationEuler, this, std::placeholders::_1));
+		m_RotationProperty->SetValueGetter(std::bind(&CSceneNode::GetRotationEuler, this));
+		propertiesGroup->AddProperty(m_RotationProperty);
 
-		std::shared_ptr<CPropertyWrappedVec3> rotationProperty = MakeShared(CPropertyWrappedVec3, "Rotate", "Rotation of this node. Relative to parent.", glm::vec3(0.0f));
-		rotationProperty->SetValueSetter(std::bind(&CSceneNode::SetRotationEuler, this, std::placeholders::_1));
-		rotationProperty->SetValueGetter(std::bind(&CSceneNode::GetRotationEuler, this));
-		propertiesGroup->AddProperty(rotationProperty);
-
-		std::shared_ptr<CPropertyWrappedVec3> scaleProperty = MakeShared(CPropertyWrappedVec3, "Scale", "Scale of this node. Relative to parent.", glm::vec3(1.0f));
-		scaleProperty->SetValueSetter(std::bind(&CSceneNode::SetScale, this, std::placeholders::_1));
-		scaleProperty->SetValueGetter(std::bind(&CSceneNode::GetScale, this));
-		propertiesGroup->AddProperty(scaleProperty);
+		m_ScaleProperty = MakeShared(CPropertyWrappedVec3, "Scale", "Scale of this node. Relative to parent.", glm::vec3(1.0f));
+		m_ScaleProperty->SetValueSetter(std::bind(&CSceneNode::SetScale, this, std::placeholders::_1));
+		m_ScaleProperty->SetValueGetter(std::bind(&CSceneNode::GetScale, this));
+		propertiesGroup->AddProperty(m_ScaleProperty);
 
 		GetProperties()->AddProperty(propertiesGroup);
 	}
@@ -184,8 +178,8 @@ IScene& CSceneNode::GetScene() const
 //
 void CSceneNode::SetPosition(glm::vec3 Position)
 {
-	m_PositionLocal = glm::inverse(GetParentWorldTransform()) * glm::vec4(Position, 1.0f);
-	UpdateLocalTransform();
+	const glm::vec3 localPosition = glm::inverse(GetParentWorldTransform()) * glm::vec4(Position, 1.0f);
+	SetLocalPosition(localPosition);
 }
 
 glm::vec3 CSceneNode::GetPosition() const
@@ -195,14 +189,14 @@ glm::vec3 CSceneNode::GetPosition() const
 
 void CSceneNode::SetLocalPosition(glm::vec3 LocalPosition)
 {
-	m_PositionLocal = LocalPosition;
-	m_PositionProperty->RaiseValueChangedCallback();
+	m_LocalPosition = LocalPosition;
+	m_LocalPositionProperty->RaiseValueChangedCallback();
 	UpdateLocalTransform();
 }
 
 glm::vec3 CSceneNode::GetLocalPosition() const
 {
-	return m_PositionLocal;
+	return m_LocalPosition;
 }
 
 void CSceneNode::SetDirection(glm::vec3 Direction)
@@ -218,6 +212,7 @@ glm::vec3 CSceneNode::GetDirection() const
 void CSceneNode::SetRotationEuler(glm::vec3 Rotation)
 {
 	m_Rotation = Rotation;
+	m_RotationProperty->RaiseValueChangedCallback();
 	m_RotationKind = Euler;
 	UpdateLocalTransform();
 }
@@ -247,6 +242,7 @@ ISceneNode::ERotationKind CSceneNode::GetRotationKind() const
 void CSceneNode::SetScale(glm::vec3 Scale)
 {
 	m_Scale = Scale;
+	m_ScaleProperty->RaiseValueChangedCallback();
 	UpdateLocalTransform();
 }
 
@@ -456,7 +452,7 @@ void CSceneNode::CopyTo(std::shared_ptr<IObject> Destination) const
 
 	destCast->m_IsPersistance = m_IsPersistance;
 
-	destCast->m_PositionLocal = m_PositionLocal;
+	destCast->m_LocalPosition = m_LocalPosition;
 	destCast->m_Rotation = m_Rotation;
 	destCast->m_RotationQuaternion = m_RotationQuaternion;
 	destCast->m_RotationKind = m_RotationKind;
@@ -638,7 +634,7 @@ glm::mat4 CSceneNode::CalculateLocalTransform() const
 	glm::mat4 localTransform(1.0f);
 
 	// Position
-	localTransform = glm::translate(localTransform, m_PositionLocal);
+	localTransform = glm::translate(localTransform, m_LocalPosition);
 	
 	// Rotation
 	if (m_RotationKind == Euler)

@@ -195,6 +195,71 @@ private:
 
 
 
+
+
+
+
+
+
+
+
+
+class CPropertyWrappedVec2
+	: public CPropertyWrapped<glm::vec2>
+{
+public:
+	CPropertyWrappedVec2(std::string Name, std::string Description, glm::vec2 DefaultValue)
+		: CPropertyWrapped<glm::vec2>(Name, Description, DefaultValue)
+	{
+		auto xProperty = MakeShared(CPropertyWrapped<float>, "X", "The 'X' component of Vector2", DefaultValue.x);
+		xProperty->SetSyntetic(true);
+		xProperty->SetValueSetter(std::bind(&CPropertyWrappedVec2::SetT, this, 0, std::placeholders::_1));
+		xProperty->SetValueGetter(std::bind(&CPropertyWrappedVec2::GetT, this, 0));
+		AddProperty(xProperty);
+
+		auto yProperty = MakeShared(CPropertyWrapped<float>, "Y", "The 'Y' component of Vector2", DefaultValue.y);
+		yProperty->SetSyntetic(true);
+		yProperty->SetValueSetter(std::bind(&CPropertyWrappedVec2::SetT, this, 1, std::placeholders::_1));
+		yProperty->SetValueGetter(std::bind(&CPropertyWrappedVec2::GetT, this, 1));
+		AddProperty(yProperty);
+	}
+
+	//
+	// IPropertyValueChangedCallback
+	//
+	void RaiseValueChangedCallback() override
+	{
+		__super::RaiseValueChangedCallback();
+
+		for (const auto& subPropIt : GetProperties())
+			if (auto valueChangedCallback = std::dynamic_pointer_cast<IPropertyValueChangedCallback>(subPropIt.second))
+				valueChangedCallback->RaiseValueChangedCallback();
+	}
+
+private:
+	virtual void SetT(int Index, float Value)
+	{
+		glm::vec2 value = Get();
+		value[Index] = Value;
+		Set(value);
+	}
+	virtual float GetT(int Index) const
+	{
+		return Get()[Index];
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+
 class CPropertyWrappedVec3
 	: public CPropertyWrapped<glm::vec3>
 {
@@ -234,17 +299,113 @@ public:
 	}
 
 private:
-	void SetT(int Index, float Value)
+	virtual void SetT(int Index, float Value)
 	{
 		glm::vec3 value = Get();
 		value[Index] = Value;
 		Set(value);
 	}
-	float GetT(int Index) const
+	virtual float GetT(int Index) const
 	{
 		return Get()[Index];
 	}
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class CPropertyWrappedVec4
+	: public CPropertyWrapped<glm::vec4>
+{
+public:
+	CPropertyWrappedVec4(std::string Name, std::string Description, glm::vec4 DefaultValue)
+		: CPropertyWrapped<glm::vec4>(Name, Description, DefaultValue)
+	{
+		auto xProperty = MakeShared(CPropertyWrapped<float>, "X", "The 'X' component of Vector4", DefaultValue.x);
+		xProperty->SetSyntetic(true);
+		xProperty->SetValueSetter(std::bind(&CPropertyWrappedVec4::SetT, this, 0, std::placeholders::_1));
+		xProperty->SetValueGetter(std::bind(&CPropertyWrappedVec4::GetT, this, 0));
+		AddProperty(xProperty);
+
+		auto yProperty = MakeShared(CPropertyWrapped<float>, "Y", "The 'Y' component of Vector4", DefaultValue.y);
+		yProperty->SetSyntetic(true);
+		yProperty->SetValueSetter(std::bind(&CPropertyWrappedVec4::SetT, this, 1, std::placeholders::_1));
+		yProperty->SetValueGetter(std::bind(&CPropertyWrappedVec4::GetT, this, 1));
+		AddProperty(yProperty);
+
+		auto zProperty = MakeShared(CPropertyWrapped<float>, "Z", "The 'Z' component of Vector4", DefaultValue.z);
+		zProperty->SetSyntetic(true);
+		zProperty->SetValueSetter(std::bind(&CPropertyWrappedVec4::SetT, this, 2, std::placeholders::_1));
+		zProperty->SetValueGetter(std::bind(&CPropertyWrappedVec4::GetT, this, 2));
+		AddProperty(zProperty);
+
+		auto wProperty = MakeShared(CPropertyWrapped<float>, "W", "The 'W' component of Vector4", DefaultValue.w);
+		wProperty->SetSyntetic(true);
+		wProperty->SetValueSetter(std::bind(&CPropertyWrappedVec4::SetT, this, 3, std::placeholders::_1));
+		wProperty->SetValueGetter(std::bind(&CPropertyWrappedVec4::GetT, this, 3));
+		AddProperty(wProperty);
+	}
+
+	//
+	// IPropertyValueChangedCallback
+	//
+	void RaiseValueChangedCallback() override
+	{
+		__super::RaiseValueChangedCallback();
+
+		for (const auto& subPropIt : GetProperties())
+			if (auto valueChangedCallback = std::dynamic_pointer_cast<IPropertyValueChangedCallback>(subPropIt.second))
+				valueChangedCallback->RaiseValueChangedCallback();
+	}
+
+private:
+	virtual void SetT(int Index, float Value)
+	{
+		glm::vec4 value = Get();
+		value[Index] = Value;
+		Set(value);
+	}
+	virtual float GetT(int Index) const
+	{
+		return Get()[Index];
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class CPropertyWrappedColor

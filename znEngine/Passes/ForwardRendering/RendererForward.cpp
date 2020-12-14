@@ -65,14 +65,14 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
 
-	auto skyboxPass = MakeShared(CSkyboxPass, m_RenderDevice);
+	/*auto skyboxPass = MakeShared(CSkyboxPass, m_RenderDevice);
 	skyboxPass->ConfigurePipeline(
 #ifdef ENABLE_HDR
 		HDRRenderTarget
 #else
 		OutputRenderTarget
 #endif
-	);
+	);*/
 
 	m_MaterialModelPass = MakeShared(CPassForward_DoRenderScene, m_RenderDevice, m_Scene);
 	m_MaterialModelPass->ConfigurePipeline(
@@ -82,7 +82,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 		OutputRenderTarget
 #endif
 	);
-	m_MaterialModelPass->SetEnviorementTexture(skyboxPass->GetSkyboxCubeTexture());
+	//m_MaterialModelPass->SetEnviorementTexture(skyboxPass->GetSkyboxCubeTexture());
 
 	//m_MaterialModelPassInstanced = MakeShared(CPassForward_DoRenderSceneInstanced, m_RenderDevice, m_SceneCreateTypelessListPass);
 	//m_MaterialModelPassInstanced->ConfigurePipeline(OutputRenderTarget, Viewport);
@@ -96,7 +96,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	Add3DPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget));
 #endif
 
-	Add3DPass(skyboxPass);
+	//Add3DPass(skyboxPass);
 
 	//
 	// SCENE

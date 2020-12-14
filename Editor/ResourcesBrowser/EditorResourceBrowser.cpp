@@ -120,6 +120,7 @@ void CEditorResourceBrowser::Initialize()
 {
 	GetEditorQtUIFrame().getCollectionViewer()->SetOnSelectedItemChange(std::bind(&CEditorResourceBrowser::OnSelectTreeItem, this, std::placeholders::_1));
 	GetEditorQtUIFrame().getCollectionViewer()->SetOnStartDragging(std::bind(&CEditorResourceBrowser::OnStartDraggingTreeItem, this, std::placeholders::_1, std::placeholders::_2));
+	GetEditorQtUIFrame().getCollectionViewer()->SetOnContexMenu(std::bind(&CEditorResourceBrowser::OnContextMenuTreeItem, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
 	CResourceFilesystem fileSystem;
 	fileSystem.Initailize("O:/ZenonEngine_userdata");
@@ -247,24 +248,26 @@ bool CEditorResourceBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item,
 
 	*ContextMenuTitle = "Create";
 
-	/*auto removeAction = MakeShared(CAction, "Create New particle", "");
+	auto removeAction = MakeShared(CAction, "Create ParticlesSystem", "");
 	removeAction->SetAction([this]() -> bool {
-		GetParent()->RemoveChild(shared_from_this());
+		CreateNewParticle();
 		return true;
 	});
 
-	removeAction->SetActionPrecondition([this]() -> bool {
-		return false == IsPersistance();
-	});
-
-	ResultActions->push_back();
-	*/
-	return false;
+	ResultActions->push_back(removeAction);
+	
+	return true;
 }
 
 
 bool CEditorResourceBrowser::CreateNewParticle() const
 {
+	auto newParticle = MakeShared(CParticleSystem, GetBaseManager());
+	newParticle->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("star_09.png"));
+
+	GetEditorQtUIFrame().getUI().NewPropsWidget->SetProperties(newParticle->GetProperties());
+
+	m_Editor.Get3DPreviewFrame().SetParticleSystem(newParticle);
 	return false;
 }
 

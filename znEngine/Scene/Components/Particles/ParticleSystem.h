@@ -4,7 +4,7 @@ namespace
 {
 	struct ZN_API SParticle
 	{
-		SParticle(float MaxLifeTimeMS_)
+		SParticle(float ParticleCreationTimeMS_, float MaxLifeTimeMS_)
 			: Color(glm::vec4(1.0f))
 			, Size(glm::vec2(3.0f))
 			, TexCoordBegin(glm::vec2(0.0f))
@@ -15,7 +15,7 @@ namespace
 			, Direction(glm::vec3(0.0f))
 			, SpeedSEC(1.0f)
 
-			, CurrentLifeTimeMS(0.0f)
+			, ParticleCreationTimeMS(ParticleCreationTimeMS_)
 			, MaxLifeTimeMS(MaxLifeTimeMS_)
 		{}
 
@@ -30,7 +30,7 @@ namespace
 		glm::vec3 Direction;
 		float     SpeedSEC;
 
-		float     CurrentLifeTimeMS;
+		float     ParticleCreationTimeMS;
 		float     MaxLifeTimeMS;
 
 		SGPUParticle ToGPUParticle() const
@@ -104,7 +104,7 @@ public:
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 protected:
-	void CreateNewParticle();
+	void CreateNewParticle(const UpdateEventArgs& e);
 	void UpdateParticle(SParticle& CPUParticle, const UpdateEventArgs& e);
 
 private:
@@ -112,7 +112,7 @@ private:
 	std::vector<SGPUParticle> m_GPUParticles;
 
 	bool m_IsEnableCreatingNewParticles;
-	float m_LastParticleTime;
+	float m_LastParticleTimeMS;
 
 private:
 	std::shared_ptr<IPropertiesGroup> m_PropertiesGroup;
@@ -133,6 +133,7 @@ private:
 	size_t m_EmitterMaxParticlesCount;
 
 	// Particle params
+	float m_InitialSpeedSEC;
 	float m_LifetimeMS;
 	float m_LifetimeMiddlePoint; // 0.0 - 1.0f  //Point that correspond m_Colors[1] and m_Sizes[1] in lifetime.  
 

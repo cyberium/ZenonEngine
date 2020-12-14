@@ -40,8 +40,6 @@ CEditor3DPreviewScene::~CEditor3DPreviewScene()
 //
 void CEditor3DPreviewScene::SetSceneNode(std::shared_ptr<ISceneNode> SceneNode)
 {
-	_ASSERT(SceneNode != nullptr);
-
 	Clean();
 
 	auto copy = SceneNode->CopyCast<ISceneNode>();
@@ -65,8 +63,6 @@ void CEditor3DPreviewScene::SetSceneNode(std::shared_ptr<ISceneNode> SceneNode)
 
 void CEditor3DPreviewScene::SetModel(std::shared_ptr<IModel> Model)
 {
-	_ASSERT(Model != nullptr);
-
 	Clean();
 
 	auto modelComponent = m_SceneNodeForModelPreview->GetComponentT<IModelComponent>();
@@ -150,16 +146,15 @@ void CEditor3DPreviewScene::SetTexture(std::shared_ptr<ITexture> Texture)
 
 void CEditor3DPreviewScene::SetParticleSystem(std::shared_ptr<IParticleSystem> ParticleSystem)
 {
-	_ASSERT(Model != nullptr);
-
 	Clean();
 
 	auto particlesComponent = m_SceneNodeForParticlePreview->GetComponentT<IParticleComponent3D>();
 	particlesComponent->DeleteAllParticleSystem();
 
+	ParticleSystem->SetNode(m_SceneNodeForParticlePreview.get());
 	particlesComponent->Attach(ParticleSystem);
 
-	auto bbox = BoundingBox(glm::vec3(-25.0f), glm::vec3(25.0f));
+	auto bbox = BoundingBox(glm::vec3(-5.0f), glm::vec3(5.0f));
 
 	m_SceneNodeForParticlePreview->SetPosition(-bbox.getCenter());
 	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(bbox.getRadius() * 1.5f));

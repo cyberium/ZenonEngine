@@ -74,7 +74,7 @@ void SceneBase::Initialize()
 	defferedRenderer->Initialize(GetRenderWindow().GetRenderTarget());
 	m_DefferedRenderrer = defferedRenderer;
 
-	SetRenderer(defferedRenderer);
+	SetRenderer(forwardRenderer);
 }
 
 void SceneBase::Finalize()

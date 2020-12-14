@@ -104,14 +104,16 @@ private:
 
 	bool                                            m_IsEnabled;
 
-	glm::vec3										m_PositionLocal;
-	std::shared_ptr<CPropertyWrappedVec3>           m_PositionProperty;
+	glm::vec3										m_LocalPosition;
+	std::shared_ptr<CPropertyWrappedVec3>           m_LocalPositionProperty;
 
 	glm::vec3										m_Rotation;
+	std::shared_ptr<CPropertyWrappedVec3>           m_RotationProperty;
 	glm::quat										m_RotationQuaternion;
 	ERotationKind                                   m_RotationKind;
 	
 	glm::vec3										m_Scale;
+	std::shared_ptr<CPropertyWrappedVec3>           m_ScaleProperty;
 
 	glm::mat4										m_LocalTransform;
 	glm::mat4										m_InverseLocalTransform;
