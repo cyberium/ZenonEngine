@@ -18,7 +18,7 @@ private:
 	bool OnStartDraggingTreeItem(const IznTreeViewItem * Item, CByteBuffer * Value);
 	bool OnContextMenuTreeItem(const IznTreeViewItem* Item, std::string * ContextMenuTitle, std::vector<std::shared_ptr<IPropertyAction>> * ResultActions);
 
-	bool CreateNewParticle() const;
+	std::shared_ptr<IParticleSystem> CreateNewParticle() const;
 
 private:
 	IBaseManager& GetBaseManager() const;

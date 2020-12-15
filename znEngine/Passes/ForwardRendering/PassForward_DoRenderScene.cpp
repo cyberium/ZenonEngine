@@ -49,7 +49,7 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 		vertexShader->LoadInputLayoutFromCustomElements(customElements);*/
 
 		m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
-		_ASSERT(m_ShaderBonesBufferParameter);
+		//_ASSERT(m_ShaderBonesBufferParameter);
 
 		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	}

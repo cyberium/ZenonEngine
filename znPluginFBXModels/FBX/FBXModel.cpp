@@ -594,22 +594,30 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 	const FbxVector4 lS = NativeMesh->GetNode()->GetGeometricScaling(FbxNode::eSourcePivot);
 	FbxAMatrix geometryTransform = FbxAMatrix(lT, lR, lS);
 
-	int deformersCount = NativeMesh->GetDeformerCount();
-	if (deformersCount == 0)
+	int skinDeformersCount = NativeMesh->GetDeformerCount(fbxsdk::FbxDeformer::eSkin);
+	if (skinDeformersCount == 0)
 		return;
 
-	for (int deformerIndex = 0; deformerIndex < deformersCount; deformerIndex++)
+	for (int deformerIndex = 0; deformerIndex < skinDeformersCount; deformerIndex++)
 	{
-		fbxsdk::FbxSkin* skin = static_cast<fbxsdk::FbxSkin*>(NativeMesh->GetDeformer(deformerIndex, fbxsdk::FbxDeformer::eSkin));
-		if (skin == nullptr)
+		fbxsdk::FbxSkin* skinDeformer = static_cast<fbxsdk::FbxSkin*>(NativeMesh->GetDeformer(deformerIndex, fbxsdk::FbxDeformer::eSkin));
+		if (skinDeformer == nullptr)
 		{
-			Log::Warn("FBXMesh: Skin not found for model '%s'.", NativeMesh->GetName());
+			Log::Error("FBXMesh: Skin not found for model '%s'.", NativeMesh->GetName());
 			continue;
 		}
 
-		for (int clusterIndex = 0; clusterIndex < skin->GetClusterCount(); ++clusterIndex)
+		fbxsdk::FbxSkin::EType skinningType = skinDeformer->GetSkinningType();
+		if (skinningType != fbxsdk::FbxSkin::EType::eRigid)
+			throw CException("Only FbxSkin::EType::eRigid skinning supported.");
+
+		for (int clusterIndex = 0; clusterIndex < skinDeformer->GetClusterCount(); ++clusterIndex)
 		{
-			fbxsdk::FbxCluster* cluster = skin->GetCluster(clusterIndex);
+			fbxsdk::FbxCluster* cluster = skinDeformer->GetCluster(clusterIndex);
+
+			fbxsdk::FbxCluster::ELinkMode clusterLinkMode = cluster->GetLinkMode();
+			if (clusterLinkMode != fbxsdk::FbxCluster::ELinkMode::eNormalize)
+				throw CException("Only FbxCluster::ELinkMode::eNormalize skinning supported.");
 
 			FbxAMatrix transformMatrix;
 			cluster->GetTransformMatrix(transformMatrix);
@@ -624,11 +632,35 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 			size_t jointIndex = m_FBXNode.GetFBXScene().GetFBXSkeleton()->GetBoneIndexByName(jointname);
 			auto joint = m_FBXNode.GetFBXScene().GetFBXSkeleton()->GetBoneByName(jointname);
 			
+			// Pivot
 			fbxsdk::FbxAMatrix pivotMatrix;
 			NativeMesh->GetPivot(pivotMatrix);
 			joint->SetPivotMatrix(ToGLMMat4(pivotMatrix));
 
+			// Skin
 			joint->SetSkinMatrix(ToGLMMat4(globalBindposeInverseMatrix));
+
+			// controlPoint - weight, boneIndex
+			/*std::map<size_t, std::pair<float, size_t>> weights;
+			for (int i = 0; i < cluster->GetControlPointIndicesCount(); ++i)
+			{
+				const float weight = static_cast<float>(cluster->GetControlPointWeights()[i]);
+				weights.insert(std::make_pair(i, std::make_pair(weight, jointIndex)));
+			}
+
+			for (auto& v : m_Vertices)
+			{
+				if (v.controlPointIndex == UINT32_MAX)
+					throw CException("Fail.");
+
+				const auto& weightIt = weights.find(v.controlPointIndex);
+				if (weightIt == weights.end())
+					continue;
+
+				v.weights[0] += weightIt->second.first;
+				v.indexes[0] = weightIt->second.second;
+				m_HasBoneWeights = true;
+			}*/
 
 			std::map<int, std::vector<std::pair<float, size_t>>> weightIndexes;
 			for (int i = 0; i < cluster->GetControlPointIndicesCount(); ++i)
@@ -637,6 +669,8 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 				if (it == weightIndexes.end())
 				{
 					auto weight = cluster->GetControlPointWeights()[i];
+					if (weight == 0.0f)
+						continue;
 
 					weightIndexes.insert(std::make_pair(i, std::vector<std::pair<float, size_t>>({ std::make_pair(static_cast<float>(cluster->GetControlPointWeights()[i]), jointIndex) })));
 					continue;
@@ -654,7 +688,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 						for (size_t i = 0; i < w.second.size(); i++)
 						{
 							v.indexes[i] = w.second[i].second;
-							v.weights[i] = w.second[i].first;
+							v.weights[i] += w.second[i].first;
 							m_HasBoneWeights = true;
 						}
 					}

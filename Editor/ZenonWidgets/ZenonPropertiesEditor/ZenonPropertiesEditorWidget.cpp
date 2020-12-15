@@ -44,14 +44,21 @@ void ZenonPropertiesEditorWidget::SetProperties(std::shared_ptr<IPropertiesGroup
 
 	if (m_PropertiesGroup != nullptr)
 	{
-		DisconnectEvents(m_PropertiesGroup);
+		for (const auto& property : m_PropertiesGroup->GetProperties())
+			DisconnectEvents(property.second);
 	}
 
 
 	m_PropertiesGroup = Properties;
 
-	if (auto prop = CreateProperty(m_PropertiesGroup))
-		addProperty(prop);
+	for (const auto& property : m_PropertiesGroup->GetProperties())
+	{
+		if (auto qtProperty = CreateProperty(property.second))
+			addProperty(qtProperty);
+	}
+
+	//if (auto prop = CreateProperty(m_PropertiesGroup))
+	//	addProperty(prop);
 	
 	connect(m_VariantPropertyManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(variantValueChanged(QtProperty*, QVariant)));
 }
@@ -89,19 +96,12 @@ void ZenonPropertiesEditorWidget::variantValueChanged(QtProperty * Property, con
 	std::string fullPropertyPath = Property->whatsThis().toStdString();
 	std::string propertyStringValue = Value.toString().toStdString();
 
-	Log::Info("Prop '%s'.", fullPropertyPath.c_str());
+	Log::Info("PropertiesEditorWidget: Property '%s' value '%s'.", fullPropertyPath.c_str(), propertyStringValue.c_str());
 
-	auto token = FirstToken(fullPropertyPath);
-	std::string tokenFirst = token.first;
-	std::string tokenSecond = token.second;
-
-	if (tokenFirst == "Properties")
-	{
-		auto property = FindProperty(m_PropertiesGroup, tokenSecond);
-		if (property == nullptr)
-			throw CException("Property path '%s' not found.", fullPropertyPath.c_str());
-		property->FromString(propertyStringValue);
-	}
+	auto property = FindProperty(m_PropertiesGroup, fullPropertyPath);
+	if (property == nullptr)
+		throw CException("Property '%s' not found.", fullPropertyPath.c_str());
+	property->FromString(propertyStringValue);
 }
 
 
@@ -116,6 +116,18 @@ QtVariantProperty * ZenonPropertiesEditorWidget::CreateVariantProperty(QVariant:
 	vartiantProp->setToolTip(Property->GetDescription().c_str());
 	vartiantProp->setWhatsThis(Property->GetName().c_str());
 	return vartiantProp;
+}
+
+QtProperty * ZenonPropertiesEditorWidget::CreateGroupProperty(std::shared_ptr<IPropertiesGroup> PropertiesGroup, std::string ParentPropsPath)
+{
+	QtProperty* property = m_GroupPropertyManager->addProperty(PropertiesGroup->GetName().c_str());
+	std::string whatIsThisName = "";
+	if (ParentPropsPath.length() > 0)
+		whatIsThisName += ParentPropsPath + ".";
+	whatIsThisName += property->propertyName().toStdString();
+	property->setWhatsThis(whatIsThisName.c_str());
+
+	return property;
 }
 
 QtProperty* ZenonPropertiesEditorWidget::CreateProperty(std::shared_ptr<IProperty> Property, std::string ParentPropsPath)
@@ -149,30 +161,25 @@ QtProperty* ZenonPropertiesEditorWidget::CreateProperty(std::shared_ptr<IPropert
 	}
 	else if (auto propGroup = std::dynamic_pointer_cast<IPropertiesGroup>(Property))
 	{
-		QtProperty* property = m_GroupPropertyManager->addProperty(propGroup->GetName().c_str());
-		std::string whatIsThisName = "";
-		if (ParentPropsPath.length() > 0)
-			whatIsThisName += ParentPropsPath + ".";
-		whatIsThisName += property->propertyName().toStdString();
-		property->setWhatsThis(whatIsThisName.c_str());
+		QtProperty * qtPropetiesGroup = CreateGroupProperty(propGroup, ParentPropsPath);
 
 		const auto& subProperties = propGroup->GetProperties();
 		if (subProperties.empty())
 		{
-			Log::Warn("Property '%s' is empty IPropertiesGroup.", whatIsThisName.c_str());
+			Log::Warn("Property '%s' is empty IPropertiesGroup.", propGroup->GetName().c_str());
 			return nullptr;
 		}
 
 		for (const auto& it : subProperties)
 		{
-			if (auto subProperty = CreateProperty(it.second, property->whatsThis().toStdString()))
+			if (auto subProperty = CreateProperty(it.second, qtPropetiesGroup->whatsThis().toStdString()))
 			{
-				subProperty->setWhatsThis(property->whatsThis() + "." + subProperty->propertyName());
-				property->addSubProperty(subProperty);
+				subProperty->setWhatsThis(qtPropetiesGroup->whatsThis() + "." + subProperty->propertyName());
+				qtPropetiesGroup->addSubProperty(subProperty);
 			}
 		}
 
-		return property;
+		return qtPropetiesGroup;
 	}
 
 	Log::Warn("Unsupported property [%s] type.", Property->GetName().c_str());

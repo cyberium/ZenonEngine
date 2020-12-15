@@ -403,14 +403,14 @@ glm::mat4 CModelComponent::CalculateBoneLocalMatrix(const std::shared_ptr<ISkele
 {
 	glm::mat4 m(1.0f);
 
-	m *= Bone->GetPivotMatrix();
+	//m *= Bone->GetPivotMatrix();
 	{
 		if (const IAnimation* currentAnimation = GetCurrentAnimation())
 		{
 			if (const auto& skeletonAnimation = currentAnimation->GetSkeletonAnimation())
 			{
-				if (Bone->IsRootBone())
-					m *= glm::inverse(currentAnimation->GetSkeletonAnimation()->GetRootBoneMatrix());
+				//if (Bone->IsRootBone())
+				//	m *= glm::inverse(currentAnimation->GetSkeletonAnimation()->GetRootBoneMatrix());
 
 				if (skeletonAnimation->IsBoneAnimated(Bone->GetName(), GetCurrentAnimationFrame()))
 				{
@@ -435,7 +435,7 @@ glm::mat4 CModelComponent::CalculateBoneLocalMatrix(const std::shared_ptr<ISkele
 			m *= Bone->GetLocalMatrix();
 		}
 	}
-	m *= glm::inverse(Bone->GetPivotMatrix());
+	//m *= glm::inverse(Bone->GetPivotMatrix());
 
 	return m;
 }

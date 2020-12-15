@@ -53,7 +53,7 @@ std::shared_ptr<IFile> CFilesManager::Open(std::string FileName, EFileAccessType
 		if (fs.second->IsExists(FileName))
 			return fs.second->Open(FileName);
 
-	Log::Warn("File '%s' not exists.", FileName.c_str());
+	Log::Error("File '%s' not exists.", FileName.c_str());
 	return nullptr;
 }
 
@@ -87,7 +87,7 @@ size_t CFilesManager::GetFileSize(std::string FileName) const
 		if (fs.second->IsExists(FileName))
 			return fs.second->GetSize(FileName);
 
-	Log::Warn("File '%s' not exists.", FileName.c_str());
+	Log::Error("File '%s' not exists.", FileName.c_str());
 	return 0;
 }
 
@@ -119,7 +119,7 @@ void CFilesManager::RemoveStorage(std::shared_ptr<IznFilesStorage> Storage)
 	});
 	if (it == m_Storages.end())
 	{
-		Log::Warn("Unable to remove file storage, because not found.");
+		Log::Error("Unable to remove file storage, because not found.");
 		return;
 	}
 	m_Storages.erase(it);

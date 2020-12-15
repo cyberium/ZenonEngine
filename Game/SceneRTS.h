@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TowersStorage.h"
+#include "UnitsStorage.h"
 
 class CSceneRTS
 	: public SceneBase
@@ -35,6 +36,7 @@ protected:
 
 private:
 	std::shared_ptr<CTowersStorage> m_TowersStorage;
+	std::shared_ptr<CUnitsStorage> m_UnitsStorage;
 
 	std::shared_ptr<CUIControlRTSTowersPanel> m_UIControlRTSTowersPanel;
 	std::shared_ptr<ISceneNodeRTSPath>        m_RTSUnitsPath;

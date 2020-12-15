@@ -24,6 +24,8 @@ private slots:
 
 private:
 	QtVariantProperty * CreateVariantProperty(QVariant::Type PropType, std::shared_ptr<IProperty> Property);
+	QtProperty * CreateGroupProperty(std::shared_ptr<IPropertiesGroup> PropertiesGroup, std::string ParentPropsPath = "");
+
 	QtProperty*         CreateProperty(std::shared_ptr<IProperty> Property, std::string ParentPropsPath = "");
 	void                DisconnectEvents(std::shared_ptr<IProperty> Root);
 

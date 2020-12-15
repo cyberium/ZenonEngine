@@ -11,6 +11,8 @@ enum class ETreeViewItemType
 	Material,
 	Geometry,
 	Model,
+	ParticleSystem,
+
 	CSceneNode,
 
 	SceneNodeProto

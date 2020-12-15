@@ -10,6 +10,7 @@
 #include "TreeViewItems/ModelTreeViewItem.h"
 #include "TreeViewItems/NodeProtoTreeViewItem.h"
 #include "TreeViewItems/TextureTreeViewItem.h"
+#include "TreeViewItems/ParticleTreeViewItem.h"
 
 #include "Filesystem/ResourcesFilesystem.h"
 
@@ -56,7 +57,7 @@ namespace
 			_ASSERT(ResourceFile->GetChilds().empty());
 
 			const auto& fileNameStruct = ResourceFile->GetFilenameStruct();
-			if (/*fileNameStruct.Extension == "znmdl" || */fileNameStruct.Extension == "znxmdl" /*|| fileNameStruct.Extension == "fbx"*/)
+			if (/*fileNameStruct.Extension == "znmdl" || fileNameStruct.Extension == "znxmdl" ||*/ fileNameStruct.Extension == "fbx")
 			{
 				auto modelTreeViewItem = MakeShared(CModelTreeViewItem, Editor.GetBaseManager(), fileNameStruct.ToString());
 				
@@ -179,6 +180,18 @@ bool CEditorResourceBrowser::OnSelectTreeItem(const IznTreeViewItem * Item)
 		m_Editor.Get3DPreviewFrame().SetTexture(textureObject);
 		return true;
 	}
+	else if (Item->GetType() == ETreeViewItemType::ParticleSystem)
+	{
+		auto particleSystemObject = std::dynamic_pointer_cast<IParticleSystem>(object);
+		if (particleSystemObject == nullptr)
+		{
+			Log::Error("Editor: TreeView item has type 'ParticleSystem', but object don't have.");
+			return false;
+		}
+
+		m_Editor.Get3DPreviewFrame().SetParticleSystem(particleSystemObject);
+		return true;
+	}
 
 	return false;
 }
@@ -249,8 +262,16 @@ bool CEditorResourceBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item,
 	*ContextMenuTitle = "Create";
 
 	auto removeAction = MakeShared(CAction, "Create ParticlesSystem", "");
-	removeAction->SetAction([this]() -> bool {
-		CreateNewParticle();
+	removeAction->SetAction([this, Item]() -> bool {
+		auto particleSystem = CreateNewParticle();
+		auto particleTreeViewItem = MakeShared(CParticleTreeViewItem, particleSystem);
+
+		auto itemAsVirtualFolder = dynamic_cast<const IznTreeViewItemFolder*>(Item);
+		auto itemAsVirtualFolderNonConst = const_cast<IznTreeViewItemFolder*>(itemAsVirtualFolder);
+		itemAsVirtualFolderNonConst->AddChild(particleTreeViewItem);
+
+		GetEditorQtUIFrame().getCollectionViewer()->Refresh();
+
 		return true;
 	});
 
@@ -260,15 +281,17 @@ bool CEditorResourceBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item,
 }
 
 
-bool CEditorResourceBrowser::CreateNewParticle() const
+std::shared_ptr<IParticleSystem> CEditorResourceBrowser::CreateNewParticle() const
 {
-	auto newParticle = MakeShared(CParticleSystem, GetBaseManager());
-	newParticle->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("star_09.png"));
+	auto particleSystem = MakeShared(CParticleSystem, GetBaseManager());
+	particleSystem->SetName("NewParticleSystem");
+	particleSystem->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("star_09.png"));
 
-	GetEditorQtUIFrame().getUI().NewPropsWidget->SetProperties(newParticle->GetProperties());
+	GetEditorQtUIFrame().getUI().NewPropsWidget->SetProperties(particleSystem->GetProperties());
 
-	m_Editor.Get3DPreviewFrame().SetParticleSystem(newParticle);
-	return false;
+	m_Editor.Get3DPreviewFrame().SetParticleSystem(particleSystem);
+
+	return particleSystem;
 }
 
 

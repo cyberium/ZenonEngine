@@ -142,6 +142,7 @@
     <ClCompile Include="ResourcesBrowser\TreeViewItems\FolderTreeViewItem.cpp" />
     <ClCompile Include="ResourcesBrowser\TreeViewItems\ModelTreeViewItem.cpp" />
     <ClCompile Include="ResourcesBrowser\TreeViewItems\NodeProtoTreeViewItem.cpp" />
+    <ClCompile Include="ResourcesBrowser\TreeViewItems\ParticleTreeViewItem.cpp" />
     <ClCompile Include="ResourcesBrowser\TreeViewItems\TextureTreeViewItem.cpp" />
     <ClCompile Include="SceneBrowser\EditorSceneBrowser.cpp" />
     <ClCompile Include="SceneBrowser\SceneNodeTreeViewItem.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="ResourcesBrowser\TreeViewItems\FolderTreeViewItem.h" />
     <ClInclude Include="ResourcesBrowser\TreeViewItems\ModelTreeViewItem.h" />
     <ClInclude Include="ResourcesBrowser\TreeViewItems\NodeProtoTreeViewItem.h" />
+    <ClInclude Include="ResourcesBrowser\TreeViewItems\ParticleTreeViewItem.h" />
     <ClInclude Include="ResourcesBrowser\TreeViewItems\TextureTreeViewItem.h" />
     <ClInclude Include="SceneBrowser\EditorSceneBrowser.h" />
     <ClInclude Include="SceneBrowser\SceneNodeTreeViewItem.h" />

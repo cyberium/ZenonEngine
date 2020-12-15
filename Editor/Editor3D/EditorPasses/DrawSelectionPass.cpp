@@ -59,27 +59,26 @@ std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::ConfigurePipeline(std:
 
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
 
-	std::shared_ptr<IShader> vertexShader;
-	std::shared_ptr<IShader> pixelShader;
-
-	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Editor/EditorShaders.hlsl", "VS_main", { {"INSTANCED", "1"} });
-		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Editor/EditorShaders.hlsl", "PS_main");
+		std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Editor/EditorShaders.hlsl", "VS_main", { {"INSTANCED", "1"} });
+		vertexShader->LoadInputLayoutFromReflector();
+		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+
+		m_ShaderInstancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
+		_ASSERT(m_ShaderInstancesBufferParameter);
 	}
-	vertexShader->LoadInputLayoutFromReflector();
 
-	m_ShaderInstancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
-	_ASSERT(m_ShaderInstancesBufferParameter);
+	{
+		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Editor/EditorShaders.hlsl", "PS_main");
+		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	}
 
-	// PIPELINES
 	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
 	GetPipeline().SetRenderTarget(RenderTarget);
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	
 	return shared_from_this();
 }
 

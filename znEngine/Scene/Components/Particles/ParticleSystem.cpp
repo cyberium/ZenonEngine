@@ -68,7 +68,7 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 	, m_DeaccelerateSEC(1.2f)
 
 	, m_LastParticleTimeMS(0.0f)
-	, m_EmmiterSpawnIntervalMS(100.0f)
+	, m_EmmiterSpawnIntervalMS(1.0f)
 
 	, m_OwnerNode(nullptr)
 {
@@ -517,7 +517,7 @@ void CParticleSystem::CreateNewParticle(const UpdateEventArgs& e)
 	p.StartPosition = p.Position;
 	p.Direction = glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f));
 	p.Direction = Random::UnitVector3f();// CalcSpreadMatrix(glm::two_pi<float>(), 0.0f, 1.0, 1.0f) * glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
-	p.SpeedSEC = 5.0f * Random::Range(0.5f, 1.5f);
+	p.SpeedSEC = 0.0f * Random::Range(0.5f, 1.5f);
 
 	UpdateParticle(p, e);
 

@@ -24,14 +24,18 @@ VSOutput VS_PTN(VSInputPTN IN
 	float4 vertexPosition = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	float3 vertexNormal = float3(0.0f, 0.0f, 0.0f);
 
+	uint numStructs;
+	uint stride;
+	Bones.GetDimensions(numStructs, stride);
+
 	bool atLeastOneBone = false;
 	for (uint i = 0; i < 4; i++)
 	{
-		const float boneWeight = BoneWeights[i];
+		const float boneWeight = BoneWeights[i];	
 		if (boneWeight > 0.0f)
 		{
-			const float4x4 boneMatrix = Bones[BoneIndexes[i]];
-			
+			const uint boneIndex = BoneIndexes[i];
+			const float4x4 boneMatrix = Bones[boneIndex];
 			atLeastOneBone = true;
 			vertexPosition += mul(           boneMatrix, float4(IN.position, 1.0f) * boneWeight);
 			vertexNormal   += mul((float3x3) boneMatrix,        IN.normal          * boneWeight);

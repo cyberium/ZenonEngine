@@ -5,11 +5,12 @@
 
 #include "../znPluginFBXModels/FBXInterfaces.h"
 
+#include "UnitsStorage.h"
+
+
+
 void CSceneDefault::Load3D()
 {
-
-
-
 	//--------------------------------------------------------------------------
 	// Sponza
 	//--------------------------------------------------------------------------
@@ -151,10 +152,22 @@ void CSceneDefault::Load3D()
 		node->GetComponent<IModelComponent>()->SetModel(znModel);
 	}*/
 
+
+	auto unitsStorage = MakeShared(CUnitsStorage, GetBaseManager());
+
+	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
+	node->SetName("model");
+	node->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	//node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
+	node->SetScale(glm::vec3(0.33f));
+	node->GetComponentT<IModelComponent>()->SetModel(unitsStorage->GetModel(0));
+	//node->GetComponentT<IModelComponent>()->PlayAnimation("run", true);
+
+
 	//--------------------------------------------------------------------------
 	// Orc with anims
 	//--------------------------------------------------------------------------
-	{
+	/*{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
 		node->SetName("OrcAnimation");
 		node->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -195,7 +208,7 @@ void CSceneDefault::Load3D()
 
 		node->GetComponentT<IModelComponent>()->SetModel(originalSkeletonModel);
 		node->GetComponentT<IModelComponent>()->PlayAnimation("run", true);
-	}
+	}*/
 
 	//--------------------------------------------------------------------------
 	// Orc with anims ZNMDL

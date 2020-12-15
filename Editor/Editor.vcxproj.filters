@@ -200,6 +200,9 @@
     <ClCompile Include="Editor3D\EditedScene.cpp">
       <Filter>Editor3D</Filter>
     </ClCompile>
+    <ClCompile Include="ResourcesBrowser\TreeViewItems\ParticleTreeViewItem.cpp">
+      <Filter>ResourcesBrowser\TreeViewItems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -320,6 +323,9 @@
     </ClInclude>
     <ClInclude Include="Editor3D\EditedScene.h">
       <Filter>Editor3D</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcesBrowser\TreeViewItems\ParticleTreeViewItem.h">
+      <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
