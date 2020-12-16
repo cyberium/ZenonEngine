@@ -422,6 +422,9 @@
     <ClCompile Include="RTS\Passes\UIRTSUnitPass.cpp">
       <Filter>RTS\Passes</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\DrawNormals.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -717,6 +720,9 @@
     </ClInclude>
     <ClInclude Include="RTS\Passes\UIRTSUnitPass.h">
       <Filter>RTS\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DrawNormals.h">
+      <Filter>Passes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

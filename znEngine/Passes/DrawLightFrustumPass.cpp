@@ -32,6 +32,10 @@ std::shared_ptr<IRenderPassPipelined> CDrawLightFrustumPass::ConfigurePipeline(s
 	__super::ConfigurePipeline(RenderTarget);
 
 	m_PointBox = GetRenderDevice().GetPrimitivesFactory().CreateCube();
+	
+	auto material = MakeShared(MaterialDebug, GetRenderDevice());
+	material->SetDiffuseColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	m_MaterialDebug = material;
 
 	{
 		std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Debug.hlsl", "VS_main");
@@ -44,17 +48,9 @@ std::shared_ptr<IRenderPassPipelined> CDrawLightFrustumPass::ConfigurePipeline(s
 		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 	}
 
-	//m_ShaderInstancesBufferParameter = &vertexShader->GetShaderParameterByName("Instances");
-	//_ASSERT(m_ShaderInstancesBufferParameter->IsValid());
+	GetPipeline().GetDepthStencilState()->SetDepthMode(enableTestDisableWrites);
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);	
 
-	auto material = MakeShared(MaterialDebug, GetRenderDevice());
-	material->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	m_MaterialDebug = material;
-
-	// PIPELINES
-	GetPipeline().GetBlendState()->SetBlendMode(alphaBlending);
-	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);	
 	return shared_from_this();
 }
 

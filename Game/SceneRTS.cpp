@@ -257,11 +257,21 @@ void CSceneRTS::OnWindowKeyReleased(KeyEventArgs & e)
 //
 void CSceneRTS::CreateUnitsModels()
 {
+	for (const auto& model : m_UnitsStorage->GetModels())
+	{
+		SRTSWave wave0;
+		wave0.Model = model; // CreateUnitModel("Toon_RTS/models/WK_archer.FBX", "Toon_RTS/animation/archer/WK_archer_03_run.FBX", "Toon_RTS/animation/archer/WK_archer_10_death_A.FBX");
+		wave0.Count = 1;
+		wave0.IndervalMS = 1500;
+		m_RTSWaves.push_back(wave0);
+	}
+
+	/*
 	{
 		SRTSWave wave0;
 		wave0.Model = m_UnitsStorage->GetModel(0); // CreateUnitModel("Toon_RTS/models/WK_archer.FBX", "Toon_RTS/animation/archer/WK_archer_03_run.FBX", "Toon_RTS/animation/archer/WK_archer_10_death_A.FBX");
 		wave0.Count = 2;
-		wave0.IndervalMS = 1500;
+		wave0.IndervalMS = 3500;
 		m_RTSWaves.push_back(wave0);
 	}
 
@@ -269,7 +279,7 @@ void CSceneRTS::CreateUnitsModels()
 		SRTSWave wave1;
 		wave1.Model = m_UnitsStorage->GetModel(1); //CreateUnitModel("Toon_RTS/models/WK_catapult.FBX", "Toon_RTS/animation/catapult/WK_catapult_02_move.FBX", "Toon_RTS/animation/catapult/WK_catapult_04_death.FBX");
 		wave1.Count = 2;
-		wave1.IndervalMS = 1500;
+		wave1.IndervalMS = 3500;
 		m_RTSWaves.push_back(wave1);
 	}
 
@@ -277,7 +287,7 @@ void CSceneRTS::CreateUnitsModels()
 		SRTSWave wave2;
 		wave2.Model = m_UnitsStorage->GetModel(2); //CreateUnitModel("Toon_RTS/models/WK_cavalry.FBX", "Toon_RTS/animation/cavalry/WK_cavalry_sword_02_walk.FBX", "Toon_RTS/animation/cavalry/WK_cavalry_sword_09_death_A.FBX");
 		wave2.Count = 2;
-		wave2.IndervalMS = 1500;
+		wave2.IndervalMS = 3500;
 		m_RTSWaves.push_back(wave2);
 	}
 
@@ -285,7 +295,7 @@ void CSceneRTS::CreateUnitsModels()
 		SRTSWave wave3;
 		wave3.Model = m_UnitsStorage->GetModel(3); //CreateUnitModel("Toon_RTS/models/WK_heavy_infantry.FBX", "Toon_RTS/animation/heavy_infantry/WK_heavy_infantry_03_run.FBX", "Toon_RTS/animation/heavy_infantry/WK_heavy_infantry_09_death_A.FBX");
 		wave3.Count = 2;
-		wave3.IndervalMS = 1500;
+		wave3.IndervalMS = 3500;
 		m_RTSWaves.push_back(wave3);
 	}
 
@@ -293,9 +303,9 @@ void CSceneRTS::CreateUnitsModels()
 		SRTSWave wave4;
 		wave4.Model = m_UnitsStorage->GetModel(4); //CreateUnitModel("Toon_RTS/models/WK_worker.FBX", "Toon_RTS/animation/worker/WK_worker_03_run.FBX", "Toon_RTS/animation/worker/WK_worker_05_death_A.FBX");
 		wave4.Count = 2;
-		wave4.IndervalMS = 1500;
+		wave4.IndervalMS = 3500;
 		m_RTSWaves.push_back(wave4);
-	}
+	}*/
 }
 
 std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::string RunAnimationName, std::string DeathAnimationName)

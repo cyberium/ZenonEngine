@@ -23,24 +23,26 @@ CParticlesPass::~CParticlesPass()
 std::shared_ptr<IRenderPassPipelined> CParticlesPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
 	__super::ConfigurePipeline(RenderTarget);
-
-	std::shared_ptr<IShader> vertexShader;
-	std::shared_ptr<IShader> geomShader;
-	std::shared_ptr<IShader> pixelShader;
-
-	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
+	
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Particle.hlsl", "VS_main");
-		geomShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::GeometryShader, "3D/Particle.hlsl", "GS_Billboard");
-		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Particle.hlsl", "PS_main");
+		std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Particle.hlsl", "VS_main");
+		vertexShader->LoadInputLayoutFromReflector();
+		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	}
-	vertexShader->LoadInputLayoutFromReflector();
 
-	//std::vector<SCustomInputElement> elements;
-	//elements.push_back({ 0, 0,  ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION, 0 });
-	//elements.push_back({ 0, 12, ECustomVertexElementType::FLOAT2, ECustomVertexElementUsage::TEXCOORD, 0 });
-	//elements.push_back({ 0, 20, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::NORMAL, 0 });
-	//g_pVertexShader->LoadInputLayoutFromCustomElements(elements);
+	{
+		std::shared_ptr<IShader> geomShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::GeometryShader, "3D/Particle.hlsl", "GS_Billboard");
+		
+		m_GeomShaderParticlesBufferParameter = geomShader->GetShaderParameterByName("Particles");
+		_ASSERT(m_GeomShaderParticlesBufferParameter);
+
+		GetPipeline().SetShader(EShaderType::GeometryShader, geomShader);
+	}
+
+	{
+		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Particle.hlsl", "PS_main");
+		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	}
 
 	// PIPELINES
 	GetPipeline().GetBlendState()->SetBlendMode(//alphaBlending
@@ -50,19 +52,7 @@ std::shared_ptr<IRenderPassPipelined> CParticlesPass::ConfigurePipeline(std::sha
 		IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::One)
 	);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(enableTestDisableWrites);
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::GeometryShader, geomShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
-
-	// 'Particles' in geom shader
-	m_GeomShaderParticlesBufferParameter = geomShader->GetShaderParameterByName("Particles");
-	_ASSERT(m_GeomShaderParticlesBufferParameter);
-
-	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
-	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	sampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-	GetPipeline().SetSampler(0, sampler);
-
+	
 	return shared_from_this();
 }
 

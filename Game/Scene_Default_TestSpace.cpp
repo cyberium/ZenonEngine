@@ -155,14 +155,43 @@ void CSceneDefault::Load3D()
 
 	auto unitsStorage = MakeShared(CUnitsStorage, GetBaseManager());
 
-	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
-	node->SetName("model");
-	node->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	//node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
-	node->SetScale(glm::vec3(0.33f));
-	node->GetComponentT<IModelComponent>()->SetModel(unitsStorage->GetModel(0));
-	//node->GetComponentT<IModelComponent>()->PlayAnimation("run", true);
+	{
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
+		node->SetName("model");
+		node->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+		//node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
+		node->SetScale(glm::vec3(0.33f));
+		node->GetComponentT<IModelComponent>()->SetModel(unitsStorage->GetModel(0));
+		node->GetComponentT<IModelComponent>()->PlayAnimation("idle", true);
+	}
 
+	{
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
+		node->SetName("model");
+		node->SetPosition(glm::vec3(25.0f, 0.0f, 0.0f));
+		//node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
+		node->SetScale(glm::vec3(0.33f));
+		node->GetComponentT<IModelComponent>()->SetModel(unitsStorage->GetModel(0));
+		//node->GetComponentT<IModelComponent>()->PlayAnimation("idle", true);
+	}
+
+	/*{
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
+		node->SetName("model");
+		node->SetPosition(glm::vec3(-25.0f, 0.0f, 0.0f));
+		//node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
+		node->SetScale(glm::vec3(0.33f));
+
+		auto fbxModelsLoader = GetBaseManager().GetManager<IznModelsFactory>()->GetLoaderForModel("fbx");
+		_ASSERT(fbxModelsLoader != nullptr);
+		auto fbxSceneLoader = std::dynamic_pointer_cast<IFBXSceneLoader>(fbxModelsLoader);
+		_ASSERT(fbxSceneLoader != nullptr);
+		auto animatedSkeletonModel = fbxSceneLoader->LoadScene("Toon_RTS\\WesternKingdoms\\animation\\Archer\\WK_archer_01_idle.FBX", nullptr)->MergeModels();
+		
+		
+		node->GetComponentT<IModelComponent>()->SetModel(animatedSkeletonModel);
+		//node->GetComponentT<IModelComponent>()->PlayAnimation("idle", true);
+	}*/
 
 	//--------------------------------------------------------------------------
 	// Orc with anims

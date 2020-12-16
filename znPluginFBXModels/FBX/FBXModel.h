@@ -10,8 +10,10 @@ namespace
 	{
 		FBXVertex()
 		{
-			memset(weights, 0x00, 16);
-			memset(indexes, 0x00, 16);
+			controlPointIndex = UINT32_MAX;
+			memset(weights, 0x00, 32);
+			memset(indexes, 0x00, 32);
+			bonesCnt = 0;
 		}
 
 		// Render part
@@ -20,11 +22,12 @@ namespace
 		glm::vec3 normal;
 		//glm::vec3 tangent;
 		//glm::vec3 binormal;
-		float weights[4];
-		uint32 indexes[4];
+		float weights[8];
+		uint32 indexes[8];
 
 		// Engine part
 		uint32 controlPointIndex;
+		size_t bonesCnt;
 		//glm::vec3 _unused;
 	};
 }

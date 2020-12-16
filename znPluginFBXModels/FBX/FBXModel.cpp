@@ -421,35 +421,63 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	m_Geometry = renderDevice.GetObjectsFactory().CreateGeometry();
 
 	{
+		size_t offset = 0;
+
 		std::vector<glm::vec3> positions;
-		ExtractLocalVertexBufferFromGlobal<glm::vec3>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), 0, sizeof(FBXVertex), &positions);
+		ExtractLocalVertexBufferFromGlobal<glm::vec3>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), offset, sizeof(FBXVertex), &positions);
 		m_Geometry->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(positions));
 	}
 
 	{
+		size_t offset = sizeof(glm::vec3);
+
 		std::vector<glm::vec2> texcoords;
-		ExtractLocalVertexBufferFromGlobal<glm::vec2>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), sizeof(glm::vec3), sizeof(FBXVertex), &texcoords);
+		ExtractLocalVertexBufferFromGlobal<glm::vec2>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), offset, sizeof(FBXVertex), &texcoords);
 		m_Geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(texcoords));
 	}
 
 	{
+		size_t offset = sizeof(glm::vec3) + sizeof(glm::vec2);
+
 		std::vector<glm::vec3> normals;
-		ExtractLocalVertexBufferFromGlobal<glm::vec3>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), sizeof(glm::vec3) + sizeof(glm::vec2) , sizeof(FBXVertex), &normals);
+		ExtractLocalVertexBufferFromGlobal<glm::vec3>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), offset, sizeof(FBXVertex), &normals);
 		m_Geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(normals));
 	}
 
 	if (m_HasBoneWeights)
 	{
 		{
+			size_t offset = sizeof(glm::vec3) + sizeof(glm::vec2) + sizeof(glm::vec3);
+
 			std::vector<glm::vec4> blendWeights;
-			ExtractLocalVertexBufferFromGlobal<glm::vec4>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), sizeof(glm::vec3) + sizeof(glm::vec2) + sizeof(glm::vec3), sizeof(FBXVertex), &blendWeights);
+			ExtractLocalVertexBufferFromGlobal<glm::vec4>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), offset, sizeof(FBXVertex), &blendWeights);
 			m_Geometry->AddVertexBuffer(BufferBinding("BLENDWEIGHT", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(blendWeights));
 		}
 
 		{
+			size_t offset = sizeof(glm::vec3) + sizeof(glm::vec2) + sizeof(glm::vec3) + sizeof(glm::vec4) + sizeof(glm::vec4);
+
 			std::vector<glm::uvec4> blendIndices;
-			ExtractLocalVertexBufferFromGlobal<glm::uvec4>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), sizeof(glm::vec3) + sizeof(glm::vec2) + sizeof(glm::vec3) + sizeof(glm::vec4), sizeof(FBXVertex), &blendIndices);
+			ExtractLocalVertexBufferFromGlobal<glm::uvec4>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), offset, sizeof(FBXVertex), &blendIndices);
 			m_Geometry->AddVertexBuffer(BufferBinding("BLENDINDICES", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(blendIndices));
+		}
+
+
+
+		{
+			size_t offset = sizeof(glm::vec3) + sizeof(glm::vec2) + sizeof(glm::vec3) + sizeof(glm::vec4);
+
+			std::vector<glm::vec4> blendWeights2;
+			ExtractLocalVertexBufferFromGlobal<glm::vec4>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), offset, sizeof(FBXVertex), &blendWeights2);
+			m_Geometry->AddVertexBuffer(BufferBinding("BLENDWEIGHT", 1), renderDevice.GetObjectsFactory().CreateVertexBuffer(blendWeights2));
+		}
+
+		{
+			size_t offset = sizeof(glm::vec3) + sizeof(glm::vec2) + sizeof(glm::vec3) + sizeof(glm::vec4) + sizeof(glm::vec4) + sizeof(glm::vec4);
+
+			std::vector<glm::uvec4> blendIndices;
+			ExtractLocalVertexBufferFromGlobal<glm::uvec4>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), offset, sizeof(FBXVertex), &blendIndices);
+			m_Geometry->AddVertexBuffer(BufferBinding("BLENDINDICES", 1), renderDevice.GetObjectsFactory().CreateVertexBuffer(blendIndices));
 		}
 
 	}
@@ -594,7 +622,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 	const FbxVector4 lS = NativeMesh->GetNode()->GetGeometricScaling(FbxNode::eSourcePivot);
 	FbxAMatrix geometryTransform = FbxAMatrix(lT, lR, lS);
 
-	int skinDeformersCount = NativeMesh->GetDeformerCount(fbxsdk::FbxDeformer::eSkin);
+	int skinDeformersCount = NativeMesh->GetDeformerCount(/*fbxsdk::FbxDeformer::eSkin*/);
 	if (skinDeformersCount == 0)
 		return;
 
@@ -603,8 +631,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 		fbxsdk::FbxSkin* skinDeformer = static_cast<fbxsdk::FbxSkin*>(NativeMesh->GetDeformer(deformerIndex, fbxsdk::FbxDeformer::eSkin));
 		if (skinDeformer == nullptr)
 		{
-			Log::Error("FBXMesh: Skin not found for model '%s'.", NativeMesh->GetName());
-			continue;
+			throw CException("FBXMesh: Skin not found for model '%s'.", NativeMesh->GetName());
 		}
 
 		fbxsdk::FbxSkin::EType skinningType = skinDeformer->GetSkinningType();
@@ -626,9 +653,11 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 			cluster->GetTransformLinkMatrix(transformLinkMatrix);
 
 			FbxAMatrix globalBindposeInverseMatrix = transformLinkMatrix.Inverse() * transformMatrix * geometryTransform;
+			glm::mat4 globalBindposeInverseMatrixGLM = ToGLMMat4(globalBindposeInverseMatrix);
+
+			glm::mat4 fuck(0.0f);
 
 			std::string jointname = cluster->GetLink()->GetName();
-
 			size_t jointIndex = m_FBXNode.GetFBXScene().GetFBXSkeleton()->GetBoneIndexByName(jointname);
 			auto joint = m_FBXNode.GetFBXScene().GetFBXSkeleton()->GetBoneByName(jointname);
 			
@@ -637,8 +666,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 			NativeMesh->GetPivot(pivotMatrix);
 			joint->SetPivotMatrix(ToGLMMat4(pivotMatrix));
 
-			// Skin
-			joint->SetSkinMatrix(ToGLMMat4(globalBindposeInverseMatrix));
+
 
 			// controlPoint - weight, boneIndex
 			/*std::map<size_t, std::pair<float, size_t>> weights;
@@ -662,7 +690,51 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 				m_HasBoneWeights = true;
 			}*/
 
-			std::map<int, std::vector<std::pair<float, size_t>>> weightIndexes;
+			struct SBoneWDef
+			{
+				size_t ControlPoint;
+
+				float Weight;
+				size_t BoneIndex;
+			};
+
+			std::vector<SBoneWDef> bonesDefs;
+
+			for (int i = 0; i < cluster->GetControlPointIndicesCount(); ++i)
+			{
+				SBoneWDef def;
+				def.ControlPoint = cluster->GetControlPointIndices()[i];
+				def.Weight = static_cast<float>(cluster->GetControlPointWeights()[i]);
+				def.BoneIndex = jointIndex;
+				bonesDefs.push_back(def);
+			}
+
+			for (auto& v : m_Vertices)
+			{
+				const auto& boneDef = std::find_if(bonesDefs.begin(), bonesDefs.end(), [v](const SBoneWDef& Def) {
+					return v.controlPointIndex == Def.ControlPoint;
+				});
+				if (boneDef == bonesDefs.end())
+					continue;
+
+				glm::mat4 newM = globalBindposeInverseMatrixGLM * boneDef->Weight;
+				fuck += newM;
+
+				if (v.bonesCnt >= 8)
+				{
+					Log::Error("TODO: bones in vertices OOB. %d.", v.bonesCnt);
+					continue;
+				}
+
+				v.weights[v.bonesCnt] = boneDef->Weight;
+				v.indexes[v.bonesCnt] = jointIndex;
+				v.bonesCnt = v.bonesCnt + 1;
+				
+
+				m_HasBoneWeights = true;
+			}
+
+			/*std::map<int, std::vector<std::pair<float, size_t>>> weightIndexes;
 			for (int i = 0; i < cluster->GetControlPointIndicesCount(); ++i)
 			{
 				auto it = weightIndexes.find(i);
@@ -687,13 +759,25 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 					{
 						for (size_t i = 0; i < w.second.size(); i++)
 						{
-							v.indexes[i] = w.second[i].second;
-							v.weights[i] += w.second[i].first;
+
+
+							v.indexes[v.bonesCnt] = w.second[i].second;
+							v.weights[v.bonesCnt] = w.second[i].first;
+							v.bonesCnt += 1;
+
+							if (v.bonesCnt > 1)
+								printf("Test");
+
+
+
 							m_HasBoneWeights = true;
 						}
 					}
 				}
-			}
+			}*/
+
+			// Skin
+			joint->SetSkinMatrix(globalBindposeInverseMatrixGLM);
 		}
 	}
 }

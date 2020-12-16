@@ -409,8 +409,8 @@ glm::mat4 CModelComponent::CalculateBoneLocalMatrix(const std::shared_ptr<ISkele
 		{
 			if (const auto& skeletonAnimation = currentAnimation->GetSkeletonAnimation())
 			{
-				//if (Bone->IsRootBone())
-				//	m *= glm::inverse(currentAnimation->GetSkeletonAnimation()->GetRootBoneMatrix());
+				if (Bone->IsRootBone())
+					m *= glm::inverse(currentAnimation->GetSkeletonAnimation()->GetRootBoneMatrix());
 
 				if (skeletonAnimation->IsBoneAnimated(Bone->GetName(), GetCurrentAnimationFrame()))
 				{

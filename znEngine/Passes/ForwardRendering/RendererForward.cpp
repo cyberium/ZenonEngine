@@ -22,6 +22,7 @@
 #include "Passes/DrawBonesPass.h"
 #include "Passes/DrawBoundingBoxPass.h"
 #include "Passes/DrawLightFrustumPass.h"
+#include "Passes/DrawNormals.h"
 
 #include "Passes/SkyboxPass.h"
 #include "Passes/ForwardRendering/PassForward_DoRenderScene.h"
@@ -164,9 +165,9 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, accumTextures->GetOutputTexture())->ConfigurePipeline(OutputRenderTarget));
 
 #else
-	auto inputTexture = OutputRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
+	//auto inputTexture = OutputRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
 
-	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, inputTexture)->ConfigurePipeline(OutputRenderTarget));
+	//Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, inputTexture)->ConfigurePipeline(OutputRenderTarget));
 #endif
 
 
@@ -178,7 +179,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawLightFrustumPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
-
+	Add3DPass(MakeShared(CPassDrawNormals, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 
 
 	//

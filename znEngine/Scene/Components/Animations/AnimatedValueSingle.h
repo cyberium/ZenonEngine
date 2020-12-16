@@ -149,6 +149,9 @@ public:
 
 	inline T GetValue(uint32 FrameIndex) const
 	{
+		//return m_Values.at(0);
+
+
 		if (IsStaticValue())
 			return m_Values.at(0);
 

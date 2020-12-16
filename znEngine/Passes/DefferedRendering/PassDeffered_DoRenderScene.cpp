@@ -97,6 +97,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 
 
 	// PIPELINES
+	//GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Wireframe);
 	GetPipeline().GetRasterizerState()->SetDepthClipEnabled(false);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 

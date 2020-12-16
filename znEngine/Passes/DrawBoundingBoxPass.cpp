@@ -27,21 +27,19 @@ std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::ConfigurePipeline(st
 	m_BBoxGeometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
 	m_Material = MakeShared(MaterialDebug, GetRenderDevice());
 
-	std::shared_ptr<IShader> vertexShader;
-	std::shared_ptr<IShader> pixelShader;
-
-	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Debug.hlsl", "VS_main");
-		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Debug.hlsl", "PS_main");
+		std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Debug.hlsl", "VS_main");
+		vertexShader->LoadInputLayoutFromReflector();
+		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	}
-	vertexShader->LoadInputLayoutFromReflector();
 
-	// PIPELINES
+	{
+		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Debug.hlsl", "PS_main");
+		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	}
+
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Solid);
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
 	return shared_from_this();
 }
