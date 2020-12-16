@@ -161,6 +161,31 @@ void CEditor3DPreviewScene::SetParticleSystem(std::shared_ptr<IParticleSystem> P
 	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 }
 
+void CEditor3DPreviewScene::SetMaterial(std::shared_ptr<IMaterial> Material)
+{
+	Clean();
+
+	auto sphereGeometry = GetRenderDevice().GetPrimitivesFactory().CreateSphere(15.0f);
+
+	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
+	model->AddConnection(Material, sphereGeometry);
+
+	auto modelComponent = m_SceneNodeForModelPreview->GetComponentT<IModelComponent>();
+	modelComponent->SetModel(model);
+
+	// Play first animation
+	if (false == model->GetAnimations().empty())
+		modelComponent->PlayAnimation(model->GetAnimations().begin()->second->GetName(), true);
+
+	auto modelBBox = model->GetBounds();
+	if (modelBBox.IsInfinite())
+		modelBBox = BoundingBox(glm::vec3(-10.0f), glm::vec3(10.0f));
+
+	m_SceneNodeForModelPreview->SetPosition(-modelBBox.getCenter());
+	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(modelBBox.getRadius() * 1.0f));
+	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
+}
+
 
 
 //
@@ -231,6 +256,18 @@ void CEditor3DPreviewScene::Initialize()
 		m_SceneNodeForParticlePreview->AddComponent(cSceneNodeParticleComponent, MakeShared(CParticlesComponent, *m_SceneNodeForParticlePreview));
 	}
 
+	// Material
+	{
+		m_SceneNodeForMaterialPreview= GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		m_SceneNodeForMaterialPreview->SetName("NodeMaterialPreview");
+		m_SceneNodeForMaterialPreview->AddComponent(cSceneNodeParticleComponent, MakeShared(CParticlesComponent, *m_SceneNodeForParticlePreview));
+	}
+
+
+
+
+
+	/*
 	{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		node->SetName("GridNodeX10");
@@ -246,15 +283,7 @@ void CEditor3DPreviewScene::Initialize()
 		model->AddConnection(mat, geom);
 
 		node->GetComponentT<IModelComponent>()->SetModel(model);
-	}
-
-
-	//
-	// Renderer
-	//
-	auto forwardrender = MakeShared(CRendererForward, GetBaseManager(), *this);
-	forwardrender->Initialize(GetRenderWindow().GetRenderTarget());
-	SetRenderer(forwardrender);
+	}*/
 }
 
 void CEditor3DPreviewScene::Finalize()
@@ -271,29 +300,40 @@ void CEditor3DPreviewScene::Finalize()
 //
 void CEditor3DPreviewScene::Clean()
 {
+	// NodeProto preview
 	if (m_SceneNode != nullptr)
 	{
-		while (m_SceneNode->GetChilds().size() > 0)
+		while (false == m_SceneNode->GetChilds().empty())
 		{
 			auto editorChild = *(m_SceneNode->GetChilds().begin());
 			m_SceneNode->RemoveChild(editorChild);
 		}
 	}
 
+	// IModel preview
 	if (m_SceneNodeForModelPreview != nullptr)
 	{
 		if (auto modelComponent = m_SceneNodeForModelPreview->GetComponentT<IModelComponent>())
 			modelComponent->ResetModel();
 	}
 
+	// ITexture
 	if (m_TextureNode != nullptr)
 	{
 		m_TextureNode->ClearSubgeometries();
 	}
 
+	// IParticlesSystem
 	if (m_SceneNodeForParticlePreview != nullptr)
 	{
 		if (auto particlesComponent = m_SceneNodeForParticlePreview->GetComponentT<IParticleComponent3D>())
 			particlesComponent->DeleteAllParticleSystem();
+	}
+
+	// IMaterials
+	if (m_SceneNodeForMaterialPreview != nullptr)
+	{
+		if (auto modelComponent = m_SceneNodeForModelPreview->GetComponentT<IModelComponent>())
+			modelComponent->ResetModel();
 	}
 }

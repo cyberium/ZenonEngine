@@ -13,12 +13,7 @@
 #include "Passes/PostprocessRendering/Postprocess_AccumTextures.h"
 #include "Passes/PostprocessRendering/Postprocess_ApplyTexture.h"
 
-#include "Passes/DebugPass.h"
 #include "Passes/ParticlesPass.h"
-#include "Passes/DrawBonesPass.h"
-#include "Passes/DrawBoundingBoxPass.h"
-#include "Passes/DrawLightFrustumPass.h"
-
 #include "Passes/SkyboxPass.h"
 
 #include "Passes/UI/UIFontPass.h"
@@ -158,11 +153,6 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, m_RenderScenePass->GetGBufferRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
 
 	Add3DPass(MakeShared(CSkyboxPass, m_RenderDevice)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
-	Add3DPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
-	//Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
-	//Add3DPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
-	//Add3DPass(MakeShared(CDrawLightFrustumPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
-
 	//
 	// UI
 	//

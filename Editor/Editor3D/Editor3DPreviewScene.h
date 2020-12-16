@@ -13,6 +13,7 @@ public:
 	void SetModel(std::shared_ptr<IModel> Model) override;
 	void SetTexture(std::shared_ptr<ITexture> Texture) override;
 	void SetParticleSystem(std::shared_ptr<IParticleSystem> ParticleSystem) override;
+	void SetMaterial(std::shared_ptr<IMaterial> Material) override;
 
 	// SceneBase
 	void Initialize() override;
@@ -25,6 +26,7 @@ private: // Rendering
 	std::shared_ptr<ISceneNode> m_SceneNode;
 	std::shared_ptr<ISceneNode> m_SceneNodeForModelPreview;
 	std::shared_ptr<ISceneNode> m_SceneNodeForParticlePreview;
+	std::shared_ptr<ISceneNode> m_SceneNodeForMaterialPreview;
 
 	std::shared_ptr<IUIControlCommon> m_TextureNode;
 };

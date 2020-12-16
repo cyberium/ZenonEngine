@@ -2,12 +2,12 @@
 
 #include "ZenonWidgets/ZenonTreeView/TreeViewItem.h"
 
-class CParticleTreeViewItem
+class CParticleSystemTreeViewItem
 	: public CznTreeViewItem
 {
 public:
-	CParticleTreeViewItem(const std::shared_ptr<IParticleSystem>& ParticleSystem);
-	virtual ~CParticleTreeViewItem();
+	CParticleSystemTreeViewItem(const std::shared_ptr<IParticleSystem>& ParticleSystem);
+	virtual ~CParticleSystemTreeViewItem();
 
 	// IznTreeViewItem
 	ETreeViewItemType GetType() const override;

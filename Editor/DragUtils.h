@@ -6,12 +6,14 @@ enum class EDragDataSourceType : uint32
 	Material,
 	Geometry,
 	Model,
+	ParticleSytem,
 	SceneNodeProto
 };
 
 void                          CreateDragDataFromSceneNode(const std::shared_ptr<ISceneNode>& Node, CByteBuffer * ByteBuffer);
 void                          CreateDragDataFromModel(const std::shared_ptr<IModel>& Model, CByteBuffer * ByteBuffer);
 void                          CreateDragDataFromTexture(const std::shared_ptr<ITexture>& Texture, CByteBuffer * ByteBuffer);
+void                          CreateDragDataFromParticleSystem(const std::shared_ptr<IParticleSystem>& ParticleSystem, CByteBuffer * ByteBuffer);
 
 EDragDataSourceType           GetDragDataSourceType(const CByteBuffer& ByteBuffer);
 

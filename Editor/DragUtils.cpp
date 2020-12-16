@@ -45,10 +45,10 @@ void CreateDragDataFromModel(const std::shared_ptr<IModel>& Model, CByteBuffer *
 void CreateDragDataFromTexture(const std::shared_ptr<ITexture>& Texture, CByteBuffer * ByteBuffer)
 {
 	if (Texture == nullptr)
-		throw CException("Unable create drag data from IModel, because IModel is nullptr.");
+		throw CException("Unable create drag data from ITexture, because ITexture is nullptr.");
 
 	if (ByteBuffer == nullptr || ByteBuffer->getSize() > 0 || ByteBuffer->getPos() > 0)
-		throw CException("Unable create drag data from '%s' IModel, because ByteBuffer is not empty.", Texture->GetFilename().c_str());
+		throw CException("Unable create drag data from '%s' ITexture, because ByteBuffer is not empty.", Texture->GetFilename().c_str());
 
 	// 4 bytes - sourceType
 	EDragDataSourceType sourceType = EDragDataSourceType::Texture;
@@ -56,6 +56,10 @@ void CreateDragDataFromTexture(const std::shared_ptr<ITexture>& Texture, CByteBu
 
 	// Model filename
 	ByteBuffer->writeString(Texture->GetFilename());
+}
+
+void CreateDragDataFromParticleSystem(const std::shared_ptr<IParticleSystem>& ParticleSystem, CByteBuffer * ByteBuffer)
+{
 }
 
 

@@ -200,7 +200,10 @@
     <ClCompile Include="Editor3D\EditedScene.cpp">
       <Filter>Editor3D</Filter>
     </ClCompile>
-    <ClCompile Include="ResourcesBrowser\TreeViewItems\ParticleTreeViewItem.cpp">
+    <ClCompile Include="ResourcesBrowser\TreeViewItems\ParticleSystemTreeViewItem.cpp">
+      <Filter>ResourcesBrowser\TreeViewItems</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcesBrowser\TreeViewItems\MaterialTreeViewItem.cpp">
       <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClCompile>
   </ItemGroup>
@@ -324,7 +327,10 @@
     <ClInclude Include="Editor3D\EditedScene.h">
       <Filter>Editor3D</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesBrowser\TreeViewItems\ParticleTreeViewItem.h">
+    <ClInclude Include="ResourcesBrowser\TreeViewItems\ParticleSystemTreeViewItem.h">
+      <Filter>ResourcesBrowser\TreeViewItems</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcesBrowser\TreeViewItems\MaterialTreeViewItem.h">
       <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClInclude>
   </ItemGroup>

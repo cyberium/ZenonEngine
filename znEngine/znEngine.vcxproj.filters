@@ -136,6 +136,9 @@
     <Filter Include="RTS\Passes">
       <UniqueIdentifier>{b714615d-012c-4434-804a-da7435bf2c31}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Passes\Debug">
+      <UniqueIdentifier>{77860b93-43be-46f5-bd1e-057836c9a656}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -268,12 +271,6 @@
     <ClCompile Include="Passes\PostprocessRendering\Postprocess_HDR.cpp">
       <Filter>Passes\PostprocessRendering</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\DrawBonesPass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\DrawBoundingBoxPass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.cpp">
       <Filter>Passes\ForwardRendering</Filter>
     </ClCompile>
@@ -317,9 +314,6 @@
       <Filter>Passes\UI</Filter>
     </ClCompile>
     <ClCompile Include="Passes\ParticlesPass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\DebugPass.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
     <ClCompile Include="RTS\UIControls\UIControlRTSTowerBtn.cpp">
@@ -380,9 +374,6 @@
     <ClCompile Include="Passes\DefferedRendering\PassDeffered_ShadowMaps.cpp">
       <Filter>Passes\DefferedRendering</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\DrawLightFrustumPass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Components\CameraComponent.cpp">
       <Filter>Scene\Components</Filter>
     </ClCompile>
@@ -422,8 +413,20 @@
     <ClCompile Include="RTS\Passes\UIRTSUnitPass.cpp">
       <Filter>RTS\Passes</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\DrawNormals.cpp">
-      <Filter>Passes</Filter>
+    <ClCompile Include="Passes\Debug\DebugPass.cpp">
+      <Filter>Passes\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Debug\DrawBonesPass.cpp">
+      <Filter>Passes\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Debug\DrawBoundingBoxPass.cpp">
+      <Filter>Passes\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Debug\DrawLightFrustumPass.cpp">
+      <Filter>Passes\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Debug\DrawNormals.cpp">
+      <Filter>Passes\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -564,12 +567,6 @@
     <ClInclude Include="Passes\PostprocessRendering\Postprocess_HDR.h">
       <Filter>Passes\PostprocessRendering</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\DrawBonesPass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\DrawBoundingBoxPass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.h">
       <Filter>Passes\ForwardRendering</Filter>
     </ClInclude>
@@ -613,9 +610,6 @@
       <Filter>Passes\UI</Filter>
     </ClInclude>
     <ClInclude Include="Passes\ParticlesPass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\DebugPass.h">
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="EngineIntfs.h" />
@@ -676,9 +670,6 @@
     <ClInclude Include="Passes\DefferedRendering\PassDeffered_ShadowMaps.h">
       <Filter>Passes\DefferedRendering</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\DrawLightFrustumPass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Components\CameraComponent.h">
       <Filter>Scene\Components</Filter>
     </ClInclude>
@@ -721,8 +712,20 @@
     <ClInclude Include="RTS\Passes\UIRTSUnitPass.h">
       <Filter>RTS\Passes</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\DrawNormals.h">
-      <Filter>Passes</Filter>
+    <ClInclude Include="Passes\Debug\DebugPass.h">
+      <Filter>Passes\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Debug\DrawBonesPass.h">
+      <Filter>Passes\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Debug\DrawBoundingBoxPass.h">
+      <Filter>Passes\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Debug\DrawLightFrustumPass.h">
+      <Filter>Passes\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Debug\DrawNormals.h">
+      <Filter>Passes\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

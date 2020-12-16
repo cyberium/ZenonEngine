@@ -17,13 +17,14 @@
 
 #include "Passes/PostprocessRendering/Postprocess_RenderGlowSceneObjects.h"
 
-#include "Passes/DebugPass.h"
-#include "Passes/ParticlesPass.h"
-#include "Passes/DrawBonesPass.h"
-#include "Passes/DrawBoundingBoxPass.h"
-#include "Passes/DrawLightFrustumPass.h"
-#include "Passes/DrawNormals.h"
+// Debug
+#include "Passes/Debug/DebugPass.h"
+#include "Passes/Debug/DrawBonesPass.h"
+#include "Passes/Debug/DrawBoundingBoxPass.h"
+#include "Passes/Debug/DrawLightFrustumPass.h"
+#include "Passes/Debug/DrawNormals.h"
 
+#include "Passes/ParticlesPass.h"
 #include "Passes/SkyboxPass.h"
 #include "Passes/ForwardRendering/PassForward_DoRenderScene.h"
 
@@ -179,7 +180,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawLightFrustumPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
-	Add3DPass(MakeShared(CPassDrawNormals, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	//Add3DPass(MakeShared(CPassDrawNormals, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 
 
 	//

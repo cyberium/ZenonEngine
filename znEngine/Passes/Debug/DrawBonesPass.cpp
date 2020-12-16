@@ -81,13 +81,13 @@ EVisitResult CDrawBonesPass::Visit(const std::shared_ptr<ISceneNode>& CSceneNode
 			continue;
 
 		const glm::mat4& rootBoneMatrix = modelsComponent->GetModel()->GetSkeleton()->GetRootBone()->GetLocalMatrix();
-		glm::mat4 resultBoneMatrix = CSceneNode->GetWorldTransfom() * rootBoneMatrix * b.BoneMatrix;
+		glm::mat4 resultBoneMatrix = CSceneNode->GetWorldTransfom() /** rootBoneMatrix*/ * b.BoneMatrix;
 
 		if (false == b.Bone->IsRootBone())
 		{
 			lines.push_back(resultBoneMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-			const auto& resultParentBoneMatrix = CSceneNode->GetWorldTransfom() * rootBoneMatrix * bones[b.Bone->GetParentIndex()].BoneMatrix;
+			const auto& resultParentBoneMatrix = CSceneNode->GetWorldTransfom() /** rootBoneMatrix*/ * bones[b.Bone->GetParentIndex()].BoneMatrix;
 			lines.push_back(resultParentBoneMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 		}
 

@@ -19,6 +19,7 @@ private:
 	bool OnContextMenuTreeItem(const IznTreeViewItem* Item, std::string * ContextMenuTitle, std::vector<std::shared_ptr<IPropertyAction>> * ResultActions);
 
 	std::shared_ptr<IParticleSystem> CreateNewParticle() const;
+	std::shared_ptr<IMaterial> CreateMaterial() const;
 
 private:
 	IBaseManager& GetBaseManager() const;

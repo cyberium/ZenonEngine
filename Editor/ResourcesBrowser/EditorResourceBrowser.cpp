@@ -10,7 +10,8 @@
 #include "TreeViewItems/ModelTreeViewItem.h"
 #include "TreeViewItems/NodeProtoTreeViewItem.h"
 #include "TreeViewItems/TextureTreeViewItem.h"
-#include "TreeViewItems/ParticleTreeViewItem.h"
+#include "TreeViewItems/ParticleSystemTreeViewItem.h"
+#include "TreeViewItems/MaterialTreeViewItem.h"
 
 #include "Filesystem/ResourcesFilesystem.h"
 
@@ -57,7 +58,7 @@ namespace
 			_ASSERT(ResourceFile->GetChilds().empty());
 
 			const auto& fileNameStruct = ResourceFile->GetFilenameStruct();
-			if (/*fileNameStruct.Extension == "znmdl" || fileNameStruct.Extension == "znxmdl" ||*/ fileNameStruct.Extension == "fbx")
+			if (/*fileNameStruct.Extension == "znmdl" ||*/ fileNameStruct.Extension == "znxmdl" /*|| fileNameStruct.Extension == "fbx"*/)
 			{
 				auto modelTreeViewItem = MakeShared(CModelTreeViewItem, Editor.GetBaseManager(), fileNameStruct.ToString());
 				
@@ -188,8 +189,24 @@ bool CEditorResourceBrowser::OnSelectTreeItem(const IznTreeViewItem * Item)
 			Log::Error("Editor: TreeView item has type 'ParticleSystem', but object don't have.");
 			return false;
 		}
-
+		
+		GetEditorQtUIFrame().getUI().NewPropsWidget->SetProperties(particleSystemObject->GetProperties());
 		m_Editor.Get3DPreviewFrame().SetParticleSystem(particleSystemObject);
+
+		return true;
+	}
+	else if (Item->GetType() == ETreeViewItemType::Material)
+	{
+		auto materialObject = std::dynamic_pointer_cast<IMaterial>(object);
+		if (materialObject == nullptr)
+		{
+			Log::Error("Editor: TreeView item has type 'Material', but object don't have.");
+			return false;
+		}
+
+		GetEditorQtUIFrame().getUI().NewPropsWidget->SetProperties(materialObject->GetProperties());
+		m_Editor.Get3DPreviewFrame().SetMaterial(materialObject);
+
 		return true;
 	}
 
@@ -261,22 +278,42 @@ bool CEditorResourceBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item,
 
 	*ContextMenuTitle = "Create";
 
-	auto removeAction = MakeShared(CAction, "Create ParticlesSystem", "");
-	removeAction->SetAction([this, Item]() -> bool {
-		auto particleSystem = CreateNewParticle();
-		auto particleTreeViewItem = MakeShared(CParticleTreeViewItem, particleSystem);
+	// Create ParticleSystem
+	{
+		auto createParticleSystemAction = MakeShared(CAction, "Create ParticlesSystem", "");
+		createParticleSystemAction->SetAction([this, Item]() -> bool {
+			auto particleSystem = CreateNewParticle();
+			auto particleTreeViewItem = MakeShared(CParticleSystemTreeViewItem, particleSystem);
 
-		auto itemAsVirtualFolder = dynamic_cast<const IznTreeViewItemFolder*>(Item);
-		auto itemAsVirtualFolderNonConst = const_cast<IznTreeViewItemFolder*>(itemAsVirtualFolder);
-		itemAsVirtualFolderNonConst->AddChild(particleTreeViewItem);
+			auto itemAsVirtualFolder = dynamic_cast<const IznTreeViewItemFolder*>(Item);
+			auto itemAsVirtualFolderNonConst = const_cast<IznTreeViewItemFolder*>(itemAsVirtualFolder);
+			itemAsVirtualFolderNonConst->AddChild(particleTreeViewItem);
 
-		GetEditorQtUIFrame().getCollectionViewer()->Refresh();
+			GetEditorQtUIFrame().getCollectionViewer()->Refresh();
 
-		return true;
-	});
+			return true;
+		});
+		ResultActions->push_back(createParticleSystemAction);
+	}
 
-	ResultActions->push_back(removeAction);
-	
+	// Create Material
+	{
+		auto createMaterialAction = MakeShared(CAction, "Create Material", "");
+		createMaterialAction->SetAction([this, Item]() -> bool {
+			auto material = CreateMaterial();
+			auto materialTreeViewItem = MakeShared(CMaterialTreeViewItem, material);
+
+			auto itemAsVirtualFolder = dynamic_cast<const IznTreeViewItemFolder*>(Item);
+			auto itemAsVirtualFolderNonConst = const_cast<IznTreeViewItemFolder*>(itemAsVirtualFolder);
+			itemAsVirtualFolderNonConst->AddChild(materialTreeViewItem);
+
+			GetEditorQtUIFrame().getCollectionViewer()->Refresh();
+
+			return true;
+		});
+		ResultActions->push_back(createMaterialAction);
+	}
+
 	return true;
 }
 
@@ -292,6 +329,13 @@ std::shared_ptr<IParticleSystem> CEditorResourceBrowser::CreateNewParticle() con
 	m_Editor.Get3DPreviewFrame().SetParticleSystem(particleSystem);
 
 	return particleSystem;
+}
+
+std::shared_ptr<IMaterial> CEditorResourceBrowser::CreateMaterial() const
+{
+	auto material = MakeShared(MaterialModel, GetBaseManager());
+	material->SetName("NewMaterial");
+	return material;
 }
 
 

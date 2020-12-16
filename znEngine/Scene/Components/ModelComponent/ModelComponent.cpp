@@ -157,7 +157,7 @@ void CModelComponent::CreatePose(size_t BoneStartIndex, size_t BonesCount)
 	{
 		if ((i >= BoneStartIndex) && i < (BoneStartIndex + BonesCount))
 		{
-			m_BonesCalculatedSkinMatrices[i] = rootBone->GetLocalMatrix() * m_BonesCalculated[i].BoneMatrix * bones[i]->GetSkinMatrix();
+			m_BonesCalculatedSkinMatrices[i] = /*rootBone->GetLocalMatrix() **/ m_BonesCalculated[i].BoneMatrix * bones[i]->GetSkinMatrix();
 		}
 		else
 		{
@@ -409,8 +409,8 @@ glm::mat4 CModelComponent::CalculateBoneLocalMatrix(const std::shared_ptr<ISkele
 		{
 			if (const auto& skeletonAnimation = currentAnimation->GetSkeletonAnimation())
 			{
-				if (Bone->IsRootBone())
-					m *= glm::inverse(currentAnimation->GetSkeletonAnimation()->GetRootBoneMatrix());
+				//if (Bone->IsRootBone())
+				//	m *= glm::inverse(currentAnimation->GetSkeletonAnimation()->GetRootBoneMatrix());
 
 				if (skeletonAnimation->IsBoneAnimated(Bone->GetName(), GetCurrentAnimationFrame()))
 				{
@@ -423,15 +423,15 @@ glm::mat4 CModelComponent::CalculateBoneLocalMatrix(const std::shared_ptr<ISkele
 			}
 			else
 			{
-				if (Bone->IsRootBone())
-					m *= glm::inverse(GetModel()->GetSkeleton()->GetRootBoneLocalTransform());
+				//if (Bone->IsRootBone())
+				//	m *= glm::inverse(GetModel()->GetSkeleton()->GetRootBoneLocalTransform());
 				m *= Bone->GetLocalMatrix();
 			}
 		}
 		else
 		{
-			if (Bone->IsRootBone())
-				m *= glm::inverse(GetModel()->GetSkeleton()->GetRootBoneLocalTransform());
+			//if (Bone->IsRootBone())
+			//	m *= glm::inverse(GetModel()->GetSkeleton()->GetRootBoneLocalTransform());
 			m *= Bone->GetLocalMatrix();
 		}
 	}

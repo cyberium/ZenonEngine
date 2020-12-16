@@ -210,6 +210,7 @@ ZN_INTERFACE IEditor3DPreviewFrame
 	virtual void SetModel(std::shared_ptr<IModel> Model) = 0;
 	virtual void SetTexture(std::shared_ptr<ITexture> Texture) = 0;
 	virtual void SetParticleSystem(std::shared_ptr<IParticleSystem> ParticleSystem) = 0;
+	virtual void SetMaterial(std::shared_ptr<IMaterial> Material) = 0;
 };
 
 

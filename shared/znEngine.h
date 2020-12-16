@@ -71,6 +71,7 @@
 #include "../znEngine/Passes/Scene/SceneCreateTypelessListPass.h"
 #include "../znEngine/Passes/Scene/BaseTypedList3DPass.h"
 
+// Technical passes
 #include "../znEngine/Passes/Technical/BeginQueryPass.h"
 #include "../znEngine/Passes/Technical/ClearRenderTargetPass.h"
 #include "../znEngine/Passes/Technical/CopyBufferPass.h"
@@ -81,8 +82,12 @@
 #include "../znEngine/Passes/Technical/GenerateMipMapsPass.h"
 #include "../znEngine/Passes/Technical/InvokeFunctionPass.h"
 
-#include "../znEngine/Passes/DrawBoundingBoxPass.h"
-#include "../znEngine/Passes/ParticlesPass.h"
+// Debug passes
+#include "../znEngine/Passes/Debug/DebugPass.h"
+#include "../znEngine/Passes/Debug/DrawBonesPass.h"
+#include "../znEngine/Passes/Debug/DrawBoundingBoxPass.h"
+#include "../znEngine/Passes/Debug/DrawLightFrustumPass.h"
+#include "../znEngine/Passes/Debug/DrawNormals.h"
 
 #include "../znEngine/Formats/Fonts/FontsManager.h"
 #include "../znEngine/Formats/Images/DDSFormat.h"
