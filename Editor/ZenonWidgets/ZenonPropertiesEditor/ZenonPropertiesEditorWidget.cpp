@@ -125,13 +125,13 @@ void ZenonPropertiesEditorWidget::colorValueChanged(QtProperty * Property, const
 	if (property == nullptr)
 		throw CException("Property '%s' not found.", fullPropertyPath.c_str());
 
-	if (auto propertyAsColor3 = std::dynamic_pointer_cast<IPropertyT<glm::vec3>>(property))
+	if (auto propertyAsColor3 = std::dynamic_pointer_cast<IPropertyT<ColorRGB>>(property))
 	{
-		propertyAsColor3->Set(glm::vec3(r, g, b));
+		propertyAsColor3->Set(ColorRGB(r, g, b));
 	}
-	else if (auto propertyAsColor4 = std::dynamic_pointer_cast<IPropertyT<glm::vec4>>(property))
+	else if (auto propertyAsColor4 = std::dynamic_pointer_cast<IPropertyT<ColorRGBA>>(property))
 	{
-		propertyAsColor3->Set(glm::vec4(r, g, b, a));
+		propertyAsColor4->Set(ColorRGBA(r, g, b, a));
 	}
 }
 
