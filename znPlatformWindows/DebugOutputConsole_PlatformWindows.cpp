@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // General
-#include "DebugOutputConsole.h"
+#include "DebugOutputConsole_PlatformWindows.h"
 
 // Additional
 #include <iostream>
@@ -21,13 +21,13 @@ namespace
 	};
 }
 
-CDebugOutputConsole::CDebugOutputConsole()
+CDebugOutputConsole_PlatformWindows::CDebugOutputConsole_PlatformWindows()
 {
 	m_ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	m_DefaultConsoleColor = ConsoleWindowsColor::GRAY;
 }
 
-CDebugOutputConsole::~CDebugOutputConsole()
+CDebugOutputConsole_PlatformWindows::~CDebugOutputConsole_PlatformWindows()
 {}
 
 
@@ -35,7 +35,7 @@ CDebugOutputConsole::~CDebugOutputConsole()
 //
 // IDebugOutput
 //
-void CDebugOutputConsole::Print(IDebugOutput::DebugMessageType Type, const std::string& Message)
+void CDebugOutputConsole_PlatformWindows::Print(IDebugOutput::DebugMessageType Type, const std::string& Message)
 {
 	// Set color
 	uint16 color;

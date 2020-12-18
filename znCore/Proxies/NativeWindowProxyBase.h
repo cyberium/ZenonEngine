@@ -1,13 +1,12 @@
 #pragma once
 
-class ZN_API CNativeWindow_Proxy
+class ZN_API CNativeWindowProxyBase
 	: public IznNativeWindow
-	, public IznNativeWindow_WindowsSpecific
 	, public IznNativeWindowEventListener
 {
 public:
-	CNativeWindow_Proxy(IznNativeWindow& SourceNativeWindow);
-	virtual ~CNativeWindow_Proxy();
+	CNativeWindowProxyBase(IznNativeWindow& SourceNativeWindow);
+	virtual ~CNativeWindowProxyBase();
 
 	// IznNativeWindow
 	void SetWindowTitle(const std::string& WindowName) override;
@@ -21,9 +20,6 @@ public:
 	void Close() override;
 	void SetEventsListener(IznNativeWindowEventListener* WindowEventsListener) override;
 	void ResetEventsListener() override;
-
-	// IznNativeWindow_WindowsSpecific
-	HWND GetHWnd() const override;
 
 	// IznNativeWindowEventListener
 	void OnWindowInputFocus(EventArgs& Args) override; // Window gets input focus
@@ -45,7 +41,8 @@ public:
 	void OnWindowMouseBlur(EventArgs& Args) override;
 
 protected:
-	IznNativeWindowEventListener* GetMyEventsListener();
+	IznNativeWindowEventListener* GetMyEventsListener() const;
+	IznNativeWindow& GetSourceNativeWindow() const;
 
 private:
 	IznNativeWindowEventListener* m_EventListener;

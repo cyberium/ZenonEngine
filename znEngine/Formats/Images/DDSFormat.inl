@@ -2,13 +2,13 @@
 
 
 template <class DECODER>
-void DecodeDXTBlock(BYTE *dstData, const BYTE *srcBlock, long dstPitch, int bw, int bh)
+void DecodeDXTBlock(uint8 * dstData, const uint8 * srcBlock, long dstPitch, int bw, int bh)
 {
 	DECODER decoder;
 	decoder.Setup(srcBlock);
 	for (int y = 0; y < bh; y++)
 	{
-		BYTE *dst = dstData - y * dstPitch;
+		uint8 *dst = dstData - y * dstPitch;
 		decoder.SetY(y);
 		for (int x = 0; x < bw; x++)
 		{

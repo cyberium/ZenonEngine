@@ -102,15 +102,6 @@ namespace Utils
 		return fileNameStruct;
 	}
 
-	std::string GetExecutablePath()
-	{
-		char buffer[MAX_PATH];
-		if (FALSE == GetModuleFileNameA(NULL, buffer, MAX_PATH))
-			throw CException("Error while 'GetModuleFileName'.");
-		std::string f(buffer);
-		return f.substr(0, f.find_last_of("\\/"));
-	}
-
 	std::string GetWorkingDirectory()
 	{
 		return std::experimental::filesystem::current_path().string();
@@ -174,7 +165,7 @@ namespace Utils
 		"0123456789+/";
 
 
-	static inline bool is_base64(BYTE c) 
+	static inline bool is_base64(uint8 c)
 	{
 		return (isalnum(c) || (c == '+') || (c == '/'));
 	}
@@ -184,8 +175,8 @@ namespace Utils
 		std::string ret;
 		int i = 0;
 		int j = 0;
-		BYTE char_array_3[3];
-		BYTE char_array_4[4];
+		uint8 char_array_3[3];
+		uint8 char_array_4[4];
 
 		while (bufLen--) 
 		{
@@ -285,8 +276,8 @@ namespace Utils
 
 	std::string MatrixToString(const glm::mat4& Matrix)
 	{
-		char buffer[MAX_PATH];
-		if (sprintf_s(buffer, "[%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f]",
+		char buffer[255];
+		if (std::sprintf(buffer, "[%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f]",
 			Matrix[0][0], Matrix[0][1], Matrix[0][2], Matrix[0][3],
 			Matrix[1][0], Matrix[1][1], Matrix[1][2], Matrix[1][3],
 			Matrix[2][0], Matrix[2][1], Matrix[2][2], Matrix[2][3],
@@ -298,7 +289,7 @@ namespace Utils
 	glm::mat4 StringToMatrix(const std::string& String)
 	{
 		glm::mat4 matrix;
-		if (sscanf_s(String.c_str(), "[%f %f %f %f] [%f %f %f %f] [%f %f %f %f] [%f %f %f %f]",
+		if (std::sscanf(String.c_str(), "[%f %f %f %f] [%f %f %f %f] [%f %f %f %f] [%f %f %f %f]",
 			&matrix[0][0], &matrix[0][1], &matrix[0][2], &matrix[0][3],
 			&matrix[1][0], &matrix[1][1], &matrix[1][2], &matrix[1][3],
 			&matrix[2][0], &matrix[2][1], &matrix[2][2], &matrix[2][3],
@@ -324,6 +315,7 @@ namespace Utils
 
 namespace Resources
 {
+#if 0
 	// Convert a multi-byte character std::string (UTF-8) to a multi-byte character std::string (CP1251)
 	std::string utf8_to_cp1251(const std::string& AString)
 	{
@@ -400,6 +392,7 @@ namespace Resources
 
 		return res;
 	}
+#endif
 
 	// Convert a multi-byte character std::string (UTF-8) to a wide (UTF-16) encoded std::string.
 	std::wstring utf8_to_utf16(const std::string& AString)
@@ -413,24 +406,5 @@ namespace Resources
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		return converter.to_bytes(WString);
-	}
-
-	// Gets a std::string resource from the module's resources.
-	std::wstring GetStringResource(HMODULE HModule, int ID, const std::wstring& type)
-	{
-		HRSRC hResource = FindResource(HModule, MAKEINTRESOURCE(ID), type.c_str());
-		if (hResource)
-		{
-			HGLOBAL hResourceData = LoadResource(HModule, hResource);
-			DWORD resourceSize = SizeofResource(HModule, hResource);
-			if (hResourceData && resourceSize > 0)
-			{
-				const wchar_t* resourceData = static_cast<const wchar_t*>(LockResource(hResourceData));
-				std::wstring strData(resourceData, resourceSize);
-				return strData;
-			}
-		}
-
-		return std::wstring();
 	}
 }

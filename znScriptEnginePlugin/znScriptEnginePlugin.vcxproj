@@ -367,9 +367,6 @@
     <ClInclude Include="..\Externals\lua\lvm.h" />
     <ClInclude Include="..\Externals\lua\lzio.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="znScriptEnginePlugin.rc" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F612A767-BA00-42BA-9FDD-C2350132E07F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

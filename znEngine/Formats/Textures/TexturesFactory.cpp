@@ -92,7 +92,7 @@ std::shared_ptr<IFile> CznTexturesFactory::SaveTexture(const std::shared_ptr<ITe
 std::shared_ptr<ITexture> CznTexturesFactory::GetDefaultTexture()
 {
 	if (m_DefaultTexture == nullptr)
-		m_DefaultTexture = LoadTexture2D("IDB_DEFAULT_TEXTURE");
+		m_DefaultTexture = LoadTexture2D("Textures\\default.png");
 	return m_DefaultTexture;
 }
 

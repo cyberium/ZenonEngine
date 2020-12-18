@@ -29,9 +29,6 @@
     <ClCompile Include="Formats\Models\ModelsFactory.cpp" />
     <ClCompile Include="Formats\Models\ModelsLoader_znxmdl.cpp" />
     <ClCompile Include="Formats\Textures\TexturesFactory.cpp" />
-    <ClCompile Include="NativeWindows\NativeWindowFactory.cpp" />
-    <ClCompile Include="NativeWindows\NativeWindow_Proxy.cpp" />
-    <ClCompile Include="NativeWindows\NativeWindow_WindowsSpecific.cpp" />
     <ClCompile Include="Passes\Debug\DebugPass.cpp" />
     <ClCompile Include="Passes\Debug\DrawBonesPass.cpp" />
     <ClCompile Include="Passes\Debug\DrawBoundingBoxPass.cpp" />
@@ -76,7 +73,7 @@
     <ClCompile Include="Passes\UI\UIControlPass.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="RenderDeviceFactory.cpp" />
-    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="ApplicationBase.cpp" />
     <ClCompile Include="RTS\Passes\UIRTSUnitPass.cpp" />
     <ClCompile Include="RTS\SceneNodes\SceneNodeRTSBullet.cpp" />
     <ClCompile Include="RTS\SceneNodes\SceneNodeRTSGround.cpp" />
@@ -132,9 +129,6 @@
     <ClInclude Include="Formats\Models\ModelsFactory.h" />
     <ClInclude Include="Formats\Models\ModelsLoader_znxmdl.h" />
     <ClInclude Include="Formats\Textures\TexturesFactory.h" />
-    <ClInclude Include="NativeWindows\NativeWindowFactory.h" />
-    <ClInclude Include="NativeWindows\NativeWindow_Proxy.h" />
-    <ClInclude Include="NativeWindows\NativeWindow_WindowsSpecific.h" />
     <ClInclude Include="Passes\Debug\DebugPass.h" />
     <ClInclude Include="Passes\Debug\DrawBonesPass.h" />
     <ClInclude Include="Passes\Debug\DrawBoundingBoxPass.h" />
@@ -179,7 +173,7 @@
     <ClInclude Include="Passes\UI\UIControlPass.h" />
     <ClInclude Include="PluginsManager.h" />
     <ClInclude Include="RenderDeviceFactory.h" />
-    <ClInclude Include="Application.h" />
+    <ClInclude Include="ApplicationBase.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="RTS\Passes\UIRTSUnitPass.h" />
     <ClInclude Include="RTS\SceneNodes\SceneNodeRTSBullet.h" />
@@ -216,123 +210,7 @@
     <ClInclude Include="UIControls\UIControlText.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="znEngine.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Resources\Fonts\consola.ttf">
-      <FileType>Document</FileType>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Formats\Images\DDSFormat.inl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resources\Textures\default.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\gamedata\shaders\3D\Debug.hlsl">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Deffered_UIQuad.hlsl">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Editor\EditorShaders.hlsl">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Model_Deffered.hlsl">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Model_Forward.hlsl">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Particle.hlsl">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Shadow.hlsl">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Textured.hlsl">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Text>
-    <Text Include="..\gamedata\shaders\CommonInclude.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </Text>
-    <Text Include="..\gamedata\shaders\DeferredRendering.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </Text>
-    <Text Include="..\gamedata\shaders\ForwardRendering.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </Text>
-    <Text Include="..\gamedata\shaders\Light.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </Text>
-    <Text Include="..\gamedata\shaders\Material.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </Text>
-    <Text Include="..\gamedata\shaders\Types.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\ShadowsUtils.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </Text>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_Button.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_Color.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_Common.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_Font.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_Line.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_Texture.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_VertexBase.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{51252F60-B8DC-4090-BBA3-DD05942110F0}</ProjectGuid>

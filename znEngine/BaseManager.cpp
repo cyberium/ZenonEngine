@@ -7,7 +7,6 @@
 CBaseManager::CBaseManager()
 	: m_Application(nullptr)
 {
-	OutputDebugString(L"BaseManager created.\n");
 }
 
 CBaseManager::~CBaseManager()
@@ -17,8 +16,6 @@ CBaseManager::~CBaseManager()
 		//_ASSERT(rit->Manager.use_count() == 1);
 		rit->Manager.reset();
 	}
-
-	OutputDebugString(L"BaseManager destroyed.\n");
 }
 
 

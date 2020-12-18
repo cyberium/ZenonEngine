@@ -1,21 +1,17 @@
 #include "stdafx.h"
 
 // General
-#include "Application.h"
+#include "ApplicationBase.h"
 
 // Additional
 #include "BaseManager.h"
 #include "PluginsManager.h"
-
 #include "Settings/Settings.h"
-
 #include "AssyncLoader/Loader.h"
-
 
 // Factories
 #include "RenderDeviceFactory.h"
 #include "Scene/EngineSceneExtender.h"
-
 
 // Additional (Images)
 #include "Formats/Images/ImagesFactory.h"
@@ -40,13 +36,12 @@
 #include "ThreadPool.h"
 
 
-
-void Application::InitializeEngineInternal()
+void CApplicationBase::PreInitializeEngine()
 {
+	Random::Initialize();
+
 	m_BaseManager = std::make_unique<CBaseManager>();
 	dynamic_cast<IBaseManagerInternal&>(GetBaseManager()).SetApplicationInternal(this);
-
-	Random::Initialize();
 
 	// Log & console
 	{
@@ -55,9 +50,16 @@ void Application::InitializeEngineInternal()
 		std::shared_ptr<CConsole> console = MakeShared(CConsole, GetBaseManager());
 		GetBaseManager().AddManager<IConsole>(console);
 	}
+}
+
+void CApplicationBase::InitializeEngineInternal()
+{
+	auto application_PlatformBase = dynamic_cast<IApplication_PlatformBase*>(this);
+	if (application_PlatformBase == nullptr)
+		throw CException("Application must support 'IApplicationPlatformSpecific'.");
 
 
-	std::shared_ptr<IznPluginsManager> pluginsManager = MakeShared(CznPluginsManager, GetBaseManager());
+	std::shared_ptr<IznPluginsManager> pluginsManager = MakeShared(CPluginsManager, GetBaseManager());
 	GetBaseManager().AddManager<IznPluginsManager>(pluginsManager);
 
 
@@ -66,7 +68,7 @@ void Application::InitializeEngineInternal()
 		GetBaseManager().AddManager<IFilesManager>(MakeShared(CFilesManager, GetBaseManager()));
 		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::USERDATA, MakeShared(CLocalFilesStorage, "O:/ZenonEngine_userdata/"));
 		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLocalFilesStorage, "O:/ZenonEngine_assets/"));
-		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLibraryResourceFileStotage, GetModuleHandle(L"znEngine.dll")));
+		//GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLibraryResourceFileStotage, GetModuleHandle(L"znEngine.dll")));
 		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLocalFilesStorage, "gamedata/"));
 	}
 
@@ -169,7 +171,7 @@ void Application::InitializeEngineInternal()
 		{
 			try
 			{
-				pluginsManager->AddPlugin(Utils::GetExecutablePath() + "\\" + p);
+				pluginsManager->AddPlugin(application_PlatformBase->GetExecutablePath() + "\\" + p);
 			}
 			catch (const CException& e)
 			{
@@ -181,3 +183,4 @@ void Application::InitializeEngineInternal()
 		pluginsManager->InitializeAllPlugins();
 	}
 }
+

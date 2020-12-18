@@ -580,7 +580,7 @@ void CSceneNode::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 void CSceneNode::AddChildInternal(std::shared_ptr<ISceneNode> childNode)
 {
 	if (childNode == nullptr)
-		throw CException(L"Unable to add nullptr child node to '%s'.", GetName().c_str());
+		throw CException("Unable to add nullptr child node to '%s'.", GetName().c_str());
 
 	if (auto currentChildParent = childNode->GetParent())
 	{
@@ -707,7 +707,7 @@ void CSceneNode::AddChildPrivate(std::shared_ptr<ISceneNode> ChildNode)
 
 	const auto& iter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
 	if (iter != m_Children.end())
-		throw CException(L"This parent already has this child.");
+		throw CException("This parent already has this child.");
 
 	m_Children.push_back(ChildNode);
 
@@ -720,7 +720,7 @@ void CSceneNode::RemoveChildPrivate(std::shared_ptr<ISceneNode> ChildNode)
 {
 	const auto& childListIter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
 	if (childListIter == m_Children.end())
-		throw CException(L"Can't remove child because don't found.");
+		throw CException("Can't remove child because don't found.");
 
 	m_Children.erase(childListIter);
 

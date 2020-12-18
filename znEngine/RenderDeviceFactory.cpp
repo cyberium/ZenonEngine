@@ -9,8 +9,6 @@ CznRenderDeviceFactory::CznRenderDeviceFactory(IBaseManager& BaseManager)
 
 CznRenderDeviceFactory::~CznRenderDeviceFactory()
 {
-	OutputDebugStringW(L"Destroyed.");
-	//m_BaseManager.GetManager<IznPluginsManager>()->RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener>(this));
 }
 
 

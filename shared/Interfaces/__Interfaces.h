@@ -50,19 +50,6 @@ typedef unsigned long long uint64;
 #include <glm/glm/gtx/vector_angle.hpp>
 #pragma warning( pop ) 
 
-#ifndef WIN32_LEAN_AND_MEAN
-#   define WIN32_LEAN_AND_MEAN 1
-#endif
-
-#ifndef NOMINMAX
-#   define NOMINMAX
-#endif
-
-#ifndef VC_EXTRALEAN
-#	define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
-#endif
-
-
 // STL Types
 #include <map>
 #include <set>
@@ -116,6 +103,22 @@ class Rect;
 #include "Interfaces/Types/ObjectClasses.h"
 
 
+//---------------------------------------------------------//
+//--                   Render Types                      --//
+//---------------------------------------------------------//
+#include "Interfaces/Render/Types/RenderTypes.h"
+#include "Interfaces/Render/Types/CustomVertexElement.h"
+#include "Interfaces/Render/Types/Ray.h"
+#include "Interfaces/Render/Types/RaycastHit.h"
+#include "Interfaces/Render/Types/Viewport.h"
+
+//---------------------------------------------------------//
+//--                    Scene Types                      --//
+//---------------------------------------------------------//
+#include "Interfaces/Scene/Types/Light.h"
+
+
+
 
 //---------------------------------------------------------//
 //--                Base Interfaces                      --//
@@ -140,16 +143,6 @@ class Rect;
 #include "Interfaces/Managers/ImagesFactory.h"
 #include "Interfaces/Managers/TexturesFactory.h"
 #include "Interfaces/Managers/SettingsManager.h"
-
-
-//---------------------------------------------------------//
-//--                   Render Types                      --//
-//---------------------------------------------------------//
-#include "Interfaces/Render/Types/RenderTypes.h"
-#include "Interfaces/Render/Types/CustomVertexElement.h"
-#include "Interfaces/Render/Types/Ray.h"
-#include "Interfaces/Render/Types/RaycastHit.h"
-#include "Interfaces/Render/Types/Viewport.h"
 
 
 //---------------------------------------------------------//
@@ -180,12 +173,6 @@ class Rect;
 
 
 //---------------------------------------------------------//
-//--                    Scene Types                      --//
-//---------------------------------------------------------//
-#include "Interfaces/Scene/Types/Light.h"
-
-
-//---------------------------------------------------------//
 //--                 Scene Interfaces                    --//
 //---------------------------------------------------------//
 #include "Interfaces/Scene/IActions.h"
@@ -201,3 +188,10 @@ class Rect;
 #include "Interfaces/Scene/IUIControl.h"
 #include "Interfaces/Scene/IScene.h"
 #include "Interfaces/Scene/ISceneNodeTools.h"
+
+
+
+//---------------------------------------------------------//
+//--                Platform Interfaces                  --//
+//---------------------------------------------------------//
+#include "Interfaces/Platform/PlatformWindows.h"

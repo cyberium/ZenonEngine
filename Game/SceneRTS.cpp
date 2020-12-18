@@ -48,8 +48,8 @@ void CSceneRTS::Initialize()
 		lightComponent->SetLight(MakeShared(CLight, GetBaseManager()));
 		lightComponent->GetLight()->SetCastShadows(true);
 		lightComponent->GetLight()->SetType(ELightType::Directional);
-		lightComponent->GetLight()->SetAmbientColor(glm::vec3(0.25f));
-		lightComponent->GetLight()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		lightComponent->GetLight()->SetAmbientColor(ColorRGB(0.25f));
+		lightComponent->GetLight()->SetColor(ColorRGB(1.0f, 1.0f, 1.0f));
 		lightComponent->GetLight()->SetRange(1000.0f);
 		lightComponent->GetLight()->SetIntensity(1.0077f);
 		lightComponent->GetLight()->SetSpotlightAngle(30.0f);
@@ -106,8 +106,8 @@ void CSceneRTS::Initialize()
 		const float cPlaneY = 0.0f;
 
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
-		textMaterial->SetDiffuseColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		textMaterial->SetDiffuseColor(ColorRGB(1.0f, 1.0f, 1.0f));
+		textMaterial->SetSpecularColor(ColorRGB(1.0f, 1.0f, 1.0f));
 		textMaterial->SetEnviorementMappingEnable(true);
 
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
@@ -334,7 +334,7 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 	// Fix materials
 	for (const auto& connection : originalSkeletonModel->GetConnections())
 	{
-		std::dynamic_pointer_cast<MaterialModel>(connection.Material)->SetDiffuseColor(glm::vec3(1.0f));
+		std::dynamic_pointer_cast<MaterialModel>(connection.Material)->SetDiffuseColor(ColorRGB(1.0f));
 		std::dynamic_pointer_cast<MaterialModel>(connection.Material)->SetDiffuseFactor(1.0f);
 	}
 

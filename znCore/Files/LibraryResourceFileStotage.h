@@ -1,5 +1,7 @@
 #pragma once
 
+#if 0
+
 class ZN_API CLibraryResourceFileStotage 
 	: public IznFilesStorage
 {
@@ -15,3 +17,5 @@ public:
 private:
     const HMODULE m_HModule;
 };
+
+#endif

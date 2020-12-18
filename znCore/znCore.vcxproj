@@ -105,7 +105,6 @@
     <ClCompile Include="Files\LocalFilesStorage.cpp" />
     <ClCompile Include="Log\Console\Console.cpp" />
     <ClCompile Include="Log\Console\ConsoleCommand.cpp" />
-    <ClCompile Include="Log\DebugOutput\DebugOutputConsole.cpp" />
     <ClCompile Include="Log\DebugOutput\DebugOutputLog.cpp" />
     <ClCompile Include="Log\Log.cpp" />
     <ClCompile Include="ObjectsFactories\Object.cpp" />
@@ -135,6 +134,7 @@
     <ClCompile Include="Proxies\GeometryProxie.cpp" />
     <ClCompile Include="Proxies\MaterialProxie.cpp" />
     <ClCompile Include="Proxies\ModelProxie.cpp" />
+    <ClCompile Include="Proxies\NativeWindowProxyBase.cpp" />
     <ClCompile Include="Proxies\SceneNodeProxie.cpp" />
     <ClCompile Include="Scene\ComponentBase.cpp" />
     <ClCompile Include="Scene\SceneFinder.cpp" />
@@ -195,6 +195,7 @@
     <ClInclude Include="..\shared\Interfaces\Managers\SettingsManager.h" />
     <ClInclude Include="..\shared\Interfaces\Managers\TexturesFactory.h" />
     <ClInclude Include="..\shared\Interfaces\ModelsManager.h" />
+    <ClInclude Include="..\shared\Interfaces\Platform\PlatformWindows.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IGeometry.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h" />
     <ClInclude Include="..\shared\Interfaces\Render\ISkeleton.h" />
@@ -266,7 +267,6 @@
     <ClInclude Include="..\shared\Interfaces\__Interfaces.h" />
     <ClInclude Include="Log\Console\Console.h" />
     <ClInclude Include="Log\Console\ConsoleCommand.h" />
-    <ClInclude Include="Log\DebugOutput\DebugOutputConsole.h" />
     <ClInclude Include="Log\DebugOutput\DebugOutputLog.h" />
     <ClInclude Include="Log\Log.h" />
     <ClInclude Include="common.h" />
@@ -298,6 +298,7 @@
     <ClInclude Include="Proxies\MaterialProxie.h" />
     <ClInclude Include="Proxies\MaterialProxieT.h" />
     <ClInclude Include="Proxies\ModelProxie.h" />
+    <ClInclude Include="Proxies\NativeWindowProxyBase.h" />
     <ClInclude Include="Proxies\SceneNodeProxie.h" />
     <ClInclude Include="Proxies\__Proxies.h" />
     <ClInclude Include="Scene\ComponentBase.h" />

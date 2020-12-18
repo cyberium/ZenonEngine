@@ -114,9 +114,4 @@
       <UniqueIdentifier>{a337118f-6799-43a4-8aed-86b5659d80fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="znPluginFBXModels.rc">
-      <Filter>Common</Filter>
-    </ResourceCompile>
-  </ItemGroup>
 </Project>

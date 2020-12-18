@@ -77,7 +77,13 @@ void GeometryBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	for (uint32 i = 0; i < vertexBuffersCnt; i++)
 	{
 		BufferBinding bufferBinding;
-		bufferBinding.Load(ByteBuffer);
+
+		{
+			uint32 signature;
+			ByteBuffer->read(&signature);
+			ByteBuffer->readString(&bufferBinding.Name);
+			ByteBuffer->read(&bufferBinding.Index);
+		}
 
 		std::shared_ptr<IBuffer> vertexBuffer = m_RenderDevice.GetObjectsFactory().LoadVoidBuffer(ByteBuffer);
 		AddVertexBuffer(bufferBinding, vertexBuffer);
@@ -113,7 +119,12 @@ void GeometryBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 	{
 		if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(b.second))
 		{
-			b.first.Save(ByteBuffer);
+			{
+				ByteBuffer->write(&cBufferBindingSignature);
+				ByteBuffer->writeString(b.first.Name);
+				ByteBuffer->write(&b.first.Index);
+			}
+
 			loadableFromFile->Save(ByteBuffer);
 		}
 		else

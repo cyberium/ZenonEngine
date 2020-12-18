@@ -61,7 +61,7 @@ const std::shared_ptr<ITexture>& PipelineStateBase::GetTexture(uint8 ID) const
 {
 	const auto& itr = m_Textures.find(ID);
 	if (itr == m_Textures.end())
-		throw CException(L"Texture with id '%d' not found.", ID);
+		throw CException("Texture with id '%d' not found.", ID);
 	return itr->second;
 }
 
@@ -79,7 +79,7 @@ const std::shared_ptr<ISamplerState>& PipelineStateBase::GetSampler(uint8 ID) co
 {
 	const auto& itr = m_Samplers.find(ID);
 	if (itr == m_Samplers.end())
-		throw CException(L"Sampler with id not found.", ID);
+		throw CException("Sampler with id not found.", ID);
 	return itr->second;
 }
 

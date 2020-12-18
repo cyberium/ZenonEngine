@@ -1,7 +1,8 @@
 #pragma once
 
+#include "GeometryProxie.h"
 #include "MaterialProxie.h"
 #include "MaterialProxieT.h"
 #include "ModelProxie.h"
-#include "GeometryProxie.h"
+#include "NativeWindowProxyBase.h"
 #include "SceneNodeProxie.h"

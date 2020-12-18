@@ -1,13 +1,5 @@
 #pragma once
 
-enum class ZN_API RenderDeviceType 
-{
-	RenderDeviceType_None = 0,
-	RenderDeviceType_DirectX11,
-	RenderDeviceType_DirectX12,
-	RenderDeviceType_OpenGL
-};
-
 ZN_INTERFACE ZN_API IznRenderDeviceCreator
 {
 	virtual ~IznRenderDeviceCreator() {}

@@ -12,8 +12,8 @@
 
 void main_internal(int argc, char *argv[])
 {
-	Application app(Utils::ArgumentsToVector(argc, argv), ::GetModuleHandle(NULL));
-	CNativeWindowFactory nativeWindowFactory(&app);
+	CApplication_PlatformWindows app;
+	//Application app(Utils::ArgumentsToVector(argc, argv), ::GetModuleHandle(NULL));
 
 	app.GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLocalFilesStorage, ""));
 
@@ -29,7 +29,7 @@ void main_internal(int argc, char *argv[])
 
 	// 'Editor3D' scene
 	{
-		auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getMainEditor());
+		auto nativeWindow = app.CreateNativeWindowProxy(*editorUI.getMainEditor());
 		auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
 
 		app.AddRenderWindow(renderWindow);
@@ -44,7 +44,7 @@ void main_internal(int argc, char *argv[])
 
 	// 'Preview' scene
 	{
-		auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getResourcePreview());
+		auto nativeWindow = app.CreateNativeWindowProxy(*editorUI.getResourcePreview());
 		auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
 
 		app.AddRenderWindow(renderWindow);

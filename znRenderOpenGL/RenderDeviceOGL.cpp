@@ -501,5 +501,5 @@ void RenderDeviceOGL::CreateDevice()
 //
 void RenderDeviceOGL::LoadDefaultResources()
 {
-	m_pDefaultTexture = CreateTexture2D("IDB_DEFAULT_TEXTURE");
+	m_pDefaultTexture = CreateTexture2D("Textures\\default.png");
 }

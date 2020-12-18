@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="NativeWindow_PlatformWindows.cpp">
+      <Filter>NativeWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="NativeWindowProxy_PlatformWindows.cpp">
+      <Filter>NativeWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugOutputConsole_PlatformWindows.cpp" />
+    <ClCompile Include="Application_PlatformWindows.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeWindow_PlatformWindows.h">
+      <Filter>NativeWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeWindowProxy_PlatformWindows.h">
+      <Filter>NativeWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugOutputConsole_PlatformWindows.h" />
+    <ClInclude Include="Application_PlatformWindows.h" />
+    <ClInclude Include="..\shared\znPlatformWindows.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{c5db7c05-a282-4fa9-8c26-b39ccbbcdc92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NativeWindow">
+      <UniqueIdentifier>{0200c4b9-4694-4a70-853c-94f975b40cd4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

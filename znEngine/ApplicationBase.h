@@ -1,25 +1,19 @@
 #pragma once
 
-class ZN_API Application 
+class ZN_API CApplicationBase
 	: public IApplication
-	, public IApplication_WindowsSpecific
 {
 public:
-	Application(std::vector<std::string> Arguments);
-	Application(std::vector<std::string> Arguments, HINSTANCE hInstance);
-	virtual ~Application();
+	CApplicationBase();
+	virtual ~CApplicationBase();
 
-	// Default query
 	int                             Run();
 	void                            Stop();
 
-	// Creators
+	// IApplication
 	IRenderDevice&                  CreateRenderDevice(RenderDeviceType DeviceType);
-
 	void                            AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
 	void                            CloseRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
-
-	// IApplication
 	void                            DoBeforeRun() override;
 	int                             DoRun() override;
 	void                            DoAfterRun() override;
@@ -29,12 +23,14 @@ public:
 	IBaseManager&					GetBaseManager() const override;
 	IRenderDevice&                  GetRenderDevice() const override;
 
-	// IApplication_WindowsSpecific
-	HINSTANCE                       GetHInstance() const override;
-
-
 protected:
+	void PreInitializeEngine();
 	void InitializeEngineInternal();
+	void SetStopped();
+	
+	virtual int ProcessEvents() = 0;
+	virtual void ExitApplication() = 0;
+
 
 
 private:
@@ -48,6 +44,4 @@ private:
 	std::unique_ptr<IBaseManager> m_BaseManager;
 	std::unique_ptr<IRenderDevice> m_RenderDevice;
 	std::vector<std::shared_ptr<IRenderWindow>> m_Windows;
-
-	HINSTANCE m_HInstance;
 };

@@ -1,33 +1,11 @@
 #pragma once
 
-class CPluginException : public std::exception
-{
-public:
-	CPluginException(const std::string& Message)
-		: std::exception(Message.c_str())
-	{}
-	virtual ~CPluginException()
-	{}
-};
-
-
-class CPluginException_NotAPlguin : public CPluginException
-{
-public:
-	CPluginException_NotAPlguin(const std::string& Message)
-		: CPluginException(Message)
-	{}
-	virtual ~CPluginException_NotAPlguin()
-	{}
-};
-
-
-class ZN_API CznPluginsManager 
+class ZN_API CPluginsManager
 	: public IznPluginsManager
 {
 public:
-	CznPluginsManager(IBaseManager& BaseManager);
-	virtual ~CznPluginsManager();
+	CPluginsManager(IBaseManager& BaseManager);
+	virtual ~CPluginsManager();
 
 	// IznPluginsManager
 	bool											AddPlugin(const std::string& PluginDLLName) override;
@@ -40,13 +18,12 @@ public:
 private:
 	struct SPluginDescription
 	{
-		std::string Path;
-		HMODULE HModule;
+		std::string Filename;
 		std::shared_ptr<IznPlugin> Plugin;
 	};
 
 private:
-	IBaseManager&                                   m_BaseManager;
+	IBaseManager& m_BaseManager;
 	std::vector<SPluginDescription> m_Plugins;
 	std::vector<std::shared_ptr<IznPluginsEventListener>> m_PluginsEventsListener;
 };

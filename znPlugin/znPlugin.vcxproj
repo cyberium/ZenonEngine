@@ -22,9 +22,6 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="znPlugin.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="znPlugin.rc" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C077D800-0DBE-4CDA-A586-0E65821D91DB}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

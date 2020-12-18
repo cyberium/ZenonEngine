@@ -3,7 +3,7 @@
 //#define MAXD3DDECLUSAGEINDEX    15
 //#define MAXD3DDECLLENGTH        64 // does not include "end" marker vertex element
 
-enum class ZN_API ECustomVertexElementType : uint8_t
+enum class ZN_API ECustomVertexElementType : uint8
 {
 	FLOAT1 = 0,
 	FLOAT2,
@@ -34,7 +34,7 @@ enum class ZN_API ECustomVertexElementType : uint8_t
 	FLOAT16_4,	
 };
 
-enum class ZN_API ECustomVertexElementUsage : uint8_t
+enum class ZN_API ECustomVertexElementUsage : uint8
 {
 	POSITION = 0,
 	BLENDWEIGHT,
@@ -53,11 +53,11 @@ enum class ZN_API ECustomVertexElementUsage : uint8_t
 
 struct ZN_API SCustomInputElement
 {
-	UINT                      Slot;
-	UINT                      Offset;
+	uint32                    Slot;
+	uint32                    Offset;
 	ECustomVertexElementType  Type;       // Data type
 	ECustomVertexElementUsage Usage;      // Semantics
-	BYTE                      UsageIndex; // Semantic index
+	uint8                     UsageIndex; // Semantic index
 };
 
 //size_t ZN_API CustomElementsLength(SCustomInputElement * elements);

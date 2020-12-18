@@ -3,7 +3,7 @@
 // General
 #include "ShaderParameterBase.h"
 
-ShaderParameterBase::ShaderParameterBase(const std::string& name, UINT slotID, IShader* shader, EType parameterType)
+ShaderParameterBase::ShaderParameterBase(const std::string& name, uint32 slotID, IShader* shader, EType parameterType)
 	: m_Name(name)
 	, m_uiSlotID(slotID)
 	, m_Shader(shader)

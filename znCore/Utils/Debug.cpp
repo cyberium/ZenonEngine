@@ -3,6 +3,10 @@
 // General
 #include "Debug.h"
 
+// Additional
+#include <cstdarg>
+
+
 CException::CException(const char * Message, ...)
 {
 	va_list args;
@@ -21,43 +25,9 @@ CException::CException(const char * Message, ...)
 
 CException::CException(std::string Message)
 	: m_Message(Message)
-{
-}
+{}
 
-CException::CException(const wchar_t * WMessage, ...)
-{
-	va_list args;
-	va_start(args, WMessage);
-
-	int len = vswprintf(NULL, 0, WMessage, args);
-	if (len > 0)
-	{
-		std::wstring wMessage;
-		wMessage.resize(len + 1);
-		vswprintf(&wMessage[0], len + 1, WMessage, args);
-		wMessage.resize(len);
-
-		m_Message = Resources::utf16_to_utf8(std::wstring(wMessage, len));
-	}
-
-	va_end(args);
-}
-
-CException::CException(std::wstring WMessage)
-{
-	m_Message = Resources::utf16_to_utf8(WMessage);
-}
-
-
-
-
-
-///
-
-
-
-
-
+//--------------
 
 CznRenderException::CznRenderException(const char * Message, ...)
 {
@@ -74,19 +44,6 @@ CznRenderException::CznRenderException(const char * Message, ...)
 	va_end(args);
 }
 
-CznRenderException::CznRenderException(const wchar_t * WMessage, ...)
-{
-	va_list args;
-	va_start(args, WMessage);
-
-	int len = vswprintf(NULL, 0, WMessage, args);
-	if (len > 0)
-	{
-		std::wstring wMessage;
-		wMessage.resize(len);
-		vswprintf(&wMessage[0], len, WMessage, args);
-		m_Message = Resources::utf16_to_utf8(wMessage);
-	}
-
-	va_end(args);
-}
+CznRenderException::CznRenderException(std::string Message)
+	: CException(Message) 
+{}

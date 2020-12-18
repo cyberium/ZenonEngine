@@ -4,8 +4,8 @@ namespace DDSFormat
 {
 
 #define MAKEFOURCC(ch0, ch1, ch2, ch3) \
-	((DWORD)(BYTE)(ch0) | ((DWORD)(BYTE)(ch1) << 8) |   \
-    ((DWORD)(BYTE)(ch2) << 16) | ((DWORD)(BYTE)(ch3) << 24 ))
+	((uint32)(uint8)(ch0) | ((uint32)(uint8)(ch1) << 8) |   \
+    ((uint32)(uint8)(ch2) << 16) | ((uint32)(uint8)(ch3) << 24 ))
 
 #define FOURCC_DXT1	MAKEFOURCC('D','X','T','1')
 #define FOURCC_DXT2	MAKEFOURCC('D','X','T','2')
@@ -20,14 +20,14 @@ namespace DDSFormat
 
 	typedef struct tagDDPIXELFORMAT
 	{
-		DWORD dwSize;	// size of this structure (must be 32)
-		DWORD dwFlags;	// see DDPF_*
-		DWORD dwFourCC;
-		DWORD dwRGBBitCount;	// Total number of bits for RGB formats
-		DWORD dwRBitMask;
-		DWORD dwGBitMask;
-		DWORD dwBBitMask;
-		DWORD dwRGBAlphaBitMask;
+		uint32 dwSize;	// size of this structure (must be 32)
+		uint32 dwFlags;	// see DDPF_*
+		uint32 dwFourCC;
+		uint32 dwRGBBitCount;	// Total number of bits for RGB formats
+		uint32 dwRBitMask;
+		uint32 dwGBitMask;
+		uint32 dwBBitMask;
+		uint32 dwRGBAlphaBitMask;
 	} DDPIXELFORMAT;
 
 	// DIRECTDRAW PIXELFORMAT FLAGS
@@ -41,9 +41,9 @@ namespace DDSFormat
 
 	typedef struct tagDDCAPS2
 	{
-		DWORD dwCaps1;	// Zero or more of the DDSCAPS_* members
-		DWORD dwCaps2;	// Zero or more of the DDSCAPS2_* members
-		DWORD dwReserved[2];
+		uint32 dwCaps1;	// Zero or more of the DDSCAPS_* members
+		uint32 dwCaps2;	// Zero or more of the DDSCAPS2_* members
+		uint32 dwReserved[2];
 	} DDCAPS2;
 
 	// DIRECTDRAWSURFACE CAPABILITY FLAGS
@@ -69,17 +69,17 @@ namespace DDSFormat
 
 	typedef struct tagDDSURFACEDESC2
 	{
-		DWORD dwSize;	// size of this structure (must be 124)
-		DWORD dwFlags;	// combination of the DDSS_* flags
-		DWORD dwHeight;
-		DWORD dwWidth;
-		DWORD dwPitchOrLinearSize;
-		DWORD dwDepth;	// Depth of a volume texture
-		DWORD dwMipMapCount;
-		DWORD dwReserved1[11];
+		uint32 dwSize;	// size of this structure (must be 124)
+		uint32 dwFlags;	// combination of the DDSS_* flags
+		uint32 dwHeight;
+		uint32 dwWidth;
+		uint32 dwPitchOrLinearSize;
+		uint32 dwDepth;	// Depth of a volume texture
+		uint32 dwMipMapCount;
+		uint32 dwReserved1[11];
 		DDPIXELFORMAT ddpfPixelFormat;
 		DDCAPS2 ddsCaps;
-		DWORD dwReserved2;
+		uint32 dwReserved2;
 	} DDSURFACEDESC2;
 
 	enum
@@ -97,40 +97,40 @@ namespace DDSFormat
 
 	typedef struct tagDDSHEADER
 	{
-		DWORD dwMagic;			// FOURCC: "DDS "
+		uint32 dwMagic;			// FOURCC: "DDS "
 		DDSURFACEDESC2 surfaceDesc;
 	} DDSHEADER;
 
 	typedef struct tagColor8888
 	{
-		BYTE r;
-		BYTE g;
-		BYTE b;
-		BYTE a;
+		uint8 r;
+		uint8 g;
+		uint8 b;
+		uint8 a;
 	} Color8888;
 
 	typedef struct tagColor565
 	{
-		WORD b : 5;
-		WORD g : 6;
-		WORD r : 5;
+		uint16 b : 5;
+		uint16 g : 6;
+		uint16 r : 5;
 	} Color565;
 
 	typedef struct tagDXTColBlock
 	{
 		Color565 colors[2];
-		BYTE row[4];
+		uint8 row[4];
 	} DXTColBlock;
 
 	typedef struct tagDXTAlphaBlockExplicit
 	{
-		WORD row[4];
+		uint16 row[4];
 	} DXTAlphaBlockExplicit;
 
 	typedef struct tagDXTAlphaBlock3BitLinear
 	{
-		BYTE alpha[2];
-		BYTE data[6];
+		uint8 alpha[2];
+		uint8 data[6];
 	} DXTAlphaBlock3BitLinear;
 
 	typedef struct tagDXT1Block
@@ -193,7 +193,7 @@ namespace DDSFormat
 		unsigned m_colorRow;
 
 	public:
-		void Setup(const BYTE *pBlock)
+		void Setup(const uint8 *pBlock)
 		{
 			m_pBlock = (const typename INFO::Block *)pBlock;
 			GetBlockColors(m_pBlock->color, m_colors, INFO::isDXT1);
@@ -239,7 +239,7 @@ namespace DDSFormat
 		{
 			base::GetColor(x, y, color);
 			const unsigned bits = (m_alphaRow >> (x * 4)) & 0xF;
-			color.a = (BYTE)((bits * 0xFF) / 0xF);
+			color.a = (uint8)((bits * 0xFF) / 0xF);
 		}
 	};
 
@@ -257,7 +257,7 @@ namespace DDSFormat
 		int m_offset;
 
 	public:
-		void Setup(const BYTE *pBlock)
+		void Setup(const uint8 *pBlock)
 		{
 			base::Setup(pBlock);
 
@@ -298,7 +298,7 @@ namespace DDSFormat
 		{
 			base::GetColor(x, y, color);
 			unsigned bits = (m_alphaBits >> (x * 3 + m_offset)) & 7;
-			color.a = (BYTE)m_alphas[bits];
+			color.a = (uint8)m_alphas[bits];
 		}
 	};
 

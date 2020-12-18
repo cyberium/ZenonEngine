@@ -59,9 +59,9 @@ private:
 #define LEFT	1
 #define MIDDLE	2
 
-inline char HitBoundingBox(glm::vec3 minB, glm::vec3 maxB, glm::vec3 origin, glm::vec3 dir)
+inline bool HitBoundingBox(glm::vec3 minB, glm::vec3 maxB, glm::vec3 origin, glm::vec3 dir)
 {
-	char inside = TRUE;
+	char inside = true;
 	char quadrant[NUMDIM];
 	register int i;
 	int whichPlane;
@@ -76,13 +76,13 @@ inline char HitBoundingBox(glm::vec3 minB, glm::vec3 maxB, glm::vec3 origin, glm
 		{
 			quadrant[i] = LEFT;
 			candidatePlane[i] = minB[i];
-			inside = FALSE;
+			inside = false;
 		}
 		else if (origin[i] > maxB[i])
 		{
 			quadrant[i] = RIGHT;
 			candidatePlane[i] = maxB[i];
-			inside = FALSE;
+			inside = false;
 		}
 		else
 		{
@@ -95,7 +95,7 @@ inline char HitBoundingBox(glm::vec3 minB, glm::vec3 maxB, glm::vec3 origin, glm
 	if (inside) 
 	{
 		coord = origin;
-		return (TRUE);
+		return true;
 	}
 
 
@@ -115,8 +115,8 @@ inline char HitBoundingBox(glm::vec3 minB, glm::vec3 maxB, glm::vec3 origin, glm
 			whichPlane = i;
 
 	/* Check final candidate actually inside box */
-	if (maxT[whichPlane] < 0.0f) 
-		return (FALSE);
+	if (maxT[whichPlane] < 0.0f)
+		return false;
 
 	for (i = 0; i < NUMDIM; i++)
 	{
@@ -124,7 +124,7 @@ inline char HitBoundingBox(glm::vec3 minB, glm::vec3 maxB, glm::vec3 origin, glm
 		{
 			coord[i] = origin[i] + maxT[whichPlane] * dir[i];
 			if (coord[i] < minB[i] || coord[i] > maxB[i])
-				return (FALSE);
+				return false;
 		}
 		else
 		{
@@ -132,7 +132,7 @@ inline char HitBoundingBox(glm::vec3 minB, glm::vec3 maxB, glm::vec3 origin, glm
 		}
 	}
 
-	return (TRUE);				/* ray hits box */
+	return true;				/* ray hits box */
 }
 
 

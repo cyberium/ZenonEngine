@@ -45,7 +45,7 @@ ZN_INTERFACE ZN_API IBaseManager
 	{
 		IManager* manager = GetManager(T::GetClassT());
 		if (manager == nullptr)
-			throw CException(L"Manager not found.");
+			throw CException("Manager not found.");
 		return dynamic_cast<T*>(manager);
 	}
 };

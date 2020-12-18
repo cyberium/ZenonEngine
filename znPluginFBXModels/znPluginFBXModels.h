@@ -20,4 +20,4 @@ private:
 	IBaseManager& m_BaseManager;
 };
 
-extern "C" __declspec(dllexport) IznPlugin* WINAPI GetPlugin(IBaseManager* BaseManager);
+extern "C" __declspec(dllexport) IznPlugin* __stdcall GetPlugin(IBaseManager* BaseManager);

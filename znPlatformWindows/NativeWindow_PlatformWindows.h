@@ -1,13 +1,13 @@
 #pragma once
 
-class ZN_API CNativeWindow_WindowsSpecific
+class ZN_API CNativeWindow_PlatformWindows
 	: public IznNativeWindow
 	, public IznNativeWindow_WindowsSpecific
 	, public INativeWindow_WindowsSpecificEx
 {
 public:
-	CNativeWindow_WindowsSpecific(HWND HWnd);
-	virtual ~CNativeWindow_WindowsSpecific();
+	CNativeWindow_PlatformWindows(HWND HWnd);
+	virtual ~CNativeWindow_PlatformWindows();
 
 	// IznNativeWindow
 	void SetWindowTitle(const std::string& WindowName) override;

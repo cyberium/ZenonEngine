@@ -2,8 +2,7 @@
 
 #include "../znEngine/common.h"
 
-#include "../znEngine/Application.h"
-#include "../znEngine/NativeWindows/NativeWindowFactory.h"
+#include "../znEngine/ApplicationBase.h"
 
 
 // Loader

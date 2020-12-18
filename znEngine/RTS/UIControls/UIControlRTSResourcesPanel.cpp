@@ -62,7 +62,7 @@ void CUIControlRTSResourcesPanel::Initialize()
 
 	m_GoldText = GetScene().CreateUIControlTCast<IUIControlText>(shared_from_this());
 	m_GoldText->SetLocalPosition(glm::vec2(200.0f, 35.0f));
-	m_GoldText->SetFont(GetBaseManager().GetManager<IznFontsManager>()->Add(GetRenderDevice(), "IDB_FONT_CONSOLAS", 56));
+	m_GoldText->SetFont(GetBaseManager().GetManager<IznFontsManager>()->Add(GetRenderDevice(), "Fonts/consola.ttf", 56));
 	m_GoldText->SetText("888 $");
 	m_GoldText->SetColor(glm::vec4(0.8f, 0.8f, 0.1f, 1.0f));
 

@@ -97,6 +97,9 @@
     <Filter Include="Properties">
       <UniqueIdentifier>{bc1f0964-30fc-4288-a8ea-cb5bd992e806}</UniqueIdentifier>
     </Filter>
+    <Filter Include="__Interfaces\Platform">
+      <UniqueIdentifier>{21253664-1b89-423e-a8dc-904b66130a06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -240,9 +243,6 @@
     <ClCompile Include="Log\Console\ConsoleCommand.cpp">
       <Filter>Log\Console</Filter>
     </ClCompile>
-    <ClCompile Include="Log\DebugOutput\DebugOutputConsole.cpp">
-      <Filter>Log\DebugOutput</Filter>
-    </ClCompile>
     <ClCompile Include="Log\DebugOutput\DebugOutputLog.cpp">
       <Filter>Log\DebugOutput</Filter>
     </ClCompile>
@@ -341,6 +341,9 @@
     </ClCompile>
     <ClCompile Include="ObjectsFactories\ObjectProxy.cpp">
       <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Proxies\NativeWindowProxyBase.cpp">
+      <Filter>__Proxies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -659,9 +662,6 @@
     <ClInclude Include="Log\Console\ConsoleCommand.h">
       <Filter>Log\Console</Filter>
     </ClInclude>
-    <ClInclude Include="Log\DebugOutput\DebugOutputConsole.h">
-      <Filter>Log\DebugOutput</Filter>
-    </ClInclude>
     <ClInclude Include="Log\DebugOutput\DebugOutputLog.h">
       <Filter>Log\DebugOutput</Filter>
     </ClInclude>
@@ -835,6 +835,12 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Types\Color.h">
       <Filter>__Interfaces\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Proxies\NativeWindowProxyBase.h">
+      <Filter>__Proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Platform\PlatformWindows.h">
+      <Filter>__Interfaces\Platform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

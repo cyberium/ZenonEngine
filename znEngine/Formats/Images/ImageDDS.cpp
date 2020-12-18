@@ -191,8 +191,8 @@ bool CImageDDS::LoadDXT_Helper(std::shared_ptr<IFile> io)
 			io->readBytes(input_buffer, sizeof(typename INFO::Block) * inputLine);
 
 			// TODO: probably need some endian work here
-			BYTE *pbSrc = (BYTE *)input_buffer;
-			BYTE *pbDst = GetLine(y);
+			uint8 *pbSrc = (uint8 *)input_buffer;
+			uint8 *pbDst = GetLine(y);
 
 			if (m_Width >= 4)
 			{
@@ -214,8 +214,8 @@ bool CImageDDS::LoadDXT_Helper(std::shared_ptr<IFile> io)
 	{
 		io->readBytes(input_buffer, sizeof(typename INFO::Block) * inputLine);
 		// TODO: probably need some endian work here
-		BYTE *pbSrc = (BYTE *)input_buffer;
-		BYTE *pbDst = GetLine(y);
+		uint8 *pbSrc = (uint8 *)input_buffer;
+		uint8 *pbDst = GetLine(y);
 
 		if (m_Width >= 4)
 		{

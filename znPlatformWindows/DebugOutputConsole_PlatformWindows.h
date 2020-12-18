@@ -1,11 +1,11 @@
 #pragma once
 
-class CDebugOutputConsole
+class ZN_API CDebugOutputConsole_PlatformWindows
 	: public IDebugOutput
 {
 public:
-	CDebugOutputConsole();
-	virtual ~CDebugOutputConsole();
+	CDebugOutputConsole_PlatformWindows();
+	virtual ~CDebugOutputConsole_PlatformWindows();
 
 	// IDebugOutput
 	void Print(IDebugOutput::DebugMessageType Type, const std::string& Message) override;

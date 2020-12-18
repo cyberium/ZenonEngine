@@ -3,27 +3,22 @@
 // General
 #include "PluginsManager.h"
 
-
-
-typedef IznPlugin*(GetPluginFuncProc)(IBaseManager& BaseManager);
-
-
-CznPluginsManager::CznPluginsManager(IBaseManager& BaseManager)
+CPluginsManager::CPluginsManager(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {}
 
-CznPluginsManager::~CznPluginsManager()
+CPluginsManager::~CPluginsManager()
 {
 	for (auto rIt = m_Plugins.rbegin(); rIt != m_Plugins.rend(); rIt++)
 	{
 		const auto& plugin = (*rIt);
 		try
 		{
-			RemovePlugin(plugin.Path);
+			RemovePlugin(plugin.Filename);
 		}
 		catch (const CException& e)
 		{
-			Log::Error("Error while removing plugin '%s'.", plugin.Path.c_str());
+			Log::Error("Error while removing plugin '%s'.", plugin.Filename.c_str());
 			Log::Error("--->%s", e.MessageCStr());
 		}
 	}
@@ -36,59 +31,30 @@ CznPluginsManager::~CznPluginsManager()
 //
 // IznPluginsManager
 //
-bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
+bool CPluginsManager::AddPlugin(const std::string& PluginDLLName)
 {
-	try
-	{
-		SPluginDescription pluginDescription;
-		pluginDescription.Path = PluginDLLName;
+	const IApplication_PlatformBase& applicationPluginSpecific = dynamic_cast<const IApplication_PlatformBase&>(m_BaseManager.GetApplication());
 
-		pluginDescription.HModule = LoadLibraryA(pluginDescription.Path.c_str());
-		if (pluginDescription.HModule == NULL)
-		{
-			DWORD lastError = ::GetLastError();
-			throw CPluginException_NotAPlguin("Error while ::LoadLibrary().");
-		}
+	SPluginDescription pluginDescription;
+	pluginDescription.Filename = PluginDLLName;
+	pluginDescription.Plugin = std::shared_ptr<IznPlugin>(applicationPluginSpecific.LoadPlugin(PluginDLLName));
 
+	m_Plugins.push_back(pluginDescription);
 
-		void* getPluginProcNative = ::GetProcAddress(pluginDescription.HModule, "GetPlugin");
-		if (getPluginProcNative == NULL)
-		{
-			::FreeLibrary(pluginDescription.HModule);
-			return false;
-		}
-
-		pluginDescription.Plugin = std::shared_ptr<IznPlugin>(((GetPluginFuncProc*)getPluginProcNative)(m_BaseManager));
-		if (pluginDescription.Plugin == nullptr)
-		{
-			::FreeLibrary(pluginDescription.HModule);
-			throw CPluginException("Error while create plugin object.");
-		}
-
-		m_Plugins.push_back(pluginDescription);
-
-		// Notify all listeners about new plguin
-		for (const auto& listener : m_PluginsEventsListener)
-			listener->OnPluginAdded(pluginDescription.Plugin);
-	}
-	catch (const CPluginException_NotAPlguin& e)
-	{
-		Log::Warn(("Plugin[" + PluginDLLName + "]: " + e.what()).c_str());
-		return false;
-	}
-	catch (const CPluginException& e)
-	{
-		throw std::exception(("Plugin[" + PluginDLLName + "]: " + e.what()).c_str());
-	}
+	// Notify all listeners about new plguin
+	for (const auto& listener : m_PluginsEventsListener)
+		listener->OnPluginAdded(pluginDescription.Plugin);
 
 	Log::Green("Plugin '%s' successfully added.", PluginDLLName.c_str());
 
 	return true;
 }
 
-void CznPluginsManager::RemovePlugin(const std::string& PluginDLLName)
+void CPluginsManager::RemovePlugin(const std::string& PluginDLLName)
 {
-	const auto& iter = std::find_if(m_Plugins.begin(), m_Plugins.end(), [&PluginDLLName](const SPluginDescription& PluginDescription) -> bool { return PluginDescription.Path == PluginDLLName; });
+	const auto& applicationPluginSpecific = dynamic_cast<const IApplication_PlatformBase&>(m_BaseManager.GetApplication());
+
+	const auto& iter = std::find_if(m_Plugins.begin(), m_Plugins.end(), [&PluginDLLName](const SPluginDescription& PluginDescription) -> bool { return PluginDescription.Filename == PluginDLLName; });
 	if (iter == m_Plugins.end())
 		throw CException("Plguin '%s' not found.", PluginDLLName.c_str());
 
@@ -100,11 +66,10 @@ void CznPluginsManager::RemovePlugin(const std::string& PluginDLLName)
 
 	iter->Plugin.reset();
 
-	if (::FreeLibrary(iter->HModule) == FALSE)
-		throw CException("Failed to '::FreeLibrary()' for plugin '%s'.", iter->Path.c_str());
+	applicationPluginSpecific.UnloadPlugin(PluginDLLName);
 }
 
-void CznPluginsManager::InitializeAllPlugins()
+void CPluginsManager::InitializeAllPlugins()
 {
 	for (const auto& pluginDescription : m_Plugins)
 	{
@@ -119,7 +84,7 @@ void CznPluginsManager::InitializeAllPlugins()
 	}
 }
 
-std::vector<std::shared_ptr<IznPlugin>> CznPluginsManager::GetAllPlugins() const
+std::vector<std::shared_ptr<IznPlugin>> CPluginsManager::GetAllPlugins() const
 {
 	std::vector<std::shared_ptr<IznPlugin>> plugins;
 	for (const auto& it : m_Plugins)
@@ -127,14 +92,14 @@ std::vector<std::shared_ptr<IznPlugin>> CznPluginsManager::GetAllPlugins() const
 	return plugins;
 }
 
-void CznPluginsManager::AddPluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener)
+void CPluginsManager::AddPluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener)
 {
 	if (PluginEventListener == nullptr)
 		throw CException("PluginsManager: PluginEventListener is nullptr.");
 	m_PluginsEventsListener.push_back(PluginEventListener);
 }
 
-void CznPluginsManager::RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener)
+void CPluginsManager::RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener)
 {
 	const auto& iter = std::find(m_PluginsEventsListener.begin(), m_PluginsEventsListener.end(), PluginEventListener);
 	if (iter == m_PluginsEventsListener.end())

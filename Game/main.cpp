@@ -6,13 +6,10 @@
 
 #include "BugTrap/BugTrap.h"
 
-
 void main_internal(int argumentCount, char* arguments[])
 {
-	Application app(Utils::ArgumentsToVector(argumentCount, arguments), ::GetModuleHandle(NULL));
+	CApplication_PlatformWindows app;
 	
-	CNativeWindowFactory nativeWindowFactory(&app);
-
 	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
 
 	app.GetBaseManager().AddManager<IznFontsManager>(MakeShared(FontsManager, renderDevice, app.GetBaseManager()));
@@ -22,7 +19,7 @@ void main_internal(int argumentCount, char* arguments[])
 
 		{
 			glm::ivec2 windowSize = app.GetBaseManager().GetManager<ISettings>()->GetGroup("Video")->GetPropertyT<glm::vec2>("WindowSize")->Get();
-			std::unique_ptr<IznNativeWindow> nativeWindow = nativeWindowFactory.CreateWindowInstance("Zenon Engine", windowSize);
+			std::unique_ptr<IznNativeWindow> nativeWindow = app.CreateNativeWindow("Zenon Engine", windowSize);
 
 			const auto& renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
 			app.AddRenderWindow(renderWindow);

@@ -4,44 +4,17 @@
     <Filter Include="Common">
       <UniqueIdentifier>{d0033b79-fd0f-4221-80fa-9a9bedd64d33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{d2566ee9-32c7-4f1c-80dd-bd0e32ff6663}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Shaders_D3D">
-      <UniqueIdentifier>{8542ee19-eb4b-4e80-81a7-75b3c80c327b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Shaders_D3D\UI">
-      <UniqueIdentifier>{56d7d5e3-a89f-4bf7-8536-07f565670fc9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Fonts">
-      <UniqueIdentifier>{ce81b8f6-699d-4309-8b1e-71f75744ff5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Shaders_D3D\3D">
-      <UniqueIdentifier>{5413c097-8bde-4ed5-b5c8-b65a0b3346d5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Materials">
       <UniqueIdentifier>{2542c214-c76f-4d2a-8c8e-78d755511f14}</UniqueIdentifier>
     </Filter>
     <Filter Include="Passes">
       <UniqueIdentifier>{14ca4580-6528-4597-9243-e173cc9a12f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\Shaders_OGL">
-      <UniqueIdentifier>{c03fdd3f-3bd9-46ee-abb7-91fb10c738f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Shaders_OGL\UI">
-      <UniqueIdentifier>{f4acda98-2887-4580-b2b9-57a1cf6bf95f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Managers">
       <UniqueIdentifier>{bea8c7b6-a116-4292-87d0-9e849456ef13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\Shaders_OGL\3D">
-      <UniqueIdentifier>{490800e0-8036-4348-b1ba-299b0b1a2c23}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Settings">
       <UniqueIdentifier>{c55d8656-eb02-4071-98e0-ef05ce94f3ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Textures">
-      <UniqueIdentifier>{f841afa5-fa24-4948-a5bb-cc5e7cd3ea2a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Passes\UI">
       <UniqueIdentifier>{46e412dd-bb55-422f-9cf7-d860c116b3c4}</UniqueIdentifier>
@@ -78,9 +51,6 @@
     </Filter>
     <Filter Include="Scene\Components">
       <UniqueIdentifier>{766f4f63-5f82-4ace-9365-a0c2425a32d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Shaders_D3D\3D\Editor">
-      <UniqueIdentifier>{00ac689d-c860-46b3-914f-57b3ff6e03a2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Formats\Models">
       <UniqueIdentifier>{79414a40-821a-439e-9cf4-85619b390ebb}</UniqueIdentifier>
@@ -124,9 +94,6 @@
     <Filter Include="RTS\SceneNodes">
       <UniqueIdentifier>{c3a8c0f5-b6b8-4595-ac3f-02f1677df404}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NativeWindows">
-      <UniqueIdentifier>{cfe67249-b3e6-463f-a7cd-5770ee4ab305}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene\Components\Animations">
       <UniqueIdentifier>{ce72550d-0d10-47d8-a100-4cebda6c01f8}</UniqueIdentifier>
     </Filter>
@@ -144,7 +111,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
@@ -279,15 +245,6 @@
     </ClCompile>
     <ClCompile Include="Passes\RTSGround_Pass.cpp">
       <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="NativeWindows\NativeWindow_Proxy.cpp">
-      <Filter>NativeWindows</Filter>
-    </ClCompile>
-    <ClCompile Include="NativeWindows\NativeWindow_WindowsSpecific.cpp">
-      <Filter>NativeWindows</Filter>
-    </ClCompile>
-    <ClCompile Include="NativeWindows\NativeWindowFactory.cpp">
-      <Filter>NativeWindows</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Components\Particles\ParticlesComponent.cpp">
       <Filter>Scene\Components\Particles</Filter>
@@ -428,6 +385,7 @@
     <ClCompile Include="Passes\Debug\DrawNormals.cpp">
       <Filter>Passes\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="ApplicationBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -436,7 +394,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h" />
     <ClInclude Include="..\shared\znEngine.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -575,15 +532,6 @@
     </ClInclude>
     <ClInclude Include="Passes\RTSGround_Pass.h">
       <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="NativeWindows\NativeWindow_Proxy.h">
-      <Filter>NativeWindows</Filter>
-    </ClInclude>
-    <ClInclude Include="NativeWindows\NativeWindow_WindowsSpecific.h">
-      <Filter>NativeWindows</Filter>
-    </ClInclude>
-    <ClInclude Include="NativeWindows\NativeWindowFactory.h">
-      <Filter>NativeWindows</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Components\Particles\ParticlesComponent.h">
       <Filter>Scene\Components\Particles</Filter>
@@ -727,89 +675,7 @@
     <ClInclude Include="Passes\Debug\DrawNormals.h">
       <Filter>Passes\Debug</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="znEngine.rc">
-      <Filter>Resources</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Resources\Fonts\consola.ttf">
-      <Filter>Resources\Fonts</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Debug.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Model_Deffered.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Model_Forward.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\CommonInclude.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\DeferredRendering.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\ForwardRendering.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\Light.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\Material.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\Types.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Particle.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Shadow.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Textured.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Editor\EditorShaders.hlsl">
-      <Filter>Resources\Shaders_D3D\3D\Editor</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Deffered_UIQuad.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\ShadowsUtils.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resources\Textures\default.png">
-      <Filter>Resources\Textures</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_Button.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_Color.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_Common.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_Font.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_Line.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_Texture.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\UI\UI_VertexBase.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
+    <ClInclude Include="ApplicationBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Formats\Images\DDSFormat.inl">

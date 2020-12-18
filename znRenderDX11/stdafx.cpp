@@ -4,23 +4,23 @@ void DoCheckHR(HRESULT hr, const char* file, int line, const char* function, con
 {
 	_ASSERT(FAILED(hr));
 
-	std::wstring fileUtf16 = Resources::utf8_to_utf16(file);
-	std::wstring functionUtf16 = Resources::utf8_to_utf16(function);
+	std::string exprUtf16 = Resources::utf16_to_utf8(Expr);
+	std::string messageUtf16 = Resources::utf16_to_utf8(Message);
 
 	wchar_t modulePath[MAX_PATH];
 	::GetModuleFileNameW(NULL, modulePath, MAX_PATH);
 
-	const wchar_t* format = L"ZenonEngine HRESULT Failed!\r\n\r\n"
-		L"Program: %s\r\n"
-		L"File : %s\r\n"
-		L"Line : %d\r\n"
-		L"Funciton : %s\r\n"
-		L"HRESULT : 0x%X\r\n\r\n"
+	const char* format = "ZenonEngine HRESULT Failed!\r\n\r\n"
+		"Program: %s\r\n"
+		"File : %s\r\n"
+		"Line : %d\r\n"
+		"Funciton : %s\r\n"
+		"HRESULT : 0x%X\r\n\r\n"
 
-		L"Message : %s\r\n"
-		L"Expression : %s\r\n";
+		"Message : %s\r\n"
+		"Expression : %s\r\n";
 
-	throw CznRenderException(format, modulePath, fileUtf16.c_str(), line, functionUtf16.c_str(), hr, Message, Expr);
+	throw CznRenderException(format, modulePath, file, line, function, hr, messageUtf16.c_str(), exprUtf16.c_str());
 
 	/*ATL::CComPtr<IErrorInfo> errorInfo;
 	HRESULT _hr = ::GetErrorInfo(0, &errorInfo);

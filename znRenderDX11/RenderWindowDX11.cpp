@@ -3,9 +3,14 @@
 // General
 #include "RenderWindowDX11.h"
 
+// Additional
+#include "../znPlatformWindows/common.h" // TODO: Delete me
+
+
 // FORWARD BEGIN
 static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL vsync);
 // FORWARD END
+
 
 RenderWindowDX11::RenderWindowDX11(IRenderDeviceDX11& RenderDeviceDX11, std::unique_ptr<IznNativeWindow> WindowObject, bool vSync)
 	: RenderWindowBase(std::move(WindowObject), vSync)

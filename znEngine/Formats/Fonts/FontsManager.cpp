@@ -14,7 +14,7 @@
 FontsManager::FontsManager(IRenderDevice& RenderDevice, IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {
-	m_MainFont = Add(RenderDevice, "IDB_FONT_CONSOLAS", 14);
+	m_MainFont = Add(RenderDevice, "Fonts/consola.ttf", 14);
 }
 
 FontsManager::~FontsManager()
@@ -50,11 +50,7 @@ std::shared_ptr<IznFont> FontsManager::Add(IRenderDevice& RenderDevice, const st
 
 	std::shared_ptr<IFile> f = m_BaseManager.GetManager<IFilesManager>()->Open(_fontFileName);
 	if (f == nullptr)
-	{
-		Log::Fatal("FontsManager[%s]: Error while loading font.", _fontFileName.c_str());
-		return nullptr;
-	}
-
+		throw CException("FontsManager: Error while loading font '%s'.", _fontFileName.c_str());
     
     std::vector<uint32> charWidth;
     charWidth.reserve(CFont::NUM_CHARS);

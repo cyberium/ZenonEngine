@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#if 0
+
 // General
 #include "LibraryResourceFileStotage.h"
 
@@ -57,3 +59,5 @@ bool CLibraryResourceFileStotage::IsExists(std::string Filename) const
 {
     return FindResource(m_HModule, Resources::utf8_to_utf16(Filename).c_str(), RT_RCDATA) != NULL;
 }
+
+#endif

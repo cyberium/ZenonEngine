@@ -28,22 +28,6 @@ ZN_INTERFACE ZN_API IznNativeWindow
 };
 
 
-// Windows only
-ZN_INTERFACE ZN_API IznNativeWindow_WindowsSpecific // WINDOWS only but in my engine only Windows avaliable... :(
-{
-	virtual ~IznNativeWindow_WindowsSpecific() {}
-
-	virtual HWND GetHWnd() const = 0;
-};
-
-ZN_INTERFACE ZN_API INativeWindow_WindowsSpecificEx // WINDOWS only but in my engine only Windows avaliable... :(
-{
-	virtual ~INativeWindow_WindowsSpecificEx() {}
-
-	virtual LRESULT ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) = 0;
-};
-
-
 ZN_INTERFACE ZN_API IznNativeWindowEventListener
 {
 	virtual ~IznNativeWindowEventListener() {}

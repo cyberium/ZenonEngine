@@ -4,17 +4,18 @@
 #include "Log.h"
 
 // Additional
-#include "DebugOutput/DebugOutputConsole.h"
 #include "DebugOutput/DebugOutputLog.h"
+
+#include <cstdarg>
+//#include <debugapi.h>
 
 CLog* gLogInstance = nullptr;
 
 CLog::CLog()
 {
-	OutputDebugStringA("Log created\n");
+	//OutputDebugStringA("Log created\n");
 	gLogInstance = this;
 
-	AddDebugOutput(MakeShared(CDebugOutputConsole));
 	AddDebugOutput(MakeShared(CDebugOutputLog));
 
 	Log::Green("Log created");
@@ -25,7 +26,7 @@ CLog::~CLog()
 {
 	gLogInstance = nullptr;
 
-	OutputDebugStringA("Log destroyed.\n");
+	//OutputDebugStringA("Log destroyed.\n");
 }
 
 
@@ -99,9 +100,11 @@ void CLog::PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType Type, con
 		vsnprintf(&buff[0], len + 1, Message, VaList);
 		buff.resize(len);
 
+#ifdef _WINDOWS
 		// To VisualStudio debug
-		OutputDebugStringA(buff.c_str());
-		OutputDebugStringA("\n");
+		//OutputDebugStringA(buff.c_str());
+		//OutputDebugStringA("\n");
+#endif
 
 		auto messageObj = std::make_pair(Type, buff.c_str());
 
@@ -178,7 +181,7 @@ void Log::Fatal(const char* Message, ...)
 	}
 
 	// And to message box
-	{
+	/*{
 		int len = vsnprintf(NULL, 0, Message, args);
 		if (len > 0)
 		{
@@ -188,6 +191,6 @@ void Log::Fatal(const char* Message, ...)
 
 			FatalMessageBox("Fatal error!", buff.c_str());
 		}
-	}
+	}*/
 	va_end(args);
 }

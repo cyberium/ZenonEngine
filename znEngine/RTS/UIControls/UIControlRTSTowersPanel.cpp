@@ -61,7 +61,7 @@ void CUIControlRTSTowersPanel::Initialize()
 		{
 			std::shared_ptr<IUIControlText> goldText = GetScene().CreateUIControlTCast<IUIControlText>(goldPanel);
 			goldText->SetLocalPosition(glm::vec2(10.0f, 8.0f));
-			goldText->SetFont(GetBaseManager().GetManager<IznFontsManager>()->Add(GetRenderDevice(), "IDB_FONT_CONSOLAS", 20));
+			goldText->SetFont(GetBaseManager().GetManager<IznFontsManager>()->Add(GetRenderDevice(), "Fonts/consola.ttf", 20));
 			goldText->SetText("888 $");
 			goldText->SetColor(glm::vec4(0.2f, 0.3f, 0.1f, 1.0f));
 		}

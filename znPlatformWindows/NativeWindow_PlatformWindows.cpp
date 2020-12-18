@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // General
-#include "NativeWindow_WindowsSpecific.h"
+#include "NativeWindow_PlatformWindows.h"
 
 namespace
 {
@@ -31,7 +31,7 @@ namespace
 
 
 
-CNativeWindow_WindowsSpecific::CNativeWindow_WindowsSpecific(HWND HWnd)
+CNativeWindow_PlatformWindows::CNativeWindow_PlatformWindows(HWND HWnd)
 	: m_PreviousMousePosition(0, 0)
 	, m_InClientRect(false)
 	, m_IsMouseTracking(false)
@@ -41,12 +41,12 @@ CNativeWindow_WindowsSpecific::CNativeWindow_WindowsSpecific(HWND HWnd)
 	, m_EventListener(nullptr)
 {}
 
-CNativeWindow_WindowsSpecific::~CNativeWindow_WindowsSpecific()
+CNativeWindow_PlatformWindows::~CNativeWindow_PlatformWindows()
 {
 	if (::IsWindow(m_HWnd))
 	{
 		/*if (*/::DestroyWindow(m_HWnd);/* == FALSE)*/
-			//throw CException("CNativeWindow_WindowsSpecific: Failed to destroy window object.");
+			//throw CException("CNativeWindow_PlatformWindows: Failed to destroy window object.");
 	}
 }
 
@@ -55,93 +55,93 @@ CNativeWindow_WindowsSpecific::~CNativeWindow_WindowsSpecific()
 //
 // IznNativeWindow
 //
-void CNativeWindow_WindowsSpecific::SetWindowTitle(const std::string& WindowName)
+void CNativeWindow_PlatformWindows::SetWindowTitle(const std::string& WindowName)
 {
 	SetWindowTextW(m_HWnd, Resources::utf8_to_utf16(WindowName).c_str());
 }
 
-std::string CNativeWindow_WindowsSpecific::GetWindowTitle() const
+std::string CNativeWindow_PlatformWindows::GetWindowTitle() const
 {
 	std::wstring title(GetWindowTextLengthW(m_HWnd) + 1, L'\0');
 	GetWindowTextW(m_HWnd, &title[0], title.size());
 	return Resources::utf16_to_utf8(title);
 }
 
-size_t CNativeWindow_WindowsSpecific::GetWindowWidth() const
+size_t CNativeWindow_PlatformWindows::GetWindowWidth() const
 {
 	RECT clientRect = { 0 };
 
 	if (::GetClientRect(m_HWnd, &clientRect) == FALSE)
-		throw CException("CNativeWindow_WindowsSpecific: Failed to '::GetClientRect'.");
+		throw CException("CNativeWindow_PlatformWindows: Failed to '::GetClientRect'.");
 
 	return clientRect.right - clientRect.left;
 }
 
-size_t CNativeWindow_WindowsSpecific::GetWindowHeight() const
+size_t CNativeWindow_PlatformWindows::GetWindowHeight() const
 {
 	RECT clientRect = { 0 };
 
 	if (::GetClientRect(m_HWnd, &clientRect) == FALSE)
-		throw CException("CNativeWindow_WindowsSpecific: Failed to '::GetClientRect'.");
+		throw CException("CNativeWindow_PlatformWindows: Failed to '::GetClientRect'.");
 
 	return clientRect.bottom - clientRect.top;
 }
 
-void CNativeWindow_WindowsSpecific::SetCursorPosition(const glm::ivec2& CursorPosition)
+void CNativeWindow_PlatformWindows::SetCursorPosition(const glm::ivec2& CursorPosition)
 {
 	RECT rect = { 0 };
 
 	if (::GetClientRect(m_HWnd, &rect) == FALSE)
-		throw CException("CNativeWindow_WindowsSpecific: Failed to '::GetClientRect'.");
+		throw CException("CNativeWindow_PlatformWindows: Failed to '::GetClientRect'.");
 
 	if (::ClientToScreen(m_HWnd, reinterpret_cast<POINT*>(&rect.left)) == FALSE)
-		throw CException("CNativeWindow_WindowsSpecific: Failed to '::ClientToScreen'.");
+		throw CException("CNativeWindow_PlatformWindows: Failed to '::ClientToScreen'.");
 
 	if (::ClientToScreen(m_HWnd, reinterpret_cast<POINT*>(&rect.right)) == FALSE)
-		throw CException("CNativeWindow_WindowsSpecific: Failed to '::ClientToScreen'.");
+		throw CException("CNativeWindow_PlatformWindows: Failed to '::ClientToScreen'.");
 
 	if (::SetCursorPos(rect.left + CursorPosition.x, rect.top + CursorPosition.y) == FALSE)
-		throw CException("CNativeWindow_WindowsSpecific: Failed to '::SetCursorPos'.");
+		throw CException("CNativeWindow_PlatformWindows: Failed to '::SetCursorPos'.");
 }
 
-glm::ivec2 CNativeWindow_WindowsSpecific::GetCursorPosition() const
+glm::ivec2 CNativeWindow_PlatformWindows::GetCursorPosition() const
 {
 	POINT point = { 0 };
 
-	if (::GetCursorPos(&point) == FALSE)
-		throw CException("CNativeWindow_WindowsSpecific: Failed to '::GetCursorPos'.");
+	if (FALSE == ::GetCursorPos(&point))
+		throw CException("CNativeWindow_PlatformWindows: Failed to '::GetCursorPos'.");
 
-	if (::ScreenToClient(m_HWnd, &point) == FALSE)
-		throw CException("CNativeWindow_WindowsSpecific: Failed to '::ScreenToClient'.");
+	if (FALSE == ::ScreenToClient(m_HWnd, &point))
+		throw CException("CNativeWindow_PlatformWindows: Failed to '::ScreenToClient'.");
 
 	return glm::ivec2(point.x, point.y);
 }
 
-void CNativeWindow_WindowsSpecific::ShowCursor()
+void CNativeWindow_PlatformWindows::ShowCursor()
 {
 	::ShowCursor(TRUE);
 }
 
-void CNativeWindow_WindowsSpecific::HideCursor()
+void CNativeWindow_PlatformWindows::HideCursor()
 {
 	::ShowCursor(FALSE);
 }
 
-void CNativeWindow_WindowsSpecific::Close()
+void CNativeWindow_PlatformWindows::Close()
 {
 	if (::IsWindow(m_HWnd))
 	{
 		if (FALSE == ::CloseWindow(m_HWnd))
-			throw CException("CNativeWindow_WindowsSpecific: Failed to '::CloseWindow'.");
+			throw CException("CNativeWindow_PlatformWindows: Failed to '::CloseWindow'.");
 	}
 }
 
-void CNativeWindow_WindowsSpecific::SetEventsListener(IznNativeWindowEventListener * WindowEventsListener)
+void CNativeWindow_PlatformWindows::SetEventsListener(IznNativeWindowEventListener * WindowEventsListener)
 {
 	m_EventListener = WindowEventsListener;
 }
 
-void CNativeWindow_WindowsSpecific::ResetEventsListener()
+void CNativeWindow_PlatformWindows::ResetEventsListener()
 {
 	m_EventListener = nullptr;
 }
@@ -151,7 +151,7 @@ void CNativeWindow_WindowsSpecific::ResetEventsListener()
 //
 // IznNativeWindow_WindowsSpecific
 //
-HWND CNativeWindow_WindowsSpecific::GetHWnd() const
+HWND CNativeWindow_PlatformWindows::GetHWnd() const
 {
 	return m_HWnd;
 }
@@ -161,7 +161,7 @@ HWND CNativeWindow_WindowsSpecific::GetHWnd() const
 //
 // INativeWindow_WindowsSpecificEx
 //
-LRESULT CNativeWindow_WindowsSpecific::ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CNativeWindow_PlatformWindows::ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
@@ -216,7 +216,7 @@ LRESULT CNativeWindow_WindowsSpecific::ProcessMessage(HWND hwnd, UINT message, W
 			// Inspired by the SDL 1.2 implementation.
 			unsigned char keyboardState[256];
 			if (::GetKeyboardState(keyboardState) == FALSE)
-				throw CException("CNativeWindow_WindowsSpecific: Failed to '::GetKeyboardState'.");
+				throw CException("CNativeWindow_PlatformWindows: Failed to '::GetKeyboardState'.");
 
 			wchar_t translatedCharacters[4];
 			if (int result = ::ToUnicodeEx((UINT)wParam, scanCode, keyboardState, translatedCharacters, 4, 0, NULL) > 0)
@@ -348,7 +348,7 @@ LRESULT CNativeWindow_WindowsSpecific::ProcessMessage(HWND hwnd, UINT message, W
 			clientToScreenPoint.y = y;
 
 			if (::ScreenToClient(hwnd, &clientToScreenPoint) == FALSE)
-				throw CException("CNativeWindow_WindowsSpecific: Failed to '::ScreenToClient'.");
+				throw CException("CNativeWindow_PlatformWindows: Failed to '::ScreenToClient'.");
 
 			if (m_EventListener)
 				m_EventListener->OnWindowMouseWheel(MouseWheelEventArgs(zDelta, lButton, mButton, rButton, control, shift, (int)clientToScreenPoint.x, (int)clientToScreenPoint.y));
@@ -454,7 +454,7 @@ LRESULT CNativeWindow_WindowsSpecific::ProcessMessage(HWND hwnd, UINT message, W
 			}
 
 			if (::UpdateWindow(hwnd) == FALSE)
-				throw CException(L"CNativeWindow_WindowsSpecific: Failed to '::UpdateWindow'.");
+				throw CException("CNativeWindow_PlatformWindows: Failed to '::UpdateWindow'.");
 		}
 		break;
 	}

@@ -53,9 +53,6 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="znPluginFBXModels.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="znPluginFBXModels.rc" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C077D800-0DBE-4CDA-A5AA-0E65821D91DB}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

@@ -1,5 +1,13 @@
 #pragma once
 
+enum class ZN_API RenderDeviceType
+{
+	RenderDeviceType_None = 0,
+	RenderDeviceType_DirectX11,
+	RenderDeviceType_DirectX12,
+	RenderDeviceType_OpenGL
+};
+
 /**
  * Flags to specify which value should be cleared.
  */
@@ -66,21 +74,6 @@ struct ZN_API BufferBinding
 		return (Name == rhs.Name) && (Index == rhs.Index);
 	}
 
-	inline void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
-	{
-		uint32 signature;
-		ByteBuffer->read(&signature);
-		ByteBuffer->readString(&Name);
-		ByteBuffer->read(&Index);
-	}
-
-	inline void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
-	{
-		ByteBuffer->write(&cBufferBindingSignature);
-		ByteBuffer->writeString(Name);
-		ByteBuffer->write(&Index);
-	}
-
 	std::string  Name;
 	uint32       Index;
 };
@@ -90,7 +83,7 @@ namespace std
 	template<>
 	struct hash<BufferBinding>
 	{
-		size_t operator()(const BufferBinding& buffer) const noexcept
+		inline size_t operator()(const BufferBinding& buffer) const noexcept
 		{
 			std::hash<std::string> hash;
 			return hash(buffer.Name + std::to_string(buffer.Index));
@@ -101,7 +94,7 @@ namespace std
 
 struct ZN_API SGeometryDrawArgs
 {
-	SGeometryDrawArgs(UINT IndexStartLocation = 0, UINT IndexCnt = UINT_MAX, UINT VertexStartLocation = 0, UINT VertexCnt = UINT_MAX)
+	SGeometryDrawArgs(uint32 IndexStartLocation = 0, uint32 IndexCnt = UINT_MAX, uint32 VertexStartLocation = 0, uint32 VertexCnt = UINT_MAX)
 		: IndexStartLocation(IndexStartLocation)
 		, IndexCnt(IndexCnt)
 		, VertexStartLocation(VertexStartLocation)
@@ -110,10 +103,10 @@ struct ZN_API SGeometryDrawArgs
 		, InstanceCnt(UINT_MAX)
 	{}
 
-	UINT IndexStartLocation;
-	UINT IndexCnt;
-	UINT VertexStartLocation;
-	UINT VertexCnt;
-	UINT InstanceStartIndex;
-	UINT InstanceCnt;
+	uint32 IndexStartLocation;
+	uint32 IndexCnt;
+	uint32 VertexStartLocation;
+	uint32 VertexCnt;
+	uint32 InstanceStartIndex;
+	uint32 InstanceCnt;
 };

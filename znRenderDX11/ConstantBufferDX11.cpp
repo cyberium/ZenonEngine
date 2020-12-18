@@ -125,7 +125,7 @@ void ConstantBufferDX11::Copy(const IConstantBuffer* other) const
 void ConstantBufferDX11::Set(const void* data, size_t size)
 {
 	if (size != GetElementCount())
-		throw CException(L"ConstantBufferDX11: Buffers sizes mistmath. Current: '%d', New: '%d'.", GetElementCount(), size);
+		throw CException("ConstantBufferDX11: Buffers sizes mistmath. Current: '%d', New: '%d'.", GetElementCount(), size);
 
 	SetData(data, size);
 	m_bIsDirty = true;

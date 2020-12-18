@@ -28,7 +28,6 @@ namespace Utils
 	ZN_API SFileName SplitFilename(const std::string& FilePath);
 
 	// Files
-	ZN_API std::string GetExecutablePath();
 	ZN_API std::string GetWorkingDirectory();
 	ZN_API std::string LoadLocalFile(std::string FileName);
 	ZN_API void        SaveToLocalFile(std::string FileName, const std::string& Content);
@@ -48,13 +47,13 @@ namespace Utils
 
 namespace Resources
 {
+#if 0
 	ZN_API std::string utf8_to_cp1251(const std::string& AString);
 	ZN_API std::string cp1251_to_utf8(const std::string& AString);
+#endif
 
 	ZN_API std::wstring utf8_to_utf16(const std::string& AString);
 	ZN_API std::string utf16_to_utf8(const std::wstring& WString);
-
-	ZN_API std::wstring GetStringResource(HMODULE HModule, int ID, const std::wstring& type);
 }
 
 inline bool getBitH2L(uint8* data, uint32 bit)

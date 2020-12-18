@@ -10,11 +10,11 @@ ZN_INTERFACE ZN_API IznPlugin
 {
 	virtual ~IznPlugin() {}
 
-	virtual bool									Initialize() = 0;
-	virtual void									Finalize() = 0;
+	virtual bool Initialize() = 0;
+	virtual void Finalize() = 0;
 
-	virtual std::string                             GetName() const = 0;
-	virtual std::string                             GetDescription() const = 0;
+	virtual std::string GetName() const = 0;
+	virtual std::string GetDescription() const = 0;
 };
 
 

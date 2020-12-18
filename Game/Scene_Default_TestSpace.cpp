@@ -63,8 +63,8 @@ void CSceneDefault::Load3D()
 		const float cPlaneY = 0.0f;
 
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
-		textMaterial->SetDiffuseColor(glm::vec3(0.3f, 0.3f, 1.0f));
-		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		textMaterial->SetDiffuseColor(ColorRGB(0.3f, 0.3f, 1.0f));
+		textMaterial->SetSpecularColor(ColorRGB(1.0f, 1.0f, 1.0f));
 
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
