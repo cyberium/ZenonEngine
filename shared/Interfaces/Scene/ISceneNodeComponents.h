@@ -13,7 +13,6 @@ typedef uint32 ComponentMessageType;
 
 ZN_INTERFACE ZN_API ISceneNodeComponent
 	: public virtual IObject
-	, public virtual IObjectLoadSave
 	, public std::enable_shared_from_this<ISceneNodeComponent>
 {
 	ZN_OBJECTCLASS(cSceneNodeComponent);
@@ -22,7 +21,6 @@ ZN_INTERFACE ZN_API ISceneNodeComponent
 
 	// Callbacks
 	virtual void OnMessage(const ISceneNodeComponent* FromComponent, ComponentMessageType Message) = 0;
-	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 
 	// Visit functional
 	virtual void Update(const UpdateEventArgs& e) = 0;

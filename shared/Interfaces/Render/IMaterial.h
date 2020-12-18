@@ -17,8 +17,6 @@ ZN_INTERFACE ZN_API IMaterial
 
 	virtual void SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) = 0;
 	virtual std::shared_ptr<ISamplerState> GetSampler(uint8 ID) const = 0;
-	
-	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 
 	virtual void Bind(const IShader* PixelShader) const = 0;
 	virtual void Unbind(const IShader* PixelShader) const = 0;

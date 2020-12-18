@@ -38,6 +38,20 @@ uint32 CBufferBase::GetElementOffset() const
 	return m_Offset;
 }
 
+
+
+//
+// IObjectLoadSave
+//
+std::shared_ptr<IObject> CBufferBase::Copy() const
+{
+	return std::shared_ptr<IObject>();
+}
+
+void CBufferBase::CopyTo(std::shared_ptr<IObject> Destination) const
+{
+}
+
 void CBufferBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
 	IBuffer::BufferType bufferType;

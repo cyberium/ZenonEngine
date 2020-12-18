@@ -120,18 +120,18 @@ CEditorResourceBrowser::~CEditorResourceBrowser()
 //
 void CEditorResourceBrowser::Initialize()
 {
-	GetEditorQtUIFrame().getCollectionViewer()->SetOnSelectedItemChange(std::bind(&CEditorResourceBrowser::OnSelectTreeItem, this, std::placeholders::_1));
-	GetEditorQtUIFrame().getCollectionViewer()->SetOnStartDragging(std::bind(&CEditorResourceBrowser::OnStartDraggingTreeItem, this, std::placeholders::_1, std::placeholders::_2));
-	GetEditorQtUIFrame().getCollectionViewer()->SetOnContexMenu(std::bind(&CEditorResourceBrowser::OnContextMenuTreeItem, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	GetEditorQtUIFrame().getResourcesBrowser()->SetOnSelectedItemChange(std::bind(&CEditorResourceBrowser::OnSelectTreeItem, this, std::placeholders::_1));
+	GetEditorQtUIFrame().getResourcesBrowser()->SetOnStartDragging(std::bind(&CEditorResourceBrowser::OnStartDraggingTreeItem, this, std::placeholders::_1, std::placeholders::_2));
+	GetEditorQtUIFrame().getResourcesBrowser()->SetOnContexMenu(std::bind(&CEditorResourceBrowser::OnContextMenuTreeItem, this, std::placeholders::_1, std::placeholders::_2));
 
 	CResourceFilesystem fileSystem;
 	fileSystem.Initailize("O:/ZenonEngine_userdata");
 	fileSystem.PrintFilesystem();
 
-	GetEditorQtUIFrame().getCollectionViewer()->Refresh();
+	GetEditorQtUIFrame().getResourcesBrowser()->Refresh();
 	for (const auto& resourceFile : fileSystem.GetRootFile()->GetChilds())
 		if (auto treeViewItem = ResourceFileToTreeView(m_Editor, resourceFile))
-			GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(treeViewItem);
+			GetEditorQtUIFrame().getResourcesBrowser()->AddToRoot(treeViewItem);
 }
 
 
@@ -192,6 +192,7 @@ bool CEditorResourceBrowser::OnSelectTreeItem(const IznTreeViewItem * Item)
 		
 		GetEditorQtUIFrame().getUI().NewPropsWidget->SetProperties(particleSystemObject->GetProperties());
 		m_Editor.Get3DPreviewFrame().SetParticleSystem(particleSystemObject);
+		GetEditorQtUIFrame().getResourcesBrowser()->SelectItem(particleSystemObject);
 
 		return true;
 	}
@@ -206,6 +207,7 @@ bool CEditorResourceBrowser::OnSelectTreeItem(const IznTreeViewItem * Item)
 
 		GetEditorQtUIFrame().getUI().NewPropsWidget->SetProperties(materialObject->GetProperties());
 		m_Editor.Get3DPreviewFrame().SetMaterial(materialObject);
+		GetEditorQtUIFrame().getResourcesBrowser()->SelectItem(materialObject);
 
 		return true;
 	}
@@ -271,16 +273,18 @@ bool CEditorResourceBrowser::OnStartDraggingTreeItem(const IznTreeViewItem * Ite
 	return false;
 }
 
-bool CEditorResourceBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item, std::string * ContextMenuTitle, std::vector<std::shared_ptr<IPropertyAction>> * ResultActions)
+bool CEditorResourceBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item, std::shared_ptr<IPropertiesGroup> PropertiesGroup)
 {
 	if (Item->GetType() != ETreeViewItemType::VirtualFolder)
 		return false;
 
-	*ContextMenuTitle = "Create";
+	PropertiesGroup->SetName("Create");
+
+	auto actionsGroupNEW = MakeShared(CPropertiesGroup, "New", "");
 
 	// Create ParticleSystem
 	{
-		auto createParticleSystemAction = MakeShared(CAction, "Create ParticlesSystem", "");
+		auto createParticleSystemAction = MakeShared(CAction, "ParticlesSystem", "");
 		createParticleSystemAction->SetAction([this, Item]() -> bool {
 			auto particleSystem = CreateNewParticle();
 			auto particleTreeViewItem = MakeShared(CParticleSystemTreeViewItem, particleSystem);
@@ -289,16 +293,16 @@ bool CEditorResourceBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item,
 			auto itemAsVirtualFolderNonConst = const_cast<IznTreeViewItemFolder*>(itemAsVirtualFolder);
 			itemAsVirtualFolderNonConst->AddChild(particleTreeViewItem);
 
-			GetEditorQtUIFrame().getCollectionViewer()->Refresh();
+			GetEditorQtUIFrame().getResourcesBrowser()->Refresh();
 
 			return true;
 		});
-		ResultActions->push_back(createParticleSystemAction);
+		actionsGroupNEW->AddProperty(createParticleSystemAction);
 	}
 
 	// Create Material
 	{
-		auto createMaterialAction = MakeShared(CAction, "Create Material", "");
+		auto createMaterialAction = MakeShared(CAction, "Material", "");
 		createMaterialAction->SetAction([this, Item]() -> bool {
 			auto material = CreateMaterial();
 			auto materialTreeViewItem = MakeShared(CMaterialTreeViewItem, material);
@@ -307,12 +311,14 @@ bool CEditorResourceBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item,
 			auto itemAsVirtualFolderNonConst = const_cast<IznTreeViewItemFolder*>(itemAsVirtualFolder);
 			itemAsVirtualFolderNonConst->AddChild(materialTreeViewItem);
 
-			GetEditorQtUIFrame().getCollectionViewer()->Refresh();
+			GetEditorQtUIFrame().getResourcesBrowser()->Refresh();
 
 			return true;
 		});
-		ResultActions->push_back(createMaterialAction);
+		actionsGroupNEW->AddProperty(createMaterialAction);
 	}
+
+	PropertiesGroup->AddProperty(actionsGroupNEW);
 
 	return true;
 }
@@ -323,11 +329,6 @@ std::shared_ptr<IParticleSystem> CEditorResourceBrowser::CreateNewParticle() con
 	auto particleSystem = MakeShared(CParticleSystem, GetBaseManager());
 	particleSystem->SetName("NewParticleSystem");
 	particleSystem->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("star_09.png"));
-
-	GetEditorQtUIFrame().getUI().NewPropsWidget->SetProperties(particleSystem->GetProperties());
-
-	m_Editor.Get3DPreviewFrame().SetParticleSystem(particleSystem);
-
 	return particleSystem;
 }
 

@@ -7,7 +7,6 @@ CComponentBase::CComponentBase(const ISceneNode& OwnerNode)
     : Object(OwnerNode.GetScene().GetBaseManager())
 	, m_OwnerNode(OwnerNode)
 {
-	m_Properties = MakeShared(CPropertiesGroup, "ComponentBaseProperties", "descr");
 }
 
 CComponentBase::~CComponentBase()
@@ -23,12 +22,6 @@ void CComponentBase::OnMessage(const ISceneNodeComponent* FromComponent, Compone
 {
 	// do nothing
 }
-
-std::shared_ptr<IPropertiesGroup> CComponentBase::GetProperties() const
-{
-	return m_Properties;
-}
-
 
 void CComponentBase::Update(const UpdateEventArgs & e)
 {
@@ -65,11 +58,6 @@ void CComponentBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 const ISceneNode& CComponentBase::GetOwnerNode() const
 {
 	return m_OwnerNode;
-}
-
-IBaseManager& CComponentBase::GetBaseManager() const
-{
-	return GetOwnerNode().GetScene().GetBaseManager();
 }
 
 void CComponentBase::RaiseComponentMessage(ComponentMessageType Message)

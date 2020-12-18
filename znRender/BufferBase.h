@@ -7,9 +7,8 @@ ZN_INTERFACE IBufferPrivate
 };
 
 class ZN_API CBufferBase
-	: public IBuffer
+	: virtual public IBuffer
 	, public IBufferPrivate
-	, public Object
 {
 public:
 	CBufferBase(IRenderDevice& RenderDevice, IBuffer::BufferType ByfferType);
@@ -30,6 +29,8 @@ protected:
 	virtual void DoInitializeBuffer() = 0;
 
 	// IObjectLoadSave
+	std::shared_ptr<IObject> Copy() const override;
+	void CopyTo(std::shared_ptr<IObject> Destination) const override;
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const override;
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override;

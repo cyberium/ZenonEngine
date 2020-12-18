@@ -26,9 +26,6 @@ CSceneNode::CSceneNode(IScene& Scene)
 	, m_WorldTransform(1.0f)
 	, m_InverseWorldTransform(1.0f)
 {
-	m_PropertiesGroup = MakeShared(CPropertiesGroup, "Properties", "Some important scene node 3d properties.");
-
-
 }
 
 CSceneNode::~CSceneNode()
@@ -161,10 +158,6 @@ bool CSceneNode::IsPersistance() const
 	return m_IsPersistance;
 }
 
-std::shared_ptr<IPropertiesGroup> CSceneNode::GetProperties() const
-{
-	return m_PropertiesGroup;
-}
 
 IScene& CSceneNode::GetScene() const
 {
@@ -696,11 +689,6 @@ void CSceneNode::DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) con
 	GetProperties()->Save(propertiesWriter);
 	
 	Writer->AddChild(propertiesWriter);
-}
-
-IBaseManager& CSceneNode::GetBaseManager() const
-{
-	return GetScene().GetBaseManager();
 }
 
 IRenderDevice& CSceneNode::GetRenderDevice() const

@@ -3,8 +3,9 @@
 // General
 #include "GeometryProxie.h"
 
-GeometryProxie::GeometryProxie(const std::shared_ptr<IGeometry>& Geometry)
-	: m_Geometry(Geometry)
+GeometryProxie::GeometryProxie(std::shared_ptr<IGeometry> Geometry)
+	: CObjectProxy(Geometry)
+	, m_Geometry(Geometry)
 {
 	_ASSERT(m_Geometry != nullptr);
 
@@ -83,10 +84,6 @@ void GeometryProxie::Render_UnbindAllBuffers(const IShader * VertexShader) const
 	m_GeometryInternal->Render_UnbindAllBuffers(VertexShader);
 }
 
-
-//
-// IObjectLoadSave
-//
 void GeometryProxie::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
 	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_Geometry))

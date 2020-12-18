@@ -9,13 +9,13 @@ struct __declspec(align(16)) ZN_API SGPUParticle
 {
 	SGPUParticle()
 		: Position(glm::vec3(0.0f))
-		, Color(glm::vec4(1.0f))
+		, Color(ColorRGBA(1.0f))
 		, Size(glm::vec2(10.0f))
 		, TexCoordBegin(glm::vec2(0.0f))
 		, TexCoordEnd(glm::vec2(1.0f))
 	{}
 
-	explicit SGPUParticle(const glm::vec3& Position_, const glm::vec4& Color_, const glm::vec2& Size_)
+	explicit SGPUParticle(const glm::vec3& Position_, const ColorRGBA& Color_, const glm::vec2& Size_)
 		: Position(Position_)
 		, Color(Color_)
 		, Size(Size_)
@@ -31,7 +31,7 @@ struct __declspec(align(16)) ZN_API SGPUParticle
 	glm::vec2 TexCoordEnd;
 	//--------------------------------------------------------------( 16 bytes )
 
-	glm::vec4 Color;
+	ColorRGBA Color;
 	//--------------------------------------------------------------( 16 bytes )
 
 	glm::vec2 Size;
@@ -56,7 +56,6 @@ ZN_INTERFACE ZN_API IParticleSystem
 	virtual void SetTexture(const std::shared_ptr<ITexture>& Texture) = 0;
 	virtual std::shared_ptr<ITexture> GetTexture() const = 0;
 
-	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 	virtual const std::vector<SGPUParticle>& GetGPUParticles() const = 0;
 };
 

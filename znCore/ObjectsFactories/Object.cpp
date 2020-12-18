@@ -3,6 +3,8 @@
 // General
 #include "Object.h"
 
+// Additional
+#include "Properties/PropertyGroup.h"
 
 #if 0
 std::string Object::ConvertInputName(const std::string& OriginalName)
@@ -65,6 +67,16 @@ std::string Object::GetName() const
 void Object::SetName(const std::string& Name)
 {
 	m_Name = Name;
+}
+
+const IBaseManager & Object::GetBaseManager() const
+{
+	return *m_BaseManager;
+}
+
+std::shared_ptr<IPropertiesGroup> Object::GetProperties() const
+{
+	return m_Properties;
 }
 
 
@@ -146,15 +158,18 @@ void Object::SetGUID(const Guid& NewGuid)
 
 
 
-Object::Object()
+/*Object::Object()
 	: m_Guid(0ull)
 	, m_BaseManager(nullptr)
-{}
+{
+	m_Properties = MakeShared(CPropertiesGroup, "Properties", "descr");
+}*/
 
 Object::Object(const IBaseManager& BaseManager)
 	: m_Guid(0ull)
 	, m_BaseManager(&BaseManager)
 {
+	m_Properties = MakeShared(CPropertiesGroup, "Properties", "descr");
 }
 
 Object::~Object()

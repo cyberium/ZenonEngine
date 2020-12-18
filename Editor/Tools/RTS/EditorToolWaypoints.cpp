@@ -44,10 +44,11 @@ void CEditorToolWaypoints::Disable()
 //
 void CEditorToolWaypoints::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 {
-	QtUIFrame.getQObject().connect(QtUIFrame.getUI().RTSEditor_CreateWaypointBtn, &QPushButton::released, [this]() {
+	// TODO:
+	/*QtUIFrame.getQObject().connect(QtUIFrame.getUI().RTSEditor_CreateWaypointBtn, &QPushButton::released, [this]() {
 		GetEditor().GetTools().Enable(ETool::EToolEditorRTSWaypoints);
 		m_IsActivated = true;
-	});
+	});*/
 }
 
 

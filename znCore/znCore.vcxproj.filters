@@ -339,6 +339,9 @@
     <ClCompile Include="Properties\PropertyGroupProxy.cpp">
       <Filter>Properties</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectsFactories\ObjectProxy.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -826,6 +829,12 @@
     </ClInclude>
     <ClInclude Include="Properties\PropertyGroupProxy.h">
       <Filter>Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\ObjectProxy.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Types\Color.h">
+      <Filter>__Interfaces\Types</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

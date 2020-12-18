@@ -9,9 +9,9 @@ ZN_INTERFACE IStructuredBufferPrivate
 };
 
 class ZN_API CStructuredBufferBase
-	: public CBufferBase
-	, public IStructuredBuffer
+	: virtual public IStructuredBuffer
 	, public IStructuredBufferPrivate
+	, public CBufferBase
 {
 public:
 	CStructuredBufferBase(IRenderDevice& RenderDevice);

@@ -46,11 +46,11 @@ void CEditor3DFrame::Initialize()
 		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
-		lightComponent->SetLight(MakeShared(CLight));
+		lightComponent->SetLight(MakeShared(CLight, GetBaseManager()));
 		lightComponent->GetLight()->SetCastShadows(true);
 		lightComponent->GetLight()->SetType(ELightType::Directional);
-		lightComponent->GetLight()->SetAmbientColor(glm::vec3(0.25f));
-		lightComponent->GetLight()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		lightComponent->GetLight()->SetAmbientColor(ColorRGB(0.25f));
+		lightComponent->GetLight()->SetColor(ColorRGB(1.0f, 1.0f, 1.0f));
 		lightComponent->GetLight()->SetRange(1000.0f);
 		lightComponent->GetLight()->SetIntensity(1.0077f);
 		lightComponent->GetLight()->SetSpotlightAngle(30.0f);

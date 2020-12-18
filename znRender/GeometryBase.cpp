@@ -4,7 +4,8 @@
 #include "GeometryBase.h"
 
 GeometryBase::GeometryBase(IRenderDevice& RenderDevice)
-	: m_RenderDevice(RenderDevice)
+	: Object(RenderDevice.GetBaseManager())
+	, m_RenderDevice(RenderDevice)
 	, m_VertexBuffer(nullptr)
 	, m_IndexBuffer(nullptr)
 	, m_PrimitiveTopology(PrimitiveTopology::TriangleList)

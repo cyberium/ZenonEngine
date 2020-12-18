@@ -7,7 +7,8 @@
 #include "TextureDX11Translate.h"
 
 TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11)
-	: m_RenderDeviceDX11(RenderDeviceDX11)
+	: Object(RenderDeviceDX11.GetBaseManager())
+	, m_RenderDeviceDX11(RenderDeviceDX11)
 	, m_TextureWidth(0)
 	, m_TextureHeight(0)
 	, m_NumSlices(0)
@@ -30,7 +31,8 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11)
 
 // 2D Texture
 TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16 width, uint16 height, uint16 slices, const ITexture::TextureFormat& format, EAccess Access)
-	: m_RenderDeviceDX11(RenderDeviceDX11)
+	: Object(RenderDeviceDX11.GetBaseManager())
+	, m_RenderDeviceDX11(RenderDeviceDX11)
 	, m_DX11Texture2D(nullptr)
 	, m_DX11ShaderResourceView(nullptr)
 	, m_DX11RenderTargetView(nullptr)
@@ -98,7 +100,8 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16 width, uint
 
 // CUBE Texture
 TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16 size, const TextureFormat& format, EAccess cpuAccess)
-	: m_RenderDeviceDX11(RenderDeviceDX11)
+	: Object(RenderDeviceDX11.GetBaseManager())
+	, m_RenderDeviceDX11(RenderDeviceDX11)
 {
 	m_TextureDimension = ITexture::Dimension::TextureCube;
 

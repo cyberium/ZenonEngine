@@ -3,10 +3,17 @@
 // General
 #include "ZenonWindow3D.h"
 
+// Additional
+#include "ContextMenuUtils.h"
+
 ZenonWindow3D::ZenonWindow3D(QWidget *parent)
 	: ZenonWindowMinimal3DWidget(parent)
 	, m_Editor(nullptr)
 {
+	// Add context menu for scene node viewer
+	m_ContextMenu = MakeShared(QMenu, this);
+	m_ContextMenu->setTitle("Some context menu title.");
+
 	this->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 }
@@ -20,39 +27,18 @@ ZenonWindow3D::~ZenonWindow3D()
 //
 void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 {
-	QMenu * menu = ZN_NEW QMenu(this);
+	m_ContextMenu->clear();
 
 	auto node = m_Editor->Get3DFrame().GetEditedNodeUnderMouse(glm::ivec2(pos.x(), pos.y()));
 	if (node == nullptr)
 		return;
 
-	std::string title;
-	std::vector<std::shared_ptr<IPropertyAction>> actions;
-	if (false == m_Editor->GetUIFrame().ExtendContextMenu(node, &title, &actions))
+	std::shared_ptr<IPropertiesGroup> propertiesGroup = MakeShared(CPropertiesGroup, "DefaultContextMenuTitle", "DefaultContextMenuDescription");
+	if (false == m_Editor->GetUIFrame().ExtendContextMenu(node, propertiesGroup))
 		return;
 
-	// Create actions to the context menu 
-	QAction* nameAction = ZN_NEW QAction(title.c_str(), this);
-	nameAction->setEnabled(false);
-
-	// Set the actions to the menu 
-	menu->addAction(nameAction);
-	menu->addSeparator();
-	for (const auto& act : actions)
-	{
-		QAction * action = ZN_NEW QAction(act->GetName().c_str(), this);
-
-		if (false == act->ExecutePrecondition())
-			action->setEnabled(false);
-
-		connect(action, &QAction::triggered, this, [act] {
-			act->ExecuteAction();
-		});
-
-		menu->addAction(action);
-	}
-
-	menu->popup(mapToGlobal(pos));
+	m_ContextMenu = CreateContextMenuFromPropertiesGroup(propertiesGroup);
+	m_ContextMenu->popup(mapToGlobal(pos));
 }
 
 

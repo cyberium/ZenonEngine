@@ -3,12 +3,11 @@
 // General
 #include "MaterialProxie.h"
 
-MaterialProxie::MaterialProxie(std::shared_ptr<IMaterial> _materal)
-	: m_Material(_materal)
+MaterialProxie::MaterialProxie(std::shared_ptr<IMaterial> Material)
+	: CObjectProxy(Material)
+	, m_Material(Material)
 {
 	_ASSERT(m_Material != nullptr);
-
-	//SetClassName("MaterialProxie");
 }
 
 MaterialProxie::~MaterialProxie()
@@ -38,11 +37,6 @@ void MaterialProxie::SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> s
 std::shared_ptr<ISamplerState> MaterialProxie::GetSampler(uint8 ID) const
 {
     return m_Material->GetSampler(ID);
-}
-
-std::shared_ptr<IPropertiesGroup> MaterialProxie::GetProperties() const
-{
-	return m_Material->GetProperties();
 }
 
 void MaterialProxie::Bind(const IShader* PixelShader) const

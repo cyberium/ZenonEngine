@@ -40,6 +40,8 @@ ZN_INTERFACE ZN_API IXMLReader
 	virtual glm::vec2   GetVec2  () const = 0;
 	virtual glm::vec3   GetVec3  () const = 0;
 	virtual glm::vec4   GetVec4  () const = 0;
+	virtual ColorRGB    GetColorRGB() const = 0;
+	virtual ColorRGBA   GetColorRGBA() const = 0;
 	
 
 	virtual std::shared_ptr<IXMLReader> GetChild(const std::string& ChildName) const = 0;
@@ -73,6 +75,8 @@ ZN_INTERFACE ZN_API IXMLWriter
 	virtual void SetVec2(glm::vec2 Value) = 0;
 	virtual void SetVec3(glm::vec3 Value) = 0;
 	virtual void SetVec4(glm::vec4 Value) = 0;
+	virtual void SetColorRGB(ColorRGB Value) = 0;
+	virtual void SetColorRGBA(ColorRGBA Value) = 0;
 
 	virtual std::shared_ptr<IXMLWriter> CreateChild(const std::string& ChildName) = 0;
 	virtual void AddChild(const std::shared_ptr<IXMLWriter>& Writer) = 0;

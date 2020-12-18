@@ -5,7 +5,7 @@ ZN_INTERFACE IShaderParameterSource;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IBuffer
-	: public virtual IObject
+	: public virtual IObjectLoadSave
 {
 	enum class ZN_API BufferType : uint32
 	{
@@ -32,7 +32,7 @@ ZN_INTERFACE ZN_API IBuffer
 
 
 ZN_INTERFACE ZN_API IConstantBuffer 
-	: public IBuffer
+	: public virtual IBuffer
 	, public IShaderParameterSource
 {
 	virtual ~IConstantBuffer() {}

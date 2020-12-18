@@ -88,22 +88,21 @@ void CEditorUIFrame::DoInitializeToolsUI()
 	GetEditor().GetTools().DoInitializeUI(*this);
 }
 
-bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions)
+bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::shared_ptr<IPropertiesGroup> PropertiesGroup)
 {
 	_ASSERT(Title != NULL);
 	_ASSERT(Actions != NULL);
 	_ASSERT(Actions->empty());
 
-	if (!GetEditor().IsNodeSelected(Node))
+	if (false == GetEditor().IsNodeSelected(Node))
 		return false;
 
-	*Title = Node->GetName();
-
-	std::vector<QAction *> actions;
+	std::string title = Node->GetName();
+	
 
 	if (GetEditor().GetSelectedNodes().size() > 1)
 	{
-		Title->append(" and " + std::to_string(GetEditor().GetSelectedNodes().size()) + " nodes.");
+		title.append("_and_" + std::to_string(GetEditor().GetSelectedNodes().size()) + "_nodes");
 
 		std::map<std::string, std::vector<std::shared_ptr<IPropertyAction>>> mainNodeActionsNames;
 		FillActionsList(Node, &mainNodeActionsNames);
@@ -143,7 +142,7 @@ bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, 
 				return true;
 			});
 
-			Actions->push_back(complexAction);
+			PropertiesGroup->AddProperty(complexAction);
 		}
 	}
 	else
@@ -152,10 +151,12 @@ bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, 
 		{
 			if (auto act = std::dynamic_pointer_cast<IPropertyAction>(it.second))
 			{
-				Actions->push_back(act);
+				PropertiesGroup->AddProperty(act);
 			}
 		}
 	}
+
+	PropertiesGroup->SetName(title);
 
 	return true;
 }

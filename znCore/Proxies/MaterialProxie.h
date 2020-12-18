@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../ObjectsFactories/Object.h"
+#include "../ObjectsFactories/ObjectProxy.h"
 
 class ZN_API MaterialProxie 
 	: virtual public IMaterial
 	, protected IMaterialDataOwner
-	, public Object
+	, public CObjectProxy
 {
 public:
 	MaterialProxie(std::shared_ptr<IMaterial> _materal);
@@ -17,8 +17,6 @@ public:
 
 	virtual void SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) override;
     virtual std::shared_ptr<ISamplerState> GetSampler(uint8 ID) const override;
-    
-	std::shared_ptr<IPropertiesGroup> GetProperties() const override;
 
 	virtual void Bind(const IShader* PixelShader) const override;
 	virtual void Unbind(const IShader* PixelShader) const override;

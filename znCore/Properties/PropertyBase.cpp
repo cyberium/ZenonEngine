@@ -26,7 +26,7 @@ std::string CPropertyBase::GetName() const
 void CPropertyBase::SetName(const std::string& Name)
 {
 	bool isCorrent = std::all_of(Name.begin(), Name.end(), [](char c) { 
-		return std::isalnum(c, std::locale()); 
+		return std::isalnum(c, std::locale()) || c == '_'; 
 	});
 	if (false == isCorrent)
 		throw CException("Property name '%s' is invalid.", Name.c_str());
@@ -127,6 +127,16 @@ std::string CPropertyBase::GetPropertyTypeName(const IProperty* Property) const
 	{
 		return "Vec4";
 	}
+
+	else if (dynamic_cast<const CProperty<ColorRGB>*>(Property))
+	{
+		return "RGB";
+	}
+	else if (dynamic_cast<const CProperty<ColorRGBA>*>(Property))
+	{
+		return "RGBA";
+	}
+
 	else if (dynamic_cast<const CProperty<std::string>*>(Property))
 	{
 		return "String";
@@ -153,6 +163,7 @@ std::shared_ptr<IProperty> CPropertyBase::CreateNewPropety(std::string PropertyN
 	{
 		return MakeShared(CProperty<glm::vec2>, PropertyName, "someDescription", glm::vec2(0.0f));
 	}
+
 	else if (TypeName == "Vec3")
 	{
 		return MakeShared(CProperty<glm::vec3>, PropertyName, "someDescription", glm::vec3(0.0f));
@@ -161,6 +172,16 @@ std::shared_ptr<IProperty> CPropertyBase::CreateNewPropety(std::string PropertyN
 	{
 		return MakeShared(CProperty<glm::vec4>, PropertyName, "someDescription", glm::vec4(0.0f));
 	}
+
+	else if (TypeName == "RGB")
+	{
+		return MakeShared(CProperty<ColorRGB>, PropertyName, "someDescription", ColorRGB(0.0f));
+	}
+	else if (TypeName == "RGBA")
+	{
+		return MakeShared(CProperty<ColorRGBA>, PropertyName, "someDescription", ColorRGBA(0.0f));
+	}
+
 	else if (TypeName == "String")
 	{
 		return MakeShared(CProperty<std::string>, PropertyName, "someDescription", "");

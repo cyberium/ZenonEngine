@@ -5,7 +5,7 @@ namespace
 	struct ZN_API SParticle
 	{
 		SParticle(float ParticleCreationTimeMS_, float MaxLifeTimeMS_)
-			: Color(glm::vec4(1.0f))
+			: Color(ColorRGBA(1.0f))
 			, Size(glm::vec2(3.0f))
 			, TexCoordBegin(glm::vec2(0.0f))
 			, TexCoordEnd(glm::vec2(1.0f))
@@ -19,7 +19,7 @@ namespace
 			, MaxLifeTimeMS(MaxLifeTimeMS_)
 		{}
 
-		glm::vec4 Color;
+		ColorRGBA Color;
 		glm::vec2 Size;
 
 		glm::vec2 TexCoordBegin;
@@ -42,8 +42,8 @@ namespace
 
 
 class ZN_API CParticleSystem
-	: virtual public Object
-	, public IParticleSystem
+	: virtual public IParticleSystem
+	, public Object
 {
 public:
 	CParticleSystem(const IBaseManager& BaseManager);
@@ -65,12 +65,12 @@ public:
 	float GetLifeTimeMiddlePoint() const;
 
 	// Colors
-	void SetStartColor(glm::vec4 Color);
-	glm::vec4 GetStartColor() const;
-	void SetMiddleColor(glm::vec4 Color);
-	glm::vec4 GetMiddleColor() const;
-	void SetEndColor(glm::vec4 Color);
-	glm::vec4 GetEndColor() const;
+	void SetStartColor(ColorRGBA Color);
+	ColorRGBA GetStartColor() const;
+	void SetMiddleColor(ColorRGBA Color);
+	ColorRGBA GetMiddleColor() const;
+	void SetEndColor(ColorRGBA Color);
+	ColorRGBA GetEndColor() const;
 
 	// Sizes
 	void SetStartSize(glm::vec2 Size);
@@ -96,7 +96,6 @@ public:
 	void SetDeaccelerateSEC(float DeaccelerateSEC);
 	float GetDeaccelerateSEC() const;
 
-	std::shared_ptr<IPropertiesGroup> GetProperties() const override;
 	const std::vector<SGPUParticle>& GetGPUParticles() const override;
 
 	// IObjectLoadSave
@@ -115,8 +114,6 @@ private:
 	float m_LastParticleTimeMS;
 
 private:
-	std::shared_ptr<IPropertiesGroup> m_PropertiesGroup;
-
 	/**
 	  * If this flag is set to true, particle transformation include owner node transformation
 	*/
@@ -137,7 +134,7 @@ private:
 	float m_LifetimeMS;
 	float m_LifetimeMiddlePoint; // 0.0 - 1.0f  //Point that correspond m_Colors[1] and m_Sizes[1] in lifetime.  
 
-	glm::vec4 m_Colors[3];
+	ColorRGBA m_Colors[3];
 	glm::vec2 m_Sizes[3];
 
 	std::shared_ptr<ITexture> m_Texture;

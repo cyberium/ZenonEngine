@@ -28,9 +28,9 @@ struct __declspec(align(16)) ZN_API SGPULight
 		, SpotlightAngle(45.0f)
 	{}
 
-	glm::vec4 AmbientColor;// Ambient color of the light.
+	ColorRGBA AmbientColor;// Ambient color of the light.
 	//--------------------------------------------------------------(16 bytes )
-	glm::vec4 Color;       // Color of the light. Diffuse and specular colors are not separated.
+	ColorRGBA Color;       // Color of the light. Diffuse and specular colors are not separated.
 	//--------------------------------------------------------------(16 bytes )
 	ELightType Type; // The type of the light.
 	float Range; // The range of the light.
@@ -41,6 +41,7 @@ struct __declspec(align(16)) ZN_API SGPULight
 
 
 ZN_INTERFACE ZN_API ILight
+	: public virtual IObject
 {
 	virtual ~ILight() {}
 
@@ -51,10 +52,10 @@ ZN_INTERFACE ZN_API ILight
 	virtual SGPULight GetGPULightStruct() const = 0;
 
 	// Static params
-	virtual void SetAmbientColor(glm::vec3 Value) = 0;
-	virtual glm::vec3 GetAmbientColor() const = 0;
-	virtual void SetColor(glm::vec3 Value) = 0;
-	virtual glm::vec3 GetColor() const = 0;
+	virtual void SetAmbientColor(ColorRGB Value) = 0;
+	virtual ColorRGB GetAmbientColor() const = 0;
+	virtual void SetColor(ColorRGB Value) = 0;
+	virtual ColorRGB GetColor() const = 0;
 	virtual void SetRange(float Value) = 0;
 	virtual float GetRange() const = 0;
 	virtual void SetIntensity(float Value) = 0;

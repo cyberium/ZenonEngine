@@ -21,7 +21,6 @@ ZN_INTERFACE IColliderComponent;
 
 ZN_INTERFACE ZN_API ISceneNode
 	: public virtual IObject
-	, public virtual IObjectLoadSave
 	, public std::enable_shared_from_this<ISceneNode>
 {
 	typedef std::vector<std::shared_ptr<ISceneNode>> SceneNodesList;
@@ -50,7 +49,6 @@ ZN_INTERFACE ZN_API ISceneNode
 	virtual std::shared_ptr<ISceneNode> GetChild(std::string Name) const = 0;
 	virtual bool IsPersistance() const = 0; // Means this node can't be deleted from parent and any parent may contains only one instance of this node (by Name)
 
-	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 	virtual IScene& GetScene() const = 0;
 
 	// Transform functional

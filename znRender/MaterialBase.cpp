@@ -10,7 +10,6 @@ MaterialBase::MaterialBase(IRenderDevice& RenderDevice)
 	, m_Dirty(true)
 	, m_MaterialData(nullptr)
 {
-	m_Properties = MakeShared(CPropertiesGroup, "Properties", "Material properties");
 }
 
 MaterialBase::~MaterialBase()
@@ -52,12 +51,6 @@ std::shared_ptr<ISamplerState> MaterialBase::GetSampler(uint8 ID) const
 
     return iter->second;
 }
-
-std::shared_ptr<IPropertiesGroup> MaterialBase::GetProperties() const
-{
-	return m_Properties;
-}
-
 
 void MaterialBase::Bind(const IShader* PixelShader) const
 {

@@ -12,7 +12,6 @@ public:
 
 	// ISceneNodeComponent
 	virtual void                                    OnMessage(const ISceneNodeComponent* FromComponent, ComponentMessageType Message) override;
-	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const override;
     // Accept from SceneNode
 	virtual void                                    Update(const UpdateEventArgs& e) override;
     virtual void                                    Accept(IVisitor* visitor) override;
@@ -44,10 +43,8 @@ public:
 
 protected:
 	const ISceneNode&								GetOwnerNode() const;
-	IBaseManager&									GetBaseManager() const;
     void                                            RaiseComponentMessage(ComponentMessageType Message);
 
 private:
     const ISceneNode&								m_OwnerNode;
-	std::shared_ptr<IPropertiesGroup>               m_Properties;
 };

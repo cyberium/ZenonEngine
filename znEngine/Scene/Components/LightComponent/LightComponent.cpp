@@ -11,12 +11,12 @@ CLightComponent::CLightComponent(const ISceneNode& OwnerNode)
 {
 	GetProperties()->SetName("LightComponent");
 
-	std::shared_ptr<CPropertyWrapped<ColorRBG>> ambientColor = MakeShared(CPropertyWrapped<ColorRBG>, "AmbientColor", "descr", glm::vec3(0.2f));
+	std::shared_ptr<CPropertyWrapped<ColorRGB>> ambientColor = MakeShared(CPropertyWrapped<ColorRGB>, "AmbientColor", "descr", ColorRGB(0.2f));
 	ambientColor->SetValueSetter(std::bind(&ILight::SetAmbientColor, m_Light, std::placeholders::_1));
 	ambientColor->SetValueGetter(std::bind(&ILight::GetAmbientColor, m_Light));
 	GetProperties()->AddProperty(ambientColor);
 
-	std::shared_ptr<CPropertyWrappedColor> diffuseColor = MakeShared(CPropertyWrappedColor, "DiffuseColor", "descr", glm::vec3(1.0f));
+	std::shared_ptr<CPropertyWrapped<ColorRGB>> diffuseColor = MakeShared(CPropertyWrapped<ColorRGB>, "DiffuseColor", "descr", ColorRGB(1.0f));
 	diffuseColor->SetValueSetter(std::bind(&ILight::SetColor, m_Light, std::placeholders::_1));
 	diffuseColor->SetValueGetter(std::bind(&ILight::GetColor, m_Light));
 	GetProperties()->AddProperty(diffuseColor);
@@ -26,7 +26,9 @@ CLightComponent::CLightComponent(const ISceneNode& OwnerNode)
 	range->SetValueGetter(std::bind(&ILight::GetRange, m_Light));
 	GetProperties()->AddProperty(range);
 
+	glm::vec4 a, b;
 
+	a * b;
 }
 
 CLightComponent::~CLightComponent()
@@ -95,7 +97,7 @@ void CLightComponent::Load(const std::shared_ptr<IXMLReader>& Reader)
 	if (lightStruct == nullptr)
 		throw CException("Unable to find 'Light' xml child.");
 
-	std::shared_ptr<ILight> light = MakeShared(CLight);
+	std::shared_ptr<ILight> light = MakeShared(CLight, GetBaseManager());
 	std::dynamic_pointer_cast<IObjectLoadSave>(light)->Load(lightStruct);
 }
 

@@ -114,6 +114,14 @@ glm::vec4 CXMLReader::GetVec4Attribute(const std::string & AttributeName) const
 	return StringToValue<glm::vec4>(GetStrAttribute(AttributeName));
 }
 
+std::vector<std::string> CXMLReader::GetAttributes() const
+{
+	std::vector<std::string> attributes;
+	for (const auto& it : m_Attributes)
+		attributes.push_back(it.second);
+	return attributes;
+}
+
 
 
 //
@@ -159,13 +167,16 @@ glm::vec4 CXMLReader::GetVec4() const
 	return StringToValue<glm::vec4>(GetValue());
 }
 
-std::vector<std::string> CXMLReader::GetAttributes() const
+ColorRGB CXMLReader::GetColorRGB() const
 {
-	std::vector<std::string> attributes;
-	for (const auto& it : m_Attributes)
-		attributes.push_back(it.second);
-	return attributes;
+	return StringToValue<ColorRGB>(GetValue());
 }
+
+ColorRGBA CXMLReader::GetColorRGBA() const
+{
+	return StringToValue<ColorRGBA>(GetValue());
+}
+
 
 
 //

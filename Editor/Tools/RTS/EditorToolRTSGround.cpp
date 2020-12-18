@@ -118,7 +118,7 @@ void CRTSGround::Disable()
 //
 void CRTSGround::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 {
-	QtUIFrame.getQObject().connect(QtUIFrame.getUI().RTSEditor_GroundBtn, &QPushButton::released, [this]() {
+	/*QtUIFrame.getQObject().connect(QtUIFrame.getUI().RTSEditor_GroundBtn, &QPushButton::released, [this]() {
 		GetEditor().GetTools().Enable(ETool::EToolEditorRTS);
 		SetNodeType(ERTSCellType::ctGround);
 	});
@@ -126,7 +126,7 @@ void CRTSGround::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 	QtUIFrame.getQObject().connect(QtUIFrame.getUI().RTSEditor_WaterBtn, &QPushButton::released, [this]() {
 		GetEditor().GetTools().Enable(ETool::EToolEditorRTS);
 		SetNodeType(ERTSCellType::ctWater);
-	});
+	});*/
 }
 
 

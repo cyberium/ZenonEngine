@@ -3,8 +3,9 @@
 // General
 #include "Light.h"
 
-CLight::CLight()
-	: m_IsEnabled(true)
+CLight::CLight(const IBaseManager& BaseManager)
+	: Object(BaseManager)
+	, m_IsEnabled(true)
 	, m_IsCastShadows(false)
 {
 	//m_GPULightStruct = (SGPULight*)_aligned_malloc(sizeof(SGPULight), 16);
@@ -45,8 +46,8 @@ ELightType CLight::GetType() const
 SGPULight CLight::GetGPULightStruct() const
 {
 	SGPULight gpuLightStruct;
-	gpuLightStruct.AmbientColor = glm::vec4(m_AmbientColor, 1.0f);
-	gpuLightStruct.Color = glm::vec4(m_Color, 1.0f);
+	gpuLightStruct.AmbientColor = ColorRGBA(m_AmbientColor, 1.0f);
+	gpuLightStruct.Color = ColorRGBA(m_Color, 1.0f);
 	gpuLightStruct.Range = m_Range;
 	gpuLightStruct.Intensity = m_Intensity;
 	gpuLightStruct.SpotlightAngle = m_SpotlightAngle;
@@ -56,22 +57,22 @@ SGPULight CLight::GetGPULightStruct() const
 
 // Static
 
-void CLight::SetAmbientColor(glm::vec3 Value)
+void CLight::SetAmbientColor(ColorRGB Value)
 {
 	m_AmbientColor = Value;
 }
 
-glm::vec3 CLight::GetAmbientColor() const
+ColorRGB CLight::GetAmbientColor() const
 {
 	return m_AmbientColor;
 }
 
-void CLight::SetColor(glm::vec3 Value)
+void CLight::SetColor(ColorRGB Value)
 {
 	m_Color = Value;
 }
 
-glm::vec3 CLight::GetColor() const
+ColorRGB CLight::GetColor() const
 {
 	return m_Color;
 }
@@ -263,12 +264,12 @@ void CLight::Load(const std::shared_ptr<IXMLReader>& Reader)
 	auto ambientColor = Reader->GetChild("AmbientColor");
 	if (ambientColor == nullptr)
 		throw CException("Unable to find 'AmbientColor' xml child.");
-	SetAmbientColor(ambientColor->GetVec3());
+	SetAmbientColor(ambientColor->GetColorRGB());
 
 	auto color = Reader->GetChild("Color");
 	if (color == nullptr)
 		throw CException("Unable to find 'Color' xml child.");
-	SetColor(color->GetVec3());
+	SetColor(color->GetColorRGB());
 
 	auto range = Reader->GetChild("Range");
 	if (range == nullptr)
@@ -298,10 +299,10 @@ void CLight::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	type->SetValue(LightTypeToString(GetType()));
 
 	auto ambientColor = Writer->CreateChild("AmbientColor");
-	ambientColor->SetVec3(GetAmbientColor());
+	ambientColor->SetColorRGB(GetAmbientColor());
 
 	auto color = Writer->CreateChild("Color");
-	color->SetVec3(GetColor());
+	color->SetColorRGB(GetColor());
 
 	auto range = Writer->CreateChild("Range");
 	range->SetFloat(GetRange());

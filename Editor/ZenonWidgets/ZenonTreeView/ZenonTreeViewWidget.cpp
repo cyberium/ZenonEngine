@@ -3,6 +3,9 @@
 // General
 #include "ZenonTreeViewWidget.h"
 
+// Additional
+#include "ContextMenuUtils.h"
+
 ZenonTreeViewWidget::ZenonTreeViewWidget(QWidget * parent)
 	: QTreeView(parent)
 	, m_LockForSelectionChangedEvent(false)
@@ -183,30 +186,11 @@ void ZenonTreeViewWidget::onCustomContextMenu(const QPoint& point)
 	if (m_OnContextMenu == nullptr)
 		return;
 
-	std::string title;
-	std::vector<std::shared_ptr<IPropertyAction>> actions;
-	if (false == m_OnContextMenu(item, &title, &actions)) // TODO: try/catch
+	std::shared_ptr<IPropertiesGroup> propertiesGroup = MakeShared(CPropertiesGroup, "DefaultContextMenuTitle", "DefaultContextMenuDescription");
+	if (false == m_OnContextMenu(item, propertiesGroup)) // TODO: try/catch
 		return;
 
-	// Create actions to the context menu 
-	QAction* nameAction = ZN_NEW QAction(title.c_str(), this);
-	nameAction->setEnabled(false);
-
-	// Set the actions to the menu
-	m_ContextMenu->addAction(nameAction);
-	m_ContextMenu->addSeparator();
-	for (const auto& act : actions)
-	{
-		QAction * action = ZN_NEW QAction(act->GetName().c_str(), this);
-		if (false == act->ExecutePrecondition())
-			action->setEnabled(false);
-
-		connect(action, &QAction::triggered, this, [act] {
-			act->ExecuteAction();
-		});
-		m_ContextMenu->addAction(action);
-	}
-
+	m_ContextMenu = CreateContextMenuFromPropertiesGroup(propertiesGroup);
 	m_ContextMenu->popup(mapToGlobal(point));
 }
 

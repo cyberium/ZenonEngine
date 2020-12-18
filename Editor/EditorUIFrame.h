@@ -24,16 +24,18 @@ public:
 	IEditor& GetEditor() const override;
 	bool InitializeEditorFrame() override;
 	void DoInitializeToolsUI() override;
-	bool ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) override;
+	bool ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::shared_ptr<IPropertiesGroup> PropertiesGroup) override;
 
 	// IEditorQtUIFrame
 	QObject& getQObject() override;
 	HWND getHWND() override;
 	Ui::EditorUIFrameClass& getUI() override;
 	inline ZenonWindow3D * getMainEditor() const override { return m_UI.MainEditor3D; }
-	inline ZenonWindowMinimal3DWidget * getModelPreview() const override { return m_UI.ModelPreview; }
+	
 	inline ZenonTreeViewWidget * getSceneViewer() const override { return m_UI.SceneViewer; }
-	inline ZenonTreeViewWidget * getCollectionViewer() const override { return m_UI.CollectionViewer; }
+
+	inline ZenonTreeViewWidget * getResourcesBrowser() const override { return m_UI.ResourcesBrowserTreeView; }
+	inline ZenonWindowMinimal3DWidget * getResourcePreview() const override { return m_UI.ResourcePreviewWindow3D; }
 
 	// IEditorToolSelectorEventListener
 	void OnSelectNode() override;

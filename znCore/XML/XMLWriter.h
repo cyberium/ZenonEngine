@@ -42,6 +42,8 @@ public:
 	void SetVec2(glm::vec2 Value) override;
 	void SetVec3(glm::vec3 Value) override;
 	void SetVec4(glm::vec4 Value) override;
+	void SetColorRGB(ColorRGB Value) override;
+	void SetColorRGBA(ColorRGBA Value) override;
 
 	// Childs
 	std::shared_ptr<IXMLWriter> CreateChild(const std::string& ChildName) override;

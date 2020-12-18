@@ -23,7 +23,6 @@ public:
 	virtual std::shared_ptr<IUIControl>             GetChild(std::string Name) const override;
 
 	// Actions & Properties
-	std::shared_ptr<IPropertiesGroup>               GetProperties() const final;
 	IScene&                                         GetScene() const final;
 
 	void											SetPosition(glm::vec2 Position) override;
@@ -69,7 +68,6 @@ public:
 	void                                            RaiseOnParentChangedInternal() override;
 
 protected:
-	IBaseManager&                                   GetBaseManager() const;
 	IRenderDevice&                                  GetRenderDevice() const;
 	void                                            SetSize(glm::vec2 Size);
 	virtual glm::mat4                               CalculateLocalTransform() const;
@@ -91,7 +89,6 @@ private:
 	ControlsList                                    m_Children;
 	std::weak_ptr<IUIControl>                       m_ParentNode;
 
-	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
 	IScene&                                         m_Scene;
 
 private:

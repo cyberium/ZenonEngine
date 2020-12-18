@@ -165,6 +165,16 @@ void CXMLWriter::SetVec4(glm::vec4 Value)
 	SetValue(ValueToString(Value));
 }
 
+void CXMLWriter::SetColorRGB(ColorRGB Value)
+{
+	SetValue(ValueToString(Value));
+}
+
+void CXMLWriter::SetColorRGBA(ColorRGBA Value)
+{
+	SetValue(ValueToString(Value));
+}
+
 
 //
 // Childs

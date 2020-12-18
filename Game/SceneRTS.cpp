@@ -45,7 +45,7 @@ void CSceneRTS::Initialize()
 		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.85f, -0.5f));
 
 		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
-		lightComponent->SetLight(MakeShared(CLight));
+		lightComponent->SetLight(MakeShared(CLight, GetBaseManager()));
 		lightComponent->GetLight()->SetCastShadows(true);
 		lightComponent->GetLight()->SetType(ELightType::Directional);
 		lightComponent->GetLight()->SetAmbientColor(glm::vec3(0.25f));
@@ -66,7 +66,7 @@ void CSceneRTS::Initialize()
 		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.5f, 0.5f));
 
 		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
-		lightComponent->SetLight(MakeShared(CLight));
+		lightComponent->SetLight(MakeShared(CLight, GetBaseManager()));
 		lightComponent->GetLight()->SetCastShadows(true);
 		lightComponent->GetLight()->SetType(ELightType::Directional);
 		lightComponent->GetLight()->SetAmbientColor(glm::vec3(0.25f));

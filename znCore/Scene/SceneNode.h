@@ -28,7 +28,6 @@ public:
 	bool                                            IsPersistance() const override;
 
 	// Actions & Properties
-	std::shared_ptr<IPropertiesGroup>				GetProperties() const override final;
 	IScene&											GetScene() const override final;
 
 	// Transform functional
@@ -91,7 +90,6 @@ protected:
 	void											UpdateWorldTransform();
 	void                                            DoLoadProperties(const std::shared_ptr<IXMLReader>& Reader) const;
 	void                                            DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) const;
-	IBaseManager&                                   GetBaseManager() const;
 	IRenderDevice&                                  GetRenderDevice() const;
 
 private:
@@ -120,7 +118,6 @@ private:
 	glm::mat4										m_WorldTransform;
 	glm::mat4										m_InverseWorldTransform;
 
-	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
 	ComponentsMap                                   m_Components;
 
 	std::weak_ptr<ISceneNode>                       m_ParentNode;

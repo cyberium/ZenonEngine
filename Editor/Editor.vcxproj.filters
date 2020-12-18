@@ -206,6 +206,9 @@
     <ClCompile Include="ResourcesBrowser\TreeViewItems\MaterialTreeViewItem.cpp">
       <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClCompile>
+    <ClCompile Include="ContextMenuUtils.cpp">
+      <Filter>EditorUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -332,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="ResourcesBrowser\TreeViewItems\MaterialTreeViewItem.h">
       <Filter>ResourcesBrowser\TreeViewItems</Filter>
+    </ClInclude>
+    <ClInclude Include="ContextMenuUtils.h">
+      <Filter>EditorUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

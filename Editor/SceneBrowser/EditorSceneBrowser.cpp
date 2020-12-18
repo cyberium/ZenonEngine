@@ -25,7 +25,7 @@ void CEditorSceneBrowser::Initialize()
 {
 	GetEditorQtUIFrame().getSceneViewer()->SetOnSelectedItemChange(std::bind(&CEditorSceneBrowser::OnSelectTreeItem, this, std::placeholders::_1));
 	GetEditorQtUIFrame().getSceneViewer()->SetOnStartDragging(std::bind(&CEditorSceneBrowser::OnStartDraggingTreeItem, this, std::placeholders::_1, std::placeholders::_2));
-	GetEditorQtUIFrame().getSceneViewer()->SetOnContexMenu(std::bind(&CEditorSceneBrowser::OnContextMenuTreeItem, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	GetEditorQtUIFrame().getSceneViewer()->SetOnContexMenu(std::bind(&CEditorSceneBrowser::OnContextMenuTreeItem, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 void CEditorSceneBrowser::Update()
@@ -69,7 +69,7 @@ bool CEditorSceneBrowser::OnStartDraggingTreeItem(const IznTreeViewItem * Item, 
 	return false;
 }
 
-bool CEditorSceneBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item, std::string * ContextMenuTitle, std::vector<std::shared_ptr<IPropertyAction>> * ResultActions)
+bool CEditorSceneBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item, std::shared_ptr<IPropertiesGroup> PropertiesGroup)
 {
 	if (Item->GetType() != ETreeViewItemType::CSceneNode)
 		return false;
@@ -82,7 +82,7 @@ bool CEditorSceneBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item, st
 	if (sceneNode3DObject == nullptr)
 		return false;
 
-	if (false == GetEditorUIFrame().ExtendContextMenu(sceneNode3DObject, ContextMenuTitle, ResultActions))
+	if (false == GetEditorUIFrame().ExtendContextMenu(sceneNode3DObject, PropertiesGroup))
 		return false;
 
 	return true;

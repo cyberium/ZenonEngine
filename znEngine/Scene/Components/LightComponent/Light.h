@@ -3,12 +3,12 @@
 #include "../Animations/AnimatedValueSingle.h"
 
 class ZN_API CLight
-	: public ILight
+	: virtual public ILight
 	, public ILightInternal
-	, public IObjectLoadSave
+	, public Object
 {
 public:
-	CLight();
+	CLight(const IBaseManager& BaseManager);
 	virtual ~CLight();
 
 	// ILight
@@ -19,10 +19,10 @@ public:
 	SGPULight GetGPULightStruct() const override;
 
 	// Static
-	void SetAmbientColor(glm::vec3 Value) override;
-	glm::vec3 GetAmbientColor() const override;
-	void SetColor(glm::vec3 Value) override;
-	glm::vec3 GetColor() const override;
+	void SetAmbientColor(ColorRGB Value) override;
+	ColorRGB GetAmbientColor() const override;
+	void SetColor(ColorRGB Value) override;
+	ColorRGB GetColor() const override;
 	void SetRange(float Value) override;
 	float GetRange() const override;
 	void SetIntensity(float Value) override;
@@ -57,8 +57,8 @@ private:
 	glm::vec3 m_Rotation;
 	
 	// Static values
-	glm::vec3 m_AmbientColor;
-	glm::vec3 m_Color;
+	ColorRGB m_AmbientColor;
+	ColorRGB m_Color;
 	float m_Range;
 	float m_Intensity;
 	float m_SpotlightAngle;

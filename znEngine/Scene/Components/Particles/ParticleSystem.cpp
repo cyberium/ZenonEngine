@@ -57,7 +57,8 @@ namespace
 
 
 CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
-	: m_BaseManager(BaseManager)
+	: Object(BaseManager)
+	, m_BaseManager(BaseManager)
 
 	, m_IsEnableCreatingNewParticles(true)
 	, m_Texture(nullptr)
@@ -75,23 +76,21 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 	m_LifetimeMS = 700.0f;
 	m_LifetimeMiddlePoint = 0.5f;
 
-	m_Colors[0] = glm::vec4(1.0f, 0.7f, 0.3f, 1.0f);
-	m_Colors[1] = glm::vec4(0.7f, 1.0f, 0.1f, 1.0f);
-	m_Colors[2] = glm::vec4(0.3f, 0.2f, 0.7f, 1.0f);
+	m_Colors[0] = ColorRGBA(1.0f, 0.7f, 0.3f, 1.0f);
+	m_Colors[1] = ColorRGBA(0.7f, 1.0f, 0.1f, 1.0f);
+	m_Colors[2] = ColorRGBA(0.3f, 0.2f, 0.7f, 1.0f);
 
 	m_Sizes[0] = glm::vec2(4.0f);
 	m_Sizes[1] = glm::vec2(2.0f);
 	m_Sizes[2] = glm::vec2(0.1f);
 
 
-	m_PropertiesGroup = MakeShared(CPropertiesGroup, "Properties", "Properties");
-
 	// LifeTimeMS
 	{
 		auto lifeTimeMSProperty = MakeShared(CPropertyWrapped<float>, "LifeTimeMS", "LifeTimeMS", 1000.0f);
 		lifeTimeMSProperty->SetValueSetter(std::bind(&CParticleSystem::SetLifeTimeMS, this, std::placeholders::_1));
 		lifeTimeMSProperty->SetValueGetter(std::bind(&CParticleSystem::GetLifeTimeMS, this));
-		m_PropertiesGroup->AddProperty(lifeTimeMSProperty);
+		GetProperties()->AddProperty(lifeTimeMSProperty);
 	}
 
 	// LifeTimeMiddlePoint
@@ -99,30 +98,30 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 		auto lifeTimeMiddlePointProperty = MakeShared(CPropertyWrapped<float>, "LifeTimeMiddlePoint", "LifeTimeMiddlePoint", 0.5f);
 		lifeTimeMiddlePointProperty->SetValueSetter(std::bind(&CParticleSystem::SetLifeTimeMiddlePoint, this, std::placeholders::_1));
 		lifeTimeMiddlePointProperty->SetValueGetter(std::bind(&CParticleSystem::GetLifeTimeMiddlePoint, this));
-		m_PropertiesGroup->AddProperty(lifeTimeMiddlePointProperty);
+		GetProperties()->AddProperty(lifeTimeMiddlePointProperty);
 	}
 
 	// Colors
 	{
 		std::shared_ptr<IPropertiesGroup> colorsPropertiesGroup = MakeShared(CPropertiesGroup, "Colors", "Colors");
-		m_PropertiesGroup->AddProperty(colorsPropertiesGroup);
+		GetProperties()->AddProperty(colorsPropertiesGroup);
 
 		{
-			auto startColorProperty = MakeShared(CPropertyWrappedVec4, "Start", "", glm::vec4(1.0f));
+			auto startColorProperty = MakeShared(CPropertyWrapped<ColorRGBA>, "Start", "", ColorRGBA(1.0f));
 			startColorProperty->SetValueSetter(std::bind(&CParticleSystem::SetStartColor, this, std::placeholders::_1));
 			startColorProperty->SetValueGetter(std::bind(&CParticleSystem::GetStartColor, this));
 			colorsPropertiesGroup->AddProperty(startColorProperty);
 		}
 
 		{
-			auto middleColorProperty = MakeShared(CPropertyWrappedVec4, "Middle", "", glm::vec4(1.0f));
+			auto middleColorProperty = MakeShared(CPropertyWrapped<ColorRGBA>, "Middle", "", ColorRGBA(1.0f));
 			middleColorProperty->SetValueSetter(std::bind(&CParticleSystem::SetMiddleColor, this, std::placeholders::_1));
 			middleColorProperty->SetValueGetter(std::bind(&CParticleSystem::GetMiddleColor, this));
 			colorsPropertiesGroup->AddProperty(middleColorProperty);
 		}
 
 		{
-			auto endColorProperty = MakeShared(CPropertyWrappedVec4, "End", "", glm::vec4(1.0f));
+			auto endColorProperty = MakeShared(CPropertyWrapped<ColorRGBA>, "End", "", ColorRGBA(1.0f));
 			endColorProperty->SetValueSetter(std::bind(&CParticleSystem::SetEndColor, this, std::placeholders::_1));
 			endColorProperty->SetValueGetter(std::bind(&CParticleSystem::GetEndColor, this));
 			colorsPropertiesGroup->AddProperty(endColorProperty);
@@ -132,7 +131,7 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 	// Sizes
 	{
 		std::shared_ptr<IPropertiesGroup> sizesPropertiesGroup = MakeShared(CPropertiesGroup, "Sizes", "Sizes");
-		m_PropertiesGroup->AddProperty(sizesPropertiesGroup);
+		GetProperties()->AddProperty(sizesPropertiesGroup);
 
 		{
 			auto startSizeProperty = MakeShared(CPropertyWrappedVec2, "Start", "", glm::vec2(1.0f));
@@ -162,14 +161,14 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 		auto textureFileNameProperty = MakeShared(CPropertyWrapped<std::string>, "Texture", "Texture", "");
 		textureFileNameProperty->SetValueSetter(std::bind(&CParticleSystem::SetTextureFilename, this, std::placeholders::_1));
 		textureFileNameProperty->SetValueGetter(std::bind(&CParticleSystem::GetTextureFilename, this));
-		m_PropertiesGroup->AddProperty(textureFileNameProperty);
+		GetProperties()->AddProperty(textureFileNameProperty);
 	}
 
 
 	// Gravity
 	{
 		std::shared_ptr<IPropertiesGroup> gravityPropertiesGroup = MakeShared(CPropertiesGroup, "Gravity", "Gravity");
-		m_PropertiesGroup->AddProperty(gravityPropertiesGroup);
+		GetProperties()->AddProperty(gravityPropertiesGroup);
 
 		// Direction
 		{
@@ -193,7 +192,7 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 		auto deaccelerateSECProperty = MakeShared(CPropertyWrapped<float>, "DeaccelerateSEC", "DeaccelerateSEC", 0.01f);
 		deaccelerateSECProperty->SetValueSetter(std::bind(&CParticleSystem::SetDeaccelerateSEC, this, std::placeholders::_1));
 		deaccelerateSECProperty->SetValueGetter(std::bind(&CParticleSystem::GetDeaccelerateSEC, this));
-		m_PropertiesGroup->AddProperty(deaccelerateSECProperty);
+		GetProperties()->AddProperty(deaccelerateSECProperty);
 	}
 }
 
@@ -244,11 +243,6 @@ const ISceneNode* CParticleSystem::GetNode() const
 	return m_OwnerNode;
 }
 
-std::shared_ptr<IPropertiesGroup> CParticleSystem::GetProperties() const
-{
-	return m_PropertiesGroup;
-}
-
 const std::vector<SGPUParticle>& CParticleSystem::GetGPUParticles() const
 {
 	return m_GPUParticles;
@@ -288,32 +282,32 @@ float CParticleSystem::GetLifeTimeMiddlePoint() const
 
 // Colors
 
-void CParticleSystem::SetStartColor(glm::vec4 Color)
+void CParticleSystem::SetStartColor(ColorRGBA Color)
 {
 	m_Colors[0] = Color;
 }
 
-glm::vec4 CParticleSystem::GetStartColor() const
+ColorRGBA CParticleSystem::GetStartColor() const
 {
 	return m_Colors[0];
 }
 
-void CParticleSystem::SetMiddleColor(glm::vec4 Color)
+void CParticleSystem::SetMiddleColor(ColorRGBA Color)
 {
 	m_Colors[1] = Color;
 }
 
-glm::vec4 CParticleSystem::GetMiddleColor() const
+ColorRGBA CParticleSystem::GetMiddleColor() const
 {
 	return m_Colors[1];
 }
 
-void CParticleSystem::SetEndColor(glm::vec4 Color)
+void CParticleSystem::SetEndColor(ColorRGBA Color)
 {
 	m_Colors[2] = Color;
 }
 
-glm::vec4 CParticleSystem::GetEndColor() const
+ColorRGBA CParticleSystem::GetEndColor() const
 {
 	return m_Colors[2];
 }
@@ -422,84 +416,14 @@ float CParticleSystem::GetDeaccelerateSEC() const
 //
 void CParticleSystem::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	auto lifeTimeXMLReader = Reader->GetChild("LifeTime");
-	m_LifetimeMS = lifeTimeXMLReader->GetFloat();
-
-	auto lifeTimeMiddlePointXMLReader = Reader->GetChild("LifeTimeMiddlePoint");
-	m_LifetimeMiddlePoint = lifeTimeMiddlePointXMLReader->GetFloat();
-
-	auto colorsXMLReader = Reader->GetChild("Colors");
-	m_Colors[0] = colorsXMLReader->GetChild("Start")->GetVec4();
-	m_Colors[1] = colorsXMLReader->GetChild("Middle")->GetVec4();
-	m_Colors[1] = colorsXMLReader->GetChild("End")->GetVec4();
-
-	auto sizesXMLReader = Reader->GetChild("Sizes");
-	m_Sizes[0] = sizesXMLReader->GetChild("Start")->GetVec2();
-	m_Sizes[1] = sizesXMLReader->GetChild("Middle")->GetVec2();
-	m_Sizes[1] = sizesXMLReader->GetChild("End")->GetVec2();
-
-	if (auto textureXMLReader = Reader->GetChild("Texture"))
-	{
-		auto texture = m_BaseManager.GetManager<IznTexturesFactory>()->LoadTexture2D(textureXMLReader->GetValue());
-		SetTexture(texture);
-	}
-
-	auto gravityXMLReader = Reader->GetChild("Gravity");
-	m_GravityDirection = gravityXMLReader->GetChild("Direction")->GetVec3();
-	m_GravityPowerSEC = gravityXMLReader->GetChild("Power")->GetFloat();
-
-	m_DeaccelerateSEC = Reader->GetChild("Deaccelerate")->GetFloat();
+	for (const auto prop : GetProperties()->GetProperties())
+		prop.second->Load(Reader);
 }
 
 void CParticleSystem::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	auto lifeTimeXMLWriter = Writer->CreateChild("LifeTime");
-	lifeTimeXMLWriter->SetFloat(m_LifetimeMS);
-
-	auto lifeTimeMiddlePointXMLWriter = Writer->CreateChild("LifeTimeMiddlePoint");
-	lifeTimeMiddlePointXMLWriter->SetFloat(m_LifetimeMiddlePoint);
-
-	auto colorsGroupXMLWriter = Writer->CreateChild("Colors");
-	{
-		auto startColorXMLWriter = colorsGroupXMLWriter->CreateChild("Start");
-		startColorXMLWriter->SetVec4(m_Colors[0]);
-
-		auto middleColorXMLWriter = colorsGroupXMLWriter->CreateChild("Middle");
-		middleColorXMLWriter->SetVec4(m_Colors[1]);
-
-		auto endColorXMLWriter = colorsGroupXMLWriter->CreateChild("End");
-		endColorXMLWriter->SetVec4(m_Colors[2]);
-	}
-
-	auto sizesGroupXMLWriter = Writer->CreateChild("Sizes");
-	{
-		auto startSizeXMLWriter = sizesGroupXMLWriter->CreateChild("Start");
-		startSizeXMLWriter->SetVec2(m_Sizes[0]);
-
-		auto middleSizeXMLWriter = sizesGroupXMLWriter->CreateChild("Middle");
-		middleSizeXMLWriter->SetVec2(m_Sizes[1]);
-
-		auto endSizeXMLWriter = sizesGroupXMLWriter->CreateChild("End");
-		endSizeXMLWriter->SetVec2(m_Sizes[2]);
-	}
-
-	if (m_Texture)
-	{
-		auto textureXMLWriter = Writer->CreateChild("Texture");
-		textureXMLWriter->SetValue(m_Texture->GetFilename());
-	}
-
-	auto gravityXMLWriter = Writer->CreateChild("Gravity");
-	{
-		auto gravityDirection = gravityXMLWriter->CreateChild("Direction");
-		gravityDirection->SetVec3(m_GravityDirection);
-
-		auto gravityPowerXMLWriter = gravityXMLWriter->CreateChild("Power");
-		gravityPowerXMLWriter->SetFloat(m_GravityPowerSEC);
-	}
-
-	auto deaccelerateXMLWriter = Writer->CreateChild("Deaccelerate");
-	deaccelerateXMLWriter->SetFloat(m_DeaccelerateSEC);
+	for (const auto prop : GetProperties()->GetProperties())
+		prop.second->Save(Writer);
 }
 
 

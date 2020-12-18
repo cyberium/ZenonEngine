@@ -41,7 +41,9 @@ public:
 	glm::vec2   GetVec2() const override;
 	glm::vec3   GetVec3() const override;
 	glm::vec4   GetVec4() const override;
-	
+	ColorRGB    GetColorRGB() const override;
+	ColorRGBA   GetColorRGBA() const override;
+
 	// Childs
 	std::shared_ptr<IXMLReader> GetChild(const std::string& ChildName) const override;
 	std::vector<std::shared_ptr<IXMLReader>> GetChilds() const override;

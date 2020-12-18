@@ -49,7 +49,7 @@ template<>
 inline std::string ValueToString(const glm::vec2& Value)
 {
 	char buff[cBufferSize];
-	if (sprintf_s(buff, cBufferSize, "%f, %f", Value.x, Value.y) <= 0)
+	if (sprintf_s(buff, cBufferSize, "%.3f, %.3f", Value.x, Value.y) <= 0)
 		throw CException("Unable to write glm::vec2 value.");
 	return buff;
 }
@@ -58,7 +58,7 @@ template<>
 inline std::string ValueToString(const glm::vec3& Value)
 {
 	char buff[cBufferSize];
-	if (sprintf_s(buff, cBufferSize, "%f, %f, %f", Value.x, Value.y, Value.z) <= 0)
+	if (sprintf_s(buff, cBufferSize, "%.3f, %.3f, %.3f", Value.x, Value.y, Value.z) <= 0)
 		throw CException("Unable to write glm::vec3 value.");
 	return buff;
 }
@@ -67,8 +67,26 @@ template<>
 inline std::string ValueToString(const glm::vec4& Value)
 {
 	char buff[cBufferSize];
-	if (sprintf_s(buff, cBufferSize, "%f, %f, %f, %f", Value.x, Value.y, Value.z, Value.w) <= 0)
+	if (sprintf_s(buff, cBufferSize, "%.3f, %.3f, %.3f, %.3f", Value.x, Value.y, Value.z, Value.w) <= 0)
 		throw CException("Unable to write glm::vec4 value.");
+	return buff;
+}
+
+template<>
+inline std::string ValueToString(const ColorRGB& Value)
+{
+	char buff[cBufferSize];
+	if (sprintf_s(buff, cBufferSize, "%.2f, %.2f, %.2f", Value.r, Value.g, Value.b) <= 0)
+		throw CException("Unable to write ColorRGB value.");
+	return buff;
+}
+
+template<>
+inline std::string ValueToString(const ColorRGBA& Value)
+{
+	char buff[cBufferSize];
+	if (sprintf_s(buff, cBufferSize, "%.2f, %.2f, %f, %.2f", Value.r, Value.g, Value.b, Value.a) <= 0)
+		throw CException("Unable to write ColorRGBA value.");
 	return buff;
 }
 
@@ -144,5 +162,23 @@ inline glm::vec4 StringToValue(const std::string& String)
 	glm::vec4 value(0.0f);
 	if (sscanf_s(String.c_str(), "%f, %f, %f, %f", &value.x, &value.y, &value.z, &value.w) != 4)
 		throw CException("StringToValue: Unable to read value '%s' from string '%s'.", typeid(glm::vec4).name(), String.c_str());
+	return value;
+}
+
+template<>
+inline ColorRGB StringToValue(const std::string& String)
+{
+	ColorRGB value(0.0f);
+	if (sscanf_s(String.c_str(), "%f, %f, %f", &value.r, &value.g, &value.b) != 3)
+		throw CException("StringToValue: Unable to read value '%s' from string '%s'.", typeid(ColorRGB).name(), String.c_str());
+	return value;
+}
+
+template<>
+inline ColorRGBA StringToValue(const std::string& String)
+{
+	ColorRGBA value(0.0f);
+	if (sscanf_s(String.c_str(), "%f, %f, %f, %f", &value.r, &value.g, &value.b, &value.a) != 4)
+		throw CException("StringToValue: Unable to read value '%s' from string '%s'.", typeid(ColorRGBA).name(), String.c_str());
 	return value;
 }

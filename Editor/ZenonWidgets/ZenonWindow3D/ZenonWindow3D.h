@@ -32,5 +32,6 @@ private:
 	void dragLeaveEvent(QDragLeaveEvent *event) override;
 
 private:
+	std::shared_ptr<QMenu> m_ContextMenu;
 	IEditor* m_Editor;
 };

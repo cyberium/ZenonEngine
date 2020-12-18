@@ -104,13 +104,13 @@ std::shared_ptr<MaterialModel> CFBXMaterials::LoadMaterial(fbxsdk::FbxSurfaceMat
 
 void CFBXMaterials::LoadPhongMaterialsProperties(fbxsdk::FbxSurfacePhong * FBXSurfacePhong, std::shared_ptr<MaterialModel> Material)
 {
-	Material->SetAmbientColor(ToGLMVec3(FBXSurfacePhong->Ambient));
+	Material->SetAmbientColor(ToColorRGB(FBXSurfacePhong->Ambient));
 	Material->SetAmbientFactor(ToFloat(FBXSurfacePhong->AmbientFactor));
 
-	Material->SetDiffuseColor(ToGLMVec3(FBXSurfacePhong->Diffuse));
+	Material->SetDiffuseColor(ToColorRGB(FBXSurfacePhong->Diffuse));
 	Material->SetDiffuseFactor(ToFloat(FBXSurfacePhong->DiffuseFactor));
 
-	Material->SetSpecularColor(ToGLMVec3(FBXSurfacePhong->Specular));
+	Material->SetSpecularColor(ToColorRGB(FBXSurfacePhong->Specular));
 	Material->SetSpecularFactor(ToFloat(FBXSurfacePhong->SpecularFactor)) /** 16.0f*/;
 
 	//MaterialData().NormalMap = ToGLMVec3(FBXSurfacePhong->NormalMap);

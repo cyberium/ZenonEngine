@@ -70,7 +70,7 @@ void CFBXLight::Load(fbxsdk::FbxLight * NativeLight)
 	m_OwnerFBXNode.lock()->SetScale(glm::vec3(lScale[0], lScale[1], lScale[2]));*/
 
 	m_Light->Type = lightTypes[NativeLight->LightType.Get()];
-	m_Light->Color = glm::vec4(NativeLight->Color.Get()[0], NativeLight->Color.Get()[1], NativeLight->Color.Get()[2], 1.0f);
+	m_Light->Color = ColorRGBA(NativeLight->Color.Get()[0], NativeLight->Color.Get()[1], NativeLight->Color.Get()[2], 1.0f);
 	m_Light->SpotlightAngle = NativeLight->OuterAngle.Get() / 2.0f;
 	m_Light->Range = NativeLight->Intensity.Get() / 40.0f;
 }

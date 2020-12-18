@@ -1,14 +1,14 @@
 #pragma once
 
-#include "ObjectsFactories/Object.h"
+#include "ObjectsFactories/ObjectProxy.h"
 
 class ZN_API GeometryProxie
-	: public IGeometry
+	: virtual public IGeometry
 	, public IGeometryInternal
-	, public Object
+	, public CObjectProxy
 {
 public:
-	GeometryProxie(const std::shared_ptr<IGeometry>& Geometry);
+	GeometryProxie(std::shared_ptr<IGeometry> Geometry);
 	virtual ~GeometryProxie();
 
 	// IGeometry

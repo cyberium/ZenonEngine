@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ObjectsFactories/Object.h"
+#include "../ObjectsFactories/ObjectProxy.h"
 
 class ZN_API ModelProxie 
-	: public IModel
-	, public Object
+	: virtual public IModel
+	, public CObjectProxy
 {
 public:
 	ModelProxie(const std::shared_ptr<IModel>& Model);

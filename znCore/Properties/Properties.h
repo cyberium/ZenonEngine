@@ -382,37 +382,3 @@ private:
 		return Get()[Index];
 	}
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class CPropertyWrappedColor
-	: public CPropertyWrapped<ColorRBG>
-{
-public:
-	CPropertyWrappedColor(std::string Name, std::string Description, ColorRBG DefaultValue = ColorRBG(1.0f, 1.0f, 1.0f))
-		: CPropertyWrapped<ColorRBG>(Name, Description, DefaultValue)
-	{}
-};

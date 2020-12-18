@@ -4,7 +4,8 @@
 #include "ModelProxie.h"
 
 ModelProxie::ModelProxie(const std::shared_ptr<IModel>& Model)
-	: m_Model(Model)
+	: CObjectProxy(Model)
+	, m_Model(Model)
 {
 	_ASSERT(m_Model != nullptr);
 }

@@ -44,7 +44,7 @@ void main_internal(int argc, char *argv[])
 
 	// 'Preview' scene
 	{
-		auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getModelPreview());
+		auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getResourcePreview());
 		auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
 
 		app.AddRenderWindow(renderWindow);

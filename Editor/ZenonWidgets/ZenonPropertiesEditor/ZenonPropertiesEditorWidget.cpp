@@ -10,19 +10,25 @@ ZenonPropertiesEditorWidget::ZenonPropertiesEditorWidget(QWidget * parent)
 {
 	m_VariantEditorFactory = MakeShared(QtVariantEditorFactory);
 	m_VariantPropertyManager = MakeShared(QtVariantPropertyManager, this);
-	
+	setFactoryForManager(m_VariantPropertyManager.get(), m_VariantEditorFactory.get());
+
+
 	m_GroupPropertyManager = MakeShared(QtGroupPropertyManager, this);
 
+	m_ColorEditorFactory = MakeShared(QtColorEditorFactory, this);
 	m_ColorPropertyManager = MakeShared(QtColorPropertyManager, this);
+	setFactoryForManager(m_ColorPropertyManager.get(), m_ColorEditorFactory.get());
+
 
 	setHeaderVisible(false);
 	
-	setFactoryForManager(m_VariantPropertyManager.get(), m_VariantEditorFactory.get());
+	
 }
 
 ZenonPropertiesEditorWidget::~ZenonPropertiesEditorWidget()
 {
 	unsetFactoryForManager(m_VariantPropertyManager.get());
+	unsetFactoryForManager(m_ColorPropertyManager.get());
 }
 
 void ZenonPropertiesEditorWidget::SetProperties(std::shared_ptr<IPropertiesGroup> Properties)
@@ -38,6 +44,7 @@ void ZenonPropertiesEditorWidget::SetProperties(std::shared_ptr<IPropertiesGroup
 	m_ColorPropertyManager->clear();
 
 	disconnect(m_VariantPropertyManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(variantValueChanged(QtProperty*, QVariant)));
+	disconnect(m_ColorPropertyManager.get(), SIGNAL(valueChanged(QtProperty*, const QColor&)), this, SLOT(colorValueChanged(QtProperty*, const QColor&)));
 
 	if (Properties == nullptr)
 		return;
@@ -60,6 +67,7 @@ void ZenonPropertiesEditorWidget::SetProperties(std::shared_ptr<IPropertiesGroup
 	//if (auto prop = CreateProperty(m_PropertiesGroup))
 	//	addProperty(prop);
 	
+	connect(m_ColorPropertyManager.get(), SIGNAL(valueChanged(QtProperty*, const QColor&)), this, SLOT(colorValueChanged(QtProperty*, const QColor&)));
 	connect(m_VariantPropertyManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(variantValueChanged(QtProperty*, QVariant)));
 }
 
@@ -96,7 +104,7 @@ void ZenonPropertiesEditorWidget::variantValueChanged(QtProperty * Property, con
 	std::string fullPropertyPath = Property->whatsThis().toStdString();
 	std::string propertyStringValue = Value.toString().toStdString();
 
-	Log::Info("PropertiesEditorWidget: Property '%s' value '%s'.", fullPropertyPath.c_str(), propertyStringValue.c_str());
+	Log::Info("PropertiesEditorWidget: Variant property '%s' value '%s'.", fullPropertyPath.c_str(), propertyStringValue.c_str());
 
 	auto property = FindProperty(m_PropertiesGroup, fullPropertyPath);
 	if (property == nullptr)
@@ -104,18 +112,56 @@ void ZenonPropertiesEditorWidget::variantValueChanged(QtProperty * Property, con
 	property->FromString(propertyStringValue);
 }
 
+void ZenonPropertiesEditorWidget::colorValueChanged(QtProperty * Property, const QColor& Value)
+{
+	std::string fullPropertyPath = Property->whatsThis().toStdString();
+	
+	qreal r, g, b, a;
+	Value.getRgbF(&r, &g, &b, &a);
+
+	Log::Info("PropertiesEditorWidget: Color property '%s' value '%d, %d, %d, %d'.", fullPropertyPath.c_str(), r, g, b, a);
+
+	auto property = FindProperty(m_PropertiesGroup, fullPropertyPath);
+	if (property == nullptr)
+		throw CException("Property '%s' not found.", fullPropertyPath.c_str());
+
+	if (auto propertyAsColor3 = std::dynamic_pointer_cast<IPropertyT<glm::vec3>>(property))
+	{
+		propertyAsColor3->Set(glm::vec3(r, g, b));
+	}
+	else if (auto propertyAsColor4 = std::dynamic_pointer_cast<IPropertyT<glm::vec4>>(property))
+	{
+		propertyAsColor3->Set(glm::vec4(r, g, b, a));
+	}
+}
 
 
 //
 // Private
 //
-
 QtVariantProperty * ZenonPropertiesEditorWidget::CreateVariantProperty(QVariant::Type PropType, std::shared_ptr<IProperty> Property)
 {
 	QtVariantProperty * vartiantProp = m_VariantPropertyManager->addProperty(PropType, Property->GetName().c_str());
 	vartiantProp->setToolTip(Property->GetDescription().c_str());
 	vartiantProp->setWhatsThis(Property->GetName().c_str());
 	return vartiantProp;
+}
+
+QtProperty * ZenonPropertiesEditorWidget::CreateColorProperty(std::shared_ptr<IProperty> Property)
+{
+	QtProperty * colorProperty = m_ColorPropertyManager->addProperty(Property->GetName().c_str());
+
+	//colorProperty->removeSubProperty();
+
+	for (const auto subProp : colorProperty->subProperties())
+		colorProperty->removeSubProperty(subProp);
+
+	//for (const auto& item : items(colorProperty))
+	//	setExpanded(item, false);
+
+	colorProperty->setToolTip(Property->GetDescription().c_str());
+	colorProperty->setWhatsThis(Property->GetName().c_str());
+	return colorProperty;
 }
 
 QtProperty * ZenonPropertiesEditorWidget::CreateGroupProperty(std::shared_ptr<IPropertiesGroup> PropertiesGroup, std::string ParentPropsPath)
@@ -159,6 +205,44 @@ QtProperty* ZenonPropertiesEditorWidget::CreateProperty(std::shared_ptr<IPropert
 		});
 		return vartiantProp;
 	}
+
+	// Color RGB
+	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<ColorRGB>>(Property))
+	{
+		QtProperty* colorProperty = CreateColorProperty(propT);
+
+		{
+			ColorRGB color = propT->Get();
+			QColor qtColor;
+			qtColor.setRgbF(color.r, color.g, color.b, 1.0f);
+			m_ColorPropertyManager->setValue(colorProperty, qtColor);
+		}
+
+		propT->SetValueChangedCallback([this, colorProperty](const ColorRGB& Value) {
+			UpdateColorPropertyValue(colorProperty, ColorRGBA(Value, 1.0f));
+		});
+		return colorProperty;
+	}
+
+
+	// Color RGBA
+	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<ColorRGBA>>(Property))
+	{
+		QtProperty* colorProperty = CreateColorProperty(propT);
+
+		{
+			ColorRGBA color = propT->Get();
+			QColor qtColor;
+			qtColor.setRgbF(color.r, color.g, color.b, color.a);
+			m_ColorPropertyManager->setValue(colorProperty, qtColor);
+		}
+
+		propT->SetValueChangedCallback([this, colorProperty](const ColorRGBA& Value) {
+			UpdateColorPropertyValue(colorProperty, Value);
+		});
+		return colorProperty;
+	}
+
 	else if (auto propGroup = std::dynamic_pointer_cast<IPropertiesGroup>(Property))
 	{
 		QtProperty * qtPropetiesGroup = CreateGroupProperty(propGroup, ParentPropsPath);
@@ -198,9 +282,21 @@ void ZenonPropertiesEditorWidget::DisconnectEvents(std::shared_ptr<IProperty> Ro
 
 void ZenonPropertiesEditorWidget::UpdateVariantPropertyValue(QtProperty * Property, QVariant Value)
 {
-	disconnect(m_VariantPropertyManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));
+	disconnect(m_VariantPropertyManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(variantValueChanged(QtProperty*, QVariant)));
 
 	m_VariantPropertyManager->setValue(Property, Value);
 
-	connect(m_VariantPropertyManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));
+	connect(m_VariantPropertyManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(variantValueChanged(QtProperty*, QVariant)));
+}
+
+void ZenonPropertiesEditorWidget::UpdateColorPropertyValue(QtProperty * Property, const ColorRGBA& Color)
+{
+	disconnect(m_ColorPropertyManager.get(), SIGNAL(valueChanged(QtProperty*, const QColor&)), this, SLOT(colorValueChanged(QtProperty*, const QColor&)));
+
+	QColor qtColor;
+	qtColor.setRgbF(Color.r, Color.g, Color.b, Color.a);
+
+	m_ColorPropertyManager->setValue(Property, qtColor);
+
+	connect(m_ColorPropertyManager.get(), SIGNAL(valueChanged(QtProperty*, const QColor&)), this, SLOT(colorValueChanged(QtProperty*, const QColor&)));
 }

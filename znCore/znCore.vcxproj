@@ -111,6 +111,7 @@
     <ClCompile Include="ObjectsFactories\Object.cpp" />
     <ClCompile Include="ObjectsFactories\ObjectClassFactory.cpp" />
     <ClCompile Include="ObjectsFactories\ObjectClassCreator.cpp" />
+    <ClCompile Include="ObjectsFactories\ObjectProxy.cpp" />
     <ClCompile Include="ObjectsFactories\ObjectsFactory.cpp" />
     <ClCompile Include="ObjectsFactories\Scene\ComponentsCreator.cpp" />
     <ClCompile Include="ObjectsFactories\Scene\ComponentsFactory.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodePortalComponent.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\IUIControl.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h" />
+    <ClInclude Include="..\shared\Interfaces\Types\Color.h" />
     <ClInclude Include="..\shared\Interfaces\Types\Guid.h" />
     <ClInclude Include="..\shared\Interfaces\Types\ObjectClasses.h" />
     <ClInclude Include="..\shared\Interfaces\Types\ObjectsFactory.h" />
@@ -271,6 +273,7 @@
     <ClInclude Include="ObjectsFactories\Object.h" />
     <ClInclude Include="ObjectsFactories\ObjectClassFactory.h" />
     <ClInclude Include="ObjectsFactories\ObjectClassCreator.h" />
+    <ClInclude Include="ObjectsFactories\ObjectProxy.h" />
     <ClInclude Include="ObjectsFactories\ObjectsFactory.h" />
     <ClInclude Include="ObjectsFactories\Scene\ComponentsCreator.h" />
     <ClInclude Include="ObjectsFactories\Scene\ComponentsFactory.h" />

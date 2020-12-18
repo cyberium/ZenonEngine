@@ -50,10 +50,6 @@ typedef unsigned long long uint64;
 #include <glm/glm/gtx/vector_angle.hpp>
 #pragma warning( pop ) 
 
-typedef glm::vec3 ColorRBG;
-
-#include <guiddef.h>
-
 #ifndef WIN32_LEAN_AND_MEAN
 #   define WIN32_LEAN_AND_MEAN 1
 #endif
@@ -113,7 +109,7 @@ class Frustum;
 class Plane;
 class Rect;
 
-
+#include "Interfaces/Types/Color.h"
 #include "Interfaces/Types/KeyCodes.h"
 #include "Interfaces/Types/Object.h"
 #include "Interfaces/Types/Events.h"

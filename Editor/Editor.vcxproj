@@ -119,6 +119,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ContextMenuUtils.cpp" />
     <ClCompile Include="DragUtils.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Editor3D\EditedScene.cpp" />
@@ -220,6 +221,7 @@
     <ClCompile Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ContextMenuUtils.h" />
     <ClInclude Include="DragUtils.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Editor3D\EditedScene.h" />

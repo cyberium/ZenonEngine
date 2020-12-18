@@ -29,7 +29,6 @@ ZN_INTERFACE ZN_API IUIControl
 	virtual const ControlsList&                     GetChilds() const = 0;
 	virtual std::shared_ptr<IUIControl>             GetChild(std::string Name) const = 0;
 
-	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const = 0;
 	virtual IScene&                                 GetScene() const = 0;
 
 	virtual void                                    SetPosition(glm::vec2 Position) = 0;

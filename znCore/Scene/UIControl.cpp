@@ -19,9 +19,6 @@ CUIControl::CUIControl(IScene& Scene)
 	, m_WorldTransform(1.0f)
 	, m_InverseWorldTransform(1.0f)
 {
-	m_PropertiesGroup = MakeShared(CPropertiesGroup, "SceneNodeProperties", "Some important scene node UI properties.");
-
-
 }
 
 CUIControl::~CUIControl()
@@ -101,11 +98,6 @@ std::shared_ptr<IUIControl> CUIControl::GetChild(std::string Name) const
 //
 // Actions & Properties
 //
-std::shared_ptr<IPropertiesGroup> CUIControl::GetProperties() const
-{
-	return m_PropertiesGroup;
-}
-
 IScene& CUIControl::GetScene() const
 {
 	return m_Scene;
@@ -336,11 +328,6 @@ void CUIControl::RaiseOnParentChangedInternal()
 //
 // Protected
 //
-IBaseManager& CUIControl::GetBaseManager() const
-{
-	return GetScene().GetBaseManager();
-}
-
 IRenderDevice & CUIControl::GetRenderDevice() const
 {
 	return GetScene().GetRenderDevice();

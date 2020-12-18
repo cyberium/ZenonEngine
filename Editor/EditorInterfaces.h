@@ -222,5 +222,5 @@ ZN_INTERFACE IEditorUIFrame
 	virtual bool InitializeEditorFrame() = 0;
 
 	virtual void DoInitializeToolsUI() = 0;
-	virtual bool ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) = 0;
+	virtual bool ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::shared_ptr<IPropertiesGroup> PropertiesGroup) = 0;
 };

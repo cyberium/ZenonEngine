@@ -5,19 +5,19 @@ namespace
 	__declspec(align(16)) struct SMaterialModelProperties
 	{
 		SMaterialModelProperties()
-			: Ambient(glm::vec3(0.0f))
+			: Ambient(0.0f)
 			, AmbientFactor(0.0f)
 
-			, Diffuse(glm::vec3(1.0f))
+			, Diffuse(1.0f)
 			, DiffuseFactor(1.0f)
 
-			, Specular(glm::vec3(1.0f))
+			, Specular(1.0f)
 			, SpecularFactor(1.0f)
 
-			, Emissive(glm::vec3(0.0f))
+			, Emissive(0.0f)
 			, EmissiveFactor(1.0f)
 
-			, Reflection(glm::vec3(0.0f))
+			, Reflection(0.0f)
 			, ReflectionFactor(1.0f)
 
 			, HasTextureAmbient(false)
@@ -38,19 +38,19 @@ namespace
 			, IsEnviorementMappingEnable(false)
 		{}
 
-		glm::vec3 Ambient;					// Ambient color property.
+		ColorRGB Ambient;					// Ambient color property.
 		float AmbientFactor;				// Ambient factor property. This factor is used to attenuate the ambient color.
 
-		glm::vec3 Diffuse;					// Diffuse color property.
+		ColorRGB Diffuse;					// Diffuse color property.
 		float DiffuseFactor;				// Diffuse factor property. This factor is used to attenuate the diffuse color.
 
-		glm::vec3 Specular;					// Specular property.
+		ColorRGB Specular;					// Specular property.
 		float SpecularFactor;				// Specular factor property. This factor is used to  attenuate the specular color.
 
-		glm::vec3 Emissive;					// Emissive color property.
+		ColorRGB Emissive;					// Emissive color property.
 		float EmissiveFactor;				// Emissive factor property. This factor is used to attenuate the emissive color.
 
-		glm::vec3 Reflection;				// Reflection color property. This property is used to implement reflection mapping.
+		ColorRGB Reflection;				// Reflection color property. This property is used to implement reflection mapping.
 		float ReflectionFactor;				// Reflection factor property. This property is used to attenuate the reflection color.
 
 		uint32 HasTextureAmbient;
@@ -99,23 +99,23 @@ public:
 	MaterialModel(const IBaseManager& BaseManage);
 	virtual ~MaterialModel();
 
-	void SetAmbientColor(glm::vec3 Color);
-	glm::vec3 GetAmbientColor() const;
+	void SetAmbientColor(ColorRGB Color);
+	ColorRGB GetAmbientColor() const;
 
 	void SetAmbientFactor(float Factor);
 
-	void SetDiffuseColor(glm::vec3 Color);
-	glm::vec3 GetDiffuseColor() const;
+	void SetDiffuseColor(ColorRGB Color);
+	ColorRGB GetDiffuseColor() const;
 
 	void SetDiffuseFactor(float Factor);
 
-	void SetSpecularColor(glm::vec3 Color);
-	glm::vec3 GetSpecularColor() const;
+	void SetSpecularColor(ColorRGB Color);
+	ColorRGB GetSpecularColor() const;
 	
 	void SetSpecularFactor(float Factor);
 
-	void SetEmissiveColor(glm::vec3 Color);
-	glm::vec3 GetEmissiveColor() const;
+	void SetEmissiveColor(ColorRGB Color);
+	ColorRGB GetEmissiveColor() const;
 
 	void SetEmissiveFactor(float Factor);
 

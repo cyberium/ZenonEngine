@@ -25,7 +25,7 @@ MaterialModel::MaterialModel(const IBaseManager& BaseManager)
 {
 	// Ambient
 	{
-		auto prop = MakeShared(CPropertyWrappedVec3, "AmbientColor", "descr", glm::vec3(0.0f));
+		auto prop = MakeShared(CPropertyWrapped<ColorRGB>, "AmbientColor", "descr", ColorRGB(0.0f));
 		prop->SetValueSetter(std::bind(&MaterialModel::SetAmbientColor, this, std::placeholders::_1));
 		prop->SetValueGetter(std::bind(&MaterialModel::GetAmbientColor, this));
 		GetProperties()->AddProperty(prop);
@@ -33,7 +33,7 @@ MaterialModel::MaterialModel(const IBaseManager& BaseManager)
 
 	// Diffuse
 	{
-		auto prop = MakeShared(CPropertyWrappedVec3, "DiffuseColor", "descr", glm::vec3(1.0f));
+		auto prop = MakeShared(CPropertyWrapped<ColorRGB>, "DiffuseColor", "descr", ColorRGB(1.0f));
 		prop->SetValueSetter(std::bind(&MaterialModel::SetDiffuseColor, this, std::placeholders::_1));
 		prop->SetValueGetter(std::bind(&MaterialModel::GetDiffuseColor, this));
 		GetProperties()->AddProperty(prop);
@@ -41,7 +41,7 @@ MaterialModel::MaterialModel(const IBaseManager& BaseManager)
 
 	// Specular
 	{
-		auto prop = MakeShared(CPropertyWrappedVec3, "SpecularColor", "descr", glm::vec3(1.0f));
+		auto prop = MakeShared(CPropertyWrapped<ColorRGB>, "SpecularColor", "descr", ColorRGB(1.0f));
 		prop->SetValueSetter(std::bind(&MaterialModel::SetSpecularColor, this, std::placeholders::_1));
 		prop->SetValueGetter(std::bind(&MaterialModel::GetSpecularColor, this));
 		GetProperties()->AddProperty(prop);
@@ -49,7 +49,7 @@ MaterialModel::MaterialModel(const IBaseManager& BaseManager)
 
 	// Emissive
 	{
-		auto prop = MakeShared(CPropertyWrappedVec3, "EmissiveColor", "descr", glm::vec3(0.0f));
+		auto prop = MakeShared(CPropertyWrapped<ColorRGB>, "EmissiveColor", "descr", ColorRGB(0.0f));
 		prop->SetValueSetter(std::bind(&MaterialModel::SetEmissiveColor, this, std::placeholders::_1));
 		prop->SetValueGetter(std::bind(&MaterialModel::GetEmissiveColor, this));
 		GetProperties()->AddProperty(prop);
@@ -63,13 +63,13 @@ MaterialModel::~MaterialModel()
 
 
 
-void MaterialModel::SetAmbientColor(glm::vec3 Color)
+void MaterialModel::SetAmbientColor(ColorRGB Color)
 {
 	MaterialData().Ambient = Color;
 	MarkMaterialDataDirty();
 }
 
-glm::vec3 MaterialModel::GetAmbientColor() const
+ColorRGB MaterialModel::GetAmbientColor() const
 {
 	return MaterialDataReadOnly().Ambient;
 }
@@ -82,13 +82,13 @@ void MaterialModel::SetAmbientFactor(float Factor)
 
 
 
-void MaterialModel::SetDiffuseColor(glm::vec3 Color)
+void MaterialModel::SetDiffuseColor(ColorRGB Color)
 {
 	MaterialData().Diffuse = Color;
 	MarkMaterialDataDirty();
 }
 
-glm::vec3 MaterialModel::GetDiffuseColor() const
+ColorRGB MaterialModel::GetDiffuseColor() const
 {
 	return MaterialDataReadOnly().Diffuse;
 }
@@ -101,13 +101,13 @@ void MaterialModel::SetDiffuseFactor(float Factor)
 
 
 
-void MaterialModel::SetSpecularColor(glm::vec3 Color)
+void MaterialModel::SetSpecularColor(ColorRGB Color)
 {
 	MaterialData().Specular = Color;
 	MarkMaterialDataDirty();
 }
 
-glm::vec3 MaterialModel::GetSpecularColor() const
+ColorRGB MaterialModel::GetSpecularColor() const
 {
 	return MaterialDataReadOnly().Specular;
 }
@@ -120,13 +120,13 @@ void MaterialModel::SetSpecularFactor(float Factor)
 
 
 
-void MaterialModel::SetEmissiveColor(glm::vec3 Color)
+void MaterialModel::SetEmissiveColor(ColorRGB Color)
 {
 	MaterialData().Emissive = Color;
 	MarkMaterialDataDirty();
 }
 
-glm::vec3 MaterialModel::GetEmissiveColor() const
+ColorRGB MaterialModel::GetEmissiveColor() const
 {
 	return MaterialDataReadOnly().Emissive;
 }
