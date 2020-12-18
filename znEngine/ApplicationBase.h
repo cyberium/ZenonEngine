@@ -42,6 +42,7 @@ private:
 	size_t m_FrameCounter;
 
 	std::unique_ptr<IBaseManager> m_BaseManager;
+	std::shared_ptr<IznPluginsManager> m_PluginsManager;
 	std::unique_ptr<IRenderDevice> m_RenderDevice;
 	std::vector<std::shared_ptr<IRenderWindow>> m_Windows;
 };

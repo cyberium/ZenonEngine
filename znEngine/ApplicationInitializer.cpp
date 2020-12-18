@@ -59,8 +59,8 @@ void CApplicationBase::InitializeEngineInternal()
 		throw CException("Application must support 'IApplicationPlatformSpecific'.");
 
 
-	std::shared_ptr<IznPluginsManager> pluginsManager = MakeShared(CPluginsManager, GetBaseManager());
-	GetBaseManager().AddManager<IznPluginsManager>(pluginsManager);
+	m_PluginsManager = MakeShared(CPluginsManager, *this);
+	GetBaseManager().AddManager<IznPluginsManager>(m_PluginsManager);
 
 
 	// Files
@@ -108,7 +108,7 @@ void CApplicationBase::InitializeEngineInternal()
 	{
 		std::shared_ptr<IznRenderDeviceFactory> renderDeviceFactory = MakeShared(CznRenderDeviceFactory, GetBaseManager());
 		GetBaseManager().AddManager<IznRenderDeviceFactory>(renderDeviceFactory);
-		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(renderDeviceFactory));
+		m_PluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(renderDeviceFactory));
 	}
 
 
@@ -171,7 +171,7 @@ void CApplicationBase::InitializeEngineInternal()
 		{
 			try
 			{
-				pluginsManager->AddPlugin(application_PlatformBase->GetExecutablePath() + "\\" + p);
+				m_PluginsManager->AddPlugin(application_PlatformBase->GetExecutablePath() + "\\" + p);
 			}
 			catch (const CException& e)
 			{
@@ -180,7 +180,7 @@ void CApplicationBase::InitializeEngineInternal()
 			}
 		}
 
-		pluginsManager->InitializeAllPlugins();
+		m_PluginsManager->InitializeAllPlugins();
 	}
 }
 

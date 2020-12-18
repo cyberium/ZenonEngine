@@ -90,10 +90,6 @@ void CEditorUIFrame::DoInitializeToolsUI()
 
 bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::shared_ptr<IPropertiesGroup> PropertiesGroup)
 {
-	_ASSERT(Title != NULL);
-	_ASSERT(Actions != NULL);
-	_ASSERT(Actions->empty());
-
 	if (false == GetEditor().IsNodeSelected(Node))
 		return false;
 

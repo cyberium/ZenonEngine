@@ -41,8 +41,8 @@ std::shared_ptr<IModel> CUnitsStorage::CreateUnitModel(const std::shared_ptr<IXM
 	std::string destinationFilename = PrefabReader->GetStrAttribute("Filename");
 
 	auto filesManager = m_BaseManager.GetManager<IFilesManager>();
-	//if (filesManager->IsFileExists(destinationFilename))
-	//	return m_BaseManager.GetManager<IznModelsFactory>()->LoadModel(destinationFilename);
+	if (filesManager->IsFileExists(destinationFilename))
+		return m_BaseManager.GetManager<IznModelsFactory>()->LoadModel(destinationFilename);
 
 	CznFBXLoaderParams fbxLoaderParams;
 	fbxLoaderParams.TexturesPathRoot = TexturesFolder;

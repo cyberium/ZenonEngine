@@ -2,7 +2,7 @@
 <xml>
 	<Settings Type="Group">
 		<Video Type="Group">
-			<WindowSize Type="Vec2">1280.000000, 1024.000000</WindowSize>
+			<WindowSize Type="Vec2">1280.000, 1024.000</WindowSize>
 			<VSyncEnabled Type="Bool">false</VSyncEnabled>
 			<MultisampleEnabled Type="Bool">false</MultisampleEnabled>
 		</Video>

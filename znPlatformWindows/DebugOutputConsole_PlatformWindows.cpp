@@ -60,6 +60,9 @@ void CDebugOutputConsole_PlatformWindows::Print(IDebugOutput::DebugMessageType T
 			_ASSERT(false);
 	}
 
+	OutputDebugStringA(Message.c_str());
+	OutputDebugStringA("\n");
+
 	// To console
 	SetConsoleTextAttribute(m_ConsoleHandle, color);
 	std::cout << Message << std::endl;

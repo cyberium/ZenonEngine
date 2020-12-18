@@ -24,7 +24,7 @@ void main_internal(int argumentCount, char* arguments[])
 			const auto& renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
 			app.AddRenderWindow(renderWindow);
 
-			std::shared_ptr<IScene> scene = MakeShared(CSceneRTS, app.GetBaseManager(), *renderWindow);
+			std::shared_ptr<IScene> scene = MakeShared(CSceneDefault, app.GetBaseManager(), *renderWindow);
 			renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(scene));
 			renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(scene));
 			scene->Initialize();
@@ -44,6 +44,8 @@ void main_internal(int argumentCount, char* arguments[])
 	}
 
 	app.Run();
+
+	app.Stop();
 }
 
 

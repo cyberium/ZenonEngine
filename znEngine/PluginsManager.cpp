@@ -3,27 +3,13 @@
 // General
 #include "PluginsManager.h"
 
-CPluginsManager::CPluginsManager(IBaseManager& BaseManager)
-	: m_BaseManager(BaseManager)
+CPluginsManager::CPluginsManager(IApplication& Application)
+	: m_Application(Application)
 {}
 
 CPluginsManager::~CPluginsManager()
 {
-	for (auto rIt = m_Plugins.rbegin(); rIt != m_Plugins.rend(); rIt++)
-	{
-		const auto& plugin = (*rIt);
-		try
-		{
-			RemovePlugin(plugin.Filename);
-		}
-		catch (const CException& e)
-		{
-			Log::Error("Error while removing plugin '%s'.", plugin.Filename.c_str());
-			Log::Error("--->%s", e.MessageCStr());
-		}
-	}
 
-	m_Plugins.clear();
 }
 
 
@@ -33,7 +19,7 @@ CPluginsManager::~CPluginsManager()
 //
 bool CPluginsManager::AddPlugin(const std::string& PluginDLLName)
 {
-	const IApplication_PlatformBase& applicationPluginSpecific = dynamic_cast<const IApplication_PlatformBase&>(m_BaseManager.GetApplication());
+	const IApplication_PlatformBase& applicationPluginSpecific = dynamic_cast<const IApplication_PlatformBase&>(m_Application);
 
 	SPluginDescription pluginDescription;
 	pluginDescription.Filename = PluginDLLName;
@@ -50,23 +36,15 @@ bool CPluginsManager::AddPlugin(const std::string& PluginDLLName)
 	return true;
 }
 
-void CPluginsManager::RemovePlugin(const std::string& PluginDLLName)
+void CPluginsManager::RemovePlugin(std::shared_ptr<IznPlugin> Plugin)
 {
-	const auto& applicationPluginSpecific = dynamic_cast<const IApplication_PlatformBase&>(m_BaseManager.GetApplication());
+	
 
-	const auto& iter = std::find_if(m_Plugins.begin(), m_Plugins.end(), [&PluginDLLName](const SPluginDescription& PluginDescription) -> bool { return PluginDescription.Filename == PluginDLLName; });
+	const auto& iter = std::find_if(m_Plugins.begin(), m_Plugins.end(), [&Plugin](const SPluginDescription& PluginDescription) -> bool { return PluginDescription.Plugin == Plugin; });
 	if (iter == m_Plugins.end())
-		throw CException("Plguin '%s' not found.", PluginDLLName.c_str());
+		throw CException("Plguin '%s' not found.", Plugin->GetName().c_str());
 
-	iter->Plugin->Finalize();
 
-	// Notify all listeners about finalize plguin
-	for (const auto& listener : m_PluginsEventsListener)
-		listener->OnPluginFinalized(iter->Plugin);
-
-	iter->Plugin.reset();
-
-	applicationPluginSpecific.UnloadPlugin(PluginDLLName);
 }
 
 void CPluginsManager::InitializeAllPlugins()
@@ -81,6 +59,48 @@ void CPluginsManager::InitializeAllPlugins()
 		// Notify all listeners about initialize plguin
 		for (const auto& listener : m_PluginsEventsListener)
 			listener->OnPluginInitialized(plugin);
+	}
+}
+
+void CPluginsManager::FinalizeAllPlugins()
+{
+	for (auto rIt = m_Plugins.rbegin(); rIt != m_Plugins.rend(); rIt++)
+	{
+		const auto& plugin = (*rIt);
+		try
+		{
+			plugin.Plugin->Finalize();
+
+			// Notify all listeners about finalize plguin
+			for (const auto& listener : m_PluginsEventsListener)
+				listener->OnPluginFinalized(plugin.Plugin);
+		}
+		catch (const CException& e)
+		{
+			Log::Error("Error while removing plugin '%s'.", plugin.Plugin->GetName().c_str());
+			Log::Error("--->%s", e.MessageCStr());
+		}
+	}
+}
+
+void CPluginsManager::RemoveAllPlugins()
+{
+	const IApplication_PlatformBase& applicationPluginSpecific = dynamic_cast<const IApplication_PlatformBase&>(m_Application);
+
+	for (auto rIt = m_Plugins.rbegin(); rIt != m_Plugins.rend(); rIt++)
+	{
+		auto& plugin = (*rIt);
+		try
+		{
+			plugin.Plugin.reset();
+
+			applicationPluginSpecific.UnloadPlugin(plugin.Filename);
+		}
+		catch (const CException& e)
+		{
+			Log::Error("Error while removing plugin '%s'.", plugin.Plugin->GetName().c_str());
+			Log::Error("--->%s", e.MessageCStr());
+		}
 	}
 }
 

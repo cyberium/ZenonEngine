@@ -18,6 +18,7 @@ CApplicationBase::CApplicationBase()
 
 CApplicationBase::~CApplicationBase()
 {
+
 }
 
 
@@ -38,6 +39,14 @@ int CApplicationBase::Run()
 
 void CApplicationBase::Stop()
 {
+	m_PluginsManager->FinalizeAllPlugins();
+
+	m_RenderDevice.reset();
+
+	m_BaseManager.reset();
+
+	m_PluginsManager->RemoveAllPlugins();
+
 	ExitApplication();
 }
 

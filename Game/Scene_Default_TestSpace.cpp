@@ -152,7 +152,7 @@ void CSceneDefault::Load3D()
 		node->GetComponent<IModelComponent>()->SetModel(znModel);
 	}*/
 
-
+	/*
 	auto unitsStorage = MakeShared(CUnitsStorage, GetBaseManager());
 
 	{
@@ -174,6 +174,8 @@ void CSceneDefault::Load3D()
 		node->GetComponentT<IModelComponent>()->SetModel(unitsStorage->GetModel(0));
 		//node->GetComponentT<IModelComponent>()->PlayAnimation("idle", true);
 	}
+
+	*/
 
 	/*{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
