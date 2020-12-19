@@ -4,9 +4,10 @@
 
 class CTextureTreeViewItem
 	: public CznTreeViewItem
+	, public CLoadableObject
 {
 public:
-	CTextureTreeViewItem(const std::shared_ptr<ITexture>& Texture);
+	CTextureTreeViewItem(IBaseManager& BaseManager, std::string TextureFileName);
 	virtual ~CTextureTreeViewItem();
 
 	// IznTreeViewItem
@@ -15,6 +16,12 @@ public:
 	std::string GetIconName() const override;
 	std::shared_ptr<IObject> GetObject_() const override;
 
+	// ILoadableObject
+	bool Load() override;
+	bool Delete() override;
+
 private:
+	Utils::SFileName m_TextureFileName;
 	std::shared_ptr<ITexture> m_Texture;
+	IBaseManager& m_BaseManager;
 };

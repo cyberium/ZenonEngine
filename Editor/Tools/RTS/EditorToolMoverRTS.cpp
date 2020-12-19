@@ -46,7 +46,7 @@ void CEditorToolMoverRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 {
 	m_MoverRoot = GetScene().CreateSceneNodeT<ISceneNode>();
 	m_MoverRoot->SetName("MoverRTSRoot");
-
+	/*
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("arrow.FBX");
 	auto geom = model->GetConnections().begin()->Geometry;
 
@@ -75,6 +75,7 @@ void CEditorToolMoverRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 	m_MoverZ->SetName("RotatorRTSZ");
 	m_MoverZ->SetRotationEuler(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_MoverZ->GetComponentT<IModelComponent>()->SetModel(modelZ);
+	*/
 }
 
 bool CEditorToolMoverRTS::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

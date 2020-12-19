@@ -22,6 +22,7 @@ protected:
 
 private:
 	std::unordered_map<std::string, std::weak_ptr<ITexture>> m_TexturesByName;
+	mutable std::mutex m_LockMutex;
 	std::shared_ptr<ITexture> m_DefaultTexture;
 
 private:

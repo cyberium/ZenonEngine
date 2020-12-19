@@ -20,9 +20,6 @@ public:
 	bool Load() override;
 	bool Delete() override;
 
-protected:
-	IBaseManager& GetBaseManager() const;
-
 private:
 	std::string m_ModelFileName;
 	std::shared_ptr<IModel> m_Model;

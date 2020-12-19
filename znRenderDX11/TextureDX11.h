@@ -115,7 +115,7 @@ private:
 	bool     m_bIsTransparent;
 
 	typedef std::vector<uint8> ColorBuffer;
-	ColorBuffer m_Buffer;
+	ColorBuffer m_Buffer[6];
 
 
 	mutable bool m_bIsDirty;

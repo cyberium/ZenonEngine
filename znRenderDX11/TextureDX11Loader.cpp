@@ -267,7 +267,7 @@ void TextureDX11::LoadTexture2DFromImage(const std::shared_ptr<IImage>& Image)
 	m_ShaderResourceViewFormatSupport = m_RenderTargetViewFormatSupport = m_TextureResourceFormatSupport;
 
 	// Can mipmaps be automatically generated for this texture format?
-	m_NeedGenerateMipmaps = false; //!m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
+	m_NeedGenerateMipmaps = (false == m_bDynamic) && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
 
 
 	// Load the texture data into a GPU texture.
@@ -291,6 +291,31 @@ void TextureDX11::LoadTexture2DFromImage(const std::shared_ptr<IImage>& Image)
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.MiscFlags = m_NeedGenerateMipmaps ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
 
+
+
+	if (m_NeedGenerateMipmaps)
+	{
+		m_Buffer[0].resize(Image->GetHeight() * Image->GetStride());
+		m_Buffer[0].assign(Image->GetData(), Image->GetData() + (Image->GetHeight() * Image->GetStride()));
+
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, NULL, &m_DX11Texture2D), L"Failed to create texture with mipmaps.");
+	}
+	else
+	{
+		m_Buffer[0].resize(Image->GetHeight() * Image->GetStride());
+		m_Buffer[0].assign(Image->GetData(), Image->GetData() + (Image->GetHeight() * Image->GetStride()));
+
+		/*D3D11_SUBRESOURCE_DATA subresourceData = { };
+		subresourceData.pSysMem = Image->GetData();
+		subresourceData.SysMemPitch = Image->GetStride();
+		subresourceData.SysMemSlicePitch = 0;*/
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, /*&subresourceData*/ NULL, &m_DX11Texture2D), L"Failed to create texture.");
+	}
+
+
+
+	/*
+
 	if (m_NeedGenerateMipmaps)
 	{
 		//D3D11_SUBRESOURCE_DATA subresourceData = { };
@@ -310,7 +335,7 @@ void TextureDX11::LoadTexture2DFromImage(const std::shared_ptr<IImage>& Image)
 		subresourceData.SysMemSlicePitch = 0;
 
 		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, &subresourceData, &m_DX11Texture2D), L"Failed to create texture.");
-	}
+	}*/
 
 	// Create a Shader resource view for the texture.
 	{
@@ -323,11 +348,8 @@ void TextureDX11::LoadTexture2DFromImage(const std::shared_ptr<IImage>& Image)
 		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_DX11Texture2D, &resourceViewDesc, &m_DX11ShaderResourceView), L"Failed to create texture resource view.");
 	}
 
-	if (m_NeedGenerateMipmaps)
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_DX11ShaderResourceView);
-
-	m_Buffer.resize(Image->GetHeight() * Image->GetStride());
-	m_Buffer.assign(Image->GetData(), Image->GetData() + (Image->GetHeight() * Image->GetStride()));
+	//if (m_NeedGenerateMipmaps)
+	//	m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_DX11ShaderResourceView);
 
 	m_bIsDirty = true;
 }
@@ -408,7 +430,7 @@ void TextureDX11::LoadTextureCubeFromImages(const std::vector<std::shared_ptr<II
 	m_ShaderResourceViewFormatSupport = m_RenderTargetViewFormatSupport = m_TextureResourceFormatSupport;
 
 	// Can mipmaps be automatically generated for this texture format?
-	m_NeedGenerateMipmaps = false; // !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
+	m_NeedGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
 
 
 	// Load the texture data into a GPU texture.
@@ -432,7 +454,43 @@ void TextureDX11::LoadTextureCubeFromImages(const std::vector<std::shared_ptr<II
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.MiscFlags = (m_NeedGenerateMipmaps ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0) | D3D11_RESOURCE_MISC_TEXTURECUBE;
 
+
+
+
 	if (m_NeedGenerateMipmaps)
+	{
+		for (size_t i = 0; i < Images.size(); i++)
+		{
+			const auto& image = Images.at(i);
+			size_t imageSize = image->GetHeight() * Images.at(i)->GetStride();
+
+			m_Buffer[i].resize(imageSize);
+			m_Buffer[i].assign(image->GetData(), Images.at(i)->GetData() + (Images.at(i)->GetHeight() * Images.at(i)->GetStride()));
+		}
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, NULL, &m_DX11Texture2D), L"Failed to create texture with mipmaps.");
+	}
+	else
+	{
+		for (size_t i = 0; i < Images.size(); i++)
+		{
+			const auto& image = Images.at(i);
+			size_t imageSize = image->GetHeight() * image->GetStride();
+
+			m_Buffer[i].resize(imageSize);
+			m_Buffer[i].assign(image->GetData(), image->GetData() + imageSize);
+		}
+
+		/*D3D11_SUBRESOURCE_DATA subresourceData = { };
+		subresourceData.pSysMem = Image->GetData();
+		subresourceData.SysMemPitch = Image->GetStride();
+		subresourceData.SysMemSlicePitch = 0;*/
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, NULL/*&subresourceData*/, &m_DX11Texture2D), L"Failed to create texture.");
+	}
+
+
+
+
+	/*if (m_NeedGenerateMipmaps)
 	{
 		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, NULL, &m_DX11Texture2D), L"Failed to create texture with mipmaps.");
 	}
@@ -446,7 +504,7 @@ void TextureDX11::LoadTextureCubeFromImages(const std::vector<std::shared_ptr<II
 	{
 		UINT res = D3D11CalcSubresource(0, index++, 1);
 		m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_DX11Texture2D, res, nullptr, image->GetData(), m_Pitch, image->GetDataSize());
-	}
+	}*/
 
 	// Create a Shader resource view for the texture.
 	{
@@ -460,11 +518,11 @@ void TextureDX11::LoadTextureCubeFromImages(const std::vector<std::shared_ptr<II
 	}
 
 
-	if (m_NeedGenerateMipmaps)
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_DX11ShaderResourceView);
+	//if (m_NeedGenerateMipmaps)
+	//	m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_DX11ShaderResourceView);
 
-	m_Buffer.resize(Images[0]->GetHeight() * Images[0]->GetStride());
-	m_Buffer.assign(Images[0]->GetData(), Images[0]->GetData() + (Images[0]->GetHeight() * Images[0]->GetStride()));
+	//m_Buffer.resize(Images[0]->GetHeight() * Images[0]->GetStride());
+	//m_Buffer.assign(Images[0]->GetData(), Images[0]->GetData() + (Images[0]->GetHeight() * Images[0]->GetStride()));
 
 	m_bIsDirty = true;
 }

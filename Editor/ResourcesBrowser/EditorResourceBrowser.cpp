@@ -62,10 +62,10 @@ namespace
 			{
 				auto modelTreeViewItem = MakeShared(CModelTreeViewItem, Editor.GetBaseManager(), fileNameStruct.ToString());
 				
-				//Editor.GetBaseManager().GetManager<ILoader>()->AddToLoadQueue(modelTreeViewItem);
+				Editor.GetBaseManager().GetManager<ILoader>()->AddToLoadQueue(modelTreeViewItem);
 
-				modelTreeViewItem->Load();
-				modelTreeViewItem->SetState(ILoadable::ELoadableState::Loaded);
+				//modelTreeViewItem->Load();
+				//modelTreeViewItem->SetState(ILoadable::ELoadableState::Loaded);
 
 				return modelTreeViewItem;
 			}
@@ -91,8 +91,11 @@ namespace
 			}
 			else if (/*fileNameStruct.Extension == "dds"  ||*/ fileNameStruct.Extension == "png")
 			{
-				auto texture = Editor.GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D(fileNameStruct.ToString());
-				return MakeShared(CTextureTreeViewItem, texture);
+				auto textureTreeViewItem = MakeShared(CTextureTreeViewItem, Editor.GetBaseManager(), fileNameStruct.ToString());
+				
+				Editor.GetBaseManager().GetManager<ILoader>()->AddToLoadQueue(textureTreeViewItem);
+				
+				return textureTreeViewItem;
 			}
 			else
 				Log::Warn("Resource file '%s' has unsupported format.", fileNameStruct.ToString().c_str());
@@ -124,14 +127,16 @@ void CEditorResourceBrowser::Initialize()
 	GetEditorQtUIFrame().getResourcesBrowser()->SetOnStartDragging(std::bind(&CEditorResourceBrowser::OnStartDraggingTreeItem, this, std::placeholders::_1, std::placeholders::_2));
 	GetEditorQtUIFrame().getResourcesBrowser()->SetOnContexMenu(std::bind(&CEditorResourceBrowser::OnContextMenuTreeItem, this, std::placeholders::_1, std::placeholders::_2));
 
+	
 	CResourceFilesystem fileSystem;
 	fileSystem.Initailize("O:/ZenonEngine_userdata");
-	fileSystem.PrintFilesystem();
+	//fileSystem.PrintFilesystem();
 
 	GetEditorQtUIFrame().getResourcesBrowser()->Refresh();
 	for (const auto& resourceFile : fileSystem.GetRootFile()->GetChilds())
 		if (auto treeViewItem = ResourceFileToTreeView(m_Editor, resourceFile))
 			GetEditorQtUIFrame().getResourcesBrowser()->AddToRoot(treeViewItem);
+			
 }
 
 

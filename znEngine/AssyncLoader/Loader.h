@@ -172,7 +172,7 @@ public:
 #endif
 
 private:
-	const static uint32                    c_PoolSize = 8;
+	const static uint32                    c_PoolSize = 4;
 
 private:
 #ifdef LOADER_ENABLED

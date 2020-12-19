@@ -24,6 +24,7 @@ namespace
 		{
 			Log::Warn("WndProc: WM_CLOSE.");
 
+			// WM_QUIT
 			PostQuitMessage(0);
 
 			return DefWindowProc(hwnd, message, wParam, lParam);
@@ -99,8 +100,8 @@ std::unique_ptr<IznNativeWindow> CApplication_PlatformWindows::CreateNativeWindo
 	if (FALSE == ::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE))
 		throw CException("CNativeWindowFactory_PlatformWindows: Failed to AdjustWindowRect.");
 
-	int windowWidth = windowRect.right - windowRect.left;
-	int windowHeight = windowRect.bottom - windowRect.top;
+	LONG windowWidth = windowRect.right - windowRect.left;
+	LONG windowHeight = windowRect.bottom - windowRect.top;
 
 	int windowX = (screenWidth - windowWidth) / 2;
 	int windowY = (screenHeight - windowHeight) / 2;

@@ -11,28 +11,27 @@ public:
 	virtual ~ShaderDX11();
 
 	// IShader
-	bool LoadFromFile(EShaderType type, std::string fileName, ShaderMacros shaderMacros, std::string entryPoint) override final;
+	bool LoadFromFile(EShaderType Type, std::string Filename, ShaderMacros Macroses, std::string EntryPoint) override final;
 	
 	bool LoadInputLayoutFromReflector() override final;
-	bool LoadInputLayoutFromCustomElements(const std::vector<SCustomInputElement>& declIn) override final;
+	bool LoadInputLayoutFromCustomElements(const std::vector<SCustomInputElement>& CustomElements) override final;
 
 	void Bind() const override final;
 	void UnBind() const override final;
-
 	void Dispatch(const glm::uvec3& numGroups) override final;
 
 private:
+	std::shared_ptr<IByteBuffer> CompileShader(EShaderType Type, std::string Filename, ShaderMacros Macroses, std::string EntryPoint);
+	void LoadCompiledShader(std::shared_ptr<IByteBuffer> ByteBuffer);
 	void Destroy();
 
 private:
-	ATL::CComPtr<ID3D11VertexShader>   m_pVertexShader;
-	ATL::CComPtr<ID3D11HullShader>     m_pHullShader;
-	ATL::CComPtr<ID3D11DomainShader>   m_pDomainShader;
-	ATL::CComPtr<ID3D11GeometryShader> m_pGeometryShader;
-	ATL::CComPtr<ID3D11PixelShader>    m_pPixelShader;
-	ATL::CComPtr<ID3D11ComputeShader>  m_pComputeShader;
-
-	ATL::CComPtr<ID3DBlob>             m_pShaderBlob;
+	ATL::CComPtr<ID3D11VertexShader>   m_VertexShader;
+	ATL::CComPtr<ID3D11HullShader>     m_HullShader;
+	ATL::CComPtr<ID3D11DomainShader>   m_DomainShader;
+	ATL::CComPtr<ID3D11GeometryShader> m_GeometryShader;
+	ATL::CComPtr<ID3D11PixelShader>    m_PixelShader;
+	ATL::CComPtr<ID3D11ComputeShader>  m_ComputeShader;
 
 private: // Link to parent d3d11 device
 	IRenderDeviceDX11& m_RenderDeviceDX11;

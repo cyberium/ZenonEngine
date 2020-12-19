@@ -72,14 +72,14 @@ bool CModelTreeViewItem::Load()
 		{
 			if (filesManager->IsFileExists(convertedModelNameXML))
 			{
-				m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(convertedModelNameXML);
+				m_Model = m_BaseManager.GetManager<IznModelsFactory>()->LoadModel(convertedModelNameXML);
 				m_Model->SetName(fileNameStruct.NameWithoutExtension);
 				Log::Info("Model '%s' loaded.", m_ModelFileName.c_str());
 				return true;
 			}
 			else if (filesManager->IsFileExists(convertedModelName)) // .znmdl file exists. Load it.
 			{
-				m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(convertedModelName);
+				m_Model = m_BaseManager.GetManager<IznModelsFactory>()->LoadModel(convertedModelName);
 				m_Model->SetName(fileNameStruct.NameWithoutExtension);
 				Log::Info("Model '%s' loaded.", m_ModelFileName.c_str());
 				return true;
@@ -98,19 +98,19 @@ bool CModelTreeViewItem::Load()
 				//loader.ApplyFullTransform = true;
 
 
-				std::shared_ptr<IModel> fbxModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(m_ModelFileName, &loader);
+				std::shared_ptr<IModel> fbxModel = m_BaseManager.GetManager<IznModelsFactory>()->LoadModel(m_ModelFileName, &loader);
 
 
 				// Save znmdl
-				auto znModelFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, convertedModelName);
+				auto znModelFile = m_BaseManager.GetManager<IznModelsFactory>()->SaveModel(fbxModel, convertedModelName);
 				znModelFile->Save();
 
 
 				// Save znxmdl
-				GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, convertedModelNameXML)->Save();
+				m_BaseManager.GetManager<IznModelsFactory>()->SaveModel(fbxModel, convertedModelNameXML)->Save();
 
 				
-				m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(znModelFile);
+				m_Model = m_BaseManager.GetManager<IznModelsFactory>()->LoadModel(znModelFile);
 				m_Model->SetName(fileNameStruct.NameWithoutExtension);
 				Log::Info("Model '%s' loaded.", m_ModelFileName.c_str());
 				return true;
@@ -120,7 +120,7 @@ bool CModelTreeViewItem::Load()
 		{
 			_ASSERT(filesManager->IsFileExists(m_ModelFileName));
 
-			m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(m_ModelFileName);
+			m_Model = m_BaseManager.GetManager<IznModelsFactory>()->LoadModel(m_ModelFileName);
 			m_Model->SetName(fileNameStruct.NameWithoutExtension);
 			Log::Info("Model '%s' loaded.", m_ModelFileName.c_str());
 			return true;
@@ -142,14 +142,4 @@ bool CModelTreeViewItem::Load()
 bool CModelTreeViewItem::Delete()
 {
 	return false;
-}
-
-
-
-//
-// Protected
-//
-IBaseManager & CModelTreeViewItem::GetBaseManager() const
-{
-	return m_BaseManager;
 }

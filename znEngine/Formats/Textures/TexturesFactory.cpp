@@ -34,8 +34,11 @@ std::shared_ptr<ITexture> CznTexturesFactory::LoadTexture2D(const std::shared_pt
 	if (TextureFile == nullptr)
 		throw CException("Can't load nullptr file.");
 
-	if (auto textureFromCache = TryGetTextureFromCache(TextureFile->Path_Name()))
-		return textureFromCache;
+	{
+		std::lock_guard<std::mutex> lock(m_LockMutex);
+		if (auto textureFromCache = TryGetTextureFromCache(TextureFile->Path_Name()))
+			return textureFromCache;
+	}
 
 	std::shared_ptr<IImage> image = m_BaseManager.GetManager<IImagesFactory>()->CreateImage(TextureFile);
 	if (image == nullptr)
@@ -56,14 +59,20 @@ std::shared_ptr<ITexture> CznTexturesFactory::LoadTexture2D(const std::shared_pt
 	}
 
 	std::dynamic_pointer_cast<ITextureInternal>(texture)->SetFileName(TextureFile->Path_Name());
-	m_TexturesByName[TextureFile->Path_Name()] = texture;
+	{
+		std::lock_guard<std::mutex> lock(m_LockMutex);
+		m_TexturesByName[TextureFile->Path_Name()] = texture;
+	}
 	return texture;
 }
 
 std::shared_ptr<ITexture> CznTexturesFactory::LoadTextureCube(const std::string& CubeTextureFilename)
 {
-	if (auto textureFromCache = TryGetTextureFromCache(CubeTextureFilename))
-		return textureFromCache;
+	{
+		std::lock_guard<std::mutex> lock(m_LockMutex);
+		if (auto textureFromCache = TryGetTextureFromCache(CubeTextureFilename))
+			return textureFromCache;
+	}
 
 	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 	auto texture = renderDevice.GetObjectsFactory().CreateEmptyTexture();
@@ -80,7 +89,10 @@ std::shared_ptr<ITexture> CznTexturesFactory::LoadTextureCube(const std::string&
 	}
 
 	std::dynamic_pointer_cast<ITextureInternal>(texture)->SetFileName(CubeTextureFilename);
-	m_TexturesByName[CubeTextureFilename] = texture;
+	{
+		std::lock_guard<std::mutex> lock(m_LockMutex);
+		m_TexturesByName[CubeTextureFilename] = texture;
+	}
 	return texture;
 }
 

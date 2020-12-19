@@ -20,8 +20,6 @@ void main_internal(int argc, char *argv[])
 	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
 	app.GetBaseManager().AddManager<IznFontsManager>(MakeShared(FontsManager, renderDevice, app.GetBaseManager()));
 
-	app.GetBaseManager().GetManager<ILoader>()->Start();
-
 	QApplication qtApplication(argc, argv);
 	CEditor editor(app.GetBaseManager());
 	CEditorUIFrame editorUI(editor);
@@ -72,6 +70,8 @@ void main_internal(int argc, char *argv[])
 	editorUI.connect(&timer, &QTimer::timeout, &editorUI, [&app] {
 		app.DoRun();
 	});
+
+	app.GetBaseManager().GetManager<ILoader>()->Start();
 
 	app.DoBeforeRun();
 	{

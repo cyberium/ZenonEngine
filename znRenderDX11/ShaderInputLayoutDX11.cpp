@@ -80,17 +80,21 @@ uint32 ShaderInputLayoutDX11::GetSemanticSlot(size_t Index) const
 //
 // ShaderInputLayoutDX11
 //
-void ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11ShaderReflection * pReflector)
+void ShaderInputLayoutDX11::LoadFromReflector(std::shared_ptr<IByteBuffer> CompiledShaderBuffer)
 {
+	// Reflect the parameters from the shader. Inspired by: http://members.gamedev.net/JasonZ/Heiroglyph/D3D11ShaderReflection.pdf
+	ATL::CComPtr<ID3D11ShaderReflection> shaderReflector;
+	CHECK_HR_MSG(D3DReflect(CompiledShaderBuffer->getData(), CompiledShaderBuffer->getSize(), IID_ID3D11ShaderReflection, (void**)&shaderReflector), L"Failed to reflect shader.");
+
 	// Query input parameters and build the input layout
 	D3D11_SHADER_DESC shaderDescription = {};
-	CHECK_HR_MSG(pReflector->GetDesc(&shaderDescription), L"Failed to get shader description from shader reflector.");
+	CHECK_HR_MSG(shaderReflector->GetDesc(&shaderDescription), L"Failed to get shader description from shader reflector.");
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> inputElements;
 	for (UINT i = 0; i < shaderDescription.InputParameters; ++i)
 	{
 		D3D11_SIGNATURE_PARAMETER_DESC parameterSignature = {};
-		CHECK_HR(pReflector->GetInputParameterDesc(i, &parameterSignature));
+		CHECK_HR(shaderReflector->GetInputParameterDesc(i, &parameterSignature));
 
 		D3D11_INPUT_ELEMENT_DESC inputElement = {};
 		inputElement.SemanticName = parameterSignature.SemanticName;
@@ -114,17 +118,17 @@ void ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11Shad
 	//CustomElements::DX11::MergeCustom(customInputElements);
 	//std::vector<D3D11_INPUT_ELEMENT_DESC> dx11InputElements = CustomElements::DX11::CustomToDX11(customInputElements);
 
-	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size(), pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout), L"Failed to create input layout.");
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size(), CompiledShaderBuffer->getData(), CompiledShaderBuffer->getSize(), &m_pInputLayout), L"Failed to create input layout.");
 }
 
-void ShaderInputLayoutDX11::LoadFromCustomElements(ID3DBlob * pShaderBlob, const std::vector<SCustomInputElement>& CustomElements)
+void ShaderInputLayoutDX11::LoadFromCustomElements(std::shared_ptr<IByteBuffer> CompiledShaderBuffer, const std::vector<SCustomInputElement>& CustomElements)
 {
 	std::vector<D3D11_INPUT_ELEMENT_DESC> dx11InputElements = CustomElements::DX11::CustomToDX11(CustomElements);
 	for (uint32 i = 0; i < dx11InputElements.size(); i++)
 		m_InputSemanticsDX11.insert(std::make_pair(i, MakeShared(CShaderInputSemanticDX11, dx11InputElements[i].SemanticName, dx11InputElements[i].SemanticIndex, dx11InputElements[i].Format)));
 
 	_ASSERT(dx11InputElements.size() > 0);
-	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(dx11InputElements.data(), (UINT)dx11InputElements.size(), pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout), L"Failed to create input layout.");
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(dx11InputElements.data(), (UINT)dx11InputElements.size(), CompiledShaderBuffer->getData(), CompiledShaderBuffer->getSize(), &m_pInputLayout), L"Failed to create input layout.");
 }
 
 ID3D11InputLayout* ShaderInputLayoutDX11::GetInputLayout() const

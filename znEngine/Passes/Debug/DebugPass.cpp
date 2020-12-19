@@ -22,27 +22,25 @@ std::shared_ptr<IRenderPassPipelined> CDebugPass::ConfigurePipeline(std::shared_
 {
 	__super::ConfigurePipeline(RenderTarget);
 
-	std::shared_ptr<IShader> vertexShader;
-	std::shared_ptr<IShader> pixelShader;
-
-	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Debug.hlsl", "VS_main");
-		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Debug.hlsl", "PS_main");
+		std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Debug.hlsl", "VS_main");
+		std::vector<SCustomInputElement> customElements;
+		customElements.push_back({ 0,  0, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION,     0 });
+		customElements.push_back({ 0, 12, ECustomVertexElementType::FLOAT2, ECustomVertexElementUsage::TEXCOORD,     0 });
+		vertexShader->LoadInputLayoutFromCustomElements(customElements);
+		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	}
-	//vertexShader->LoadInputLayoutFromReflector();
 
-	std::vector<SCustomInputElement> customElements;
-	customElements.push_back({ 0,  0, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION,     0 });
-	customElements.push_back({ 0, 12, ECustomVertexElementType::FLOAT2, ECustomVertexElementUsage::TEXCOORD,     0 });
-	vertexShader->LoadInputLayoutFromCustomElements(customElements);
+	{
+		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Debug.hlsl", "PS_main");
+		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	}
 
 	// PIPELINES
+	GetPipeline().GetDepthStencilState()->SetDepthMode(enableTestDisableWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Wireframe);
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
-
+	
 	return shared_from_this();
 }
 

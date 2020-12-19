@@ -459,7 +459,7 @@ void TextureDX11::Plot(glm::ivec2 coord, const uint8* pixel, size_t size)
 
 	for (uint32 i = 0; i < size; ++i)
 	{
-		m_Buffer[index + i] = *(pixel + i);
+		m_Buffer[0][index + i] = *(pixel + i);
 	}
 
 	m_bIsDirty = true;
@@ -473,7 +473,7 @@ void TextureDX11::FetchPixel(glm::ivec2 coord, uint8*& pixel, size_t size)
 	uint8 bytesPerPixel = (m_BPP / 8);
 	uint32_t stride = m_TextureWidth * bytesPerPixel;
 	uint32_t index = (coord.s * bytesPerPixel) + (coord.t * stride);
-	pixel = &m_Buffer[index];
+	pixel = &m_Buffer[0][index];
 }
 
 void TextureDX11::Copy(const std::shared_ptr<ITexture>& other)
@@ -508,7 +508,7 @@ void TextureDX11::Copy(const std::shared_ptr<ITexture>& other)
 		D3D11_MAPPED_SUBRESOURCE mappedResource = { };
 		CHECK_HR(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_DX11Texture2D, 0, D3D11_MAP_READ, 0, &mappedResource));
 
-		memcpy_s(m_Buffer.data(), m_Buffer.size(), mappedResource.pData, m_Buffer.size());
+		memcpy_s(m_Buffer[0].data(), m_Buffer[0].size(), mappedResource.pData, m_Buffer[0].size());
 
 		m_RenderDeviceDX11.GetDeviceContextD3D11()->Unmap(m_DX11Texture2D, 0);
 	}
@@ -536,29 +536,28 @@ void TextureDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter::ETy
 {
 	if (m_bIsDirty)
 	{
-		const_cast<TextureDX11*>(this)->m_Buffer.clear();
-
-		if (m_bDynamic && m_DX11Texture2D)
+		if (m_TextureDimension == ITexture::Dimension::Texture2D)
 		{
-			D3D11_MAPPED_SUBRESOURCE mappedResource;
-
-			// Copy the texture data to the texture resource
-			HRESULT hr = m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_DX11Texture2D, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-			if (FAILED(hr))
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_DX11Texture2D, 0, nullptr, m_Buffer[0].data(), m_Pitch, 0);
+		}
+		else if (m_TextureDimension == ITexture::Dimension::TextureCube)
+		{
+			for (size_t i = 0; i < 6; i++)
 			{
-				throw CznRenderException("Failed to map texture resource for writing.");
-			}
-
-			memcpy_s(mappedResource.pData, m_Buffer.size(), m_Buffer.data(), m_Buffer.size());
-
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->Unmap(m_DX11Texture2D, 0);
-
-			if (m_NeedGenerateMipmaps)
-			{
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_DX11Texture2D, 0, nullptr, m_Buffer.data(), m_Pitch, 0);
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_DX11ShaderResourceView);
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_DX11Texture2D, i, nullptr, m_Buffer[i].data(), m_Pitch, 0);
 			}
 		}
+
+		for (size_t i = 0; i < 6; i++)
+		{
+			const_cast<TextureDX11*>(this)->m_Buffer[i].clear();
+		}
+
+		if (m_NeedGenerateMipmaps)
+		{
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_DX11ShaderResourceView);
+		}
+
 		m_bIsDirty = false;
 	}
 
@@ -675,7 +674,7 @@ const std::vector<uint8>& TextureDX11::GetBuffer()
 		m_RenderDeviceDX11.GetDeviceContextD3D11()->Unmap(m_DX11Texture2D, 0);
 	}*/
 
-	return m_Buffer;
+	return m_Buffer[0];
 }
 
 

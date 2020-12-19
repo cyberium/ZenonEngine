@@ -18,8 +18,8 @@ public:
 	uint32 GetSemanticSlot(size_t Index) const override;
 
 	// ShaderInputLayoutDX11
-	void LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11ShaderReflection * pReflector);
-	void LoadFromCustomElements(ID3DBlob * pShaderBlob, const std::vector<SCustomInputElement>& CustomElements);
+	void LoadFromReflector(std::shared_ptr<IByteBuffer> CompiledShaderBuffer);
+	void LoadFromCustomElements(std::shared_ptr<IByteBuffer> CompiledShaderBuffer, const std::vector<SCustomInputElement>& CustomElements);
 	ID3D11InputLayout* GetInputLayout() const;
 
 private:
