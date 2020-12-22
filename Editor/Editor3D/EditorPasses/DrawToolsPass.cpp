@@ -38,8 +38,8 @@ std::shared_ptr<IRenderPassPipelined> CDrawToolsPass::ConfigurePipeline(std::sha
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
 	GetPipeline().SetRenderTarget(RenderTarget);
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().SetShader(vertexShader);
+	GetPipeline().SetShader(pixelShader);
 
 	return shared_from_this();
 }

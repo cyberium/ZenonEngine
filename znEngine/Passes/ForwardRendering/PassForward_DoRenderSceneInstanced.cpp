@@ -85,8 +85,8 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderSceneInstanced::Confi
 	vertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().SetShader(vertexShader);
+	GetPipeline().SetShader(pixelShader);
 
 	m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
 	//_ASSERT(m_ShaderBonesBufferParameter->IsValid());

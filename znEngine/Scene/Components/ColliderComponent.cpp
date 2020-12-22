@@ -204,23 +204,19 @@ void CColliderComponent::OnMessage(const ISceneNodeComponent* Component, Compone
 //
 void CColliderComponent::CopyTo(std::shared_ptr<IObject> Destination) const
 {
-	CComponentBase::CopyTo(Destination);
+	auto destinationAsColliderComponent = std::dynamic_pointer_cast<IColliderComponent>(Destination);
 
-	auto destCast = std::dynamic_pointer_cast<CColliderComponent>(Destination);
+	destinationAsColliderComponent->SetCullStrategy(GetCullStrategy());
+	destinationAsColliderComponent->SetCullDistance(GetCullDistance());
 
-	destCast->SetCullStrategy(GetCullStrategy());
-	destCast->SetCullDistance(GetCullDistance());
+	if (false == GetBounds().IsInfinite())
+		destinationAsColliderComponent->SetBounds(GetBounds());
 
-	if (false == m_Bounds.IsInfinite())
-		destCast->SetBounds(m_Bounds);
-
-	destCast->SetDebugDrawMode(m_DebugDraw);
+	destinationAsColliderComponent->SetDebugDrawMode(GetDebugDrawMode());
 }
 
 void CColliderComponent::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	CComponentBase::Load(Reader);
-
 	BoundingBox bbox;
 	bbox.Load(Reader);
 	if (false == bbox.IsInfinite())
@@ -229,8 +225,6 @@ void CColliderComponent::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 void CColliderComponent::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	CComponentBase::Save(Writer);
-
 	GetBounds().Save(Writer);
 }
 

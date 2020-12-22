@@ -52,8 +52,8 @@ std::shared_ptr<IRenderPassPipelined> CSkyboxPass::ConfigurePipeline(std::shared
 	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(enableTestDisableWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().SetShader(vertexShader);
+	GetPipeline().SetShader(pixelShader);
 
 	// Per object
 	m_PerObjectShaderParameter = vertexShader->GetShaderParameterByName("PerObject");

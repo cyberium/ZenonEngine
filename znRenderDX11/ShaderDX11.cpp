@@ -10,11 +10,15 @@ namespace
 {
 	std::string FixShaderFileName(std::string FileName)
 	{
-		std::string result = "";
+		std::string fixedName = "";
 		for (const auto& c : FileName)
+		{
 			if (std::isalnum(c, std::locale()))
-				result += c;
-		return result;
+				fixedName += c;
+			else
+				fixedName += '_';
+		}
+		return fixedName;
 	}
 
 	std::string ShaderTypeToString(EShaderType shaderType)
@@ -25,8 +29,7 @@ namespace
 			return "ps";
 		else if (shaderType == EShaderType::GeometryShader)
 			return "gs";
-
-		return "unk";
+		return "unknown";
 	}
 
 	std::string GetLatestProfile(EShaderType type, const D3D_FEATURE_LEVEL& FeatureLevel)
@@ -37,18 +40,18 @@ namespace
 			{
 				switch (FeatureLevel)
 				{
-				case D3D_FEATURE_LEVEL_11_1:
-				case D3D_FEATURE_LEVEL_11_0:
-					return "vs_5_0";
-				case D3D_FEATURE_LEVEL_10_1:
-					return "vs_4_1";
-				case D3D_FEATURE_LEVEL_10_0:
-					return "vs_4_0";
-				case D3D_FEATURE_LEVEL_9_3:
-					return "vs_4_0_level_9_3";
-				case D3D_FEATURE_LEVEL_9_2:
-				case D3D_FEATURE_LEVEL_9_1:
-					return "vs_4_0_level_9_1";
+					case D3D_FEATURE_LEVEL_11_1:
+					case D3D_FEATURE_LEVEL_11_0:
+						return "vs_5_0";
+					case D3D_FEATURE_LEVEL_10_1:
+						return "vs_4_1";
+					case D3D_FEATURE_LEVEL_10_0:
+						return "vs_4_0";
+					case D3D_FEATURE_LEVEL_9_3:
+						return "vs_4_0_level_9_3";
+					case D3D_FEATURE_LEVEL_9_2:
+					case D3D_FEATURE_LEVEL_9_1:
+						return "vs_4_0_level_9_1";
 				}
 			}
 			break;
@@ -56,9 +59,9 @@ namespace
 			{
 				switch (FeatureLevel)
 				{
-				case D3D_FEATURE_LEVEL_11_1:
-				case D3D_FEATURE_LEVEL_11_0:
-					return "ds_5_0";
+					case D3D_FEATURE_LEVEL_11_1:
+					case D3D_FEATURE_LEVEL_11_0:
+						return "ds_5_0";
 				}
 			}
 			break;
@@ -66,9 +69,9 @@ namespace
 			{
 				switch (FeatureLevel)
 				{
-				case D3D_FEATURE_LEVEL_11_1:
-				case D3D_FEATURE_LEVEL_11_0:
-					return "hs_5_0";
+					case D3D_FEATURE_LEVEL_11_1:
+					case D3D_FEATURE_LEVEL_11_0:
+						return "hs_5_0";
 				}
 			}
 			break;
@@ -76,13 +79,13 @@ namespace
 			{
 				switch (FeatureLevel)
 				{
-				case D3D_FEATURE_LEVEL_11_1:
-				case D3D_FEATURE_LEVEL_11_0:
-					return "gs_5_0";
-				case D3D_FEATURE_LEVEL_10_1:
-					return "gs_4_1";
-				case D3D_FEATURE_LEVEL_10_0:
-					return "gs_4_0";
+					case D3D_FEATURE_LEVEL_11_1:
+					case D3D_FEATURE_LEVEL_11_0:
+						return "gs_5_0";
+					case D3D_FEATURE_LEVEL_10_1:
+						return "gs_4_1";
+					case D3D_FEATURE_LEVEL_10_0:
+						return "gs_4_0";
 				}
 			}
 			break;
@@ -90,18 +93,18 @@ namespace
 			{
 				switch (FeatureLevel)
 				{
-				case D3D_FEATURE_LEVEL_11_1:
-				case D3D_FEATURE_LEVEL_11_0:
-					return "ps_5_0";
-				case D3D_FEATURE_LEVEL_10_1:
-					return "ps_4_1";
-				case D3D_FEATURE_LEVEL_10_0:
-					return "ps_4_0";
-				case D3D_FEATURE_LEVEL_9_3:
-					return "ps_4_0_level_9_3";
-				case D3D_FEATURE_LEVEL_9_2:
-				case D3D_FEATURE_LEVEL_9_1:
-					return "ps_4_0_level_9_1";
+					case D3D_FEATURE_LEVEL_11_1:
+					case D3D_FEATURE_LEVEL_11_0:
+						return "ps_5_0";
+					case D3D_FEATURE_LEVEL_10_1:
+						return "ps_4_1";
+					case D3D_FEATURE_LEVEL_10_0:
+						return "ps_4_0";
+					case D3D_FEATURE_LEVEL_9_3:
+						return "ps_4_0_level_9_3";
+					case D3D_FEATURE_LEVEL_9_2:
+					case D3D_FEATURE_LEVEL_9_1:
+						return "ps_4_0_level_9_1";
 				}
 			}
 			break;
@@ -109,19 +112,19 @@ namespace
 			{
 				switch (FeatureLevel)
 				{
-				case D3D_FEATURE_LEVEL_11_1:
-				case D3D_FEATURE_LEVEL_11_0:
-					return "cs_5_0";
-				case D3D_FEATURE_LEVEL_10_1:
-					return "cs_4_1";
-				case D3D_FEATURE_LEVEL_10_0:
-					return "cs_4_0";
+					case D3D_FEATURE_LEVEL_11_1:
+					case D3D_FEATURE_LEVEL_11_0:
+						return "cs_5_0";
+					case D3D_FEATURE_LEVEL_10_1:
+						return "cs_4_1";
+					case D3D_FEATURE_LEVEL_10_0:
+						return "cs_4_0";
 				}
 			}
 			break;
 		}
 
-		return "";
+		throw CznRenderException("Feature level '%s' is unkwnon for shader '%s'.", FeatureLevel, ShaderTypeToString(type).c_str());
 	}
 
 	std::string CalculateUniqueName(EShaderType ShaderType, std::string FileName, IShader::ShaderMacros ShaderMacros, std::string EntryPoint)

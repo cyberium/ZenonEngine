@@ -19,13 +19,14 @@ PipelineStateBase::~PipelineStateBase()
 //
 // IPipelineState
 //
-void PipelineStateBase::SetShader(EShaderType type, std::shared_ptr<IShader> Shader)
+void PipelineStateBase::SetShader(std::shared_ptr<IShader> Shader)
 {
-	m_Shaders[type] = Shader;
+	EShaderType shaderType = Shader->GetShaderType();
+	m_Shaders[shaderType] = Shader;
 
-	if (type == EShaderType::VertexShader)
+	if (shaderType == EShaderType::VertexShader)
 		m_VertexShader = Shader.get();
-	else if (type == EShaderType::PixelShader)
+	else if (shaderType == EShaderType::PixelShader)
 		m_PixelShader = Shader.get();
 }
 

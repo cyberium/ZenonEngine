@@ -152,7 +152,7 @@ void CEditor3DPreviewScene::SetParticleSystem(std::shared_ptr<IParticleSystem> P
 	particlesComponent->DeleteAllParticleSystem();
 
 	ParticleSystem->SetNode(m_SceneNodeForParticlePreview.get());
-	particlesComponent->Attach(ParticleSystem);
+	particlesComponent->AddParticleSystem(ParticleSystem);
 
 	auto bbox = BoundingBox(glm::vec3(-5.0f), glm::vec3(5.0f));
 

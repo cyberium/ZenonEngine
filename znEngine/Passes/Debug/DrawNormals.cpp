@@ -32,19 +32,19 @@ std::shared_ptr<IRenderPassPipelined> CPassDrawNormals::ConfigurePipeline(std::s
 
 		m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
 
-		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+		GetPipeline().SetShader(vertexShader);
 	}
 
 	// Geometry shader
 	{
 		std::shared_ptr<IShader> geomShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::GeometryShader, "3D/DrawNormals.hlsl", "GS_Main");
-		GetPipeline().SetShader(EShaderType::GeometryShader, geomShader);
+		GetPipeline().SetShader(geomShader);
 	}
 
 	// Pixel shader
 	{
 		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/DrawNormals.hlsl", "PS_main");
-		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+		GetPipeline().SetShader(pixelShader);
 	}
 
 	GetPipeline().GetDepthStencilState()->SetDepthMode(enableTestDisableWrites);

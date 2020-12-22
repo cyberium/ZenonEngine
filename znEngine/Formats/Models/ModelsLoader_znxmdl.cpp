@@ -171,8 +171,8 @@ std::shared_ptr<IFile> CModelsLoader_znxmdl::SaveModel(const std::shared_ptr<IMo
 	}
 
 	CXMLManager xml(m_BaseManager);
-	auto rootWriter = xml.CreateWriter();
-	auto modelWriter = rootWriter->CreateChild("Model");
+	auto xmlDocument = xml.CreateDocument();
+	auto modelWriter = xmlDocument->CreateChild("Model");
 
 	//
 	// Common data
@@ -244,6 +244,6 @@ std::shared_ptr<IFile> CModelsLoader_znxmdl::SaveModel(const std::shared_ptr<IMo
 
 
 	auto file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
-	xml.SaveWriterToFile(rootWriter, file);
+	xml.SaveWriterToFile(xmlDocument, file);
 	return file;
 }

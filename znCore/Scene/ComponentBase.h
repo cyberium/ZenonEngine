@@ -17,6 +17,7 @@ public:
     virtual void                                    Accept(IVisitor* visitor) override;
 
 	// IObjectLoadSave
+	std::shared_ptr<IObject>                        Copy() const override;
 	void											CopyTo(std::shared_ptr<IObject> Destination) const override;
 	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;

@@ -27,7 +27,7 @@ std::shared_ptr<IRenderPassPipelined> CParticlesPass::ConfigurePipeline(std::sha
 	{
 		std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Particle.hlsl", "VS_main");
 		vertexShader->LoadInputLayoutFromReflector();
-		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+		GetPipeline().SetShader(vertexShader);
 	}
 
 	{
@@ -36,12 +36,12 @@ std::shared_ptr<IRenderPassPipelined> CParticlesPass::ConfigurePipeline(std::sha
 		m_GeomShaderParticlesBufferParameter = geomShader->GetShaderParameterByName("Particles");
 		_ASSERT(m_GeomShaderParticlesBufferParameter);
 
-		GetPipeline().SetShader(EShaderType::GeometryShader, geomShader);
+		GetPipeline().SetShader(geomShader);
 	}
 
 	{
 		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Particle.hlsl", "PS_main");
-		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+		GetPipeline().SetShader(pixelShader);
 	}
 
 	// PIPELINES

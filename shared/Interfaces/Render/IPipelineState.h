@@ -12,7 +12,7 @@ ZN_INTERFACE ZN_API IPipelineState
 {
 	virtual ~IPipelineState() {}
 
-	virtual void SetShader(EShaderType type, std::shared_ptr<IShader> Shader) = 0;
+	virtual void SetShader(std::shared_ptr<IShader> Shader) = 0;
 	virtual const std::shared_ptr<IShader>& GetShader(EShaderType type) const = 0;
 	virtual const ShaderMap& GetShaders() const = 0;
 	virtual const IShader* GetVertexShaderPtr() const = 0;

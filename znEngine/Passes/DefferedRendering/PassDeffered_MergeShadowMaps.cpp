@@ -67,7 +67,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_MergeShadowMaps::ConfigurePi
 	{
 		auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Deffered_MergeShadows.hlsl", "VS_ScreenQuad");
 		vertexShader->LoadInputLayoutFromReflector();
-		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+		GetPipeline().SetShader(vertexShader);
 	}
 
 	{
@@ -79,7 +79,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_MergeShadowMaps::ConfigurePi
 		m_ShadowMapTextureParameter = pixelShader->GetShaderParameterByName("ShadowMapTexture");
 		_ASSERT(m_ShadowMapTextureParameter);
 
-		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+		GetPipeline().SetShader(pixelShader);
 	}
 
 	// PIPELINES

@@ -9,14 +9,19 @@ public:
 	virtual ~CParticlesComponent();
 
 	// IParticleComponent3D
-	void Attach(std::shared_ptr<IParticleSystem> ParticleSystem) override;
-	std::shared_ptr<IParticleSystem> Detach(std::shared_ptr<IParticleSystem> ParticleSystem) override;
+	void AddParticleSystem(std::shared_ptr<IParticleSystem> ParticleSystem) override;
+	void RemoveParticleSystem(std::shared_ptr<IParticleSystem> ParticleSystem) override;
 	void DeleteAllParticleSystem() override;
 	const std::vector<std::shared_ptr<IParticleSystem>>& GetParticleSystems() const override;
 
 	// ISceneNodeComponent
-	virtual void Update(const UpdateEventArgs& e) override;
-	virtual void Accept(IVisitor* visitor) override;
+	void Update(const UpdateEventArgs& e) override;
+	void Accept(IVisitor* visitor) override;
+
+	// IObjectLoadSave
+	void CopyTo(std::shared_ptr<IObject> Destination) const override;
+	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
+	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 private:
 	void ClearUnusedParticlesSystem();

@@ -22,29 +22,36 @@ CParticlesComponent::~CParticlesComponent()
 //
 // IParticleComponent3D
 //
-void CParticlesComponent::Attach(std::shared_ptr<IParticleSystem> ParticleSystem)
+void CParticlesComponent::AddParticleSystem(std::shared_ptr<IParticleSystem> ParticleSystem)
 {
-	auto it = std::find(m_ParticleSystems.begin(), m_ParticleSystems.end(), ParticleSystem);
+	const auto& it = std::find(m_ParticleSystems.begin(), m_ParticleSystems.end(), ParticleSystem);
 	if (it != m_ParticleSystems.end())
 		throw CException("Particle system already exists.");
 
+	ParticleSystem->SetNode(&GetOwnerNode());
 	m_ParticleSystems.push_back(ParticleSystem);
+
+	// Add proxy properties
+	auto particleSystemPropertiesProxy = MakeShared(CPropertyGroupProxy, ParticleSystem->GetProperties());
+	GetProperties()->AddProperty(particleSystemPropertiesProxy);
 }
 
-std::shared_ptr<IParticleSystem> CParticlesComponent::Detach(std::shared_ptr<IParticleSystem> ParticleSystem)
+void CParticlesComponent::RemoveParticleSystem(std::shared_ptr<IParticleSystem> ParticleSystem)
 {
 	auto it = std::find(m_ParticleSystems.begin(), m_ParticleSystems.end(), ParticleSystem);
 	if (it == m_ParticleSystems.end())
-		return nullptr;
+		throw CException("Particle system don't found.");
 
-	auto particleSystem = *it;
+	(*it)->SetNode(nullptr);
 	m_ParticleSystems.erase(it);
-	return particleSystem;
+
+	GetProperties()->RemoveProperty(ParticleSystem->GetProperties());
 }
 
 void CParticlesComponent::DeleteAllParticleSystem()
 {
-	m_ParticleSystems.clear();
+	for (const auto& particleSystem : GetParticleSystems())
+		RemoveParticleSystem(particleSystem);
 }
 
 const std::vector<std::shared_ptr<IParticleSystem>>& CParticlesComponent::GetParticleSystems() const
@@ -83,6 +90,56 @@ void CParticlesComponent::Accept(IVisitor * visitor)
 
 
 //
+// IObjectLoadSave
+//
+void CParticlesComponent::CopyTo(std::shared_ptr<IObject> Destination) const
+{
+	auto destinationAsParticlesComponent = std::dynamic_pointer_cast<IParticleComponent3D>(Destination);
+
+	if (destinationAsParticlesComponent->GetParticleSystems().empty())
+	{
+		Log::Warn("Destination particles component already contains partice systems. They will be erased.");
+		destinationAsParticlesComponent->DeleteAllParticleSystem();
+	}
+
+	for (const auto& existingParticleSystem : GetParticleSystems())
+	{
+		auto copiedParticleSystem = MakeShared(CParticleSystem, GetBaseManager());
+		existingParticleSystem->CopyTo(copiedParticleSystem);
+		destinationAsParticlesComponent->AddParticleSystem(copiedParticleSystem);
+	}
+}
+
+void CParticlesComponent::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	auto particleSystemsXMLReader = Reader->GetChild("ParticleSystems");
+	if (particleSystemsXMLReader == nullptr)
+		throw CException("'ParticleSystems' xml node don't found.");
+
+	for (const auto& particleSystemXMLReader : particleSystemsXMLReader->GetChilds())
+	{
+		if (particleSystemXMLReader->GetName() != "ParticleSystem")
+			throw CException("Paricle system xml node has name '%s', but expected name is 'ParticleSystem'.", particleSystemXMLReader->GetName().c_str());
+
+		std::shared_ptr<IParticleSystem> particleSystem = MakeShared(CParticleSystem, GetBaseManager());
+		particleSystem->Load(particleSystemXMLReader);
+		AddParticleSystem(particleSystem);
+	}
+}
+
+void CParticlesComponent::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	auto particleSystemsXMLWriter = Writer->CreateChild("ParticleSystems");
+	for (const auto& particleSystem : GetParticleSystems())
+	{
+		auto particleSystemXMLWriter = particleSystemsXMLWriter->CreateChild("ParticleSystem");
+		particleSystem->Save(particleSystemXMLWriter);
+	}
+}
+
+
+
+//
 // Private
 //
 void CParticlesComponent::ClearUnusedParticlesSystem()
@@ -93,6 +150,7 @@ void CParticlesComponent::ClearUnusedParticlesSystem()
 		if (false == particleSystem->IsEnableCreatingNewParticles() && particleSystem->GetGPUParticles().empty())
 		{
 			it = m_ParticleSystems.erase(it);
+			GetProperties()->RemoveProperty(particleSystem->GetProperties());
 			continue;
 		}
 

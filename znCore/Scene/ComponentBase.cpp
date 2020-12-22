@@ -38,16 +38,24 @@ void CComponentBase::Accept(IVisitor* visitor)
 //
 // IObjectLoadSave
 //
+std::shared_ptr<IObject> CComponentBase::Copy() const
+{
+	throw CException("Unable make copy of component without SceneNode.");
+}
+
 void CComponentBase::CopyTo(std::shared_ptr<IObject> Destination) const
 {
+	throw CException("Not implemented.");
 }
 
 void CComponentBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
+	throw CException("Not implemented.");
 }
 
 void CComponentBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
+	throw CException("Not implemented.");
 }
 
 

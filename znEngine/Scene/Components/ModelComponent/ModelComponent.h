@@ -56,11 +56,7 @@ private:
 	// Bones
 	std::vector<SBoneInstance> m_BonesCalculated;
 	std::vector<glm::mat4> m_BonesCalculatedSkinMatrices;
-
-	//std::shared_ptr<ISkeletonComponentBone3D> m_RootBone;
-	//std::vector<std::shared_ptr<ISkeletonComponentBone3D>> m_Bones;
-	//std::vector<glm::mat4> m_BonesList;
-	std::shared_ptr<IStructuredBuffer> m_StructuredBuffer;
+	std::shared_ptr<IStructuredBuffer> m_CalculatedBonesStructuredBuffer;
 
 	// Animation
 	uint16                      m_CurrentAnimationIndex;

@@ -8,7 +8,7 @@ public:
 	virtual ~PipelineStateBase();
 
 	// IPipelineState
-	void SetShader(EShaderType type, std::shared_ptr<IShader> Shader) override;
+	void SetShader(std::shared_ptr<IShader> Shader) override;
 	const std::shared_ptr<IShader>& GetShader(EShaderType type) const override;
 	const ShaderMap& GetShaders() const override;
 

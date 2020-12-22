@@ -28,12 +28,12 @@ std::shared_ptr<IRenderPassPipelined> CDebugPass::ConfigurePipeline(std::shared_
 		customElements.push_back({ 0,  0, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION,     0 });
 		customElements.push_back({ 0, 12, ECustomVertexElementType::FLOAT2, ECustomVertexElementUsage::TEXCOORD,     0 });
 		vertexShader->LoadInputLayoutFromCustomElements(customElements);
-		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+		GetPipeline().SetShader(vertexShader);
 	}
 
 	{
 		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Debug.hlsl", "PS_main");
-		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+		GetPipeline().SetShader(pixelShader);
 	}
 
 	// PIPELINES

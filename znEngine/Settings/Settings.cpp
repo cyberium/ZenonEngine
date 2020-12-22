@@ -55,10 +55,10 @@ void CSettings::Save()
 	{
 		CXMLManager xml(m_BaseManager);
 
-		auto rootWriter = xml.CreateWriter();
-		auto settingsWriter = rootWriter->CreateChild("Settings");
+		auto xmlDocument = xml.CreateDocument();
+		auto settingsWriter = xmlDocument->CreateChild("Settings");
 		m_RootGroup->Save(settingsWriter);
-		Utils::SaveToLocalFile("settings.xml", xml.SaveWriterToString(rootWriter));
+		Utils::SaveToLocalFile("settings.xml", xml.SaveWriterToString(xmlDocument));
 
 	}
 	catch (const CException& e)

@@ -46,8 +46,8 @@ std::shared_ptr<IRenderPassPipelined> CRTSGround_Pass::ConfigurePipeline(std::sh
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
 	GetPipeline().SetRenderTarget(RenderTarget);
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().SetShader(vertexShader);
+	GetPipeline().SetShader(pixelShader);
 
 	m_ShaderLightsBufferParameter = pixelShader->GetShaderParameterByName("LightsVS");
 	//_ASSERT(m_ShaderLightsBufferParameter->IsValid());

@@ -39,14 +39,14 @@ std::shared_ptr<IRenderPassPipelined> CPassPostprocess_RenderGlowSceneObjects::C
 		m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
 		_ASSERT(m_ShaderBonesBufferParameter);
 
-		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+		GetPipeline().SetShader(vertexShader);
 	}
 
 
 	// Pixel shader
 	{
 		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/PostprocessEmissiveObjects.hlsl", "PS_main");
-		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+		GetPipeline().SetShader(pixelShader);
 	}
 
 	//GetPipeline().GetBlendState()->SetBlendMode(//alphaBlending

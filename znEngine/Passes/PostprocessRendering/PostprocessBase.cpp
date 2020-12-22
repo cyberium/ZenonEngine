@@ -43,8 +43,8 @@ std::shared_ptr<IRenderPassPipelined> CPassPostprocessBase::ConfigurePipeline(st
 
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
-	GetPipeline().SetShader(EShaderType::VertexShader, LoadVertexShader());
-	GetPipeline().SetShader(EShaderType::PixelShader, LoadPixelShader());
+	GetPipeline().SetShader(LoadVertexShader());
+	GetPipeline().SetShader(LoadPixelShader());
 
 	// PIPELINES
 	GetPipeline().GetBlendState()->SetBlendMode(additiveBlending);

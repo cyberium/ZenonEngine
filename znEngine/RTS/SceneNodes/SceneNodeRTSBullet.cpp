@@ -44,7 +44,7 @@ void CSceneNodeRTSBullet::SetTarget(std::shared_ptr<ISceneNodeRTSUnit> Target)
 
 		//std::dynamic_pointer_cast<CParticleSystem>(m_ParticleSystem)->m_Lifetime = glm::length(Target->GetTranslationAbs().xz - GetTranslationAbs().xz) / GetSpeed() * 60.0f;
 
-		particles->Attach(m_ParticleSystem);
+		particles->AddParticleSystem(m_ParticleSystem);
 	}
 }
 
@@ -137,9 +137,9 @@ void CSceneNodeRTSBullet::Update(const UpdateEventArgs & e)
 
 		m_ParticleSystem->SetEnableCreatingNewParticles(false);
 
-		auto particleSystem = GetComponentT<IParticleComponent3D>()->Detach(m_ParticleSystem);
-		_ASSERT(particleSystem != nullptr);
-		GetScene().GetRootSceneNode()->GetComponentT<IParticleComponent3D>()->Attach(particleSystem);
+		GetComponentT<IParticleComponent3D>()->RemoveParticleSystem(m_ParticleSystem);
+
+		GetScene().GetRootSceneNode()->GetComponentT<IParticleComponent3D>()->AddParticleSystem(m_ParticleSystem);
 	}
 }
 

@@ -109,6 +109,20 @@ bool CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 		m_DraggerNode->SetName(model->GetName());
 		m_DraggerNode->GetComponentT<IModelComponent>()->SetModel(model);
 	}*/
+	else if (dragDataSourceType == EDragDataSourceType::ParticleSytem)
+	{
+		std::shared_ptr<IParticleSystem> particleSystem = GetParticleSystemFromDragData(GetBaseManager(), Data.Buffer);
+		if (particleSystem == nullptr)
+			return false;
+
+		m_DraggerNode = GetScene().CreateSceneNodeT<ISceneNode>();
+		m_DraggerNode->SetName(particleSystem->GetName());
+
+		auto particleSystemComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IParticleComponent3D>(cSceneNodeParticleComponent, *m_DraggerNode);
+		m_DraggerNode->AddComponentT<IParticleComponent3D>(particleSystemComponent);
+		particleSystemComponent->AddParticleSystem(particleSystem);
+		particleSystem->SetNode(m_DraggerNode.get());
+	}
 	else
 	{
 		Log::Warn("EditorToolDragger don't support '%d' drag data source type.", dragDataSourceType);

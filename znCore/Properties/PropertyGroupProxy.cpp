@@ -102,6 +102,16 @@ void CPropertyGroupProxy::AddProperty(std::shared_ptr<IProperty> Property)
 	throw CException("Proxy properties don't support 'AddProperty' operation.");
 }
 
+void CPropertyGroupProxy::RemoveProperty(std::shared_ptr<IProperty> Property)
+{
+	throw CException("Proxy properties don't support 'RemoveProperty' operation.");
+}
+
+void CPropertyGroupProxy::RemoveProperty(const std::string& PropertyName)
+{
+	throw CException("Proxy properties don't support 'RemoveProperty' operation.");
+}
+
 std::shared_ptr<IProperty> CPropertyGroupProxy::GetProperty(const std::string & PropertyName)
 {
 	return m_SourceProperty->GetProperty(PropertyName);

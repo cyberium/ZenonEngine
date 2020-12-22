@@ -28,8 +28,8 @@ std::shared_ptr<IRenderPassPipelined> CUIControlPass::ConfigurePipeline(std::sha
 
 	// Material
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().SetShader(vertexShader);
+	GetPipeline().SetShader(pixelShader);
 
 	return shared_from_this();
 }

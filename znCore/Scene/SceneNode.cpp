@@ -334,6 +334,7 @@ void CSceneNode::RaiseComponentMessage(const ISceneNodeComponent* Component, Com
 		ComponentMapIter.second->OnMessage(Component, Message);
 	});
 }
+
 void CSceneNode::RegisterComponents()
 {
 	AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IModelComponent>(cSceneNodeModelsComponent, *this));
@@ -457,20 +458,31 @@ void CSceneNode::CopyTo(std::shared_ptr<IObject> Destination) const
 
 	GetProperties()->CopyTo(destCast->GetProperties());
 
-	for (const auto& c : GetComponents())
+	for (const auto& existingComponentIt : GetComponents())
 	{
-		const auto& compInOther = destCast->m_Components.find(c.first);
-		_ASSERT(compInOther != destCast->m_Components.end());
-		c.second->CopyTo(compInOther->second);
-		Log::Info("SceneNode::CopyTo: Component '%s' of node '%s' copied.", c.second->GetName().c_str(), GetName().c_str());
+		const auto& existingComponent = existingComponentIt.second;
+
+		ObjectClass existsingComponentClass = existingComponent->GetClass();
+		if (destCast->IsComponentExists(existsingComponentClass))
+		{
+			const auto& destinationComponent = destCast->GetComponent(existsingComponentClass);
+			existingComponent->CopyTo(destinationComponent);
+		}
+		else
+		{
+			std::shared_ptr<ISceneNodeComponent> copiedComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponent(existsingComponentClass, *destCast);
+			existingComponent->CopyTo(copiedComponent);
+			destCast->AddComponent(existsingComponentClass, copiedComponent);
+		}
 	}
 
-	for (const auto& ch : GetChilds())
+	for (const auto& existingChild : GetChilds())
 	{
-		std::shared_ptr<ISceneNode> childCopy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(ch->GetClass(), destCast->GetScene());
-		ch->CopyTo(childCopy);
-		destCast->AddChild(childCopy);
-		Log::Info("SceneNode::CopyTo: Child '%s' of parent '%s' copied.", ch->GetName().c_str(), GetName().c_str());
+		ObjectClass existingChildClass = existingChild->GetClass();
+		std::shared_ptr<ISceneNode> copiedChild = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(existingChildClass, destCast->GetScene());
+		existingChild->CopyTo(copiedChild);
+		destCast->AddChild(copiedChild);
+		Log::Info("SceneNode::CopyTo: Child '%s' of parent '%s' copied.", existingChild->GetName().c_str(), GetName().c_str());
 	}
 }
 

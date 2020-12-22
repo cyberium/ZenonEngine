@@ -23,8 +23,8 @@ ZenonTreeViewWidget::ZenonTreeViewWidget(QWidget * parent)
 	this->setModel(m_Model.get());
 
 	// SceneNodeTreeView: Selection settings
-	this->setSelectionMode(QAbstractItemView::ExtendedSelection);
-	this->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectItems);
+	//this->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	//this->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectItems);
 
 	QItemSelectionModel* selectionModel = this->selectionModel();
 	connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(onCurrentChanged(const QModelIndex&, const QModelIndex&)));

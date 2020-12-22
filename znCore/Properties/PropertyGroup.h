@@ -23,6 +23,8 @@ public:
 
 	// IPropertiesGroup
 	void AddProperty(std::shared_ptr<IProperty> Property) override;
+	void RemoveProperty(std::shared_ptr<IProperty> Property) override;
+	void RemoveProperty(const std::string& PropertyName) override;
 	std::shared_ptr<IProperty> GetProperty(const std::string& PropertyName) override;
 	const std::unordered_map<std::string, std::shared_ptr<IProperty>>& GetProperties() const override;
 

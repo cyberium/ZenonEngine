@@ -71,6 +71,8 @@ ZN_INTERFACE ZN_API IPropertiesGroup
 	virtual ~IPropertiesGroup() {}
 
 	virtual void AddProperty(std::shared_ptr<IProperty> Property) = 0;
+	virtual void RemoveProperty(std::shared_ptr<IProperty> Property) = 0;
+	virtual void RemoveProperty(const std::string& PropertyName) = 0;
 	virtual std::shared_ptr<IProperty> GetProperty(const std::string& PropertyName) = 0;
 	virtual const std::unordered_map<std::string, std::shared_ptr<IProperty>>& GetProperties() const = 0;
 

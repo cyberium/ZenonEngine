@@ -46,14 +46,14 @@ void CPassDeffered_ShadowMaps::CreateShadowPipeline()
 		m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
 		//_ASSERT(m_ShaderBonesBufferParameter->IsValid());
 
-		shadowPipeline->SetShader(EShaderType::VertexShader, vertexShader);
+		shadowPipeline->SetShader(vertexShader);
 	}
 
 
 	// Pixel shader
 	{
 		//auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Shadow.hlsl", "PS_Shadow");
-		//shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
+		//shadowPipeline->SetShader(pixelShader);
 	}
 
 	IBlendState::BlendMode disableBlending = IBlendState::BlendMode(false);

@@ -140,7 +140,7 @@ const std::vector<SBoneInstance>& CModelComponent::GetCalculatedBones() const
 
 std::shared_ptr<IStructuredBuffer> CModelComponent::GetBonesSkinBuffer() const
 {
-	return m_StructuredBuffer;
+	return m_CalculatedBonesStructuredBuffer;
 }
 
 void CModelComponent::CreatePose(size_t BoneStartIndex, size_t BonesCount)
@@ -165,7 +165,7 @@ void CModelComponent::CreatePose(size_t BoneStartIndex, size_t BonesCount)
 		}
 	}
 
-	m_StructuredBuffer->Set(m_BonesCalculatedSkinMatrices);
+	m_CalculatedBonesStructuredBuffer->Set(m_BonesCalculatedSkinMatrices);
 }
 
 
@@ -302,20 +302,17 @@ void CModelComponent::Accept(IVisitor* visitor)
 //
 void CModelComponent::CopyTo(std::shared_ptr<IObject> Destination) const
 {
-	CComponentBase::CopyTo(Destination);
+	auto destinationAsModelComponent = std::dynamic_pointer_cast<IModelComponent>(Destination);
 
-	auto destCast = std::dynamic_pointer_cast<CModelComponent>(Destination);
+	auto model = GetModel();
+	if (model != nullptr)
+		destinationAsModelComponent->SetModel(model);
 
-	if (m_Model != nullptr)
-		destCast->SetModel(m_Model);
-
-	destCast->SetCastShadows(m_IsCastShadows);
+	destinationAsModelComponent->SetCastShadows(IsCastShadows());
 }
 
 void CModelComponent::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	CComponentBase::Load(Reader);
-
 	if (false == Reader->IsAttributeExists("FileName"))
 	{
 		Log::Warn("Model XML doesn't contains 'FileName' section. Node '%s'.", GetOwnerNode().GetName().c_str());
@@ -339,8 +336,6 @@ void CModelComponent::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 void CModelComponent::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	CComponentBase::Save(Writer);
-
 	auto model = GetModel();
 	if (model == nullptr)
 	{
@@ -375,7 +370,7 @@ void CModelComponent::InitializeBones()
 		m_BonesCalculated.resize(bones.size());
 		m_BonesCalculatedSkinMatrices.resize(bones.size());
 
-		m_StructuredBuffer = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, bones.size(), sizeof(glm::mat4), EAccess::CPUWrite);
+		m_CalculatedBonesStructuredBuffer = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, bones.size(), sizeof(glm::mat4), EAccess::CPUWrite);
 	}
 }
 

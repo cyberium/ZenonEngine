@@ -62,7 +62,7 @@ std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::ConfigurePipeline(std:
 	{
 		std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Editor/EditorShaders.hlsl", "VS_main", { {"INSTANCED", "1"} });
 		vertexShader->LoadInputLayoutFromReflector();
-		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+		GetPipeline().SetShader(vertexShader);
 
 		m_ShaderInstancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
 		_ASSERT(m_ShaderInstancesBufferParameter);
@@ -70,7 +70,7 @@ std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::ConfigurePipeline(std:
 
 	{
 		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Editor/EditorShaders.hlsl", "PS_main");
-		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+		GetPipeline().SetShader(pixelShader);
 	}
 
 	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);

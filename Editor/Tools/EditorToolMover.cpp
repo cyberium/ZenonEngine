@@ -44,7 +44,7 @@ void CEditorToolMover::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer
 	m_MoverRoot = GetScene().CreateSceneNodeT<ISceneNode>();
 	m_MoverRoot->SetName("Mover");
 
-	/*
+
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("arrow.FBX");
 	auto geom = model->GetConnections().begin()->Geometry;
 
@@ -80,7 +80,6 @@ void CEditorToolMover::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer
 	m_MoverZ->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
 	m_MoverZ->SetRotationEuler(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_MoverZ->GetComponentT<IModelComponent>()->SetModel(modelZ);
-	*/
 }
 
 bool CEditorToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

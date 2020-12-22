@@ -133,7 +133,7 @@ std::shared_ptr<IXMLReader> CXMLManager::CreateReaderFromFile(std::shared_ptr<IF
 	return CreateXMLReader(root);
 }
 
-std::shared_ptr<IXMLWriter> CXMLManager::CreateWriter()
+std::shared_ptr<IXMLWriter> CXMLManager::CreateDocument()
 {
 	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
 	

@@ -474,10 +474,10 @@ void SceneBase::SaveToFile(const std::string& FileName)
 		auto rootWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->SaveSceneNode3DXML(rootNode);
 
 		CXMLManager manager(GetBaseManager());
-		auto xml = manager.CreateWriter();
-		xml->AddChild(rootWriter);
+		auto xmlDocument = manager.CreateDocument();
+		xmlDocument->AddChild(rootWriter);
 
-		manager.SaveWriterToFile(xml, file)->Save();
+		manager.SaveWriterToFile(xmlDocument, file)->Save();
 	}
 	catch (...)
 	{

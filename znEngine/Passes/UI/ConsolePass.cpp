@@ -104,10 +104,10 @@ std::shared_ptr<IRenderPassPipelined> CUIControlConsolePass::ConfigurePipeline(s
 
 	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Font.hlsl", "VS_main");
 	vertexShader->LoadInputLayoutFromReflector();
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+	GetPipeline().SetShader(vertexShader);
 
 	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UI_Font.hlsl", "PS_main");
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().SetShader(pixelShader);
 
 	m_FontBufferParameter = &(vertexShader->GetShaderParameterByName("Material"));
 	_ASSERT(m_FontBufferParameter->IsValid());

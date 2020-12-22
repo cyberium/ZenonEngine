@@ -126,7 +126,7 @@ void CEditorResourceBrowser::Initialize()
 	GetEditorQtUIFrame().getResourcesBrowser()->SetOnSelectedItemChange(std::bind(&CEditorResourceBrowser::OnSelectTreeItem, this, std::placeholders::_1));
 	GetEditorQtUIFrame().getResourcesBrowser()->SetOnStartDragging(std::bind(&CEditorResourceBrowser::OnStartDraggingTreeItem, this, std::placeholders::_1, std::placeholders::_2));
 	GetEditorQtUIFrame().getResourcesBrowser()->SetOnContexMenu(std::bind(&CEditorResourceBrowser::OnContextMenuTreeItem, this, std::placeholders::_1, std::placeholders::_2));
-
+	GetEditorQtUIFrame().getResourcesBrowser()->setSelectionMode(QAbstractItemView::SingleSelection);
 	
 	CResourceFilesystem fileSystem;
 	fileSystem.Initailize("O:/ZenonEngine_userdata");
@@ -271,6 +271,20 @@ bool CEditorResourceBrowser::OnStartDraggingTreeItem(const IznTreeViewItem * Ite
 			return false;
 
 		CreateDragDataFromTexture(objectAsTexture, Value);
+		m_Editor.GetTools().Enable(ETool::EToolDragger);
+		return true;
+	}
+
+	//
+	// Particle system
+	//
+	else if (Item->GetType() == ETreeViewItemType::ParticleSystem)
+	{
+		std::shared_ptr<IParticleSystem> objectAsParticleSystem = std::dynamic_pointer_cast<IParticleSystem>(object);
+		if (objectAsParticleSystem == nullptr)
+			return false;
+
+		CreateDragDataFromParticleSystem(GetBaseManager(), objectAsParticleSystem, Value);
 		m_Editor.GetTools().Enable(ETool::EToolDragger);
 		return true;
 	}

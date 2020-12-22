@@ -69,10 +69,12 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 	, m_DeaccelerateSEC(1.2f)
 
 	, m_LastParticleTimeMS(0.0f)
-	, m_EmmiterSpawnIntervalMS(1.0f)
+	, m_EmmiterSpawnIntervalMS(5.0f)
 
 	, m_OwnerNode(nullptr)
 {
+	GetProperties()->SetName("ParicleSystem");
+
 	m_LifetimeMS = 700.0f;
 	m_LifetimeMiddlePoint = 0.5f;
 
@@ -84,6 +86,30 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 	m_Sizes[1] = glm::vec2(2.0f);
 	m_Sizes[2] = glm::vec2(0.1f);
 
+
+	// EmmiterSpawnIntervalMS
+	{
+		auto emmiterSpawnIntervalMS = MakeShared(CPropertyWrapped<float>, "SetEmmiterSpawnIntervalMS", "SetEmmiterSpawnIntervalMS", 5.0f);
+		emmiterSpawnIntervalMS->SetValueSetter(std::bind(&CParticleSystem::SetEmmiterSpawnIntervalMS, this, std::placeholders::_1));
+		emmiterSpawnIntervalMS->SetValueGetter(std::bind(&CParticleSystem::GetEmmiterSpawnIntervalMS, this));
+		GetProperties()->AddProperty(emmiterSpawnIntervalMS);
+	}
+
+	// EmitterEmitterMaxParticlesCount
+	{
+		auto emitterMaxParticlesCount = MakeShared(CPropertyWrapped<float>, "EmitterEmitterMaxParticlesCount", "EmitterEmitterMaxParticlesCount", 150);
+		emitterMaxParticlesCount->SetValueSetter(std::bind(&CParticleSystem::SetEmitterEmitterMaxParticlesCount, this, std::placeholders::_1));
+		emitterMaxParticlesCount->SetValueGetter(std::bind(&CParticleSystem::GetEmitterEmitterMaxParticlesCount, this));
+		GetProperties()->AddProperty(emitterMaxParticlesCount);
+	}
+
+	// InitialSpeedSEC
+	{
+		auto initialSpeedSEC = MakeShared(CPropertyWrapped<float>, "InitialSpeedSEC", "InitialSpeedSEC", 1.0f);
+		initialSpeedSEC->SetValueSetter(std::bind(&CParticleSystem::SetInitialSpeedSEC, this, std::placeholders::_1));
+		initialSpeedSEC->SetValueGetter(std::bind(&CParticleSystem::GetInitialSpeedSEC, this));
+		GetProperties()->AddProperty(initialSpeedSEC);
+	}
 
 	// LifeTimeMS
 	{
@@ -260,6 +286,36 @@ bool CParticleSystem::IsEnableCreatingNewParticles() const
 
 // LifeTime
 
+void CParticleSystem::SetEmmiterSpawnIntervalMS(float SpawnIntervalMS)
+{
+	m_EmmiterSpawnIntervalMS = SpawnIntervalMS;
+}
+
+float CParticleSystem::GetEmmiterSpawnIntervalMS() const
+{
+	return m_EmmiterSpawnIntervalMS;
+}
+
+void CParticleSystem::SetEmitterEmitterMaxParticlesCount(float EmitterEmitterMaxParticlesCount)
+{
+	m_EmitterMaxParticlesCount = EmitterEmitterMaxParticlesCount;
+}
+
+float CParticleSystem::GetEmitterEmitterMaxParticlesCount() const
+{
+	return m_EmitterMaxParticlesCount;
+}
+
+void CParticleSystem::SetInitialSpeedSEC(float InitialSpeedSEC)
+{
+	m_InitialSpeedSEC = InitialSpeedSEC;
+}
+
+float CParticleSystem::GetInitialSpeedSEC() const
+{
+	return m_InitialSpeedSEC;
+}
+
 void CParticleSystem::SetLifeTimeMS(float LifeTimeMS)
 {
 	m_LifetimeMS = LifeTimeMS;
@@ -411,19 +467,25 @@ float CParticleSystem::GetDeaccelerateSEC() const
 }
 
 
+
 //
 // IObjectLoadSave
 //
+void CParticleSystem::CopyTo(std::shared_ptr<IObject> Destination) const
+{
+	auto destinationAsparticleSystem = std::dynamic_pointer_cast<IParticleSystem>(Destination);
+
+	GetProperties()->CopyTo(destinationAsparticleSystem->GetProperties());
+}
+
 void CParticleSystem::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	for (const auto prop : GetProperties()->GetProperties())
-		prop.second->Load(Reader);
+	GetProperties()->Load(Reader);
 }
 
 void CParticleSystem::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	for (const auto prop : GetProperties()->GetProperties())
-		prop.second->Save(Writer);
+	 GetProperties()->Save(Writer);
 }
 
 
@@ -440,8 +502,8 @@ void CParticleSystem::CreateNewParticle(const UpdateEventArgs& e)
 	p.Position = m_OwnerNode->GetPosition();
 	p.StartPosition = p.Position;
 	p.Direction = glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f));
-	p.Direction = Random::UnitVector3f();// CalcSpreadMatrix(glm::two_pi<float>(), 0.0f, 1.0, 1.0f) * glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
-	p.SpeedSEC = 0.0f * Random::Range(0.5f, 1.5f);
+	p.Direction = Random::Hemisphere(glm::vec3(0.0f, 1.0f, 0.0f)); //Random::UnitVector3f(); //CalcSpreadMatrix(glm::pi<float>(), 0.0f, 1.0, 1.0f) * glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
+	p.SpeedSEC = m_InitialSpeedSEC;
 
 	UpdateParticle(p, e);
 

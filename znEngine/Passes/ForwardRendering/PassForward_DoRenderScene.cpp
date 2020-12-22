@@ -51,7 +51,7 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 		m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
 		//_ASSERT(m_ShaderBonesBufferParameter);
 
-		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+		GetPipeline().SetShader(vertexShader);
 	}
 
 
@@ -62,7 +62,7 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 		m_ShaderLightsBufferParameter = pixelShader->GetShaderParameterByName("GPULightsVS");
 		_ASSERT(m_ShaderLightsBufferParameter);
 
-		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+		GetPipeline().SetShader(pixelShader);
 	}
 
 	return shared_from_this();

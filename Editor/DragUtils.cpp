@@ -58,8 +58,28 @@ void CreateDragDataFromTexture(const std::shared_ptr<ITexture>& Texture, CByteBu
 	ByteBuffer->writeString(Texture->GetFilename());
 }
 
-void CreateDragDataFromParticleSystem(const std::shared_ptr<IParticleSystem>& ParticleSystem, CByteBuffer * ByteBuffer)
+void CreateDragDataFromParticleSystem(const IBaseManager& BaseManager, const std::shared_ptr<IParticleSystem>& ParticleSystem, CByteBuffer * ByteBuffer)
 {
+	if (ParticleSystem == nullptr)
+		throw CException("Unable create drag data from IParticleSystem, because IParticleSystem is nullptr.");
+
+	if (ByteBuffer == nullptr || ByteBuffer->getSize() > 0 || ByteBuffer->getPos() > 0)
+		throw CException("Unable create drag data from '%s' IParticleSystem, because ByteBuffer is not empty.", ParticleSystem->GetName());
+
+	// 4 bytes - sourceType
+	EDragDataSourceType sourceType = EDragDataSourceType::ParticleSytem;
+	ByteBuffer->write(&sourceType);
+
+	ByteBuffer->writeString(ParticleSystem->GetName());
+
+	CXMLManager xml(BaseManager);
+	
+	auto xmlDocument = xml.CreateDocument();
+	auto propertiesNode = xmlDocument->CreateChild("Props");
+	ParticleSystem->Save(propertiesNode);
+
+	std::string xmlDocumentAsString = xml.SaveWriterToString(xmlDocument);
+	ByteBuffer->writeString(xmlDocumentAsString);
 }
 
 
@@ -168,6 +188,49 @@ std::shared_ptr<ITexture> GetTextureFromDragData(IBaseManager & BaseManager, con
 	catch (const CException& e)
 	{
 		Log::Error("Unable to create ITexture with filename '%s' from drag data.", textureFilename.c_str());
+		Log::Error("--->%s", e.MessageCStr());
+	}
+
+	return nullptr;
+}
+
+
+std::shared_ptr<IParticleSystem> GetParticleSystemFromDragData(IBaseManager & BaseManager, const CByteBuffer & ByteBuffer)
+{
+	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
+		throw CException("Incorrect drag data ByteBuffer.");
+
+	CByteBuffer byteBufferCopy(ByteBuffer);
+
+	uint32 sourceTypeInt;
+	if (false == byteBufferCopy.read(&sourceTypeInt))
+		throw CException("Incorrect drag data Buffer for IParticleSystem.");
+	EDragDataSourceType sourceType = static_cast<EDragDataSourceType>(sourceTypeInt);
+	if (sourceType != EDragDataSourceType::ParticleSytem)
+		throw CException("Drag data type '%d' is not IParticleSystem drag data.", sourceTypeInt);
+
+	std::string particleSystemName;
+	if (false == byteBufferCopy.readString(&particleSystemName))
+		throw CException("Incorrect drag data ByteBuffer.");
+
+	std::string particleSystemXMLString;
+	if (false == byteBufferCopy.readString(&particleSystemXMLString))
+		throw CException("Incorrect drag data ByteBuffer.");
+
+	CXMLManager xml(BaseManager);
+	auto xmlDocument = xml.CreateReaderFromString(particleSystemXMLString);
+	auto propertiesNode = xmlDocument->GetChilds()[0];
+
+	try
+	{
+		std::shared_ptr<IParticleSystem> particleSystem = MakeShared(CParticleSystem, BaseManager);
+		particleSystem->SetName(particleSystemName);
+		particleSystem->Load(propertiesNode);
+		return particleSystem;
+	}
+	catch (const CException& e)
+	{
+		Log::Error("Unable to create IParticleSystem with name '%s' from drag data.", particleSystemName.c_str());
 		Log::Error("--->%s", e.MessageCStr());
 	}
 
