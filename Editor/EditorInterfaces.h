@@ -15,7 +15,6 @@ enum ETool
 	EToolMover = 10,
 	EToolRotator = 11,
 	EToolScaler = 12,
-	EToolDragger = 14,
 
 	// RTS
 	EToolMoverRTS = 20,
@@ -115,25 +114,6 @@ enum class EMoverDirection
 	Z
 };
 
-ZN_INTERFACE IEditorToolMover
-{
-	virtual ~IEditorToolMover() {}
-
-	virtual glm::vec3 FixBoxCoords(const glm::vec3 & Position) = 0;
-	virtual void SetMoverValue(float Value) = 0;
-	virtual float GetMoverValue() const = 0;
-};
-
-ZN_INTERFACE IEditorToolRotator
-{
-	virtual ~IEditorToolRotator() {}
-
-	virtual float FixAngle(float Angle) = 0;
-	virtual void SetRotatorValue(float Value) = 0;
-	virtual float GetRotatorValue() const = 0;
-};
-
-
 
 //
 // Frames intfs
@@ -223,4 +203,12 @@ ZN_INTERFACE IEditorUIFrame
 
 	virtual void DoInitializeToolsUI() = 0;
 	virtual bool ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::shared_ptr<IPropertiesGroup> PropertiesGroup) = 0;
+
+	virtual glm::vec3 FixMoverCoords(const glm::vec3& Position) const = 0;
+	virtual void SetMoverValue(float Value) = 0;
+	virtual float GetMoverValue() const = 0;
+
+	virtual float FixRotatorCoords(float Angle) const = 0;
+	virtual void SetRotatorValue(float Value) = 0;
+	virtual float GetRotatorValue() const = 0;
 };

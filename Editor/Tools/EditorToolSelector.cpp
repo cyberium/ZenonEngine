@@ -18,14 +18,14 @@ void CEditorToolSelector::Enable()
 {
 	CEditorToolBase::Enable();
 
-	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolSelectorBtn->setChecked(IsEnabled());
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolSelectorBtn->setChecked(true);
 }
 
 void CEditorToolSelector::Disable()
 {
 	CEditorToolBase::Disable();
 
-	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolSelectorBtn->setChecked(IsEnabled());
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolSelectorBtn->setChecked(false);
 
 	m_IsSelecting2D = false;
 }
@@ -61,9 +61,12 @@ void CEditorToolSelector::ClearSelection()
 
 void CEditorToolSelector::AddNode(std::shared_ptr<ISceneNode> Node)
 {
+	if (Node == nullptr)
+		throw CException("Unable add nullptr node to selection.");
+
 	auto it = std::find_if(m_SelectedNodes.begin(), m_SelectedNodes.end(), [Node](const std::weak_ptr<ISceneNode>& NodeW) -> bool {
 		if (auto locked = NodeW.lock())
-			return locked == Node;
+			return locked->GetGUID() == Node->GetGUID();
 		return false;
 	});
 
@@ -77,9 +80,12 @@ void CEditorToolSelector::AddNode(std::shared_ptr<ISceneNode> Node)
 
 void CEditorToolSelector::RemoveNode(std::shared_ptr<ISceneNode> Node)
 {
+	if (Node == nullptr)
+		throw CException("Unable remove nullptr node from selection.");
+
 	auto it = std::find_if(m_SelectedNodes.begin(), m_SelectedNodes.end(), [Node] (const std::weak_ptr<ISceneNode>& NodeW) -> bool {
 		if (auto locked = NodeW.lock())
-			return locked == Node;
+			return locked->GetGUID() == Node->GetGUID();
 		return false;
 	});
 
@@ -105,9 +111,12 @@ std::shared_ptr<ISceneNode> CEditorToolSelector::GetFirstSelectedNode() const
 
 bool CEditorToolSelector::IsNodeSelected(std::shared_ptr<ISceneNode> Node) const
 {
+	if (Node == nullptr)
+		return false;
+
 	const auto& it = std::find_if(m_SelectedNodes.begin(), m_SelectedNodes.end(), [Node](const std::weak_ptr<ISceneNode>& NodeW) -> bool {
 		if (auto locked = NodeW.lock())
-			return locked == Node;
+			return locked->GetGUID() == Node->GetGUID();
 		return false;
 	});
 
@@ -126,7 +135,7 @@ const SelectedNodes& CEditorToolSelector::GetSelectedNodes() const
 //
 void CEditorToolSelector::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	m_SelectionTexture = GetScene().CreateUIControlTCast<IUIControlCommon>(); // TOIDO
+	m_SelectionTexture = GetScene().CreateUIControlTCast<IUIControlCommon>();
 
 	auto selectionMaterial = MakeShared(CMaterialUIControl, GetRenderDevice());
 	selectionMaterial->SetColor(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));

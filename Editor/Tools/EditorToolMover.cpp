@@ -23,9 +23,7 @@ void CEditorToolMover::Enable()
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverBtn->setChecked(IsEnabled());
 
 	if (auto node = GetEditor().GetFirstSelectedNode())
-	{
 		OnNodeSelected(node);
-	}
 }
 
 void CEditorToolMover::Disable()
@@ -43,7 +41,6 @@ void CEditorToolMover::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer
 {
 	m_MoverRoot = GetScene().CreateSceneNodeT<ISceneNode>();
 	m_MoverRoot->SetName("Mover");
-
 
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("arrow.FBX");
 	auto geom = model->GetConnections().begin()->Geometry;
@@ -167,7 +164,7 @@ void CEditorToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & 
 		newPos = glm::vec3(oldPos.x, mousePos.y + m_MoverOffset.y, oldPos.z);
 	}
 
-	movingNode->SetPosition(FixBoxCoords(newPos));
+	movingNode->SetPosition(GetEditor().GetUIFrame().FixMoverCoords(newPos));
 	m_MoverRoot->SetPosition(movingNode->GetPosition());
 
 	// Refresh selection bounds
@@ -178,19 +175,7 @@ void CEditorToolMover::OnNodeSelected(const std::shared_ptr<ISceneNode> Selected
 {
 	m_MovingNode = SelectedNode;
 	m_MoverRoot->SetPosition(SelectedNode->GetPosition());
-
-	float scaleForMoverTool = 1.0f / 50.0f;
-	if (auto colliderComponent = SelectedNode->GetComponentT<IColliderComponent>())
-	{
-		const BoundingBox& colliderBounds = colliderComponent->GetBounds();
-		if (false == colliderBounds.IsInfinite())
-			scaleForMoverTool *= colliderBounds.getRadius();
-
-		if (SelectedNode->GetClass() == cSceneNodeRTSPoint)
-			scaleForMoverTool *= 2.0f;
-	}
-
-	m_MoverRoot->SetScale(glm::vec3(scaleForMoverTool));
+	m_MoverRoot->SetScale(glm::vec3(SelectedNode->GetComponentT<IColliderComponent>()->GetBounds().getRadius()) / 50.0f);
 }
 
 
@@ -208,7 +193,7 @@ void CEditorToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 	moverValues.insert(std::make_pair("5.0 unit", 5.0f));
 	moverValues.insert(std::make_pair("10.0 unit", 10.0f));
 
-	m_MoverValue = 5.0f;
+	GetEditor().GetUIFrame().SetMoverValue(5.0f);
 
 	QComboBox * comboBox = QtUIFrame.getUI().MoverStepComboBox;
 
@@ -217,7 +202,7 @@ void CEditorToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 		comboBox->addItem(v.first.c_str(), QVariant(v.second));
 
 	// Select default item
-	int index = QtUIFrame.getUI().MoverStepComboBox->findData(QVariant(m_MoverValue));
+	int index = QtUIFrame.getUI().MoverStepComboBox->findData(QVariant(GetEditor().GetUIFrame().GetMoverValue()));
 	if (index != -1)
 		comboBox->setCurrentIndex(index);
 	else
@@ -226,7 +211,7 @@ void CEditorToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 	QtUIFrame.getQObject().connect(comboBox, qOverload<const QString&>(&QComboBox::currentIndexChanged), [this, comboBox](const QString& String) {
 		int index = comboBox->findText(String);
 		if (index != -1)
-			SetMoverValue(comboBox->itemData(index).toFloat());
+			GetEditor().GetUIFrame().SetMoverValue(comboBox->itemData(index).toFloat());
 		else
 			_ASSERT(false);
 	});
@@ -236,30 +221,6 @@ void CEditorToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 	QtUIFrame.getQObject().connect(QtUIFrame.getUI().editorToolMoverBtn, &QPushButton::released, [this]() {
 		GetEditor().GetTools().Enable(ETool::EToolMover);
 	});
-}
-
-
-
-//
-// IEditorToolMover
-//
-glm::vec3 CEditorToolMover::FixBoxCoords(const glm::vec3 & Position)
-{
-	glm::vec3 newPosition = Position;
-	newPosition /= m_MoverValue;
-	newPosition = glm::round(newPosition);
-	newPosition *= m_MoverValue;
-	return newPosition;
-}
-
-void CEditorToolMover::SetMoverValue(float Value)
-{
-	m_MoverValue = Value;
-}
-
-float CEditorToolMover::GetMoverValue() const
-{
-	return m_MoverValue; 
 }
 
 

@@ -23,6 +23,7 @@ private:
 
 private:
 	IBaseManager& GetBaseManager() const;
+	IEditor& GetEditor() const;
 	IEditorUIFrame& GetEditorUIFrame() const;
 	IEditorQtUIFrame& GetEditorQtUIFrame() const;
 

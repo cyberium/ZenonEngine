@@ -16,8 +16,8 @@ ZN_INTERFACE ZN_API ICameraComponent3D
 	virtual void DoMoveLeft(float Value = 1.0f) = 0;
 	virtual void DoMoveRight(float Value = 1.0f) = 0;
 
-	virtual void SetTranslation(glm::vec3 Translation) = 0;
-	virtual glm::vec3 GetTranslation() const = 0;
+	virtual void SetPosition(glm::vec3 Position) = 0;
+	virtual glm::vec3 GetPosition() const = 0;
 	virtual void SetDirection(glm::vec3 Direction) = 0;
 	virtual glm::vec3 GetDirection() const = 0;
 

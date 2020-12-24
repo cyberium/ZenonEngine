@@ -25,12 +25,7 @@ void CEditorToolRotator::Enable()
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorBtn->setChecked(IsEnabled());
 
 	if (auto node = GetEditor().GetFirstSelectedNode())
-	{
-		m_RotatingNode = node;
-		m_RotatorRoot->SetPosition(node->GetPosition());
-		m_RotatorRoot->SetRotationQuaternion(node->GetRotationQuaternion());
-		m_RotatorRoot->SetScale(glm::vec3(node->GetComponentT<IColliderComponent>()->GetBounds().getRadius()));
-	}
+		OnNodeSelected(node);
 }
 
 void CEditorToolRotator::Disable()
@@ -52,8 +47,11 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 	{
 		auto materialSphere = MakeShared(MaterialEditorTool, GetRenderDevice());
 		materialSphere->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 0.5f));
+
+		auto geometrySphere = GetRenderDevice().GetPrimitivesFactory().CreateSphere(2.0f);
+
 		auto modelSphere = GetRenderDevice().GetObjectsFactory().CreateModel();
-		modelSphere->AddConnection(materialSphere, GetRenderDevice().GetPrimitivesFactory().CreateSphere(2.0f));
+		modelSphere->AddConnection(materialSphere, geometrySphere);
 
 		auto rotatorSphere = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
 		rotatorSphere->SetName("RotatorSphere");
@@ -77,7 +75,6 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 	materialZ->SetColor(glm::vec4(0.1f, 0.2f, 1.0f, 1.0f));
 	auto modelZ = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelZ->AddConnection(materialZ, geom);
-
 
 	m_RotatorX = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
 	m_RotatorX->SetName("RotatorX");
@@ -136,9 +133,6 @@ void CEditorToolRotator::OnMouseReleased(const MouseButtonEventArgs & e, const R
 
 void CEditorToolRotator::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
-	if (m_RotatorNumber == EMoverDirection::None)
-		return;
-
 	auto rotatingNode = GetRotatingNode();
 	if (rotatingNode == nullptr)
 		return;
@@ -146,28 +140,36 @@ void CEditorToolRotator::OnMouseMoved(const MouseMotionEventArgs & e, const Ray 
 	if (m_RotatorNumber == EMoverDirection::X)
 	{
 		float rotatorInitialAngleDegreesX = m_InitialRotationDegrees.x + float(m_StartMousePosY - e.Y) / glm::pi<float>();
-
-		rotatorInitialAngleDegreesX = GetEditor().GetTools().GetToolT<IEditorToolRotator>(ETool::EToolRotator).FixAngle(rotatorInitialAngleDegreesX);
+		rotatorInitialAngleDegreesX = GetEditor().GetUIFrame().FixRotatorCoords(rotatorInitialAngleDegreesX);
 		rotatingNode->SetLocalRotationEuler(glm::vec3(rotatorInitialAngleDegreesX, m_InitialRotationDegrees.y, m_InitialRotationDegrees.z));
 	}
 	else if (m_RotatorNumber == EMoverDirection::Y)
 	{
 		float rotatorInitialAngleDegreesY = m_InitialRotationDegrees.y + float(m_StartMousePosY - e.Y) / glm::pi<float>();
-
-		rotatorInitialAngleDegreesY = GetEditor().GetTools().GetToolT<IEditorToolRotator>(ETool::EToolRotator).FixAngle(rotatorInitialAngleDegreesY);
+		rotatorInitialAngleDegreesY = GetEditor().GetUIFrame().FixRotatorCoords(rotatorInitialAngleDegreesY);
 		rotatingNode->SetLocalRotationEuler(glm::vec3(m_InitialRotationDegrees.x, rotatorInitialAngleDegreesY, m_InitialRotationDegrees.z));
 	}
 	else if (m_RotatorNumber == EMoverDirection::Z)
 	{
 		float rotatorInitialAngleDegreesZ = m_InitialRotationDegrees.z + float(m_StartMousePosY - e.Y) / glm::pi<float>();
-		rotatorInitialAngleDegreesZ = GetEditor().GetTools().GetToolT<IEditorToolRotator>(ETool::EToolRotator).FixAngle(rotatorInitialAngleDegreesZ);
+		rotatorInitialAngleDegreesZ = GetEditor().GetUIFrame().FixRotatorCoords(rotatorInitialAngleDegreesZ);
 		rotatingNode->SetLocalRotationEuler(glm::vec3(m_InitialRotationDegrees.x, m_InitialRotationDegrees.y, rotatorInitialAngleDegreesZ));
 	}
+	else
+		return;
 
 	m_RotatorRoot->SetRotationQuaternion(rotatingNode->GetRotationQuaternion());
 
 	// Refresh selection bounds
 	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(rotatingNode);
+}
+
+void CEditorToolRotator::OnNodeSelected(const std::shared_ptr<ISceneNode> SelectedNode)
+{
+	m_RotatingNode = SelectedNode;
+	m_RotatorRoot->SetPosition(SelectedNode->GetPosition());
+	m_RotatorRoot->SetRotationQuaternion(SelectedNode->GetRotationQuaternion());
+	m_RotatorRoot->SetScale(glm::vec3(SelectedNode->GetComponentT<IColliderComponent>()->GetBounds().getRadius()));
 }
 
 
@@ -185,7 +187,7 @@ void CEditorToolRotator::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 	rotatorsValues.insert(std::make_pair("30 deg", 30.0f));
 	rotatorsValues.insert(std::make_pair("45 deg", 45.0f));
 
-	m_RotatorValue = 45.0f;
+	GetEditor().GetUIFrame().SetRotatorValue(45.0f);
 
 	QComboBox * comboBox = QtUIFrame.getUI().RotatorStepComboBox;
 
@@ -194,7 +196,7 @@ void CEditorToolRotator::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 		comboBox->addItem(v.first.c_str(), v.second);
 
 	// Select default item
-	int index = comboBox->findData(QVariant(m_RotatorValue));
+	int index = comboBox->findData(QVariant(GetEditor().GetUIFrame().GetRotatorValue()));
 	if (index != -1)
 		comboBox->setCurrentIndex(index);
 	else
@@ -203,7 +205,7 @@ void CEditorToolRotator::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 	QtUIFrame.getQObject().connect(comboBox, qOverload<const QString&>(&QComboBox::currentIndexChanged), [this, comboBox](const QString& String) {
 		int index = comboBox->findText(String);
 		if (index != -1)
-			SetRotatorValue(comboBox->itemData(index).toFloat());
+			GetEditor().GetUIFrame().SetRotatorValue(comboBox->itemData(index).toFloat());
 		else
 			_ASSERT(false);
 	});
@@ -212,30 +214,6 @@ void CEditorToolRotator::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 	QtUIFrame.getQObject().connect(QtUIFrame.getUI().editorToolRotatorBtn, &QPushButton::released, [this]() {
 		GetEditor().GetTools().Enable(ETool::EToolRotator);
 	});
-}
-
-
-
-//
-// IEditorToolRotator
-//
-float CEditorToolRotator::FixAngle(float Angle)
-{
-	float rotatorInitialAngleDegrees = Angle;
-	rotatorInitialAngleDegrees /= m_RotatorValue;
-	rotatorInitialAngleDegrees = glm::round(rotatorInitialAngleDegrees);
-	rotatorInitialAngleDegrees *= m_RotatorValue;
-	return rotatorInitialAngleDegrees;
-}
-
-void CEditorToolRotator::SetRotatorValue(float Value)
-{
-	m_RotatorValue = Value;
-}
-
-float CEditorToolRotator::GetRotatorValue() const
-{
-	return m_RotatorValue;
 }
 
 

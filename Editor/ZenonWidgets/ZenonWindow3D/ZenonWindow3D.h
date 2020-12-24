@@ -11,12 +11,7 @@ class ZenonWindow3D
 public:
 	ZenonWindow3D(QWidget * parent);
 	virtual ~ZenonWindow3D();
-
-	void SetEditor(IEditor* Editor) { m_Editor = Editor; }
 	
-private slots:
-	void onCustomContextMenu(const QPoint& pos);
-
 private:
 	void mousePressEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
@@ -25,13 +20,4 @@ private:
 	void wheelEvent(QWheelEvent *event) override;
 	void keyPressEvent(QKeyEvent *event) override;
 	void keyReleaseEvent(QKeyEvent *event) override;
-
-	void dropEvent(QDropEvent *event) override;
-	void dragEnterEvent(QDragEnterEvent *event) override;
-	void dragMoveEvent(QDragMoveEvent *event) override;
-	void dragLeaveEvent(QDragLeaveEvent *event) override;
-
-private:
-	std::shared_ptr<QMenu> m_ContextMenu;
-	IEditor* m_Editor;
 };

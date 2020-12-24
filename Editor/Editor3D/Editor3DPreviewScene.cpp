@@ -56,9 +56,7 @@ void CEditor3DPreviewScene::SetSceneNode(std::shared_ptr<ISceneNode> SceneNode)
 	float radius = bbox.getRadius();
 
 	m_SceneNode->SetPosition(-bbox.getCenter());
-	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(radius * 1.5f));
-	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
-
+	GetCameraController()->GetCamera()->SetPosition(glm::vec3(radius * 1.5f));
 }
 
 void CEditor3DPreviewScene::SetModel(std::shared_ptr<IModel> Model)
@@ -77,8 +75,7 @@ void CEditor3DPreviewScene::SetModel(std::shared_ptr<IModel> Model)
 		modelBBox = BoundingBox(glm::vec3(-25.0f), glm::vec3(25.0f));
 
 	m_SceneNodeForModelPreview->SetPosition(- modelBBox.getCenter());
-	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(modelBBox.getRadius() * 1.5f));
-	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
+	GetCameraController()->GetCamera()->SetPosition(glm::vec3(modelBBox.getRadius() * 1.5f));
 }
 
 namespace
@@ -157,8 +154,7 @@ void CEditor3DPreviewScene::SetParticleSystem(std::shared_ptr<IParticleSystem> P
 	auto bbox = BoundingBox(glm::vec3(-5.0f), glm::vec3(5.0f));
 
 	m_SceneNodeForParticlePreview->SetPosition(-bbox.getCenter());
-	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(bbox.getRadius() * 1.5f));
-	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
+	GetCameraController()->GetCamera()->SetPosition(glm::vec3(bbox.getRadius() * 1.5f));
 }
 
 void CEditor3DPreviewScene::SetMaterial(std::shared_ptr<IMaterial> Material)
@@ -182,8 +178,7 @@ void CEditor3DPreviewScene::SetMaterial(std::shared_ptr<IMaterial> Material)
 		modelBBox = BoundingBox(glm::vec3(-10.0f), glm::vec3(10.0f));
 
 	m_SceneNodeForModelPreview->SetPosition(-modelBBox.getCenter());
-	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(modelBBox.getRadius() * 1.0f));
-	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
+	GetCameraController()->GetCamera()->SetPosition(glm::vec3(modelBBox.getRadius() * 1.0f));
 }
 
 
@@ -226,9 +221,8 @@ void CEditor3DPreviewScene::Initialize()
 		SetCameraController(MakeShared(CFreeCameraController));
 		GetCameraController()->SetCamera(cameraNode->GetComponentT<ICameraComponent3D>());
 		GetCameraController()->GetCamera()->SetPerspectiveProjection(75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
-		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
-		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
-		GetCameraController()->GetCamera()->SetYaw(225);
+		GetCameraController()->GetCamera()->SetPosition(glm::vec3(15.0f * 2.0f));
+		GetCameraController()->GetCamera()->SetYaw(180 + 45);
 		GetCameraController()->GetCamera()->SetPitch(-45);
 	}
 

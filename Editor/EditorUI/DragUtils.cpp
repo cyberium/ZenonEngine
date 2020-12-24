@@ -110,7 +110,7 @@ void CreateDragDataFromParticleSystem(const IBaseManager& BaseManager, const std
 
 
 
-ETreeViewItemType GetDragDataSourceType(const CByteBuffer & ByteBuffer)
+ETreeViewItemType GetDragDataSourceType(const CByteBuffer& ByteBuffer)
 {
 	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
 		throw CException("Incorrect drag data ByteBuffer.");
@@ -129,7 +129,7 @@ ETreeViewItemType GetDragDataSourceType(const CByteBuffer & ByteBuffer)
 //
 // SceneBrowser
 //
-Guid GetSceneNodeFromDragData(IBaseManager & BaseManager, const CByteBuffer & ByteBuffer)
+Guid GetSceneNodeFromDragData(const IBaseManager& BaseManager, const CByteBuffer& ByteBuffer)
 {
 	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
 		throw CException("Incorrect drag data ByteBuffer.");
@@ -156,7 +156,7 @@ Guid GetSceneNodeFromDragData(IBaseManager & BaseManager, const CByteBuffer & By
 //
 // ResourcesBrowser
 //
-std::shared_ptr<ISceneNode> GetSceneNodeProtoFromDragData(IBaseManager& BaseManager, IScene& Scene, const CByteBuffer& ByteBuffer)
+std::shared_ptr<ISceneNode> GetSceneNodeProtoFromDragData(const IBaseManager& BaseManager, IScene& Scene, const CByteBuffer& ByteBuffer)
 {
 	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
 		throw CException("Incorrect drag data ByteBuffer.");
@@ -180,7 +180,7 @@ std::shared_ptr<ISceneNode> GetSceneNodeProtoFromDragData(IBaseManager& BaseMana
 	return copy;
 }
 
-std::shared_ptr<IModel> GetModelFromDragData(IBaseManager& BaseManager, const CByteBuffer& ByteBuffer)
+std::shared_ptr<IModel> GetModelFromDragData(const IBaseManager& BaseManager, const CByteBuffer& ByteBuffer)
 {
 	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
 		throw CException("Incorrect drag data ByteBuffer.");
@@ -217,7 +217,7 @@ std::shared_ptr<IModel> GetModelFromDragData(IBaseManager& BaseManager, const CB
 	return nullptr;
 }
 
-std::shared_ptr<ITexture> GetTextureFromDragData(IBaseManager & BaseManager, const CByteBuffer & ByteBuffer)
+std::shared_ptr<ITexture> GetTextureFromDragData(const IBaseManager& BaseManager, const CByteBuffer& ByteBuffer)
 {
 	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
 		throw CException("Incorrect drag data ByteBuffer.");
@@ -251,7 +251,7 @@ std::shared_ptr<ITexture> GetTextureFromDragData(IBaseManager & BaseManager, con
 }
 
 
-std::shared_ptr<IParticleSystem> GetParticleSystemFromDragData(IBaseManager & BaseManager, const CByteBuffer & ByteBuffer)
+std::shared_ptr<IParticleSystem> GetParticleSystemFromDragData(const IBaseManager& BaseManager, const CByteBuffer& ByteBuffer)
 {
 	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
 		throw CException("Incorrect drag data ByteBuffer.");

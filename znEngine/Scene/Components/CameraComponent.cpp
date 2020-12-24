@@ -70,14 +70,14 @@ void CCameraComponent::DoMoveRight(float Value)
 	m_View_Dirty = true;
 }
 
-void CCameraComponent::SetTranslation(glm::vec3 Translation)
+void CCameraComponent::SetPosition(glm::vec3 Position)
 {
 	ISceneNode& sceneNode3D = const_cast<ISceneNode&>(GetOwnerNode());
-	sceneNode3D.SetPosition(Translation);
+	sceneNode3D.SetPosition(Position);
 	m_View_Dirty = true;
 }
 
-glm::vec3 CCameraComponent::GetTranslation() const
+glm::vec3 CCameraComponent::GetPosition() const
 {
 	return GetOwnerNode().GetPosition();
 }

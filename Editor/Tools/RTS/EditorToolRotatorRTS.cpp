@@ -23,23 +23,17 @@ void CEditorToolRotatorRTS::Enable()
 {
 	CEditorToolBase::Enable();
 
-	auto btn = dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorRTSBtn;
-	btn->setChecked(IsEnabled());
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorRTSBtn->setChecked(IsEnabled());
 
 	if (auto node = GetEditor().GetFirstSelectedNode())
-	{
-		m_RotatingNode = node;
-		m_RotatorRoot->SetPosition(node->GetPosition());
-		m_RotatorRoot->SetScale(glm::vec3(node->GetComponentT<IColliderComponent>()->GetBounds().getRadius()));
-	}
+		OnNodeSelected(node);
 }
 
 void CEditorToolRotatorRTS::Disable()
 {
 	CEditorToolBase::Disable();
 
-	auto btn = dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorRTSBtn;
-	btn->setChecked(IsEnabled());
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorRTSBtn->setChecked(IsEnabled());
 
 	Clear();
 	m_RotatingNode.reset();
@@ -115,12 +109,18 @@ void CEditorToolRotatorRTS::OnMouseMoved(const MouseMotionEventArgs & e, const R
 	}
 
 	float rotatorInitialAngleDegrees = m_InitialRotationDegrees + float(m_StartMousePosY - e.Y) / glm::pi<float>();
-	rotatorInitialAngleDegrees = GetEditor().GetTools().GetToolT<IEditorToolRotator>(ETool::EToolRotator).FixAngle(rotatorInitialAngleDegrees);
+	rotatorInitialAngleDegrees = GetEditor().GetUIFrame().FixRotatorCoords(rotatorInitialAngleDegrees);
 	rotatingNode->SetLocalRotationEuler(glm::vec3(0.0f, rotatorInitialAngleDegrees, 0.0f));
 
 	// Refresh selection bounds
 	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(rotatingNode);
-	
+}
+
+void CEditorToolRotatorRTS::OnNodeSelected(const std::shared_ptr<ISceneNode> SelectedNode)
+{
+	m_RotatingNode = SelectedNode;
+	m_RotatorRoot->SetPosition(SelectedNode->GetPosition());
+	m_RotatorRoot->SetScale(glm::vec3(SelectedNode->GetComponentT<IColliderComponent>()->GetBounds().getRadius()));
 }
 
 

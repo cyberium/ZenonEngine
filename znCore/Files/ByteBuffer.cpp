@@ -50,6 +50,7 @@ CByteBuffer::~CByteBuffer()
 const CByteBuffer& CByteBuffer::operator=(const CByteBuffer& _other)
 {
 	m_Data.clear();
+	m_Data.resize(_other.m_Data.size());
 	std::copy(_other.m_Data.begin(), _other.m_Data.end(), m_Data.begin());
 	m_CurrentPosition = _other.m_CurrentPosition;
 	return *this;

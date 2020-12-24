@@ -275,7 +275,7 @@ LRESULT CNativeWindow_PlatformWindows::ProcessMessage(HWND hwnd, UINT message, W
 				}
 			}
 
-			if (!m_InClientRect)
+			if (false == m_InClientRect)
 			{
 				m_PreviousMousePosition = glm::ivec2(x, y);
 				m_InClientRect = true;

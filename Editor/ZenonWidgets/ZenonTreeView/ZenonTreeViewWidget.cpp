@@ -122,44 +122,44 @@ void ZenonTreeViewWidget::SelectItems(const std::vector<std::shared_ptr<IObject>
 //
 // Callbacks
 //
-void ZenonTreeViewWidget::SetOnContexMenu(OnContextMenuCallback Callback)
+void ZenonTreeViewWidget::SetOnContexMenu(OnTreeViewContextMenuCallback Callback)
 {
 	m_OnContextMenu = Callback;
 }
 
-void ZenonTreeViewWidget::SetOnSelectionChange(OnSelectionChangeCallback Callback)
-{
-	m_OnSelectionChange = Callback;
-}
-
-void ZenonTreeViewWidget::SetOnSelectedItemChange(OnSelectedItemChangeCallback Callback)
-{
-	m_OnSelectedItemChange = Callback;
-}
-
-// Create Drag & Drop
-void ZenonTreeViewWidget::SetOnStartDragging(OnDragStartCallback Callback)
+void ZenonTreeViewWidget::SetOnStartDragging(OnTreeViewDragStartCallback Callback)
 {
 	m_OnDragStart = Callback;
 }
 
-// Accept Drag & Drop
-void ZenonTreeViewWidget::SetOnDragEnter(OnDragEnterCallback Callback)
+// Selection
+void ZenonTreeViewWidget::SetOnSelectionChange(OnTreeViewSelectionChangeCallback Callback)
+{
+	m_OnSelectionChange = Callback;
+}
+
+void ZenonTreeViewWidget::SetOnSelectedItemChange(OnTreeViewSelectedItemChangeCallback Callback)
+{
+	m_OnSelectedItemChange = Callback;
+}
+
+// Accept Drag
+void ZenonTreeViewWidget::SetOnDragEnter(OnTreeViewDragEnterCallback Callback)
 {
 	m_OnDragEnterCallback = Callback;
 }
 
-void ZenonTreeViewWidget::SetOnDragMove(OnDragMoveCallback Callback)
+void ZenonTreeViewWidget::SetOnDragMove(OnTreeViewDragMoveCallback Callback)
 {
 	m_OnDragMoveCallback = Callback;
 }
 
-void ZenonTreeViewWidget::SetOnDragDrop(OnDragDropCallback Callback)
+void ZenonTreeViewWidget::SetOnDragDrop(OnTreeViewDragDropCallback Callback)
 {
 	m_OnDragDropCallback = Callback;
 }
 
-void ZenonTreeViewWidget::SetOnDragLeave(OnDragLeaveCallback Callback)
+void ZenonTreeViewWidget::SetOnDragLeave(OnTreeViewDragLeaveCallback Callback)
 {
 	m_OnDragLeaveCallback = Callback;
 }

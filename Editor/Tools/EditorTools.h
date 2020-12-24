@@ -1,16 +1,6 @@
 #pragma once
 
 #include "EditorToolBase.h"
-#include "EditorToolSelector.h"
-#include "EditorToolMover.h"
-#include "EditorToolRotator.h"
-#include "EditorToolDragger.h"
-
-#include "RTS/EditorToolMoverRTS.h"
-#include "RTS/EditorToolRotatorRTS.h"
-#include "RTS/EditorToolRTSGround.h"
-#include "RTS/EditorToolWaypoints.h"
-
 
 class CEditorTools
 	: public IEditorTools

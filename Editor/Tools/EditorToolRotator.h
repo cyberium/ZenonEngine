@@ -4,7 +4,6 @@
 
 class CEditorToolRotator
 	: public CEditorToolBase
-	, public IEditorToolRotator
 {
 public:
 	CEditorToolRotator(IEditor& Editor);
@@ -19,14 +18,10 @@ public:
 	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;
+	void OnNodeSelected(const std::shared_ptr<ISceneNode> SelectedNode) override;
 
 	// IEditorToolUI
 	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
-
-	// IEditorToolRotator
-	float FixAngle(float Angle) override;
-	void SetRotatorValue(float Value) override;
-	float GetRotatorValue() const override;
 
 protected:
 	void Clear();
@@ -38,13 +33,9 @@ private:
 	std::shared_ptr<ISceneNode> m_RotatorY;
 	std::shared_ptr<ISceneNode> m_RotatorZ;
 
-	std::weak_ptr<ISceneNode> m_RotatingNode;
+	std::weak_ptr<ISceneNode>   m_RotatingNode;
+	EMoverDirection             m_RotatorNumber;
 
-	EMoverDirection m_RotatorNumber;
-
-	glm::vec3 m_InitialRotationDegrees;
-	int m_StartMousePosY;
-
-	// UI
-	float m_RotatorValue;
+	glm::vec3                   m_InitialRotationDegrees;
+	int                         m_StartMousePosY;
 };

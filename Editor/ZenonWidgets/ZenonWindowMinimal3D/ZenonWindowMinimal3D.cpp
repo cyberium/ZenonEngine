@@ -3,15 +3,24 @@
 // General
 #include "ZenonWindowMinimal3D.h"
 
+// Additional
+#include "EditorUI/ContextMenuUtils.h"
+
 ZenonWindowMinimal3DWidget::ZenonWindowMinimal3DWidget(QWidget *parent)
 	: QWidget(parent)
-
 	, m_EventListener(nullptr)
 {
 	setAttribute(Qt::WA_NativeWindow);
 	setAttribute(Qt::WA_PaintOnScreen);
 	setAttribute(Qt::WA_NoSystemBackground);
 	//setAttribute(Qt::WA_NoMousePropagation);
+
+	// Add context menu for scene node viewer
+	m_ContextMenu = MakeShared(QMenu, this);
+	m_ContextMenu->setTitle("Some context menu title.");
+
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 }
 
 ZenonWindowMinimal3DWidget::~ZenonWindowMinimal3DWidget()
@@ -86,6 +95,31 @@ void ZenonWindowMinimal3DWidget::ResetEventsListener()
 HWND ZenonWindowMinimal3DWidget::GetHWnd() const
 {
 	return (HWND)winId();
+}
+
+void ZenonWindowMinimal3DWidget::SetOnContexMenu(OnWindow3DContextMenuCallback Callback)
+{
+	m_OnContextMenu = Callback;
+}
+
+void ZenonWindowMinimal3DWidget::SetOnDragEnter(OnWindow3DDragEnterCallback Callback)
+{
+	m_OnDragEnterCallback = Callback;
+}
+
+void ZenonWindowMinimal3DWidget::SetOnDragMove(OnWindow3DDragMoveCallback Callback)
+{
+	m_OnDragMoveCallback = Callback;
+}
+
+void ZenonWindowMinimal3DWidget::SetOnDragDrop(OnWindow3DDragDropCallback Callback)
+{
+	m_OnDragDropCallback = Callback;
+}
+
+void ZenonWindowMinimal3DWidget::SetOnDragLeave(OnWindow3DDragLeaveCallback Callback)
+{
+	m_OnDragLeaveCallback = Callback;
 }
 
 std::shared_ptr<IImage> ZenonWindowMinimal3DWidget::TakeScreenshot(IBaseManager& BaseManager)
@@ -229,4 +263,180 @@ void ZenonWindowMinimal3DWidget::showEvent(QShowEvent * event)
 void ZenonWindowMinimal3DWidget::hideEvent(QHideEvent * event)
 {
 	//PostQuitMessage(0);
+}
+
+void ZenonWindowMinimal3DWidget::dragEnterEvent(QDragEnterEvent * event)
+{
+	event->ignore();
+
+	const QMimeData * mimeData = event->mimeData();
+	if (mimeData == nullptr)
+		return;
+
+	const QByteArray qtByteBuffer = mimeData->data("ZenonEngineMimeData");
+	if (qtByteBuffer.isEmpty())
+		return;
+
+	if (m_OnDragEnterCallback == nullptr)
+	{
+		event->accept();
+		return;
+	}
+
+	try
+	{
+		const CByteBuffer buffer(qtByteBuffer.data(), qtByteBuffer.size());
+
+		glm::vec2 cursorPosition = glm::vec2(event->pos().x(), event->pos().y());
+		bool isCtrl = (event->keyboardModifiers() & Qt::KeyboardModifier::ControlModifier) != 0;
+		if (false == m_OnDragEnterCallback(cursorPosition, isCtrl, buffer))
+			return;
+
+		event->accept();
+	}
+	catch (const CException& e)
+	{
+		Log::Error("ZenonWindowMinimal3DWidget: Exception occurs in 'dragEnterEvent'.");
+		Log::Error("--->%s", e.MessageCStr());
+	}
+	catch (...)
+	{
+		Log::Error("ZenonWindowMinimal3DWidget: Unknown exception occurs in 'dragEnterEvent'.");
+	}
+}
+
+void ZenonWindowMinimal3DWidget::dragMoveEvent(QDragMoveEvent * event)
+{
+	event->ignore();
+
+	const QMimeData * mimeData = event->mimeData();
+	if (mimeData == nullptr)
+		return;
+
+	const QByteArray qtByteBuffer = mimeData->data("ZenonEngineMimeData");
+	if (qtByteBuffer.isEmpty())
+		return;
+
+	if (m_OnDragMoveCallback == nullptr)
+	{
+		event->accept();
+		return;
+	}
+
+	try
+	{
+		const CByteBuffer buffer(qtByteBuffer.data(), qtByteBuffer.size());
+
+		if (false == m_OnDragMoveCallback(glm::vec2(event->pos().x(), event->pos().y()), buffer))
+			return;
+
+		event->accept();
+	}
+	catch (const CException& e)
+	{
+		Log::Error("ZenonWindowMinimal3DWidget: Exception occurs in 'dragMoveEvent'.");
+		Log::Error("--->%s", e.MessageCStr());
+	}
+	catch (...)
+	{
+		Log::Error("ZenonWindowMinimal3DWidget: Unknown exception occurs in 'dragMoveEvent'.");
+	}
+}
+
+void ZenonWindowMinimal3DWidget::dragLeaveEvent(QDragLeaveEvent * event)
+{
+	event->ignore();
+
+	if (m_OnDragLeaveCallback == nullptr)
+	{
+		event->accept();
+		return;
+	}
+
+	try
+	{
+		if (false == m_OnDragLeaveCallback())
+			return;
+
+		event->accept();
+	}
+	catch (const CException& e)
+	{
+		Log::Error("ZenonWindowMinimal3DWidget: Exception occurs in 'dragLeaveEvent'.");
+		Log::Error("--->%s", e.MessageCStr());
+	}
+	catch (...)
+	{
+		Log::Error("ZenonWindowMinimal3DWidget: Unknown exception occurs in 'dragLeaveEvent'.");
+	}
+}
+
+void ZenonWindowMinimal3DWidget::dropEvent(QDropEvent * event)
+{
+	event->ignore();
+
+	const QMimeData* mimeData = event->mimeData();
+	if (mimeData == nullptr)
+		return;
+
+	const QByteArray qtByteBuffer = mimeData->data("ZenonEngineMimeData");
+	if (qtByteBuffer.isEmpty())
+		return;
+
+	if (m_OnDragDropCallback == nullptr)
+	{
+		event->accept();
+		return;
+	}
+
+	try
+	{
+		const CByteBuffer buffer(qtByteBuffer.data(), qtByteBuffer.size());
+
+		if (false == m_OnDragDropCallback(glm::vec2(event->pos().x(), event->pos().y()), buffer))
+			return;
+
+		event->accept();
+	}
+	catch (const CException& e)
+	{
+		Log::Error("ZenonWindowMinimal3DWidget: Exception occurs in 'dropEvent'.");
+		Log::Error("--->%s", e.MessageCStr());
+	}
+	catch (...)
+	{
+		Log::Error("ZenonWindowMinimal3DWidget: Unknown exception occurs in 'dropEvent'.");
+	}
+}
+
+
+
+//
+// Slots
+//
+void ZenonWindowMinimal3DWidget::onCustomContextMenu(const QPoint& point)
+{
+	m_ContextMenu->clear();
+
+	if (m_OnContextMenu == nullptr)
+		return;
+
+	try
+	{
+		std::shared_ptr<IPropertiesGroup> propertiesGroup = MakeShared(CPropertiesGroup, "DefaultContextMenuTitle", "DefaultContextMenuDescription");
+		if (false == m_OnContextMenu(glm::vec2(point.x(), point.y()), propertiesGroup)) // TODO: try/catch
+			return;
+
+		m_ContextMenu = CreateContextMenuFromPropertiesGroup(propertiesGroup);
+		m_ContextMenu->popup(mapToGlobal(point));
+	}
+	catch (const CException& e)
+	{
+		Log::Error("ZenonWindowMinimal3DWidget: Exception occurs in 'onCustomContextMenu'.");
+		Log::Error("--->%s", e.MessageCStr());
+	}
+	catch (...)
+	{
+		Log::Error("ZenonWindowMinimal3DWidget: Unknown exception occurs in 'onCustomContextMenu'.");
+	}
 }

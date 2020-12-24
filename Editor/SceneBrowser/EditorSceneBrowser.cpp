@@ -25,12 +25,13 @@ CEditorSceneBrowser::~CEditorSceneBrowser()
 //
 void CEditorSceneBrowser::Initialize()
 {
-	GetEditorQtUIFrame().getSceneViewer()->SetOnSelectedItemChange(std::bind(&CEditorSceneBrowser::OnSelectTreeItem, this, std::placeholders::_1));
-	GetEditorQtUIFrame().getSceneViewer()->SetOnStartDragging(std::bind(&CEditorSceneBrowser::OnStartDraggingTreeItem, this, std::placeholders::_1, std::placeholders::_2));
 	GetEditorQtUIFrame().getSceneViewer()->SetOnContexMenu(std::bind(&CEditorSceneBrowser::OnContextMenuTreeItem, this, std::placeholders::_1, std::placeholders::_2));
 
-	GetEditorQtUIFrame().getSceneViewer()->SetOnDragMove(std::bind(&CEditorSceneBrowser::OnDragMove, this, std::placeholders::_1, std::placeholders::_2));
-	GetEditorQtUIFrame().getSceneViewer()->SetOnDragDrop(std::bind(&CEditorSceneBrowser::OnDragDrop, this, std::placeholders::_1, std::placeholders::_2));
+	GetEditorQtUIFrame().getSceneViewer()->SetOnSelectedItemChange(std::bind(&CEditorSceneBrowser::OnSelectTreeItem, this, std::placeholders::_1));
+	GetEditorQtUIFrame().getSceneViewer()->SetOnStartDragging(std::bind(&CEditorSceneBrowser::OnStartDraggingTreeItem, this, std::placeholders::_1, std::placeholders::_2));
+	
+	GetEditorQtUIFrame().getSceneViewer()->SetOnDragMove(std::bind(&CEditorSceneBrowser::OnDragMoveTreeItem, this, std::placeholders::_1, std::placeholders::_2));
+	GetEditorQtUIFrame().getSceneViewer()->SetOnDragDrop(std::bind(&CEditorSceneBrowser::OnDragDropTreeItem, this, std::placeholders::_1, std::placeholders::_2));
 
 	GetEditorQtUIFrame().getSceneViewer()->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -55,6 +56,27 @@ void CEditorSceneBrowser::Update()
 //
 // Events
 //
+
+bool CEditorSceneBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item, std::shared_ptr<IPropertiesGroup> PropertiesGroup)
+{
+	if (Item->GetType() != ETreeViewItemType::SceneNode)
+		return false;
+
+	auto object = Item->GetObject_();
+	if (object == nullptr)
+		return false;
+
+	auto sceneNode3DObject = std::dynamic_pointer_cast<ISceneNode>(object);
+	if (sceneNode3DObject == nullptr)
+		return false;
+
+	if (false == GetEditorUIFrame().ExtendContextMenu(sceneNode3DObject, PropertiesGroup))
+		return false;
+
+	return true;
+}
+
+
 bool CEditorSceneBrowser::OnSelectTreeItem(const IznTreeViewItem * Item)
 {
 	if (Item->GetType() != ETreeViewItemType::SceneNode)
@@ -91,33 +113,15 @@ bool CEditorSceneBrowser::OnStartDraggingTreeItem(const IznTreeViewItem* Item, C
 			return false;
 
 		CreateDragDataFromSceneNode(objectAsModelAsSceneNode, ByteBuffer);
-		m_Editor.GetTools().Enable(ETool::EToolDragger);
+		//m_Editor.GetTools().Enable(ETool::EToolDragger);
 		return true;
 	}
 	else
 		throw CException("Unexpected behaviour.");
 }
 
-bool CEditorSceneBrowser::OnContextMenuTreeItem(const IznTreeViewItem * Item, std::shared_ptr<IPropertiesGroup> PropertiesGroup)
-{
-	if (Item->GetType() != ETreeViewItemType::SceneNode)
-		return false;
 
-	auto object = Item->GetObject_();
-	if (object == nullptr)
-		return false;
-
-	auto sceneNode3DObject = std::dynamic_pointer_cast<ISceneNode>(object);
-	if (sceneNode3DObject == nullptr)
-		return false;
-
-	if (false == GetEditorUIFrame().ExtendContextMenu(sceneNode3DObject, PropertiesGroup))
-		return false;
-
-	return true;
-}
-
-bool CEditorSceneBrowser::OnDragMove(const IznTreeViewItem * TreeViewItem, const CByteBuffer& ByteBuffer)
+bool CEditorSceneBrowser::OnDragMoveTreeItem(const IznTreeViewItem * TreeViewItem, const CByteBuffer& ByteBuffer)
 {
 	auto destinationObject = TreeViewItem->GetObject_();
 	if (destinationObject == nullptr)
@@ -158,7 +162,7 @@ bool CEditorSceneBrowser::OnDragMove(const IznTreeViewItem * TreeViewItem, const
 	return false;
 }
 
-bool CEditorSceneBrowser::OnDragDrop(const IznTreeViewItem * TreeViewItem, const CByteBuffer& ByteBuffer)
+bool CEditorSceneBrowser::OnDragDropTreeItem(const IznTreeViewItem * TreeViewItem, const CByteBuffer& ByteBuffer)
 {
 	auto destinationObject = TreeViewItem->GetObject_();
 	if (destinationObject == nullptr)

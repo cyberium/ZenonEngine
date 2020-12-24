@@ -134,7 +134,7 @@ void CEditorResourceBrowser::Initialize()
 
 	GetEditorQtUIFrame().getResourcesBrowser()->Refresh();
 	for (const auto& resourceFile : fileSystem.GetRootFile()->GetChilds())
-		if (auto treeViewItem = ResourceFileToTreeView(m_Editor, resourceFile))
+		if (auto treeViewItem = ResourceFileToTreeView(GetEditor(), resourceFile))
 			GetEditorQtUIFrame().getResourcesBrowser()->AddToRoot(treeViewItem);
 			
 }
@@ -159,7 +159,7 @@ bool CEditorResourceBrowser::OnSelectTreeItem(const IznTreeViewItem * Item)
 			return false;
 		}
 
-		m_Editor.Get3DPreviewFrame().SetSceneNode(sceneNodeProto);
+		GetEditor().Get3DPreviewFrame().SetSceneNode(sceneNodeProto);
 		return true;
 	}
 	else if (Item->GetType() == ETreeViewItemType::Model)
@@ -171,7 +171,7 @@ bool CEditorResourceBrowser::OnSelectTreeItem(const IznTreeViewItem * Item)
 			return false;
 		}
 
-		m_Editor.Get3DPreviewFrame().SetModel(modelObject);
+		GetEditor().Get3DPreviewFrame().SetModel(modelObject);
 		return true;
 	}
 	else if (Item->GetType() == ETreeViewItemType::Texture)
@@ -183,7 +183,7 @@ bool CEditorResourceBrowser::OnSelectTreeItem(const IznTreeViewItem * Item)
 			return false;
 		}
 
-		m_Editor.Get3DPreviewFrame().SetTexture(textureObject);
+		GetEditor().Get3DPreviewFrame().SetTexture(textureObject);
 		return true;
 	}
 	else if (Item->GetType() == ETreeViewItemType::ParticleSystem)
@@ -196,7 +196,7 @@ bool CEditorResourceBrowser::OnSelectTreeItem(const IznTreeViewItem * Item)
 		}
 		
 		GetEditorQtUIFrame().getUI().NewPropsWidget->SetProperties(particleSystemObject->GetProperties());
-		m_Editor.Get3DPreviewFrame().SetParticleSystem(particleSystemObject);
+		GetEditor().Get3DPreviewFrame().SetParticleSystem(particleSystemObject);
 		GetEditorQtUIFrame().getResourcesBrowser()->SelectItem(particleSystemObject);
 
 		return true;
@@ -211,7 +211,7 @@ bool CEditorResourceBrowser::OnSelectTreeItem(const IznTreeViewItem * Item)
 		}
 
 		GetEditorQtUIFrame().getUI().NewPropsWidget->SetProperties(materialObject->GetProperties());
-		m_Editor.Get3DPreviewFrame().SetMaterial(materialObject);
+		GetEditor().Get3DPreviewFrame().SetMaterial(materialObject);
 		GetEditorQtUIFrame().getResourcesBrowser()->SelectItem(materialObject);
 
 		return true;
@@ -239,7 +239,7 @@ bool CEditorResourceBrowser::OnStartDraggingTreeItem(const IznTreeViewItem * Ite
 			return false;
 
 		CreateDragDataFromSceneNodeProto(objectAsModelAsSceneNodeProto, Value);
-		m_Editor.GetTools().Enable(ETool::EToolDragger);
+		//GetEditor().GetTools().Enable(ETool::EToolDragger);
 		return true;
 	}
 
@@ -254,7 +254,7 @@ bool CEditorResourceBrowser::OnStartDraggingTreeItem(const IznTreeViewItem * Ite
 			return false;
 
 		CreateDragDataFromModel(objectAsModel, Value);
-		m_Editor.GetTools().Enable(ETool::EToolDragger);
+		//GetEditor().GetTools().Enable(ETool::EToolDragger);
 		return true;
 	}
 
@@ -268,7 +268,7 @@ bool CEditorResourceBrowser::OnStartDraggingTreeItem(const IznTreeViewItem * Ite
 			return false;
 
 		CreateDragDataFromTexture(objectAsTexture, Value);
-		m_Editor.GetTools().Enable(ETool::EToolDragger);
+		//GetEditor().GetTools().Enable(ETool::EToolDragger);
 		return true;
 	}
 
@@ -282,7 +282,7 @@ bool CEditorResourceBrowser::OnStartDraggingTreeItem(const IznTreeViewItem * Ite
 			return false;
 
 		CreateDragDataFromParticleSystem(GetBaseManager(), objectAsParticleSystem, Value);
-		m_Editor.GetTools().Enable(ETool::EToolDragger);
+		//GetEditor().GetTools().Enable(ETool::EToolDragger);
 		return true;
 	}
 
@@ -365,12 +365,17 @@ IBaseManager & CEditorResourceBrowser::GetBaseManager() const
 	return m_Editor.GetBaseManager();
 }
 
+IEditor & CEditorResourceBrowser::GetEditor() const
+{
+	return m_Editor;
+}
+
 IEditorUIFrame & CEditorResourceBrowser::GetEditorUIFrame() const
 {
 	return m_Editor.GetUIFrame();
 }
 
-IEditorQtUIFrame& CEditorResourceBrowser::GetEditorQtUIFrame() const
+IEditorQtUIFrame & CEditorResourceBrowser::GetEditorQtUIFrame() const
 {
-	return dynamic_cast<IEditorQtUIFrame&>(m_Editor.GetUIFrame());
+	return dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame());
 }

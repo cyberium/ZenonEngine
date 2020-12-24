@@ -38,7 +38,7 @@ IEditorUIFrame& CEditor::GetUIFrame() const
 	return *m_EditorUIFrame;
 }
 
-IEditor3DFrame & CEditor::Get3DFrame() const
+IEditor3DFrame& CEditor::Get3DFrame() const
 {
 	_ASSERT(m_Editor3DFrame != nullptr);
 	return *m_Editor3DFrame;

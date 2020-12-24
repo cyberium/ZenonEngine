@@ -23,11 +23,7 @@ void CEditorToolMoverRTS::Enable()
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverRTSBtn->setChecked(IsEnabled());
 
 	if (auto node = GetEditor().GetFirstSelectedNode())
-	{
-		m_MovingNode = node;
-		m_MoverRoot->SetPosition(node->GetPosition());
-		m_MoverRoot->SetScale(glm::vec3(node->GetComponentT<IColliderComponent>()->GetBounds().getRadius() * 1.0f / 50.0f));
-	}
+		OnNodeSelected(node);
 }
 
 void CEditorToolMoverRTS::Disable()
@@ -37,7 +33,6 @@ void CEditorToolMoverRTS::Disable()
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverRTSBtn->setChecked(IsEnabled());
 
 	Clear();
-
 	m_MovingNode.reset();
 	m_MoverRoot->SetPosition(glm::vec3(Math::MinFloat));
 }
@@ -147,14 +142,19 @@ void CEditorToolMoverRTS::OnMouseMoved(const MouseMotionEventArgs & e, const Ray
 		newPos = glm::vec3(oldPos.x, oldPos.y, mousePos.z + m_MoverOffset.z);
 	}
 
-	glm::vec3 fixed3DTranslate = GetEditor().GetTools().GetToolT<IEditorToolMover>(ETool::EToolMover).FixBoxCoords(newPos);
-
-	glm::vec2 fixed2DTranslate = glm::vec2(fixed3DTranslate.xz);
+	glm::vec2 fixed2DTranslate = glm::vec2(GetEditor().GetUIFrame().FixMoverCoords(newPos).xz);
 	movingNode->SetPosition(glm::vec3(fixed2DTranslate.x, oldPos.y, fixed2DTranslate.y));
 	m_MoverRoot->SetPosition(movingNode->GetPosition());
 
 	// Refresh selection bounds
 	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(movingNode);
+}
+
+void CEditorToolMoverRTS::OnNodeSelected(const std::shared_ptr<ISceneNode> SelectedNode)
+{
+	m_MovingNode = SelectedNode;
+	m_MoverRoot->SetPosition(SelectedNode->GetPosition());
+	m_MoverRoot->SetScale(glm::vec3(SelectedNode->GetComponentT<IColliderComponent>()->GetBounds().getRadius() / 50.0f));
 }
 
 

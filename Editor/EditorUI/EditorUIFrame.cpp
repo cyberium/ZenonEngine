@@ -75,8 +75,6 @@ IEditor& CEditorUIFrame::GetEditor() const
 
 bool CEditorUIFrame::InitializeEditorFrame()
 {
-	getMainEditor()->SetEditor(&m_Editor);
-
 	m_EditorSceneBrowser.Initialize();
 	m_EditorResourceBrowser.Initialize();
 
@@ -169,7 +167,43 @@ bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, 
 	return true;
 }
 
+glm::vec3 CEditorUIFrame::FixMoverCoords(const glm::vec3 & Position) const
+{
+	glm::vec3 newPosition = Position;
+	newPosition /= m_MoverValue;
+	newPosition = glm::round(newPosition);
+	newPosition *= m_MoverValue;
+	return newPosition;
+}
 
+void CEditorUIFrame::SetMoverValue(float Value)
+{
+	m_MoverValue = Value;
+}
+
+float CEditorUIFrame::GetMoverValue() const
+{
+	return m_MoverValue;
+}
+
+float CEditorUIFrame::FixRotatorCoords(float Angle) const
+{
+	float rotatorInitialAngleDegrees = Angle;
+	rotatorInitialAngleDegrees /= m_RotatorValue;
+	rotatorInitialAngleDegrees = glm::round(rotatorInitialAngleDegrees);
+	rotatorInitialAngleDegrees *= m_RotatorValue;
+	return rotatorInitialAngleDegrees;
+}
+
+void CEditorUIFrame::SetRotatorValue(float Value)
+{
+	m_RotatorValue = Value;
+}
+
+float CEditorUIFrame::GetRotatorValue() const
+{
+	return m_RotatorValue;
+}
 
 //
 // IEditorQtUIFrame

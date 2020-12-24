@@ -14,10 +14,10 @@ void                          CreateDragDataFromParticleSystem(const IBaseManage
 ETreeViewItemType             GetDragDataSourceType(const CByteBuffer& ByteBuffer);
 
 // SceneBrowser
-Guid                         GetSceneNodeFromDragData(IBaseManager& BaseManager, const CByteBuffer& ByteBuffer);
+Guid                         GetSceneNodeFromDragData(const IBaseManager& BaseManager, const CByteBuffer& ByteBuffer);
 
 // ResourceBrowser
-std::shared_ptr<ISceneNode>   GetSceneNodeProtoFromDragData(IBaseManager& BaseManager, IScene& Scene, const CByteBuffer& ByteBuffer);
-std::shared_ptr<IModel>       GetModelFromDragData(IBaseManager& BaseManager, const CByteBuffer& ByteBuffer);
-std::shared_ptr<ITexture>     GetTextureFromDragData(IBaseManager& BaseManager, const CByteBuffer& ByteBuffer);
-std::shared_ptr<IParticleSystem> GetParticleSystemFromDragData(IBaseManager& BaseManager, const CByteBuffer& ByteBuffer);
+std::shared_ptr<ISceneNode>   GetSceneNodeProtoFromDragData(const IBaseManager& BaseManager, IScene& Scene, const CByteBuffer& ByteBuffer);
+std::shared_ptr<IModel>       GetModelFromDragData(const IBaseManager& BaseManager, const CByteBuffer& ByteBuffer);
+std::shared_ptr<ITexture>     GetTextureFromDragData(const IBaseManager& BaseManager, const CByteBuffer& ByteBuffer);
+std::shared_ptr<IParticleSystem> GetParticleSystemFromDragData(const IBaseManager& BaseManager, const CByteBuffer& ByteBuffer);

@@ -4,18 +4,19 @@
 
 #include <QtWidgets/QTreeView>
 
-typedef std::function<bool(const IznTreeViewItem*, std::shared_ptr<IPropertiesGroup>)> OnContextMenuCallback;
-typedef std::function<bool(const std::vector<const IznTreeViewItem*>&)> OnSelectionChangeCallback;
-typedef std::function<bool(const IznTreeViewItem*)> OnSelectedItemChangeCallback;
+// Actions with TreeViewItems
+typedef std::function<bool(const IznTreeViewItem*, std::shared_ptr<IPropertiesGroup>)> OnTreeViewContextMenuCallback;
+typedef std::function<bool(const IznTreeViewItem*, CByteBuffer*)>                      OnTreeViewDragStartCallback;
 
-// Create Drag & Drop
-typedef std::function<bool(const IznTreeViewItem*, CByteBuffer*)>       OnDragStartCallback;
+// Selection
+typedef std::function<bool(const std::vector<const IznTreeViewItem*>&)>                OnTreeViewSelectionChangeCallback;
+typedef std::function<bool(const IznTreeViewItem*)>                                    OnTreeViewSelectedItemChangeCallback;
 
-// Accept Drag & Drop
-typedef std::function<bool(const CByteBuffer&)>                         OnDragEnterCallback;
-typedef std::function<bool(const IznTreeViewItem*, const CByteBuffer&)> OnDragMoveCallback;
-typedef std::function<bool(const IznTreeViewItem*, const CByteBuffer&)> OnDragDropCallback;
-typedef std::function<bool()>                                           OnDragLeaveCallback;
+// Accept Drag
+typedef std::function<bool(const CByteBuffer&)>                                        OnTreeViewDragEnterCallback;
+typedef std::function<bool(const IznTreeViewItem*, const CByteBuffer&)>                OnTreeViewDragMoveCallback;
+typedef std::function<bool(const IznTreeViewItem*, const CByteBuffer&)>                OnTreeViewDragDropCallback;
+typedef std::function<bool()>                                                          OnTreeViewDragLeaveCallback;
 
 class ZenonTreeViewWidget
 	: public QTreeView
@@ -34,18 +35,19 @@ public:
 	void SelectItem(const std::shared_ptr<IObject>& Item, bool NeedClear = true);
 	void SelectItems(const std::vector<std::shared_ptr<IObject>>& Items);
 
-	void SetOnContexMenu(OnContextMenuCallback Callback);
-	void SetOnSelectionChange(OnSelectionChangeCallback Callback);
-	void SetOnSelectedItemChange(OnSelectedItemChangeCallback Callback);
+	// Actions with TreeViewItems
+	void SetOnContexMenu(OnTreeViewContextMenuCallback Callback);
+	void SetOnStartDragging(OnTreeViewDragStartCallback Callback);
 
-	// Create Drag & Drop
-	void SetOnStartDragging(OnDragStartCallback Callback);
+	// Selection
+	void SetOnSelectionChange(OnTreeViewSelectionChangeCallback Callback);
+	void SetOnSelectedItemChange(OnTreeViewSelectedItemChangeCallback Callback);
 
-	// Accept Drag & Drop
-	void SetOnDragEnter(OnDragEnterCallback Callback);
-	void SetOnDragMove(OnDragMoveCallback Callback);
-	void SetOnDragDrop(OnDragDropCallback Callback);
-	void SetOnDragLeave(OnDragLeaveCallback Callback);
+	// Accept Drag
+	void SetOnDragEnter(OnTreeViewDragEnterCallback Callback);
+	void SetOnDragMove(OnTreeViewDragMoveCallback Callback);
+	void SetOnDragDrop(OnTreeViewDragDropCallback Callback);
+	void SetOnDragLeave(OnTreeViewDragLeaveCallback Callback);
 
 protected: // QT events
 	void mousePressEvent(QMouseEvent* event) override;
@@ -56,6 +58,7 @@ protected: // QT events
 	void dragEnterEvent(QDragEnterEvent *event) override;
 	void dragMoveEvent(QDragMoveEvent *event) override;
 	void dragLeaveEvent(QDragLeaveEvent *event) override;
+
 
 private slots:
 	void onCustomContextMenu(const QPoint& point);
@@ -72,21 +75,29 @@ protected:
 
 private:
 	std::shared_ptr<CznTreeViewModel> m_Model;
+
+
+	// Actions with TreeViewItems
 	std::shared_ptr<QMenu> m_ContextMenu;
+	OnTreeViewContextMenuCallback m_OnContextMenu;
+	
 
-	bool m_LockForSelectionChangedEvent;
-
+	// Start drag
 	bool m_IsDraggedNow;
 	const IznTreeViewItem* m_DraggedTreeViewItem;
 	glm::vec2 m_PrevioisMousePos;
+	OnTreeViewDragStartCallback m_OnDragStart;
 
-	OnContextMenuCallback m_OnContextMenu;
-	OnDragStartCallback m_OnDragStart;
-	OnSelectionChangeCallback m_OnSelectionChange;
-	OnSelectedItemChangeCallback m_OnSelectedItemChange;
-	
-	OnDragEnterCallback m_OnDragEnterCallback;
-	OnDragMoveCallback m_OnDragMoveCallback;
-	OnDragDropCallback m_OnDragDropCallback;
-	OnDragLeaveCallback m_OnDragLeaveCallback;
+
+	// Selection
+	bool m_LockForSelectionChangedEvent;
+	OnTreeViewSelectionChangeCallback m_OnSelectionChange;
+	OnTreeViewSelectedItemChangeCallback m_OnSelectedItemChange;
+
+
+	// Accept drag
+	OnTreeViewDragEnterCallback m_OnDragEnterCallback;
+	OnTreeViewDragMoveCallback m_OnDragMoveCallback;
+	OnTreeViewDragDropCallback m_OnDragDropCallback;
+	OnTreeViewDragLeaveCallback m_OnDragLeaveCallback;
 };

@@ -13,12 +13,19 @@ public:
 	void Update();
 
 private:
-	bool OnSelectTreeItem(const IznTreeViewItem * Item);
-	bool OnStartDraggingTreeItem(const IznTreeViewItem * Item, CByteBuffer * ByteBuffer);
+	// Actions with TreeItems
 	bool OnContextMenuTreeItem(const IznTreeViewItem* Item, std::shared_ptr<IPropertiesGroup> PropertiesGroup);
 
-	bool OnDragMove(const IznTreeViewItem* TreeViewItem, const CByteBuffer& ByteBuffer);
-	bool OnDragDrop(const IznTreeViewItem* TreeViewItem, const CByteBuffer& ByteBuffer);
+	// Selection
+	bool OnSelectTreeItem(const IznTreeViewItem * Item);
+
+	// Start drag
+	bool OnStartDraggingTreeItem(const IznTreeViewItem * Item, CByteBuffer * ByteBuffer);
+	
+	// Accept drag
+	bool OnDragMoveTreeItem(const IznTreeViewItem* TreeViewItem, const CByteBuffer& ByteBuffer);
+	bool OnDragDropTreeItem(const IznTreeViewItem* TreeViewItem, const CByteBuffer& ByteBuffer);
+
 private:
 	IBaseManager& GetBaseManager() const;
 	IEditorUIFrame& GetEditorUIFrame() const;

@@ -90,16 +90,10 @@
     <ClCompile Include="Tools\EditorToolBase.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Tools\EditorToolDragger.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="Tools\EditorToolMover.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Tools\EditorToolRotator.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\EditorToolSelector.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Tools\RTS\EditorToolMoverRTS.cpp">
@@ -216,6 +210,12 @@
     <ClCompile Include="EditorUI\EditorUIFrame.cpp">
       <Filter>EditorUI</Filter>
     </ClCompile>
+    <ClCompile Include="Editor3D\Dragger.cpp">
+      <Filter>Editor3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\EditorToolSelector.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -242,16 +242,10 @@
     <ClInclude Include="Tools\EditorToolBase.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Tools\EditorToolDragger.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="Tools\EditorToolMover.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Tools\EditorToolRotator.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Tools\EditorToolSelector.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Tools\RTS\EditorToolMoverRTS.h">
@@ -349,6 +343,12 @@
     </ClInclude>
     <ClInclude Include="Editor\EditorWindowsShell.h">
       <Filter>Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor3D\Dragger.h">
+      <Filter>Editor3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\EditorToolSelector.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,12 +9,18 @@
 CEditor3DFrame::CEditor3DFrame(IEditor& Editor, IRenderWindow& RenderWindow)
 	: SceneBase(Editor.GetBaseManager(), RenderWindow)
 	, m_Editor(Editor)
+	, m_Dragger(*this)
 {
 	dynamic_cast<IEditorPrivate&>(m_Editor).Set3DFrame(this);
 
 	m_EditedScene = MakeShared(CEditedScene, Editor.GetBaseManager(), RenderWindow);
 	m_EditedScene->AddSceneEventsListener(this);
 	m_EditedScene->Initialize();
+
+	GetEditorQtUIFrame().getMainEditor()->SetOnDragEnter(std::bind(&CEditor3DFrame::OnDragEnter, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	GetEditorQtUIFrame().getMainEditor()->SetOnDragMove(std::bind(&CEditor3DFrame::OnDragMove, this, std::placeholders::_1, std::placeholders::_2));
+	GetEditorQtUIFrame().getMainEditor()->SetOnDragLeave(std::bind(&CEditor3DFrame::OnDragLeave, this));
+	GetEditorQtUIFrame().getMainEditor()->SetOnDragDrop(std::bind(&CEditor3DFrame::OnDragDrop, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 CEditor3DFrame::~CEditor3DFrame()
@@ -33,6 +39,8 @@ CEditor3DFrame::~CEditor3DFrame()
 void CEditor3DFrame::Initialize()
 {
 	__super::Initialize();
+
+	m_Dragger.Initialize(GetRenderer(), GetRenderWindow().GetRenderTarget());
 
 	GetRootSceneNode()->AddChild(m_EditedScene->GetRootSceneNode());
 
@@ -67,7 +75,7 @@ void CEditor3DFrame::Initialize()
 		SetCameraController(MakeShared(CFreeCameraController));
 		GetCameraController()->SetCamera(cameraNode->GetComponentT<ICameraComponent3D>());
 		GetCameraController()->GetCamera()->SetPerspectiveProjection(75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
-		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
+		GetCameraController()->GetCamera()->SetPosition(glm::vec3(15.0f * 2.0f));
 		GetCameraController()->GetCamera()->SetYaw(225);
 		GetCameraController()->GetCamera()->SetPitch(-45);
 	}
@@ -88,17 +96,22 @@ bool CEditor3DFrame::OnMousePressed(const MouseButtonEventArgs & e, const Ray & 
 	if (m_Editor.GetTools().OnMousePressed(e, RayToWorld))
 		return true;
 
+	if (m_Dragger.OnMousePressed(e, RayToWorld))
+		return true;
+
 	return false;
 }
 
 void CEditor3DFrame::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
 	m_Editor.GetTools().OnMouseReleased(e, RayToWorld);
+	m_Dragger.OnMouseReleased(e, RayToWorld);
 }
 
 void CEditor3DFrame::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
 	m_Editor.GetTools().OnMouseMoved(e, RayToWorld);
+	m_Dragger.OnMouseMoved(e, RayToWorld);
 }
 
 
@@ -224,4 +237,69 @@ void CEditor3DFrame::OnSceneNodeAdded(std::shared_ptr<ISceneNode> ParentNode, st
 void CEditor3DFrame::OnSceneNodeRemoved(std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<ISceneNode> ChildNode)
 {
 	RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, ParentNode, ChildNode);
+}
+
+
+
+//
+// Protected
+//
+
+// Actions
+
+bool CEditor3DFrame::OnContextMenu(const glm::vec2& MousePosition, std::shared_ptr<IPropertiesGroup> Properties)
+{
+	auto node = GetEditedNodeUnderMouse(MousePosition);
+	if (node == nullptr)
+		return false;
+
+	if (false == GetEditor().GetUIFrame().ExtendContextMenu(node, Properties))
+		return false;
+
+	return true;
+}
+
+// Accept drag
+
+bool CEditor3DFrame::OnDragEnter(const glm::vec2& Position, bool IsCtrl, const CByteBuffer& ByteBuffer)
+{
+	SDragData dragData;
+	dragData.Buffer = ByteBuffer;
+	dragData.ScreenPosition = Position;
+	dragData.IsCtrl = IsCtrl;
+
+	m_Dragger.OnDragEnterEvent(dragData);
+
+	return true;
+}
+
+bool CEditor3DFrame::OnDragMove(const glm::vec2& Position, const CByteBuffer& ByteBuffer)
+{
+	m_Dragger.OnDragMoveEvent(Position);
+
+	return true;
+}
+
+bool CEditor3DFrame::OnDragDrop(const glm::vec2& Position, const CByteBuffer& ByteBuffer)
+{
+	m_Dragger.OnDropEvent(Position);
+
+	return true;
+}
+
+bool CEditor3DFrame::OnDragLeave()
+{
+	m_Dragger.OnDragLeaveEvent();
+
+	return true;
+}
+
+
+
+//
+// Private
+//
+IEditorQtUIFrame& CEditor3DFrame::GetEditorQtUIFrame() const
+{
+	return dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame());
 }

@@ -6,6 +6,16 @@
 // Additional
 #include "Editor3D/EditorPasses/DrawToolsPass.h"
 
+#include "EditorToolSelector.h"
+#include "EditorToolMover.h"
+#include "EditorToolRotator.h"
+
+#include "RTS/EditorToolMoverRTS.h"
+#include "RTS/EditorToolRotatorRTS.h"
+
+#include "RTS/EditorToolRTSGround.h"
+#include "RTS/EditorToolWaypoints.h"
+
 CEditorTools::CEditorTools(IEditor& Editor)
 	: m_Editor(Editor)
 {
@@ -31,9 +41,6 @@ void CEditorTools::Initialize()
 
 	auto rotatorRTS = MakeShared(CEditorToolRotatorRTS, m_Editor);
 	m_Tools.insert(std::make_pair(ETool::EToolRotatorRTS, rotatorRTS));
-
-	auto drager = MakeShared(CEditorToolDragger, m_Editor);
-	m_Tools.insert(std::make_pair(ETool::EToolDragger, drager));
 
 	auto RTSEditor = MakeShared(CRTSGround, m_Editor);
 	m_Tools.insert(std::make_pair(ETool::EToolEditorRTS, RTSEditor));

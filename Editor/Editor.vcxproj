@@ -118,6 +118,7 @@
     <QtMoc />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Editor3D\Dragger.cpp" />
     <ClCompile Include="Editor3D\EditedScene.cpp" />
     <ClCompile Include="Editor3D\Editor3DFrame.cpp" />
     <ClCompile Include="Editor3D\Editor3DPreviewScene.cpp" />
@@ -152,11 +153,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Tools\EditorToolBase.cpp" />
-    <ClCompile Include="Tools\EditorToolDragger.cpp" />
     <ClCompile Include="Tools\EditorToolMover.cpp" />
     <ClCompile Include="Tools\EditorToolRotator.cpp" />
-    <ClCompile Include="Tools\EditorToolSelector.cpp" />
     <ClCompile Include="Tools\EditorTools.cpp" />
+    <ClCompile Include="Tools\EditorToolSelector.cpp" />
     <ClCompile Include="Tools\RTS\EditorToolMoverRTS.cpp" />
     <ClCompile Include="Tools\RTS\EditorToolRotatorRTS.cpp" />
     <ClCompile Include="Tools\RTS\EditorToolRTSGround.cpp" />
@@ -220,6 +220,7 @@
     <ClCompile Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Editor3D\Dragger.h" />
     <ClInclude Include="Editor3D\EditedScene.h" />
     <ClInclude Include="Editor3D\Editor3DFrame.h" />
     <ClInclude Include="Editor3D\Editor3DPreviewScene.h" />
@@ -246,11 +247,10 @@
     <ClInclude Include="SceneBrowser\EditorSceneBrowser.h" />
     <ClInclude Include="SceneBrowser\SceneNodeTreeViewItem.h" />
     <ClInclude Include="Tools\EditorToolBase.h" />
-    <ClInclude Include="Tools\EditorToolDragger.h" />
     <ClInclude Include="Tools\EditorToolMover.h" />
     <ClInclude Include="Tools\EditorToolRotator.h" />
-    <ClInclude Include="Tools\EditorToolSelector.h" />
     <ClInclude Include="Tools\EditorTools.h" />
+    <ClInclude Include="Tools\EditorToolSelector.h" />
     <ClInclude Include="Tools\RTS\EditorToolMoverRTS.h" />
     <ClInclude Include="Tools\RTS\EditorToolRotatorRTS.h" />
     <QtMoc Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.h" />
