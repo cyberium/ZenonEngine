@@ -73,6 +73,14 @@
     <Filter Include="Editor">
       <UniqueIdentifier>{078c05a2-3bcc-41d7-ad44-bf4d81f5d8f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Frames">
+      <UniqueIdentifier>{fae062ca-dd8e-4a10-9693-3998ada0e402}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -215,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="Tools\EditorToolSelector.cpp">
       <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Frames\EditorTextureSelector.cpp">
+      <Filter>Frames</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -403,6 +414,9 @@
     <QtMoc Include="EditorUI\EditorUIFrame.h">
       <Filter>EditorUI</Filter>
     </QtMoc>
+    <QtMoc Include="Frames\EditorTextureSelector.h">
+      <Filter>Frames</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Editor.rc">
@@ -425,6 +439,9 @@
   <ItemGroup>
     <QtUic Include="EditorUI\EditorUIFrame.ui">
       <Filter>EditorUI</Filter>
+    </QtUic>
+    <QtUic Include="Frames\EditorTextureSelector.ui">
+      <Filter>Frames</Filter>
     </QtUic>
   </ItemGroup>
 </Project>

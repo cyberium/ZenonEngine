@@ -130,6 +130,7 @@
     <ClCompile Include="EditorUI\DragUtils.cpp" />
     <ClCompile Include="Editor\Editor.cpp" />
     <ClCompile Include="Editor\EditorWindowsShell.cpp" />
+    <ClCompile Include="Frames\EditorTextureSelector.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -234,6 +235,10 @@
     <ClInclude Include="EditorUI\DragUtils.h" />
     <ClInclude Include="Editor\Editor.h" />
     <ClInclude Include="Editor\EditorWindowsShell.h" />
+    <QtMoc Include="Frames\EditorTextureSelector.h">
+      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h;../../Frames/%(Filename)%(Extension)</ForceInclude>
+      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h;../../Frames/%(Filename)%(Extension)</ForceInclude>
+    </QtMoc>
     <ClInclude Include="ResourcesBrowser\EditorResourceBrowser.h" />
     <ClInclude Include="ResourcesBrowser\Filesystem\ResourceFile.h" />
     <ClInclude Include="ResourcesBrowser\Filesystem\ResourcesFilesystem.h" />
@@ -305,6 +310,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="EditorUI\EditorUIFrame.ui" />
+    <QtUic Include="Frames\EditorTextureSelector.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="EditorUI\EditorUIFrame.qrc" />

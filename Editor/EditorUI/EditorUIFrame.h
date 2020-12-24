@@ -5,6 +5,7 @@
 
 #include "SceneBrowser/EditorSceneBrowser.h"
 #include "ResourcesBrowser/EditorResourceBrowser.h"
+#include "Frames/EditorTextureSelector.h"
 
 #include <QMainWindow>
 
@@ -59,12 +60,13 @@ protected:
 private:
 	CEditorSceneBrowser m_EditorSceneBrowser;
 	CEditorResourceBrowser m_EditorResourceBrowser;
-	//std::shared_ptr<CPropertiesController> m_PropertiesController;
+
+	CEditorTextureSelector m_FrameTexturesSelector;
 	
 private:
 	IEditor& m_Editor;
 	Ui::EditorUIFrameClass m_UI;
-
+	
 	// UI
 	float m_MoverValue;
 	float m_RotatorValue;

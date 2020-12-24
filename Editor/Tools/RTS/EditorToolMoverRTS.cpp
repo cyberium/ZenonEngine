@@ -86,7 +86,7 @@ bool CEditorToolMoverRTS::OnMousePressed(const MouseButtonEventArgs & e, const R
 
 	{
 		auto pos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), movingNode->GetPosition().y));
-		auto cameraPosX0Z = GetScene().GetCameraController()->GetCamera()->GetTranslation();
+		auto cameraPosX0Z = GetScene().GetCameraController()->GetCamera()->GetPosition();
 		cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
 		auto movedObjectPosX0Z = glm::vec3(movingNode->GetPosition().x, 0.0f, movingNode->GetPosition().z);
 		auto planeNormal = glm::normalize(movedObjectPosX0Z - cameraPosX0Z);

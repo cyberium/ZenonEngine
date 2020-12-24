@@ -91,10 +91,9 @@ void CSceneRTS::Initialize()
 		GetCameraController()->GetCamera()->SetPerspectiveProjection(75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 2500.0f);
 		//GetCameraController()->GetCamera()->SetOrthographicProjection(aspect, -55, 55, 55, -55, -10.0f, 1.0f);
 		
-		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(0.0f));
-		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f, -0.5f, -0.5f));
-		//GetCameraController()->GetCamera()->SetYaw(0);
-		//GetCameraController()->GetCamera()->SetPitch(-45);
+		GetCameraController()->GetCamera()->SetPosition(glm::vec3(0.0f));
+		GetCameraController()->GetCamera()->SetYaw(225);
+		GetCameraController()->GetCamera()->SetPitch(-45);
 	}
 
 

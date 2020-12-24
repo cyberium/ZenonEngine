@@ -3,12 +3,15 @@
 // General
 #include "EditorUIFrame.h"
 
+// Additional
+#include "Frames/EditorTextureSelector.h"
 
 CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 	: QMainWindow(nullptr)
 	, m_Editor(Editor)
 	, m_EditorSceneBrowser(Editor)
 	, m_EditorResourceBrowser(Editor)
+	, m_FrameTexturesSelector(this, Editor)
 {
 	dynamic_cast<IEditorPrivate&>(m_Editor).SetUIFrame(this);
 
@@ -84,6 +87,10 @@ bool CEditorUIFrame::InitializeEditorFrame()
 void CEditorUIFrame::DoInitializeToolsUI()
 {
 	GetEditor().GetTools().DoInitializeUI(*this);
+
+	getUI().editorTexturesTest->connect(getUI().editorTexturesTest, &QPushButton::released, [this]() {
+		m_FrameTexturesSelector.show();
+	});
 }
 
 bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::shared_ptr<IPropertiesGroup> PropertiesGroup)

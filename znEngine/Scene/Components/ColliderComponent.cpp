@@ -149,7 +149,7 @@ bool CColliderComponent::IsCulledByDistance2D(const ICameraComponent3D* Camera) 
 	if (GetBounds().IsInfinite())
 		return false;
 
-	const glm::vec3 cameraPosition = Camera->GetTranslation();
+	const glm::vec3 cameraPosition = Camera->GetPosition();
 	const float distToCamera2D = glm::length(Fix_X0Z(cameraPosition) - Fix_X0Z(GetWorldBounds().getCenter())) - GetWorldBounds().getRadius();
 	return distToCamera2D > m_CullDistance;
 }
@@ -161,7 +161,7 @@ bool CColliderComponent::IsCulledByDistance(const ICameraComponent3D* Camera) co
 	if (GetBounds().IsInfinite())
 		return false;
 
-	const glm::vec3 cameraPosition = Camera->GetTranslation();
+	const glm::vec3 cameraPosition = Camera->GetPosition();
 	const float distToCamera = glm::length(cameraPosition - GetWorldBounds().getCenter()) - GetWorldBounds().getRadius();
 	return distToCamera > m_CullDistance;
 }

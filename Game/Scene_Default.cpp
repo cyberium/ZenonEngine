@@ -71,7 +71,7 @@ void CSceneDefault::Initialize()
 		SetCameraController(MakeShared(CFreeCameraController));
 		GetCameraController()->SetCamera(cameraNode->GetComponentT<ICameraComponent3D>());
 		GetCameraController()->GetCamera()->SetPerspectiveProjection(75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
-		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(100.0f));
+		GetCameraController()->GetCamera()->SetPosition(glm::vec3(100.0f));
 		GetCameraController()->GetCamera()->SetYaw(225);
 		GetCameraController()->GetCamera()->SetPitch(-45);
 	}

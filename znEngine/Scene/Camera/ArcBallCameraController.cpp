@@ -40,7 +40,7 @@ float CArcBallCameraController::GetPivotDistance() const
 
 glm::vec3 CArcBallCameraController::GetPivotPoint() const
 {
-	return m_Camera->GetTranslation();
+	return m_Camera->GetPosition();
 }
 
 

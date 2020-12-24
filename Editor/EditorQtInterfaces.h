@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ui_EditorUIFrame.h"
+#include "ui_EditorTextureSelector.h"
 
 ZN_INTERFACE IEditorQtUIFrame
 {
@@ -9,12 +10,13 @@ ZN_INTERFACE IEditorQtUIFrame
 	virtual QObject& getQObject() = 0;
 	virtual HWND getHWND() = 0;
 	virtual Ui::EditorUIFrameClass& getUI() = 0;
-	virtual ZenonWindow3D * getMainEditor() const = 0;
-	
-	virtual ZenonTreeViewWidget * getSceneViewer() const = 0;
 
-	virtual ZenonTreeViewWidget * getResourcesBrowser() const = 0;
+	virtual ZenonWindow3D * getMainEditor() const = 0;
 	virtual ZenonWindowMinimal3DWidget * getResourcePreview() const = 0;
+
+	virtual ZenonTreeViewWidget * getSceneViewer() const = 0;
+	virtual ZenonTreeViewWidget * getResourcesBrowser() const = 0;
+	
 };
 
 

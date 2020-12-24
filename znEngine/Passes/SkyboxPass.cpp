@@ -75,7 +75,7 @@ std::shared_ptr<IRenderPassPipelined> CSkyboxPass::ConfigurePipeline(std::shared
 void CSkyboxPass::Render(RenderEventArgs & e)
 {
 	glm::mat4 matrix(1.0f);
-	matrix = glm::translate(matrix, e.Camera->GetTranslation());
+	matrix = glm::translate(matrix, e.Camera->GetPosition());
 	matrix = glm::scale(matrix, glm::vec3(2500.0f));
 
 	m_PerObjectConstantBuffer->Set(PerObject(matrix));

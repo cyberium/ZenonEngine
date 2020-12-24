@@ -690,7 +690,7 @@ bool SceneBase::DoMouseWheel_Rec(const std::shared_ptr<IUIControl>& Node, MouseW
 
 std::string SceneBase::GetStatisticsString(const UpdateEventArgs& e) const
 {
-	glm::vec3 cameraPos = e.Camera->GetTranslation();
+	glm::vec3 cameraPos = e.Camera->GetPosition();
 	glm::vec3 cameraRot = e.Camera->GetDirection();
 
 	std::string fullText = "FPS Engine: " + Utils::FloatToString(uint64(1000.0 / e.DeltaTime)) + "\n";
