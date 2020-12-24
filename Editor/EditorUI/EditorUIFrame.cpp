@@ -143,6 +143,18 @@ bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, 
 	}
 	else
 	{
+		auto newPropertiesGroup = MakeShared(CPropertiesGroup, "New", "Create some new elements.");
+		PropertiesGroup->AddProperty(newPropertiesGroup);
+
+		auto newSceneNode = MakeShared(CAction, "SceneNode", "...");
+		newSceneNode->SetAction([this, Node]() -> bool {
+			auto newCreatedNode = GetEditor().Get3DFrame().GetEditedScene()->CreateSceneNodeT<ISceneNode>(Node);
+			newCreatedNode->SetName("SceneNode");
+
+			return true;
+		});
+		newPropertiesGroup->AddProperty(newSceneNode);
+
 		for (const auto& it : Node->GetProperties()->GetProperties())
 		{
 			if (auto act = std::dynamic_pointer_cast<IPropertyAction>(it.second))

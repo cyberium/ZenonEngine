@@ -13,7 +13,7 @@ enum class ETreeViewItemType
 	Model,
 	ParticleSystem,
 
-	CSceneNode,
+	SceneNode,
 
 	SceneNodeProto
 };

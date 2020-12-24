@@ -345,6 +345,9 @@
     <ClCompile Include="Proxies\NativeWindowProxyBase.cpp">
       <Filter>__Proxies</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\SceneNodeTransform.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">

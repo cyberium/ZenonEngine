@@ -14,9 +14,11 @@ public:
 
 private:
 	bool OnSelectTreeItem(const IznTreeViewItem * Item);
-	bool OnStartDraggingTreeItem(const IznTreeViewItem * Item, CByteBuffer * Value);
+	bool OnStartDraggingTreeItem(const IznTreeViewItem * Item, CByteBuffer * ByteBuffer);
 	bool OnContextMenuTreeItem(const IznTreeViewItem* Item, std::shared_ptr<IPropertiesGroup> PropertiesGroup);
 
+	bool OnDragMove(const IznTreeViewItem* TreeViewItem, const CByteBuffer& ByteBuffer);
+	bool OnDragDrop(const IznTreeViewItem* TreeViewItem, const CByteBuffer& ByteBuffer);
 private:
 	IBaseManager& GetBaseManager() const;
 	IEditorUIFrame& GetEditorUIFrame() const;

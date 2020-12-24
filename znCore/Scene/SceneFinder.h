@@ -8,6 +8,11 @@ public:
 	virtual ~CSceneFinder();
 
 	// ISceneFinder
+	std::shared_ptr<ISceneNode> FindNodeByGuid(
+		Guid Guid,
+		std::shared_ptr<ISceneNode> RootForFinder
+	) const override;
+
 	std::map<float, std::shared_ptr<ISceneNode>> FindNearestNodes(
 		glm::vec3 Position, 
 		float Distance,

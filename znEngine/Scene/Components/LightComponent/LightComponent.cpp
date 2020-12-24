@@ -45,8 +45,8 @@ void CLightComponent::SetLight(std::shared_ptr<ILight> Light)
 {
 	m_Light = Light;
 
-	std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetPosition(GetOwnerNode().GetPosition());
-	std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetRotation(GetOwnerNode().GetRotationEuler());
+	std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetPosition(GetOwnerNode().GetLocalPosition());
+	std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetRotation(GetOwnerNode().GetLocalRotationEuler());
 }
 
 std::shared_ptr<ILight> CLightComponent::GetLight() const
@@ -63,8 +63,8 @@ void CLightComponent::OnMessage(const ISceneNodeComponent * Component, Component
 {
 	if (Message == UUID_OnWorldTransformChanged)
 	{
-		std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetPosition(GetOwnerNode().GetPosition());
-		std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetRotation(GetOwnerNode().GetRotationEuler());
+		std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetPosition(GetOwnerNode().GetLocalPosition());
+		std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetRotation(GetOwnerNode().GetLocalRotationEuler());
 	}
 }
 

@@ -73,6 +73,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "znPluginFBXModels", "znPlug
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "znPlatformWindows", "znPlatformWindows\znPlatformWindows.vcxproj", "{C077D800-0DBE-4CDA-A586-0E65821D9AAA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{51252F60-B8DC-4090-BBA3-DD05942110F0} = {51252F60-B8DC-4090-BBA3-DD05942110F0}
+		{A4E6F769-0036-4128-A409-495D9207F587} = {A4E6F769-0036-4128-A409-495D9207F587}
+		{4BFB75A1-EE52-478A-BDAC-30FFB977EBB7} = {4BFB75A1-EE52-478A-BDAC-30FFB977EBB7}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

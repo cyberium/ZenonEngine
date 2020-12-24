@@ -73,7 +73,8 @@ CParticleSystem::CParticleSystem(const IBaseManager& BaseManager)
 
 	, m_OwnerNode(nullptr)
 {
-	GetProperties()->SetName("ParicleSystem");
+	uint32 numb = Random::NextUInt();
+	GetProperties()->SetName("ParicleSystem" + std::to_string(numb));
 
 	m_LifetimeMS = 700.0f;
 	m_LifetimeMiddlePoint = 0.5f;

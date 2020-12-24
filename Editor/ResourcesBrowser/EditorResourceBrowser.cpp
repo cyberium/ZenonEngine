@@ -4,7 +4,7 @@
 #include "EditorResourceBrowser.h"
 
 // Additional
-#include "DragUtils.h"
+#include "EditorUI/DragUtils.h"
 
 #include "TreeViewItems/FolderTreeViewItem.h"
 #include "TreeViewItems/ModelTreeViewItem.h"
@@ -223,10 +223,7 @@ bool CEditorResourceBrowser::OnSelectTreeItem(const IznTreeViewItem * Item)
 bool CEditorResourceBrowser::OnStartDraggingTreeItem(const IznTreeViewItem * Item, CByteBuffer * Value)
 {
 	if (Value == nullptr || Value->getSize() > 0 || Value->getPos() > 0)
-	{
-		Log::Error("Unable to start drag model event, because ByteBuffer is not empty.");
-		return false;
-	}
+		throw CException("Unable to 'OnStartDraggingTreeItem', because ByteBuffer is not empty.");
 
 	auto object = Item->GetObject_();
 	if (object == nullptr)
@@ -241,7 +238,7 @@ bool CEditorResourceBrowser::OnStartDraggingTreeItem(const IznTreeViewItem * Ite
 		if (objectAsModelAsSceneNodeProto == nullptr)
 			return false;
 
-		CreateDragDataFromSceneNode(objectAsModelAsSceneNodeProto, Value);
+		CreateDragDataFromSceneNodeProto(objectAsModelAsSceneNodeProto, Value);
 		m_Editor.GetTools().Enable(ETool::EToolDragger);
 		return true;
 	}

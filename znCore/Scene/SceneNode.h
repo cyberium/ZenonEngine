@@ -30,32 +30,34 @@ public:
 	// Actions & Properties
 	IScene&											GetScene() const override final;
 
-	// Transform functional
+	// Global transform
 	void                                            SetPosition(glm::vec3 Position) override;
 	glm::vec3                                       GetPosition() const override;
-
-	void                                            SetLocalPosition(glm::vec3 LocalPosition) override;
-	glm::vec3                                       GetLocalPosition() const override;
-
-	void                                            SetDirection(glm::vec3 Direction) override;
-	glm::vec3                                       GetDirection() const override;
-	void                                            SetRotationEuler(glm::vec3 Rotation) override;
-	glm::vec3                                       GetRotationEuler() const override;
 	void                                            SetRotationQuaternion(glm::quat Rotation) override;
 	glm::quat                                       GetRotationQuaternion() const override;
-	ISceneNode::ERotationKind                       GetRotationKind() const override;
+	void                                            SetScale(glm::vec3 Scale) override;
+	glm::vec3                                       GetScale() const override;
 
-	void											SetScale(glm::vec3 Scale) override;
-	glm::vec3								        GetScale() const override;
-
-	void											SetLocalTransform(const glm::mat4& localTransform);
-	glm::mat4										GetLocalTransform() const;
-	glm::mat4										GetInverseLocalTransform() const;
-	
 	void											SetWorldTransform(const glm::mat4& worldTransform);
 	glm::mat4										GetWorldTransfom() const;
 	glm::mat4										GetInverseWorldTransform() const;
 	glm::mat4										GetParentWorldTransform() const;
+
+	// Local transform
+	void                                            SetLocalPosition(glm::vec3 LocalPosition) override;
+	glm::vec3                                       GetLocalPosition() const override;
+	void                                            SetLocalRotationEuler(glm::vec3 Rotation) override;
+	glm::vec3                                       GetLocalRotationEuler() const override;
+	void                                            SetLocalRotationQuaternion(glm::quat Rotation) override;
+	glm::quat                                       GetLocalRotationQuaternion() const override;
+	void                                            SetLocalRotationDirection(glm::vec3 Direction) override;
+	glm::vec3                                       GetLocalRotationDirection() const override;
+	void											SetLocalScale(glm::vec3 Scale) override;
+	glm::vec3								        GetLocalScale() const override;
+
+	void											SetLocalTransform(const glm::mat4& localTransform);
+	glm::mat4										GetLocalTransform() const;
+	glm::mat4										GetInverseLocalTransform() const;
 
 	// Components engine
 	bool                                            IsComponentExists(ObjectClass ComponentID) const override;
@@ -88,8 +90,7 @@ protected:
 	virtual glm::mat4                               CalculateLocalTransform() const;
 	void											UpdateLocalTransform();
 	void											UpdateWorldTransform();
-	void                                            DoLoadProperties(const std::shared_ptr<IXMLReader>& Reader) const;
-	void                                            DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) const;
+
 	IRenderDevice&                                  GetRenderDevice() const;
 
 private:
@@ -102,14 +103,22 @@ private:
 
 	bool                                            m_IsEnabled;
 
+
+
 	glm::vec3										m_LocalPosition;
 	std::shared_ptr<CPropertyWrappedVec3>           m_LocalPositionProperty;
 
-	glm::vec3										m_Rotation;
-	std::shared_ptr<CPropertyWrappedVec3>           m_RotationProperty;
+
+
+	glm::vec3										m_RotationEulerAngles;
+	std::shared_ptr<CPropertyWrappedVec3>           m_RotationEulerAnglesProperty;
+
 	glm::quat										m_RotationQuaternion;
-	ERotationKind                                   m_RotationKind;
-	
+	std::shared_ptr<CPropertyWrappedQuat>           m_RotationQuaternionProperty;
+
+	glm::vec3										m_RotationDirection;
+	std::shared_ptr<CPropertyWrappedVec3>           m_RotationDirectionProperty;
+
 	glm::vec3										m_Scale;
 	std::shared_ptr<CPropertyWrappedVec3>           m_ScaleProperty;
 

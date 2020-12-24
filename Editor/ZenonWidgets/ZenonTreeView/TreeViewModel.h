@@ -33,6 +33,8 @@ public:
 
 private:
 	IznTreeViewItem* getItem(const QModelIndex& index) const;
+
+public:
 	QIcon* GetIcon(const std::string& IconName) const;
 
 private:

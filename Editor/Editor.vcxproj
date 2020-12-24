@@ -63,9 +63,7 @@
     <Import Project="$(QtMsBuild)\qt.props" />
   </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtMoc>
-      <PrependInclude>stdafx.h</PrependInclude>
-    </QtMoc>
+    <QtMoc />
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -89,11 +87,10 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(SolutionDir)\Externals\BugTrap\;$(Qt_LIBPATH_);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>BugTrapUD-x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <QtMoc />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtMoc>
-      <PrependInclude>stdafx.h</PrependInclude>
-    </QtMoc>
+    <QtMoc />
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -117,11 +114,10 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(SolutionDir)\Externals\BugTrap\;$(Qt_LIBPATH_);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>BugTrapU-x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <QtMoc />
+    <QtMoc />
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ContextMenuUtils.cpp" />
-    <ClCompile Include="DragUtils.cpp" />
-    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Editor3D\EditedScene.cpp" />
     <ClCompile Include="Editor3D\Editor3DFrame.cpp" />
     <ClCompile Include="Editor3D\Editor3DPreviewScene.cpp" />
@@ -129,14 +125,17 @@
     <ClCompile Include="Editor3D\EditorPasses\DrawSelectionPass.cpp" />
     <ClCompile Include="Editor3D\EditorPasses\DrawToolsPass.cpp" />
     <ClCompile Include="Editor3D\EditorPasses\DrawWaypointsPass.cpp" />
-    <ClCompile Include="EditorWindowsShell.cpp" />
+    <ClCompile Include="EditorUI\ContextMenuUtils.cpp" />
+    <ClCompile Include="EditorUI\DragUtils.cpp" />
+    <ClCompile Include="Editor\Editor.cpp" />
+    <ClCompile Include="Editor\EditorWindowsShell.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
-    <ClCompile Include="EditorUIFrame.cpp" />
+    <ClCompile Include="EditorUI\EditorUIFrame.cpp" />
     <ClCompile Include="ResourcesBrowser\EditorResourceBrowser.cpp" />
     <ClCompile Include="ResourcesBrowser\Filesystem\ResourceFile.cpp" />
     <ClCompile Include="ResourcesBrowser\Filesystem\ResourcesFilesystem.cpp" />
@@ -221,9 +220,6 @@
     <ClCompile Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ContextMenuUtils.h" />
-    <ClInclude Include="DragUtils.h" />
-    <ClInclude Include="Editor.h" />
     <ClInclude Include="Editor3D\EditedScene.h" />
     <ClInclude Include="Editor3D\Editor3DFrame.h" />
     <ClInclude Include="Editor3D\Editor3DPreviewScene.h" />
@@ -233,7 +229,10 @@
     <ClInclude Include="Editor3D\EditorPasses\DrawWaypointsPass.h" />
     <ClInclude Include="EditorInterfaces.h" />
     <ClInclude Include="EditorQtInterfaces.h" />
-    <ClInclude Include="EditorWindowsShell.h" />
+    <ClInclude Include="EditorUI\ContextMenuUtils.h" />
+    <ClInclude Include="EditorUI\DragUtils.h" />
+    <ClInclude Include="Editor\Editor.h" />
+    <ClInclude Include="Editor\EditorWindowsShell.h" />
     <ClInclude Include="ResourcesBrowser\EditorResourceBrowser.h" />
     <ClInclude Include="ResourcesBrowser\Filesystem\ResourceFile.h" />
     <ClInclude Include="ResourcesBrowser\Filesystem\ResourcesFilesystem.h" />
@@ -298,17 +297,17 @@
     <ClInclude Include="_widgetZenonLogViewer.h" />
     <ClInclude Include="_widgetZenonWindow3D.h" />
     <QtMoc Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.h" />
-    <QtMoc Include="EditorUIFrame.h">
-      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h;../../%(Filename)%(Extension)</ForceInclude>
-      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h;../../%(Filename)%(Extension)</ForceInclude>
+    <QtMoc Include="EditorUI\EditorUIFrame.h">
+      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h;../../EditorUI/%(Filename)%(Extension)</ForceInclude>
+      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h;../../EditorUI/%(Filename)%(Extension)</ForceInclude>
     </QtMoc>
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="EditorUIFrame.ui" />
+    <QtUic Include="EditorUI\EditorUIFrame.ui" />
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="EditorUIFrame.qrc" />
+    <QtRcc Include="EditorUI\EditorUIFrame.qrc" />
     <QtRcc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowser.qrc" />
   </ItemGroup>
   <ItemGroup>

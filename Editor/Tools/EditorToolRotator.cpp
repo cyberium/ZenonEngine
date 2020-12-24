@@ -9,6 +9,8 @@
 CEditorToolRotator::CEditorToolRotator(IEditor& Editor)
 	: CEditorToolBase(Editor)
 	, m_RotatorNumber(EMoverDirection::None)
+	, m_InitialRotationDegrees(0.0f)
+	, m_StartMousePosY(0)
 {
 }
 
@@ -26,6 +28,7 @@ void CEditorToolRotator::Enable()
 	{
 		m_RotatingNode = node;
 		m_RotatorRoot->SetPosition(node->GetPosition());
+		m_RotatorRoot->SetRotationQuaternion(node->GetRotationQuaternion());
 		m_RotatorRoot->SetScale(glm::vec3(node->GetComponentT<IColliderComponent>()->GetBounds().getRadius()));
 	}
 }
@@ -78,7 +81,7 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 
 	m_RotatorX = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
 	m_RotatorX->SetName("RotatorX");
-	m_RotatorX->SetRotationEuler(glm::vec3(0.0f, 0.0f, glm::half_pi<float>()));
+	m_RotatorX->SetLocalRotationEuler(glm::vec3(0.0f, 0.0f, 90.0f));
 	m_RotatorX->GetComponentT<IModelComponent>()->SetModel(modelX);
 
 	m_RotatorY = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
@@ -87,7 +90,7 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 
 	m_RotatorZ = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
 	m_RotatorZ->SetName("RotatorZ");
-	m_RotatorZ->SetRotationEuler(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
+	m_RotatorZ->SetLocalRotationEuler(glm::vec3(90.0f, 0.0f, 0.0f));
 	m_RotatorZ->GetComponentT<IModelComponent>()->SetModel(modelZ);
 }
 
@@ -114,8 +117,12 @@ bool CEditorToolRotator::OnMousePressed(const MouseButtonEventArgs & e, const Ra
 	}
 
 	if (m_RotatorNumber != EMoverDirection::None)
-		return true;
+	{
+		m_InitialRotationDegrees = rotatingNode->GetLocalRotationEuler();
+		m_StartMousePosY = e.Y;
 
+		return true;
+	}
 
 	return false;
 }
@@ -136,22 +143,28 @@ void CEditorToolRotator::OnMouseMoved(const MouseMotionEventArgs & e, const Ray 
 	if (rotatingNode == nullptr)
 		return;
 
-	glm::vec3 newRot = rotatingNode->GetRotationEuler();
-
 	if (m_RotatorNumber == EMoverDirection::X)
 	{
-		newRot.x += e.RelY / 360.0f;
+		float rotatorInitialAngleDegreesX = m_InitialRotationDegrees.x + float(m_StartMousePosY - e.Y) / glm::pi<float>();
+
+		rotatorInitialAngleDegreesX = GetEditor().GetTools().GetToolT<IEditorToolRotator>(ETool::EToolRotator).FixAngle(rotatorInitialAngleDegreesX);
+		rotatingNode->SetLocalRotationEuler(glm::vec3(rotatorInitialAngleDegreesX, m_InitialRotationDegrees.y, m_InitialRotationDegrees.z));
 	}
 	else if (m_RotatorNumber == EMoverDirection::Y)
 	{
-		newRot.y += e.RelY / 360.0f;
+		float rotatorInitialAngleDegreesY = m_InitialRotationDegrees.y + float(m_StartMousePosY - e.Y) / glm::pi<float>();
+
+		rotatorInitialAngleDegreesY = GetEditor().GetTools().GetToolT<IEditorToolRotator>(ETool::EToolRotator).FixAngle(rotatorInitialAngleDegreesY);
+		rotatingNode->SetLocalRotationEuler(glm::vec3(m_InitialRotationDegrees.x, rotatorInitialAngleDegreesY, m_InitialRotationDegrees.z));
 	}
 	else if (m_RotatorNumber == EMoverDirection::Z)
 	{
-		newRot.z += e.RelY / 360.0f;
+		float rotatorInitialAngleDegreesZ = m_InitialRotationDegrees.z + float(m_StartMousePosY - e.Y) / glm::pi<float>();
+		rotatorInitialAngleDegreesZ = GetEditor().GetTools().GetToolT<IEditorToolRotator>(ETool::EToolRotator).FixAngle(rotatorInitialAngleDegreesZ);
+		rotatingNode->SetLocalRotationEuler(glm::vec3(m_InitialRotationDegrees.x, m_InitialRotationDegrees.y, rotatorInitialAngleDegreesZ));
 	}
 
-	rotatingNode->SetRotationEuler(newRot);
+	m_RotatorRoot->SetRotationQuaternion(rotatingNode->GetRotationQuaternion());
 
 	// Refresh selection bounds
 	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(rotatingNode);
@@ -208,11 +221,11 @@ void CEditorToolRotator::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 //
 float CEditorToolRotator::FixAngle(float Angle)
 {
-	float rotatorInitialAngleDegrees = glm::degrees(Angle);
+	float rotatorInitialAngleDegrees = Angle;
 	rotatorInitialAngleDegrees /= m_RotatorValue;
 	rotatorInitialAngleDegrees = glm::round(rotatorInitialAngleDegrees);
 	rotatorInitialAngleDegrees *= m_RotatorValue;
-	return glm::radians(rotatorInitialAngleDegrees);
+	return rotatorInitialAngleDegrees;
 }
 
 void CEditorToolRotator::SetRotatorValue(float Value)

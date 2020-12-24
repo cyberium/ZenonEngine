@@ -42,6 +42,9 @@ private:
 
 	EMoverDirection m_RotatorNumber;
 
+	glm::vec3 m_InitialRotationDegrees;
+	int m_StartMousePosY;
+
 	// UI
 	float m_RotatorValue;
 };

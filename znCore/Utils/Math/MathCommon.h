@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include "../Debug.h"
 
 namespace Math
 {
@@ -19,6 +20,50 @@ namespace Math
 	const float ZeroEpsilon = 32.0f * MinFloat;  // Very small epsilon for checking against 0.0f
 	const float NaN = *(float*)&MaxUInt32;
 };
+
+inline void DecomposeMatrix(const glm::mat4& Matrix, glm::vec3 * Position = nullptr, glm::quat * Rotation = nullptr, glm::vec3 * Scale = nullptr)
+{
+	glm::vec3 scale;
+	glm::quat rotation;
+	glm::vec3 translation;
+	glm::vec3 skew;
+	glm::vec4 perspective;
+
+	if (false == glm::decompose(Matrix, scale, rotation, translation, skew, perspective))
+		throw CException("Unable to decompose matrix.");
+
+	if (Position != nullptr)
+		*Position = translation;
+
+	if (Rotation != nullptr)
+		*Rotation = rotation;
+
+	if (Scale != nullptr)
+		*Scale = scale;
+}
+
+inline glm::vec3 DecomposePositionMatrix(const glm::mat4& Matrix)
+{
+	glm::vec3 position;
+	DecomposeMatrix(Matrix, &position);
+	return position;
+}
+
+inline glm::quat DecomposeRotationMatrix(const glm::mat4& Matrix)
+{
+	glm::quat rotation;
+	DecomposeMatrix(Matrix, nullptr, &rotation);
+	return rotation;
+}
+
+inline glm::vec3 DecomposeScaleMatrix(const glm::mat4& Matrix)
+{
+	glm::vec3 scale;
+	DecomposeMatrix(Matrix, nullptr, nullptr, &scale);
+	return scale;
+}
+
+
 
 inline glm::vec3 Fix_X0Z(const glm::vec3& _vec)
 {

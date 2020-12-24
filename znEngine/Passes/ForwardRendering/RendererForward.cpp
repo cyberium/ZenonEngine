@@ -202,8 +202,8 @@ void CRendererForward::DoUpdateLights()
 	{
 		SGPULightVS lightVS;
 		lightVS.Light = lightIt.Light->GetGPULightStruct();
-		lightVS.LightPositionVS                 = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightIt.SceneNode->GetPosition(), 1.0f);
-		lightVS.LightDirectionVS = glm::normalize(m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightIt.SceneNode->GetRotationEuler(), 0.0f));
+		lightVS.LightPositionVS                 = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightIt.SceneNode->GetLocalPosition(), 1.0f);
+		lightVS.LightDirectionVS = glm::normalize(m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightIt.SceneNode->GetLocalRotationEuler(), 0.0f));
 		lightVS.IsEnabled = lightIt.Light->IsEnabled();
 		lightVS.IsCastShadow = lightIt.Light->IsCastShadows();
 		lightsVS.push_back(lightVS);

@@ -20,6 +20,9 @@ ZN_INTERFACE ZN_API IProperty
 	virtual void        SetNonCopyable(bool Value) = 0;
 	virtual bool        IsNonCopyable() const = 0;
 
+	virtual void        SetReadOnly(bool Value) = 0;
+	virtual bool        IsReadOnly() const = 0;
+
 	virtual void        ResetToDefault() = 0;
 	virtual bool        IsDefault() const = 0;
 

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // Additional
-#include "EditorUIFrame.h"
+#include "EditorUI/EditorUIFrame.h"
 #include <QApplication>
 
 #include "BugTrap/BugTrap.h"

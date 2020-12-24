@@ -20,7 +20,7 @@ CSceneNodeTreeViewItem::~CSceneNodeTreeViewItem()
 //
 ETreeViewItemType CSceneNodeTreeViewItem::GetType() const
 {
-	return ETreeViewItemType::CSceneNode;
+	return ETreeViewItemType::SceneNode;
 }
 
 std::string CSceneNodeTreeViewItem::GetText() const

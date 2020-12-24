@@ -4,12 +4,14 @@
 #include "ZenonTreeViewWidget.h"
 
 // Additional
-#include "ContextMenuUtils.h"
+#include "EditorUI/ContextMenuUtils.h"
+#include "EditorUI/DragUtils.h"
 
 ZenonTreeViewWidget::ZenonTreeViewWidget(QWidget * parent)
 	: QTreeView(parent)
 	, m_LockForSelectionChangedEvent(false)
-	, m_StartDragging(false)
+	, m_IsDraggedNow(false)
+	, m_DraggedTreeViewItem(nullptr)
 {
 	// Add context menu for scene node viewer
 	m_ContextMenu = MakeShared(QMenu, this);
@@ -125,11 +127,6 @@ void ZenonTreeViewWidget::SetOnContexMenu(OnContextMenuCallback Callback)
 	m_OnContextMenu = Callback;
 }
 
-void ZenonTreeViewWidget::SetOnStartDragging(OnDragStartCallback Callback)
-{
-	m_OnDragStart = Callback;
-}
-
 void ZenonTreeViewWidget::SetOnSelectionChange(OnSelectionChangeCallback Callback)
 {
 	m_OnSelectionChange = Callback;
@@ -138,6 +135,33 @@ void ZenonTreeViewWidget::SetOnSelectionChange(OnSelectionChangeCallback Callbac
 void ZenonTreeViewWidget::SetOnSelectedItemChange(OnSelectedItemChangeCallback Callback)
 {
 	m_OnSelectedItemChange = Callback;
+}
+
+// Create Drag & Drop
+void ZenonTreeViewWidget::SetOnStartDragging(OnDragStartCallback Callback)
+{
+	m_OnDragStart = Callback;
+}
+
+// Accept Drag & Drop
+void ZenonTreeViewWidget::SetOnDragEnter(OnDragEnterCallback Callback)
+{
+	m_OnDragEnterCallback = Callback;
+}
+
+void ZenonTreeViewWidget::SetOnDragMove(OnDragMoveCallback Callback)
+{
+	m_OnDragMoveCallback = Callback;
+}
+
+void ZenonTreeViewWidget::SetOnDragDrop(OnDragDropCallback Callback)
+{
+	m_OnDragDropCallback = Callback;
+}
+
+void ZenonTreeViewWidget::SetOnDragLeave(OnDragLeaveCallback Callback)
+{
+	m_OnDragLeaveCallback = Callback;
 }
 
 
@@ -162,6 +186,164 @@ void ZenonTreeViewWidget::mouseMoveEvent(QMouseEvent * event)
 {
 	mouseMoveEventInternal(event);
 	__super::mouseMoveEvent(event);
+}
+
+void ZenonTreeViewWidget::dropEvent(QDropEvent * event)
+{
+	event->ignore();
+
+	const QMimeData* mimeData = event->mimeData();
+	if (mimeData == nullptr)
+		return;
+
+	const QByteArray qtByteBuffer = mimeData->data("ZenonEngineMimeData");
+	if (qtByteBuffer.isEmpty())
+		return;
+
+	if (m_OnDragDropCallback == nullptr)
+	{
+		event->accept();
+		return;
+	}
+
+	try
+	{
+		const QModelIndex index = indexAt(event->pos());
+		if (false == index.isValid())
+			return;
+
+		const auto underCursorItem = static_cast<IznTreeViewItem*>(index.internalPointer());
+		if (underCursorItem == nullptr)
+			return;
+
+		const CByteBuffer buffer(qtByteBuffer.data(), qtByteBuffer.size());
+
+		if (false == m_OnDragDropCallback(underCursorItem, buffer))
+			return;
+
+		event->accept();
+	}
+	catch (const CException& e)
+	{
+		Log::Error("ZenonTreeViewWidget: Exception occurs in 'dropEvent'.");
+		Log::Error("--->%s", e.MessageCStr());
+	}
+	catch (...)
+	{
+		Log::Error("ZenonTreeViewWidget: Unknown exception occurs in 'dropEvent'.");
+	}
+}
+
+void ZenonTreeViewWidget::dragEnterEvent(QDragEnterEvent * event)
+{
+	event->ignore();
+
+	const QMimeData * mimeData = event->mimeData();
+	if (mimeData == nullptr)
+		return;
+
+	const QByteArray qtByteBuffer = mimeData->data("ZenonEngineMimeData");
+	if (qtByteBuffer.isEmpty())
+		return;
+
+	if (m_OnDragEnterCallback == nullptr)
+	{
+		event->accept();
+		return;
+	}
+
+	try
+	{
+		const CByteBuffer buffer(qtByteBuffer.data(), qtByteBuffer.size());
+
+		if (false == m_OnDragEnterCallback(buffer))
+			return;
+
+		event->accept();
+	}
+	catch (const CException& e)
+	{
+		Log::Error("ZenonTreeViewWidget: Exception occurs in 'dragEnterEvent'.");
+		Log::Error("--->%s", e.MessageCStr());
+	}
+	catch (...)
+	{
+		Log::Error("ZenonTreeViewWidget: Unknown exception occurs in 'dragEnterEvent'.");
+	}
+}
+
+void ZenonTreeViewWidget::dragMoveEvent(QDragMoveEvent * event)
+{
+	event->ignore();
+
+	const QMimeData * mimeData = event->mimeData();
+	if (mimeData == nullptr)
+		return;
+
+	const QByteArray qtByteBuffer = mimeData->data("ZenonEngineMimeData");
+	if (qtByteBuffer.isEmpty())
+		return;
+
+	if (m_OnDragMoveCallback == nullptr)
+	{
+		event->accept();
+		return;
+	}
+
+	try
+	{
+		const QModelIndex index = indexAt(event->pos());
+		if (false == index.isValid())
+			return;
+
+		const auto underCursorItem = static_cast<IznTreeViewItem*>(index.internalPointer());
+		if (underCursorItem == nullptr)
+			return;
+
+		const CByteBuffer buffer(qtByteBuffer.data(), qtByteBuffer.size());
+
+		if (false == m_OnDragMoveCallback(underCursorItem, buffer))
+			return;
+
+		event->accept();
+	}
+	catch (const CException& e)
+	{
+		Log::Error("ZenonTreeViewWidget: Exception occurs in 'dragMoveEvent'.");
+		Log::Error("--->%s", e.MessageCStr());
+	}
+	catch (...)
+	{
+		Log::Error("ZenonTreeViewWidget: Unknown exception occurs in 'dragMoveEvent'.");
+	}
+}
+
+void ZenonTreeViewWidget::dragLeaveEvent(QDragLeaveEvent * event)
+{
+	event->ignore();
+
+	if (m_OnDragLeaveCallback == nullptr)
+	{
+		event->accept();
+		return;
+	}
+
+	try
+	{
+		if (false == m_OnDragLeaveCallback())
+			return;
+		
+		event->accept();
+	}
+	catch (const CException& e)
+	{
+		Log::Error("ZenonTreeViewWidget: Exception occurs in 'dragLeaveEvent'.");
+		Log::Error("--->%s", e.MessageCStr());
+	}
+	catch (...)
+	{
+		Log::Error("ZenonTreeViewWidget: Unknown exception occurs in 'dragLeaveEvent'.");
+	}
 }
 
 
@@ -251,19 +433,31 @@ void ZenonTreeViewWidget::mousePressEventInternal(QMouseEvent * event)
 {
 	if (event->button() == Qt::LeftButton)
 	{
-		m_StartDragging = false;
+		QModelIndex index = indexAt(event->pos());
+		if (false == index.isValid())
+			return;
+
+		auto item = static_cast<IznTreeViewItem*>(index.internalPointer());
+		if (item == nullptr)
+			return;
+
+		m_IsDraggedNow = false;
+		m_DraggedTreeViewItem = item;
 		m_PrevioisMousePos = glm::ivec2(event->pos().x(), event->pos().y());
 	}
 }
 
 void ZenonTreeViewWidget::mouseReleaseEventInternal(QMouseEvent * event)
 {
-	m_StartDragging = false;
+	m_IsDraggedNow = false;
 }
 
 void ZenonTreeViewWidget::mouseMoveEventInternal(QMouseEvent * event)
 {
-	if (m_StartDragging)
+	if (m_IsDraggedNow)
+		return;
+
+	if (m_DraggedTreeViewItem == nullptr)
 		return;
 
 	auto currentPos = glm::vec2(event->pos().x(), event->pos().y());
@@ -271,32 +465,34 @@ void ZenonTreeViewWidget::mouseMoveEventInternal(QMouseEvent * event)
 	if (draggingOffsetFromStartDragging <= 5.0f)
 		return;
 
-	QModelIndex index = indexAt(event->pos());
-	if (false == index.isValid())
-		return;
-
-	auto item = static_cast<IznTreeViewItem*>(index.internalPointer());
-	if (item == nullptr)
-		return;
-
 	if (m_OnDragStart == nullptr)
 		return;
 
 	CByteBuffer byteBuffer;
-	if (false == m_OnDragStart(item, &byteBuffer))
+	try
+	{
+		if (false == m_OnDragStart(m_DraggedTreeViewItem, &byteBuffer))
+			return;
+	}
+	catch (const CException& e)
+	{
+		Log::Error("ZenonTreeViewWidget: 'OnDragStart' exception.");
+		Log::Error("--->%s", e.MessageCStr());
+		m_IsDraggedNow = false;
 		return;
+	}
 
-	m_StartDragging = true;
+	m_IsDraggedNow = true;
 
-	QByteArray qtByteBuffer;
-	qtByteBuffer.setRawData((const char*)byteBuffer.getData(), byteBuffer.getSize());
+	QMimeData* mimeData = ZN_NEW QMimeData();
+	mimeData->setData("ZenonEngineMimeData", QByteArray((const char*)byteBuffer.getData(), byteBuffer.getSize()));
 
-	QMimeData * mimeData = ZN_NEW QMimeData;
-	mimeData->setData("ZenonEngineMimeData", qtByteBuffer);
-
-	auto drag = ZN_NEW QDrag(this);
+	QDrag* drag = ZN_NEW QDrag(this);
+	std::string iconName = m_DraggedTreeViewItem->GetIconName();
+	if (false == iconName.empty())
+		if (QIcon* icon = m_Model->GetIcon(m_DraggedTreeViewItem->GetIconName()))
+			drag->setPixmap(icon->pixmap(QSize(32, 32)));
 	drag->setMimeData(mimeData);
-	drag->setHotSpot(event->pos());
 
 	Qt::DropAction dropAction = drag->exec();
 	if (dropAction != Qt::DropAction::IgnoreAction)

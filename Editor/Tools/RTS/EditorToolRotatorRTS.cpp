@@ -9,7 +9,7 @@
 CEditorToolRotatorRTS::CEditorToolRotatorRTS(IEditor& Editor)
 	: CEditorToolBase(Editor)
 	, m_RotatorNumber(EMoverDirection::None)
-	, m_InitialRotationRadians(0.0f)
+	, m_InitialRotationDegrees(0.0f)
 	, m_StartMousePosY(0)
 {
 }
@@ -87,10 +87,7 @@ bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const
 
 	if (m_RotatorNumber != EMoverDirection::None)
 	{
-		auto nodePosition = rotatingNode->GetPosition();
-		auto pos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), nodePosition.y));
-
-		m_InitialRotationRadians = rotatingNode->GetRotationEuler().y;
+		m_InitialRotationDegrees = rotatingNode->GetLocalRotationEuler().y;
 		m_StartMousePosY = e.Y;
 		return true;
 	}
@@ -117,11 +114,9 @@ void CEditorToolRotatorRTS::OnMouseMoved(const MouseMotionEventArgs & e, const R
 		return;
 	}
 
-	float rotatorInitialAngleDegrees = m_InitialRotationRadians + float(m_StartMousePosY - e.Y) / glm::degrees(glm::pi<float>());
-
+	float rotatorInitialAngleDegrees = m_InitialRotationDegrees + float(m_StartMousePosY - e.Y) / glm::pi<float>();
 	rotatorInitialAngleDegrees = GetEditor().GetTools().GetToolT<IEditorToolRotator>(ETool::EToolRotator).FixAngle(rotatorInitialAngleDegrees);
-
-	rotatingNode->SetRotationEuler(glm::vec3(0.0f, rotatorInitialAngleDegrees, 0.0f));
+	rotatingNode->SetLocalRotationEuler(glm::vec3(0.0f, rotatorInitialAngleDegrees, 0.0f));
 
 	// Refresh selection bounds
 	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(rotatingNode);

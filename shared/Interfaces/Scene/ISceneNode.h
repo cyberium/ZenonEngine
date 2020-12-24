@@ -25,12 +25,12 @@ ZN_INTERFACE ZN_API ISceneNode
 {
 	typedef std::vector<std::shared_ptr<ISceneNode>> SceneNodesList;
 
-	enum ZN_API ERotationKind : size_t
+	/*enum ZN_API ERotationKind : size_t
 	{
 		Euler = 0,
 		Quaternion,
 		Direction
-	};
+	};*/
 
 	ZN_OBJECTCLASS(cSceneNode3D)
 	virtual ~ISceneNode() {}
@@ -51,36 +51,39 @@ ZN_INTERFACE ZN_API ISceneNode
 
 	virtual IScene& GetScene() const = 0;
 
-	// Transform functional
+
+	// Global transform
 	virtual void SetPosition(glm::vec3 Position) = 0;
 	virtual glm::vec3 GetPosition() const = 0;
-
-	virtual void SetLocalPosition(glm::vec3 LocalPosition) = 0;
-	virtual glm::vec3 GetLocalPosition() const = 0;
-
-	virtual void SetDirection(glm::vec3 Direction) = 0;
-	virtual glm::vec3 GetDirection() const = 0;
-
-	virtual void SetRotationEuler(glm::vec3 Rotation) = 0;
-	virtual glm::vec3 GetRotationEuler() const = 0;
-	
 	virtual void SetRotationQuaternion(glm::quat Rotation) = 0;
 	virtual glm::quat GetRotationQuaternion() const = 0;
-
-	virtual ISceneNode::ERotationKind GetRotationKind() const = 0;
-
 	virtual void SetScale(glm::vec3 Scale) = 0;
 	virtual glm::vec3 GetScale() const = 0;
+
+	virtual void SetWorldTransform(const glm::mat4& worldTransform) = 0;
+	virtual glm::mat4 GetWorldTransfom() const = 0;
+	virtual glm::mat4 GetInverseWorldTransform() const = 0;
+	virtual glm::mat4 GetParentWorldTransform() const = 0;
+
+
+	// Local transform
+	virtual void SetLocalPosition(glm::vec3 LocalPosition) = 0;
+	virtual glm::vec3 GetLocalPosition() const = 0;
+	virtual void SetLocalRotationEuler(glm::vec3 Rotation) = 0;
+	virtual glm::vec3 GetLocalRotationEuler() const = 0;
+	virtual void SetLocalRotationQuaternion(glm::quat Rotation) = 0;
+	virtual glm::quat GetLocalRotationQuaternion() const = 0;
+	virtual void SetLocalRotationDirection(glm::vec3 Direction) = 0;
+	virtual glm::vec3 GetLocalRotationDirection() const = 0;
+	//virtual ISceneNode::ERotationKind GetLocalRotationKind() const = 0;
+	virtual void SetLocalScale(glm::vec3 Scale) = 0;
+	virtual glm::vec3 GetLocalScale() const = 0;
 
 	virtual void SetLocalTransform(const glm::mat4& localTransform) = 0;
 	virtual glm::mat4 GetLocalTransform() const = 0;
 	virtual glm::mat4 GetInverseLocalTransform() const = 0;
 	
-	virtual void SetWorldTransform(const glm::mat4& worldTransform) = 0;
-	virtual glm::mat4 GetWorldTransfom() const = 0;
-	virtual glm::mat4 GetInverseWorldTransform() const = 0;
-	virtual glm::mat4 GetParentWorldTransform() const = 0;
-	
+
 	// Components engine
 	virtual bool IsComponentExists(ObjectClass ComponentID) const = 0;
 	virtual std::shared_ptr<ISceneNodeComponent> GetComponent(ObjectClass ComponentID) const = 0;

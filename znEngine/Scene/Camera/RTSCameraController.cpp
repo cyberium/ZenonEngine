@@ -82,7 +82,7 @@ void CRTSCameraController::OnMouseMoved(MouseMotionEventArgs& e)
 
 	m_PreviousMousePosition = currPoint;
 
-	GetCamera()->SetTranslation(m_CameraPosition);
+	//GetCamera()->SetTranslation(m_CameraPosition);
 }
 
 bool CRTSCameraController::OnMouseWheel(MouseWheelEventArgs& e)
@@ -93,7 +93,7 @@ bool CRTSCameraController::OnMouseWheel(MouseWheelEventArgs& e)
 	float value = e.WheelDelta / 100.0f;
 	value *= m_MouseWheelMultiplier;
 	AddY(value);
-	GetCamera()->SetTranslation(m_CameraPosition);
+	//GetCamera()->SetTranslation(m_CameraPosition);
 
 	return true;
 }

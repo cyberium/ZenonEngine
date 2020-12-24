@@ -20,6 +20,9 @@ public:
 	void SetNonCopyable(bool Value) override;
 	bool IsNonCopyable() const override;
 
+	void SetReadOnly(bool Value) override;
+	bool IsReadOnly() const override;
+
 	void CopyTo(const std::shared_ptr<IProperty>& Other) const override;
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
@@ -33,4 +36,5 @@ private:
 	std::string m_Description;
 	bool        m_IsSyntetic;
 	bool        m_IsNonCopyable;
+	bool        m_IsReadOnly;
 };

@@ -68,12 +68,12 @@ void CEditorToolMoverRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 
 	m_MoverX = GetScene().CreateSceneNodeT<ISceneNode>(m_MoverRoot);
 	m_MoverX->SetName("MoverRTSX");
-	m_MoverX->SetRotationEuler(glm::vec3(0.0f, glm::half_pi<float>(), 0.0f));
+	m_MoverX->SetLocalRotationEuler(glm::vec3(0.0f, 90.0f, 0.0f));
 	m_MoverX->GetComponentT<IModelComponent>()->SetModel(modelX);
 
 	m_MoverZ = GetScene().CreateSceneNodeT<ISceneNode>(m_MoverRoot);
 	m_MoverZ->SetName("RotatorRTSZ");
-	m_MoverZ->SetRotationEuler(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_MoverZ->SetLocalRotationEuler(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_MoverZ->GetComponentT<IModelComponent>()->SetModel(modelZ);
 }
 

@@ -42,7 +42,7 @@ void CSceneRTS::Initialize()
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
 		lightNode->SetName("Light");
 		lightNode->SetLocalPosition(glm::vec3(150.0f, 150.0f, 150.0f));
-		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.85f, -0.5f));
+		lightNode->SetLocalRotationEuler(glm::vec3(-45.0f, -75.0f, -45.0f));
 
 		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
 		lightComponent->SetLight(MakeShared(CLight, GetBaseManager()));
@@ -133,7 +133,7 @@ void CSceneRTS::Initialize()
 	//--------------------------------------------------------------------------
 	// XML
 	//--------------------------------------------------------------------------
-	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS2265612"))
+	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS.xml"))
 	{
 		CXMLManager xml(GetBaseManager());
 		auto reader = xml.CreateReaderFromFile(file);

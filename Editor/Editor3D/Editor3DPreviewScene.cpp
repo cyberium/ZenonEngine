@@ -202,7 +202,7 @@ void CEditor3DPreviewScene::Initialize()
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
 		lightNode->SetName("Light2");
 		lightNode->SetLocalPosition(glm::vec3(150.0f, 150.0f, 150.0f));
-		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.5f, 0.25f));
+		lightNode->SetLocalRotationEuler(glm::vec3(-45.0f, -45.0f, 25.0f));
 
 		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
 		lightComponent->SetLight(MakeShared(CLight, GetBaseManager()));

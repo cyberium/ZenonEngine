@@ -3,6 +3,10 @@
 // General
 #include "DragUtils.h"
 
+
+//
+// SceneBrowser
+//
 void CreateDragDataFromSceneNode(const std::shared_ptr<ISceneNode>& Node, CByteBuffer * ByteBuffer)
 {
 	if (Node == nullptr)
@@ -12,7 +16,29 @@ void CreateDragDataFromSceneNode(const std::shared_ptr<ISceneNode>& Node, CByteB
 		throw CException("Unable create drag data from '%s' ISceneNode, because ByteBuffer is not empty.", Node->GetName().c_str());
 
 	// 4 bytes - sourceType
-	EDragDataSourceType sourceType = EDragDataSourceType::SceneNodeProto;
+	ETreeViewItemType sourceType = ETreeViewItemType::SceneNode;
+	ByteBuffer->write(&sourceType);
+
+	// 8 bytes - guid
+	uint64 rawGuid = Node->GetGUID().GetRawValue();
+	ByteBuffer->write(&rawGuid);
+}
+
+
+
+//
+// ResourcesBrowser
+//
+void CreateDragDataFromSceneNodeProto(const std::shared_ptr<ISceneNode>& Node, CByteBuffer * ByteBuffer)
+{
+	if (Node == nullptr)
+		throw CException("Unable create drag data from ISceneNode, because ISceneNode is nullptr.");
+
+	if (ByteBuffer == nullptr || ByteBuffer->getSize() > 0 || ByteBuffer->getPos() > 0)
+		throw CException("Unable create drag data from '%s' ISceneNode, because ByteBuffer is not empty.", Node->GetName().c_str());
+
+	// 4 bytes - sourceType
+	ETreeViewItemType sourceType = ETreeViewItemType::SceneNodeProto;
 	ByteBuffer->write(&sourceType);
 
 	// Такого говнокода я ещё в своей жизни не писал.
@@ -32,7 +58,7 @@ void CreateDragDataFromModel(const std::shared_ptr<IModel>& Model, CByteBuffer *
 		throw CException("Unable create drag data from '%s' IModel, because ByteBuffer is not empty.", Model->GetName().c_str());
 
 	// 4 bytes - sourceType
-	EDragDataSourceType sourceType = EDragDataSourceType::Model;
+	ETreeViewItemType sourceType = ETreeViewItemType::Model;
 	ByteBuffer->write(&sourceType);
 
 	// Model name
@@ -51,7 +77,7 @@ void CreateDragDataFromTexture(const std::shared_ptr<ITexture>& Texture, CByteBu
 		throw CException("Unable create drag data from '%s' ITexture, because ByteBuffer is not empty.", Texture->GetFilename().c_str());
 
 	// 4 bytes - sourceType
-	EDragDataSourceType sourceType = EDragDataSourceType::Texture;
+	ETreeViewItemType sourceType = ETreeViewItemType::Texture;
 	ByteBuffer->write(&sourceType);
 
 	// Model filename
@@ -67,7 +93,7 @@ void CreateDragDataFromParticleSystem(const IBaseManager& BaseManager, const std
 		throw CException("Unable create drag data from '%s' IParticleSystem, because ByteBuffer is not empty.", ParticleSystem->GetName());
 
 	// 4 bytes - sourceType
-	EDragDataSourceType sourceType = EDragDataSourceType::ParticleSytem;
+	ETreeViewItemType sourceType = ETreeViewItemType::ParticleSystem;
 	ByteBuffer->write(&sourceType);
 
 	ByteBuffer->writeString(ParticleSystem->GetName());
@@ -84,7 +110,7 @@ void CreateDragDataFromParticleSystem(const IBaseManager& BaseManager, const std
 
 
 
-EDragDataSourceType GetDragDataSourceType(const CByteBuffer & ByteBuffer)
+ETreeViewItemType GetDragDataSourceType(const CByteBuffer & ByteBuffer)
 {
 	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
 		throw CException("Incorrect drag data ByteBuffer.");
@@ -95,12 +121,15 @@ EDragDataSourceType GetDragDataSourceType(const CByteBuffer & ByteBuffer)
 	if (false == byteBufferCopy.read(&sourceTypeInt))
 		throw CException("Incorrect drag data ByteBuffer.");
 
-	return static_cast<EDragDataSourceType>(sourceTypeInt);
+	return static_cast<ETreeViewItemType>(sourceTypeInt);
 }
 
 
 
-std::shared_ptr<ISceneNode> GetSceneNodeFromDragData(IBaseManager& BaseManager, IScene& Scene, const CByteBuffer& ByteBuffer)
+//
+// SceneBrowser
+//
+Guid GetSceneNodeFromDragData(IBaseManager & BaseManager, const CByteBuffer & ByteBuffer)
 {
 	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
 		throw CException("Incorrect drag data ByteBuffer.");
@@ -110,8 +139,35 @@ std::shared_ptr<ISceneNode> GetSceneNodeFromDragData(IBaseManager& BaseManager, 
 	uint32 sourceTypeInt;
 	if (false == byteBufferCopy.read(&sourceTypeInt))
 		throw CException("Incorrect drag data Buffer for ISceneNode.");
-	EDragDataSourceType sourceType = static_cast<EDragDataSourceType>(sourceTypeInt);
-	if (sourceType != EDragDataSourceType::SceneNodeProto)
+
+	ETreeViewItemType sourceType = static_cast<ETreeViewItemType>(sourceTypeInt);
+	if (sourceType != ETreeViewItemType::SceneNode)
+		throw CException("Drag data type '%d' is not ISceneNode drag data.", sourceTypeInt);
+
+	uint64 guid;
+	if (false == byteBufferCopy.read(&guid))
+		throw CException("Incorrect drag data Buffer for ISceneNode.");
+
+	return Guid(guid);
+}
+
+
+
+//
+// ResourcesBrowser
+//
+std::shared_ptr<ISceneNode> GetSceneNodeProtoFromDragData(IBaseManager& BaseManager, IScene& Scene, const CByteBuffer& ByteBuffer)
+{
+	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
+		throw CException("Incorrect drag data ByteBuffer.");
+
+	CByteBuffer byteBufferCopy(ByteBuffer);
+
+	uint32 sourceTypeInt;
+	if (false == byteBufferCopy.read(&sourceTypeInt))
+		throw CException("Incorrect drag data Buffer for ISceneNode.");
+	ETreeViewItemType sourceType = static_cast<ETreeViewItemType>(sourceTypeInt);
+	if (sourceType != ETreeViewItemType::SceneNodeProto)
 		throw CException("Drag data type '%d' is not ISceneNode drag data.", sourceTypeInt);
 
 	intptr_t ptr;
@@ -134,8 +190,8 @@ std::shared_ptr<IModel> GetModelFromDragData(IBaseManager& BaseManager, const CB
 	uint32 sourceTypeInt;
 	if (false == byteBufferCopy.read(&sourceTypeInt))
 		throw CException("Incorrect drag data Buffer for IModel.");
-	EDragDataSourceType sourceType = static_cast<EDragDataSourceType>(sourceTypeInt);
-	if (sourceType != EDragDataSourceType::Model)
+	ETreeViewItemType sourceType = static_cast<ETreeViewItemType>(sourceTypeInt);
+	if (sourceType != ETreeViewItemType::Model)
 		throw CException("Drag data type '%d' is not IModel drag data.", sourceTypeInt);
 
 	std::string modelName;
@@ -171,8 +227,8 @@ std::shared_ptr<ITexture> GetTextureFromDragData(IBaseManager & BaseManager, con
 	uint32 sourceTypeInt;
 	if (false == byteBufferCopy.read(&sourceTypeInt))
 		throw CException("Incorrect drag data Buffer for ITexture.");
-	EDragDataSourceType sourceType = static_cast<EDragDataSourceType>(sourceTypeInt);
-	if (sourceType != EDragDataSourceType::Texture)
+	ETreeViewItemType sourceType = static_cast<ETreeViewItemType>(sourceTypeInt);
+	if (sourceType != ETreeViewItemType::Texture)
 		throw CException("Drag data type '%d' is not ITexture drag data.", sourceTypeInt);
 
 	std::string textureFilename;
@@ -205,8 +261,8 @@ std::shared_ptr<IParticleSystem> GetParticleSystemFromDragData(IBaseManager & Ba
 	uint32 sourceTypeInt;
 	if (false == byteBufferCopy.read(&sourceTypeInt))
 		throw CException("Incorrect drag data Buffer for IParticleSystem.");
-	EDragDataSourceType sourceType = static_cast<EDragDataSourceType>(sourceTypeInt);
-	if (sourceType != EDragDataSourceType::ParticleSytem)
+	ETreeViewItemType sourceType = static_cast<ETreeViewItemType>(sourceTypeInt);
+	if (sourceType != ETreeViewItemType::ParticleSystem)
 		throw CException("Drag data type '%d' is not IParticleSystem drag data.", sourceTypeInt);
 
 	std::string particleSystemName;

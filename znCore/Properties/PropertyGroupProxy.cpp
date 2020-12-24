@@ -57,6 +57,16 @@ bool CPropertyGroupProxy::IsNonCopyable() const
 	return true;
 }
 
+void CPropertyGroupProxy::SetReadOnly(bool /*Value*/)
+{
+	throw CException("Proxy properties don't support 'SetReadOnly' operation.");
+}
+
+bool CPropertyGroupProxy::IsReadOnly() const
+{
+	return true;
+}
+
 void CPropertyGroupProxy::ResetToDefault()
 {
 	throw CException("Proxy properties don't support 'ResetToDefault' operation.");

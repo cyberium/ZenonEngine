@@ -430,7 +430,7 @@ void TextureDX11::LoadTextureCubeFromImages(const std::vector<std::shared_ptr<II
 	m_ShaderResourceViewFormatSupport = m_RenderTargetViewFormatSupport = m_TextureResourceFormatSupport;
 
 	// Can mipmaps be automatically generated for this texture format?
-	m_NeedGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
+	m_NeedGenerateMipmaps = false; // !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
 
 
 	// Load the texture data into a GPU texture.

@@ -70,6 +70,9 @@
     <Filter Include="Editor3D\EditorPasses">
       <UniqueIdentifier>{31ae868f-f71f-445a-b2dd-b32b1b388d09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor">
+      <UniqueIdentifier>{078c05a2-3bcc-41d7-ad44-bf4d81f5d8f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -83,10 +86,6 @@
     </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.cpp">
       <Filter>Widgets\ZenonWindowMinimal3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="EditorUIFrame.cpp">
-      <Filter>EditorUI</Filter>
     </ClCompile>
     <ClCompile Include="Tools\EditorToolBase.cpp">
       <Filter>Tools</Filter>
@@ -112,7 +111,6 @@
     <ClCompile Include="Tools\EditorTools.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="EditorWindowsShell.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.cpp">
       <Filter>Widgets\ZenonTreeView</Filter>
     </ClCompile>
@@ -121,9 +119,6 @@
     </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewModel.cpp">
       <Filter>Widgets\ZenonTreeView</Filter>
-    </ClCompile>
-    <ClCompile Include="DragUtils.cpp">
-      <Filter>EditorUI</Filter>
     </ClCompile>
     <ClCompile Include="Tools\RTS\EditorToolRTSGround.cpp">
       <Filter>Tools\RTS</Filter>
@@ -206,7 +201,19 @@
     <ClCompile Include="ResourcesBrowser\TreeViewItems\MaterialTreeViewItem.cpp">
       <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClCompile>
-    <ClCompile Include="ContextMenuUtils.cpp">
+    <ClCompile Include="Editor\Editor.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorUI\ContextMenuUtils.cpp">
+      <Filter>EditorUI</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorUI\DragUtils.cpp">
+      <Filter>EditorUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\EditorWindowsShell.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorUI\EditorUIFrame.cpp">
       <Filter>EditorUI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -229,7 +236,6 @@
     <ClInclude Include="_widgetZenonWindowMinimal3D.h">
       <Filter>Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorQtInterfaces.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -257,7 +263,6 @@
     <ClInclude Include="Tools\EditorTools.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="EditorWindowsShell.h" />
     <ClInclude Include="_widgetZenonTreeView.h">
       <Filter>Widgets</Filter>
     </ClInclude>
@@ -269,9 +274,6 @@
     </ClInclude>
     <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewItem.h">
       <Filter>Widgets\ZenonTreeView</Filter>
-    </ClInclude>
-    <ClInclude Include="DragUtils.h">
-      <Filter>EditorUI</Filter>
     </ClInclude>
     <ClInclude Include="Tools\RTS\EditorToolRTSGround.h">
       <Filter>Tools\RTS</Filter>
@@ -336,8 +338,17 @@
     <ClInclude Include="ResourcesBrowser\TreeViewItems\MaterialTreeViewItem.h">
       <Filter>ResourcesBrowser\TreeViewItems</Filter>
     </ClInclude>
-    <ClInclude Include="ContextMenuUtils.h">
+    <ClInclude Include="Editor\Editor.h">
+      <Filter>Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorUI\ContextMenuUtils.h">
       <Filter>EditorUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorUI\DragUtils.h">
+      <Filter>EditorUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\EditorWindowsShell.h">
+      <Filter>Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -349,9 +360,6 @@
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.h">
       <Filter>Widgets\ZenonWindowMinimal3D</Filter>
-    </QtMoc>
-    <QtMoc Include="EditorUIFrame.h">
-      <Filter>EditorUI</Filter>
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.h">
       <Filter>Widgets\ZenonTreeView</Filter>
@@ -392,14 +400,9 @@
     <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtgroupboxpropertybrowser.h">
       <Filter>Widgets\ZenonPropertiesEditor\QT</Filter>
     </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <QtUic Include="EditorUIFrame.ui">
+    <QtMoc Include="EditorUI\EditorUIFrame.h">
       <Filter>EditorUI</Filter>
-    </QtUic>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Editor.ico" />
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Editor.rc">
@@ -407,11 +410,21 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="EditorUIFrame.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
     <QtRcc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowser.qrc">
       <Filter>Widgets\ZenonPropertiesEditor\QT</Filter>
     </QtRcc>
+    <QtRcc Include="EditorUI\EditorUIFrame.qrc">
+      <Filter>EditorUI</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Editor.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="EditorUI\EditorUIFrame.ui">
+      <Filter>EditorUI</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

@@ -16,9 +16,9 @@ CSceneNode::CSceneNode(IScene& Scene)
 	, m_IsPersistance(false)
 
 	, m_LocalPosition(0.0f)
-	, m_Rotation(glm::vec3(0.0f))
+	, m_RotationEulerAngles(glm::vec3(0.0f))
 	, m_RotationQuaternion(glm::quat())
-	, m_RotationKind(Euler)
+	, m_RotationDirection(glm::vec3(0.0f))
 	, m_Scale(1.0f)
 
 	, m_LocalTransform(1.0f)
@@ -55,19 +55,29 @@ void CSceneNode::Initialize()
 		std::shared_ptr<IPropertiesGroup> propertiesGroup = MakeShared(CPropertiesGroup, "Transform", "Transorm of this 3D node. Like translation, rotation and scale.");
 		propertiesGroup->SetNonCopyable(true);
 
-		m_LocalPositionProperty = MakeShared(CPropertyWrappedVec3, "Translate", "", glm::vec3(0.0f));
+		m_LocalPositionProperty = MakeShared(CPropertyWrappedVec3, "Translate", "TODO", glm::vec3(0.0f));
 		m_LocalPositionProperty->SetValueSetter(std::bind(&CSceneNode::SetPosition, this, std::placeholders::_1));
 		m_LocalPositionProperty->SetValueGetter(std::bind(&CSceneNode::GetPosition, this));
 		propertiesGroup->AddProperty(m_LocalPositionProperty);
 
-		m_RotationProperty = MakeShared(CPropertyWrappedVec3, "Rotate", "Rotation of this node. Relative to parent.", glm::vec3(0.0f));
-		m_RotationProperty->SetValueSetter(std::bind(&CSceneNode::SetRotationEuler, this, std::placeholders::_1));
-		m_RotationProperty->SetValueGetter(std::bind(&CSceneNode::GetRotationEuler, this));
-		propertiesGroup->AddProperty(m_RotationProperty);
+		m_RotationEulerAnglesProperty = MakeShared(CPropertyWrappedVec3, "RotationEuler", "TODO", glm::vec3(0.0f));
+		m_RotationEulerAnglesProperty->SetValueSetter(std::bind(&CSceneNode::SetLocalRotationEuler, this, std::placeholders::_1));
+		m_RotationEulerAnglesProperty->SetValueGetter(std::bind(&CSceneNode::GetLocalRotationEuler, this));
+		propertiesGroup->AddProperty(m_RotationEulerAnglesProperty);
 
-		m_ScaleProperty = MakeShared(CPropertyWrappedVec3, "Scale", "Scale of this node. Relative to parent.", glm::vec3(1.0f));
-		m_ScaleProperty->SetValueSetter(std::bind(&CSceneNode::SetScale, this, std::placeholders::_1));
-		m_ScaleProperty->SetValueGetter(std::bind(&CSceneNode::GetScale, this));
+		//m_RotationQuaternionProperty = MakeShared(CPropertyWrappedQuat, "RotationQuat", "TODO", glm::quat(0.0f, 0.0f, 0.0f, 1.0f));
+		//m_RotationQuaternionProperty->SetValueSetter(std::bind(&CSceneNode::SetRotationQuaternion, this, std::placeholders::_1));
+		//m_RotationQuaternionProperty->SetValueGetter(std::bind(&CSceneNode::GetRotationQuaternion, this));
+		//propertiesGroup->AddProperty(m_RotationQuaternionProperty);
+
+		//m_RotationDirectionProperty = MakeShared(CPropertyWrappedVec3, "RotationDir", "TODO", glm::vec3(1.0f, 0.0f, 0.0f));
+		//m_RotationDirectionProperty->SetValueSetter(std::bind(&CSceneNode::SetLocalRotationDirection, this, std::placeholders::_1));
+		//m_RotationDirectionProperty->SetValueGetter(std::bind(&CSceneNode::GetLocalRotationDirection, this));
+		//propertiesGroup->AddProperty(m_RotationDirectionProperty);
+
+		m_ScaleProperty = MakeShared(CPropertyWrappedVec3, "Scale", "TODO", glm::vec3(1.0f));
+		m_ScaleProperty->SetValueSetter(std::bind(&CSceneNode::SetLocalScale, this, std::placeholders::_1));
+		m_ScaleProperty->SetValueGetter(std::bind(&CSceneNode::GetLocalScale, this));
 		propertiesGroup->AddProperty(m_ScaleProperty);
 
 		GetProperties()->AddProperty(propertiesGroup);
@@ -166,124 +176,7 @@ IScene& CSceneNode::GetScene() const
 
 
 
-//
-// Transform functional
-//
-void CSceneNode::SetPosition(glm::vec3 Position)
-{
-	const glm::vec3 localPosition = glm::inverse(GetParentWorldTransform()) * glm::vec4(Position, 1.0f);
-	SetLocalPosition(localPosition);
-}
 
-glm::vec3 CSceneNode::GetPosition() const
-{
-	return GetParentWorldTransform() * glm::vec4(GetLocalPosition(), 1.0f);
-}
-
-void CSceneNode::SetLocalPosition(glm::vec3 LocalPosition)
-{
-	m_LocalPosition = LocalPosition;
-	m_LocalPositionProperty->RaiseValueChangedCallback();
-	UpdateLocalTransform();
-}
-
-glm::vec3 CSceneNode::GetLocalPosition() const
-{
-	return m_LocalPosition;
-}
-
-void CSceneNode::SetDirection(glm::vec3 Direction)
-{
-	throw CException("Not implemented.");
-}
-
-glm::vec3 CSceneNode::GetDirection() const
-{
-	throw CException("Not implemented.");
-}
-
-void CSceneNode::SetRotationEuler(glm::vec3 Rotation)
-{
-	m_Rotation = Rotation;
-	m_RotationProperty->RaiseValueChangedCallback();
-	m_RotationKind = Euler;
-	UpdateLocalTransform();
-}
-
-glm::vec3 CSceneNode::GetRotationEuler() const
-{
-	return m_Rotation;
-}
-
-void CSceneNode::SetRotationQuaternion(glm::quat Rotation)
-{
-	m_RotationQuaternion = Rotation;
-	m_RotationKind = Quaternion;
-	UpdateLocalTransform();
-}
-
-glm::quat CSceneNode::GetRotationQuaternion() const
-{
-	return m_RotationQuaternion;
-}
-
-ISceneNode::ERotationKind CSceneNode::GetRotationKind() const
-{
-	return m_RotationKind;
-}
-
-void CSceneNode::SetScale(glm::vec3 Scale)
-{
-	m_Scale = Scale;
-	m_ScaleProperty->RaiseValueChangedCallback();
-	UpdateLocalTransform();
-}
-
-glm::vec3 CSceneNode::GetScale() const
-{
-	return m_Scale;
-}
-
-void CSceneNode::SetLocalTransform(const glm::mat4& localTransform)
-{
-	m_LocalTransform = localTransform;
-	m_InverseLocalTransform = glm::inverse(localTransform);
-
-	UpdateWorldTransform();
-}
-
-glm::mat4 CSceneNode::GetLocalTransform() const
-{
-	return m_LocalTransform;
-}
-
-glm::mat4 CSceneNode::GetInverseLocalTransform() const
-{
-	return m_InverseLocalTransform;
-}
-
-void CSceneNode::SetWorldTransform(const glm::mat4& worldTransform)
-{
-	SetLocalTransform(glm::inverse(GetParentWorldTransform()) * worldTransform);
-}
-
-glm::mat4 CSceneNode::GetWorldTransfom() const
-{
-	return m_WorldTransform;
-}
-
-glm::mat4 CSceneNode::GetInverseWorldTransform() const
-{
-	return m_InverseWorldTransform;
-}
-
-glm::mat4 CSceneNode::GetParentWorldTransform() const
-{
-	glm::mat4 parentTransform(1.0f);
-	if (auto parent = GetParent())
-		parentTransform = parent->GetWorldTransfom();
-	return parentTransform;
-}
 
 
 
@@ -314,7 +207,7 @@ std::shared_ptr<ISceneNodeComponent> CSceneNode::AddComponent(ObjectClass Compon
 		throw CException("Component with id '%d' already exists in node '%s'", ComponentID, GetName().c_str());
 
 	m_Components[ComponentID] = Component;
-	
+
 	// Add proxy properties
 	auto copmonentPropertiesProxy = MakeShared(CPropertyGroupProxy, Component->GetProperties());
 	GetProperties()->AddProperty(copmonentPropertiesProxy);
@@ -422,7 +315,7 @@ void CSceneNode::Accept(IVisitor* visitor)
 			}) == childs.end());
 		}
 	}
-	
+
 	Object::SetName(resultName);
 }*/
 
@@ -447,10 +340,13 @@ void CSceneNode::CopyTo(std::shared_ptr<IObject> Destination) const
 	destCast->m_IsPersistance = m_IsPersistance;
 
 	destCast->m_LocalPosition = m_LocalPosition;
-	destCast->m_Rotation = m_Rotation;
+
+	destCast->m_RotationEulerAngles = m_RotationEulerAngles;
 	destCast->m_RotationQuaternion = m_RotationQuaternion;
-	destCast->m_RotationKind = m_RotationKind;
+	destCast->m_RotationDirection = m_RotationDirection;
+
 	destCast->m_Scale = m_Scale;
+
 	destCast->m_LocalTransform = m_LocalTransform;
 	destCast->m_InverseLocalTransform = m_InverseLocalTransform;
 	destCast->m_WorldTransform = m_WorldTransform;
@@ -490,11 +386,12 @@ void CSceneNode::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	Object::Load(Reader);
 
-	DoLoadProperties(Reader);
+	// Properties
+	if (auto reader = Reader->GetChild(GetProperties()->GetName()))
+		GetProperties()->Load(reader);
 
-	if (Reader->IsChildExists("Components"))
+	if (auto componentsWriter = Reader->GetChild("Components"))
 	{
-		auto componentsWriter = Reader->GetChild("Components");
 		for (const auto& readerChild : componentsWriter->GetChilds())
 		{
 			try
@@ -520,9 +417,8 @@ void CSceneNode::Load(const std::shared_ptr<IXMLReader>& Reader)
 		}
 	}
 
-	if (Reader->IsChildExists("Childs"))
+	if (auto childsWriter = Reader->GetChild("Childs"))
 	{
-		auto childsWriter = Reader->GetChild("Childs");
 		for (const auto& ch : childsWriter->GetChilds())
 		{
 			try
@@ -543,7 +439,10 @@ void CSceneNode::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	Object::Save(Writer);
 
-	DoSaveProperties(Writer);
+	{
+		auto propertiesWriter = Writer->CreateChild(GetProperties()->GetName());
+		GetProperties()->Save(propertiesWriter);
+	}
 
 	const auto& components = GetComponents();
 	if (false == components.empty())
@@ -634,75 +533,6 @@ void CSceneNode::RaiseOnParentChangedInternal()
 //
 // Protected
 //
-glm::mat4 CSceneNode::CalculateLocalTransform() const
-{
-	glm::mat4 localTransform(1.0f);
-
-	// Position
-	localTransform = glm::translate(localTransform, m_LocalPosition);
-	
-	// Rotation
-	if (m_RotationKind == Euler)
-	{
-		localTransform *= glm::eulerAngleXYZ(m_Rotation.x, m_Rotation.y, m_Rotation.z);
-	}
-	else if (m_RotationKind == Quaternion)
-	{
-		localTransform *= glm::toMat4(m_RotationQuaternion);
-	}
-	else if (m_RotationKind == Direction)
-	{
-		throw CException("Not implemented.");
-	}
-	else
-		throw CException("Unknown '%d' rotation kind.", m_RotationKind);
-
-	// Scale+
-	localTransform = glm::scale(localTransform, m_Scale);
-
-	return localTransform;
-}
-
-
-
-
-//
-// Protected
-//
-void CSceneNode::UpdateLocalTransform()
-{
-	SetLocalTransform(CalculateLocalTransform());
-	RaiseComponentMessage(nullptr, UUID_OnLocalTransformChanged);
-}
-
-void CSceneNode::UpdateWorldTransform()
-{
-	m_WorldTransform = GetParentWorldTransform() * m_LocalTransform;
-	m_InverseWorldTransform = glm::inverse(m_WorldTransform);
-	
-	// After world updated, we can update all childs
-	for (const auto& it : GetChilds())
-		std::dynamic_pointer_cast<CSceneNode>(it)->UpdateWorldTransform();
-
-	RaiseComponentMessage(nullptr, UUID_OnWorldTransformChanged);
-}
-
-void CSceneNode::DoLoadProperties(const std::shared_ptr<IXMLReader>& Reader) const
-{
-	auto reader = Reader->GetChild(GetProperties()->GetName());
-	if (reader)
-		GetProperties()->Load(reader);
-}
-
-void CSceneNode::DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) const
-{
-	CXMLManager xml(GetBaseManager());
-	auto propertiesWriter = xml.CreateWriter(GetProperties()->GetName());
-	GetProperties()->Save(propertiesWriter);
-	
-	Writer->AddChild(propertiesWriter);
-}
-
 IRenderDevice& CSceneNode::GetRenderDevice() const
 {
 	return GetScene().GetRenderDevice();

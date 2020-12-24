@@ -4,7 +4,7 @@
 #include "EditorToolDragger.h"
 
 // Additional
-#include "DragUtils.h"
+#include "EditorUI/DragUtils.h"
 
 CEditorToolDragger::CEditorToolDragger(IEditor& Editor)
 	: CEditorToolBase(Editor)
@@ -82,14 +82,15 @@ bool CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 {
 	m_IsDraggingPermanentCreation = Data.IsCtrl;
 
-	EDragDataSourceType dragDataSourceType = GetDragDataSourceType(Data.Buffer);
-	if (dragDataSourceType == EDragDataSourceType::SceneNodeProto)
+	ETreeViewItemType dragDataSourceType = GetDragDataSourceType(Data.Buffer);
+
+	if (dragDataSourceType == ETreeViewItemType::SceneNodeProto)
 	{
-		std::shared_ptr<ISceneNode> sceneNode = GetSceneNodeFromDragData(GetBaseManager(), GetScene(), Data.Buffer);
+		std::shared_ptr<ISceneNode> sceneNode = GetSceneNodeProtoFromDragData(GetBaseManager(), GetScene(), Data.Buffer);
 		
 		m_DraggerNode = sceneNode;
 	}
-	else if (dragDataSourceType == EDragDataSourceType::Model)
+	else if (dragDataSourceType == ETreeViewItemType::Model)
 	{
 		std::shared_ptr<IModel> model = GetModelFromDragData(GetBaseManager(), Data.Buffer);
 		if (model == nullptr)
@@ -99,7 +100,7 @@ bool CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 		m_DraggerNode->SetName(model->GetName());
 		m_DraggerNode->GetComponentT<IModelComponent>()->SetModel(model);
 	}
-	/*else if (dragDataSourceType == EDragDataSourceType::Texture)
+	/*else if (dragDataSourceType == ETreeViewItemType::Texture)
 	{
 		std::shared_ptr<ITexture> texture = GetTextureFromDragData(GetBaseManager(), Data.Buffer);
 		if (texture == nullptr)
@@ -109,7 +110,7 @@ bool CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 		m_DraggerNode->SetName(model->GetName());
 		m_DraggerNode->GetComponentT<IModelComponent>()->SetModel(model);
 	}*/
-	else if (dragDataSourceType == EDragDataSourceType::ParticleSytem)
+	else if (dragDataSourceType == ETreeViewItemType::ParticleSystem)
 	{
 		std::shared_ptr<IParticleSystem> particleSystem = GetParticleSystemFromDragData(GetBaseManager(), Data.Buffer);
 		if (particleSystem == nullptr)

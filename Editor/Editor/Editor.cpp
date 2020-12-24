@@ -4,7 +4,7 @@
 #include "Editor.h"
 
 // Additional
-#include "EditorUIFrame.h"
+#include "EditorUI/EditorUIFrame.h"
 #include "Editor3D/Editor3DFrame.h"
 
 CEditor::CEditor(IBaseManager & BaseManager)

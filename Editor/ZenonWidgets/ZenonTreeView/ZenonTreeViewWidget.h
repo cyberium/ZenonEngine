@@ -1,14 +1,21 @@
 #pragma once
 
 #include "TreeViewModel.h"
-//#include "SceneBrowser/SceneBrowserTreeModel.h"
 
 #include <QtWidgets/QTreeView>
 
 typedef std::function<bool(const IznTreeViewItem*, std::shared_ptr<IPropertiesGroup>)> OnContextMenuCallback;
-typedef std::function<bool(const IznTreeViewItem*, CByteBuffer * Bytes)> OnDragStartCallback;
-typedef std::function<bool(const std::vector<const IznTreeViewItem*>& Selection)> OnSelectionChangeCallback;
+typedef std::function<bool(const std::vector<const IznTreeViewItem*>&)> OnSelectionChangeCallback;
 typedef std::function<bool(const IznTreeViewItem*)> OnSelectedItemChangeCallback;
+
+// Create Drag & Drop
+typedef std::function<bool(const IznTreeViewItem*, CByteBuffer*)>       OnDragStartCallback;
+
+// Accept Drag & Drop
+typedef std::function<bool(const CByteBuffer&)>                         OnDragEnterCallback;
+typedef std::function<bool(const IznTreeViewItem*, const CByteBuffer&)> OnDragMoveCallback;
+typedef std::function<bool(const IznTreeViewItem*, const CByteBuffer&)> OnDragDropCallback;
+typedef std::function<bool()>                                           OnDragLeaveCallback;
 
 class ZenonTreeViewWidget
 	: public QTreeView
@@ -28,14 +35,27 @@ public:
 	void SelectItems(const std::vector<std::shared_ptr<IObject>>& Items);
 
 	void SetOnContexMenu(OnContextMenuCallback Callback);
-	void SetOnStartDragging(OnDragStartCallback Callback);
 	void SetOnSelectionChange(OnSelectionChangeCallback Callback);
 	void SetOnSelectedItemChange(OnSelectedItemChangeCallback Callback);
 
-protected:
+	// Create Drag & Drop
+	void SetOnStartDragging(OnDragStartCallback Callback);
+
+	// Accept Drag & Drop
+	void SetOnDragEnter(OnDragEnterCallback Callback);
+	void SetOnDragMove(OnDragMoveCallback Callback);
+	void SetOnDragDrop(OnDragDropCallback Callback);
+	void SetOnDragLeave(OnDragLeaveCallback Callback);
+
+protected: // QT events
 	void mousePressEvent(QMouseEvent* event) override;
 	void mouseReleaseEvent(QMouseEvent* event) override;
 	void mouseMoveEvent(QMouseEvent* event) override;
+
+	void dropEvent(QDropEvent *event) override;
+	void dragEnterEvent(QDragEnterEvent *event) override;
+	void dragMoveEvent(QDragMoveEvent *event) override;
+	void dragLeaveEvent(QDragLeaveEvent *event) override;
 
 private slots:
 	void onCustomContextMenu(const QPoint& point);
@@ -53,12 +73,20 @@ protected:
 private:
 	std::shared_ptr<CznTreeViewModel> m_Model;
 	std::shared_ptr<QMenu> m_ContextMenu;
+
 	bool m_LockForSelectionChangedEvent;
-	bool m_StartDragging;
+
+	bool m_IsDraggedNow;
+	const IznTreeViewItem* m_DraggedTreeViewItem;
 	glm::vec2 m_PrevioisMousePos;
 
 	OnContextMenuCallback m_OnContextMenu;
 	OnDragStartCallback m_OnDragStart;
 	OnSelectionChangeCallback m_OnSelectionChange;
 	OnSelectedItemChangeCallback m_OnSelectedItemChange;
+	
+	OnDragEnterCallback m_OnDragEnterCallback;
+	OnDragMoveCallback m_OnDragMoveCallback;
+	OnDragDropCallback m_OnDragDropCallback;
+	OnDragLeaveCallback m_OnDragLeaveCallback;
 };

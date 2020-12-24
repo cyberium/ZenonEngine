@@ -39,7 +39,7 @@ void CCameraComponent::DoMoveFront(float Value)
 	if (Value == 0.0f)
 		return;
 	ISceneNode& sceneNode3D = const_cast<ISceneNode&>(GetOwnerNode());
-	sceneNode3D.SetPosition(sceneNode3D.GetPosition() + sceneNode3D.GetRotationEuler() * Value);
+	sceneNode3D.SetPosition(sceneNode3D.GetPosition() + sceneNode3D.GetLocalRotationDirection() * Value);
 	m_View_Dirty = true;
 }
 
@@ -48,7 +48,7 @@ void CCameraComponent::DoMoveBack(float Value)
 	if (Value == 0.0f)
 		return;
 	ISceneNode& sceneNode3D = const_cast<ISceneNode&>(GetOwnerNode());
-	sceneNode3D.SetPosition(sceneNode3D.GetPosition() - sceneNode3D.GetRotationEuler() * Value);
+	sceneNode3D.SetPosition(sceneNode3D.GetPosition() - sceneNode3D.GetLocalRotationDirection() * Value);
 	m_View_Dirty = true;
 }
 
@@ -85,13 +85,13 @@ glm::vec3 CCameraComponent::GetTranslation() const
 void CCameraComponent::SetDirection(glm::vec3 Direction)
 {
 	ISceneNode& sceneNode3D = const_cast<ISceneNode&>(GetOwnerNode());
-	sceneNode3D.SetRotationEuler(Direction);
+	sceneNode3D.SetLocalRotationEuler(Direction);
 	m_View_Dirty = true;
 }
 
 glm::vec3 CCameraComponent::GetDirection() const
 {
-	return GetOwnerNode().GetRotationEuler();
+	return GetOwnerNode().GetLocalRotationDirection();
 }
 
 void CCameraComponent::SetYaw(float Yaw)
@@ -105,7 +105,7 @@ void CCameraComponent::SetYaw(float Yaw)
 	m_Yaw_XProperty->RaiseValueChangedCallback();
 
 	ISceneNode& sceneNode3D = const_cast<ISceneNode&>(GetOwnerNode());
-	sceneNode3D.SetRotationEuler(AnglesToRotation(m_Yaw_X, m_Pitch_Y));
+	sceneNode3D.SetLocalRotationEuler(glm::vec3(m_Yaw_X, m_Pitch_Y, 0.0f));
 
 	m_View_Dirty = true;
 }
@@ -131,7 +131,7 @@ void CCameraComponent::SetPitch(float Pitch)
 	m_Pitch_YProperty->RaiseValueChangedCallback();
 
 	ISceneNode& sceneNode3D = const_cast<ISceneNode&>(GetOwnerNode());
-	sceneNode3D.SetRotationEuler(AnglesToRotation(m_Yaw_X, m_Pitch_Y));
+	sceneNode3D.SetLocalRotationEuler(glm::vec3(m_Yaw_X, m_Pitch_Y, 0.0f));
 
 	m_View_Dirty = true;
 }
@@ -229,7 +229,7 @@ void CCameraComponent::OnMessage(const ISceneNodeComponent* Component, Component
 //
 // Protected
 //
-glm::vec3 CCameraComponent::AnglesToRotation(float Yaw, float Pitch)
+/*glm::vec3 CCameraComponent::AnglesToRotation(float Yaw, float Pitch)
 {
 	// Calculate the new Front vector
 	glm::vec3 direction = { 0.0f, 0.0f, 0.0f };
@@ -287,17 +287,21 @@ void CCameraComponent::RotationToAngles(const glm::vec3& Direction)
 
 	//SetYaw(m_Yaw_X2);
 	//SetPitch(m_Pitch_Y2);
-}
+}*/
 
 void CCameraComponent::UpdateView()
 {
 	if (false == m_View_Dirty)
 		return;
 
+	// Also re-calculate the Right and Up vector
+	m_RightDirection = glm::normalize(glm::cross(GetOwnerNode().GetLocalRotationDirection(), glm::vec3(0.0f, 1.0f, 0.0f)));
+	m_UpDirection = glm::cross(m_RightDirection, GetOwnerNode().GetLocalRotationDirection());
+
 	//m_View = glm::lookAt(-GetOwnerNode().GetRotationEuler() * 20.0f, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	//m_View = glm::lookAt(glm::vec3(0.5f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	m_View = glm::lookAt(GetOwnerNode().GetPosition(), GetOwnerNode().GetPosition() + GetOwnerNode().GetRotationEuler(), m_UpDirection);
+	m_View = glm::lookAt(GetOwnerNode().GetPosition(), GetOwnerNode().GetPosition() + GetOwnerNode().GetLocalRotationDirection(), m_UpDirection);
 	m_Inverse_View = glm::inverse(m_View);
 
 	m_Frustum.buildViewFrustum(m_View, m_Projection);

@@ -86,13 +86,13 @@ public:
 	//
 	void Set(T Value, bool BlockCallback = false) override
 	{
+		if (IsReadOnly())
+			throw CException("Property '%s' is read-only.", GetName().c_str());
+
 		m_Value = Value;
 
 		if (false == BlockCallback)
-		{
-			if (m_ValueChangedCallback)
-				m_ValueChangedCallback(Value);
-		}
+			RaiseValueChangedCallback();
 	}
 
 	T Get() const override
@@ -146,7 +146,15 @@ public:
 	virtual ~CPropertyWrapped()
 	{}
 
-
+	//
+	// IProperty
+	//
+	bool IsReadOnly() const override
+	{
+		if (m_FuncSetter == nullptr)
+			return true;
+		return __super::IsReadOnly();
+	}
 
 	//
 	// IPropertyT
@@ -374,6 +382,67 @@ private:
 	virtual void SetT(int Index, float Value)
 	{
 		glm::vec4 value = Get();
+		value[Index] = Value;
+		Set(value);
+	}
+	virtual float GetT(int Index) const
+	{
+		return Get()[Index];
+	}
+};
+
+
+
+
+
+class CPropertyWrappedQuat
+	: public CPropertyWrapped<glm::quat>
+{
+public:
+	CPropertyWrappedQuat(std::string Name, std::string Description, glm::quat DefaultValue)
+		: CPropertyWrapped<glm::quat>(Name, Description, DefaultValue)
+	{
+		auto xProperty = MakeShared(CPropertyWrapped<float>, "X", "The 'X' component of Quaternion", DefaultValue.x);
+		xProperty->SetSyntetic(true);
+		xProperty->SetValueSetter(std::bind(&CPropertyWrappedQuat::SetT, this, 0, std::placeholders::_1));
+		xProperty->SetValueGetter(std::bind(&CPropertyWrappedQuat::GetT, this, 0));
+		AddProperty(xProperty);
+
+		auto yProperty = MakeShared(CPropertyWrapped<float>, "Y", "The 'Y' component of Quaternion", DefaultValue.y);
+		yProperty->SetSyntetic(true);
+		yProperty->SetValueSetter(std::bind(&CPropertyWrappedQuat::SetT, this, 1, std::placeholders::_1));
+		yProperty->SetValueGetter(std::bind(&CPropertyWrappedQuat::GetT, this, 1));
+		AddProperty(yProperty);
+
+		auto zProperty = MakeShared(CPropertyWrapped<float>, "Z", "The 'Z' component of Quaternion", DefaultValue.z);
+		zProperty->SetSyntetic(true);
+		zProperty->SetValueSetter(std::bind(&CPropertyWrappedQuat::SetT, this, 2, std::placeholders::_1));
+		zProperty->SetValueGetter(std::bind(&CPropertyWrappedQuat::GetT, this, 2));
+		AddProperty(zProperty);
+
+		auto wProperty = MakeShared(CPropertyWrapped<float>, "W", "The 'W' component of Quaternion", DefaultValue.w);
+		wProperty->SetSyntetic(true);
+		wProperty->SetValueSetter(std::bind(&CPropertyWrappedQuat::SetT, this, 3, std::placeholders::_1));
+		wProperty->SetValueGetter(std::bind(&CPropertyWrappedQuat::GetT, this, 3));
+		AddProperty(wProperty);
+	}
+
+	//
+	// IPropertyValueChangedCallback
+	//
+	void RaiseValueChangedCallback() override
+	{
+		__super::RaiseValueChangedCallback();
+
+		for (const auto& subPropIt : GetProperties())
+			if (auto valueChangedCallback = std::dynamic_pointer_cast<IPropertyValueChangedCallback>(subPropIt.second))
+				valueChangedCallback->RaiseValueChangedCallback();
+	}
+
+private:
+	virtual void SetT(int Index, float Value)
+	{
+		glm::quat value = Get();
 		value[Index] = Value;
 		Set(value);
 	}

@@ -65,20 +65,20 @@ void CEditorToolMover::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer
 
 	m_MoverX = GetScene().CreateSceneNodeT<ISceneNode>(m_MoverRoot); 
 	m_MoverX->SetName("Mover_X");
-	m_MoverX->SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
-	m_MoverX->SetRotationEuler(glm::vec3(0.0f, glm::half_pi<float>(), 0.0f));
+	m_MoverX->SetLocalPosition(glm::vec3(1.0f, 0.0f, 0.0f));
+	m_MoverX->SetLocalRotationEuler(glm::vec3(0.0f, 90.0f, 0.0f));
 	m_MoverX->GetComponentT<IModelComponent>()->SetModel(modelX);
 
 	m_MoverY = GetScene().CreateSceneNodeT<ISceneNode>(m_MoverRoot);
 	m_MoverY->SetName("Mover_Y");
-	m_MoverY->SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
-	m_MoverY->SetRotationEuler(glm::vec3(-glm::half_pi<float>(), 0.0f, 0.0f));
+	m_MoverY->SetLocalPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	m_MoverY->SetLocalRotationEuler(glm::vec3(- 90.0f, 0.0f, 0.0f));
 	m_MoverY->GetComponentT<IModelComponent>()->SetModel(modelY);
 
 	m_MoverZ = GetScene().CreateSceneNodeT<ISceneNode>(m_MoverRoot);
 	m_MoverZ->SetName("Mover_Z");
-	m_MoverZ->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
-	m_MoverZ->SetRotationEuler(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_MoverZ->SetLocalPosition(glm::vec3(0.0f, 0.0f, 1.0f));
+	m_MoverZ->SetLocalRotationEuler(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_MoverZ->GetComponentT<IModelComponent>()->SetModel(modelZ);
 }
 

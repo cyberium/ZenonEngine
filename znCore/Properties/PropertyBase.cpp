@@ -8,6 +8,7 @@ CPropertyBase::CPropertyBase(std::string Name, std::string Description)
 	, m_Description(Description)
 	, m_IsSyntetic(false)
 	, m_IsNonCopyable(false)
+	, m_IsReadOnly(false)
 {}
 
 CPropertyBase::~CPropertyBase()
@@ -63,6 +64,16 @@ bool CPropertyBase::IsNonCopyable() const
 	return m_IsNonCopyable;
 }
 
+void CPropertyBase::SetReadOnly(bool Value)
+{
+	m_IsReadOnly = Value;
+}
+
+bool CPropertyBase::IsReadOnly() const
+{
+	return m_IsReadOnly;
+}
+
 void CPropertyBase::CopyTo(const std::shared_ptr<IProperty>& Other) const
 {
 	if (IsNonCopyable())
@@ -86,7 +97,7 @@ void CPropertyBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	std::string propertyName = GetName();
 	Writer->SetName(propertyName);
-	Writer->SetStrAttribute(GetPropertyTypeName(this), "Type");
+	//Writer->SetStrAttribute(GetPropertyTypeName(this), "Type");
 }
 
 

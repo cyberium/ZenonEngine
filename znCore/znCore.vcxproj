@@ -139,6 +139,7 @@
     <ClCompile Include="Scene\ComponentBase.cpp" />
     <ClCompile Include="Scene\SceneFinder.cpp" />
     <ClCompile Include="Scene\SceneNode.cpp" />
+    <ClCompile Include="Scene\SceneNodeTransform.cpp" />
     <ClCompile Include="Scene\UIControl.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

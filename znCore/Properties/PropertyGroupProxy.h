@@ -17,6 +17,8 @@ public:
 	bool IsSyntetic() const override;
 	void SetNonCopyable(bool Value) override;
 	bool IsNonCopyable() const override;
+	void SetReadOnly(bool Value) override;
+	bool IsReadOnly() const override;
 	void ResetToDefault() override;
 	bool IsDefault() const override;
 	void FromString(const std::string& String, bool BlockCallback = false) override;
