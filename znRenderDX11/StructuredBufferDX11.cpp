@@ -143,7 +143,7 @@ void StructuredBufferDX11::Copy(const IStructuredBuffer* other)
 	}
 }
 
-void StructuredBufferDX11::Set(void* data, size_t elementSize, size_t numElements)
+void StructuredBufferDX11::Set(const void* data, size_t elementSize, size_t numElements)
 {
 	SetData(data, numElements * elementSize);
 	m_bIsDirty = true;

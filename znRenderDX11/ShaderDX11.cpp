@@ -185,19 +185,25 @@ bool ShaderDX11::LoadFromFile(EShaderType Type, std::string Filename, ShaderMacr
 	std::string compiledShaderFilename = CalculateUniqueName(Type, Filename, Macroses, EntryPoint);
 	std::shared_ptr<IByteBuffer> compiledShaderBuffer;
 
+	
+
 	auto filesManager = m_RenderDeviceDX11.GetBaseManager().GetManager<IFilesManager>();
-	if (false == filesManager->IsFileExists(compiledShaderFilename))
-	{
+
+	if (filesManager->IsFileExists(compiledShaderFilename))
+		filesManager->Delete(compiledShaderFilename);
+
+	//if (false == filesManager->IsFileExists(compiledShaderFilename))
+	//{
 		compiledShaderBuffer = CompileShader(Type, Filename, Macroses, EntryPoint);
 
 		auto compiledShaderFile = filesManager->Create(compiledShaderFilename);
 		compiledShaderFile->writeBytes(compiledShaderBuffer->getData(), compiledShaderBuffer->getSize());
 		compiledShaderFile->Save();
-	}
-	else
-	{
-		compiledShaderBuffer = filesManager->Open(compiledShaderFilename);
-	}
+	//}
+	//else
+	//{
+	//	compiledShaderBuffer = filesManager->Open(compiledShaderFilename);
+	//}
 
 	m_Type = Type;
 	m_FileName = Filename;

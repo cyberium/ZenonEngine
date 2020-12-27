@@ -65,6 +65,10 @@ ZN_INTERFACE ZN_API ITerrain
 {
 	virtual ~ITerrain() {}
 
+	virtual const float* GetHeightsArray() const = 0;
+	virtual size_t GetTerrainWidth() const = 0;
+	virtual size_t GetTerrainHeight() const = 0;
+
 	virtual std::shared_ptr<IGeometry> GetTerrainGeometry() const = 0;
 };
 

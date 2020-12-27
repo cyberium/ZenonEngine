@@ -221,7 +221,7 @@ std::shared_ptr<IConstantBuffer> CRenderObjectsFactoryDX11::CreateConstantBuffer
 	return object;
 }
 
-std::shared_ptr<IStructuredBuffer> CRenderObjectsFactoryDX11::CreateStructuredBuffer(void* data, size_t count, size_t stride, EAccess cpuAccess)
+std::shared_ptr<IStructuredBuffer> CRenderObjectsFactoryDX11::CreateStructuredBuffer(const void* data, size_t count, size_t stride, EAccess cpuAccess)
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 

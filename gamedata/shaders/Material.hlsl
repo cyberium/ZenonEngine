@@ -1,5 +1,5 @@
 
-#define DISPLACEMENT_HEIGHT 0.035f
+#define DISPLACEMENT_HEIGHT 0.105f
 #define DISPLACEMENT_LAYERS_COUNT 32u
 
 struct MaterialModel
@@ -153,12 +153,12 @@ float2 DoDisplacementMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv, 
 //-- Work with material
 //----------------------------------------------------------------------
 
-float4 ExtractDuffuseAndAlpha(MaterialModel mat, float2 TexCoord)
+float4 ExtractDuffuseAndAlpha(MaterialModel mat, const sampler Sampler, float2 TexCoord)
 {
 	float4 diffuse = float4(mat.Diffuse * mat.DiffuseFactor, 1.0f);
 	if (mat.HasTextureDiffuse)
 	{
-		float4 diffuseTex = TextureDiffuse.Sample(LinearRepeatSampler, TexCoord);
+		float4 diffuseTex = TextureDiffuse.Sample(Sampler, TexCoord);
 		if (any(diffuse.rgb))
 			diffuse *= diffuseTex;
 		else
@@ -167,17 +167,17 @@ float4 ExtractDuffuseAndAlpha(MaterialModel mat, float2 TexCoord)
 
 	// By default, use the alpha from the diffuse component.
 	if (mat.HasTextureTransparency)
-		diffuse.a = TextureTransparency.Sample(LinearRepeatSampler, TexCoord).r;
+		diffuse.a = TextureTransparency.Sample(Sampler, TexCoord).r;
 	
 	return diffuse;
 }
 
-float4 ExtractAmbient(MaterialModel mat, float2 TexCoord)
+float4 ExtractAmbient(MaterialModel mat, const sampler Sampler, float2 TexCoord)
 {
 	float4 ambient = float4(mat.Ambient, mat.AmbientFactor);
 	if (mat.HasTextureAmbient)
 	{
-		float4 ambientTex = TextureAmbient.Sample(LinearRepeatSampler, TexCoord);
+		float4 ambientTex = TextureAmbient.Sample(Sampler, TexCoord);
 		if (any(ambient.rgb))
 			ambient *= ambientTex;
 		else
@@ -186,12 +186,12 @@ float4 ExtractAmbient(MaterialModel mat, float2 TexCoord)
 	return ambient;
 }
 
-float4 ExtractEmissive(MaterialModel mat, float2 TexCoord)
+float4 ExtractEmissive(MaterialModel mat, const sampler Sampler, float2 TexCoord)
 {
 	float4 emissive = float4(mat.Emissive * mat.EmissiveFactor, 1.0f);
 	if (mat.HasTextureEmissive)
 	{
-		float4 emissiveTex = TextureEmissive.Sample(LinearRepeatSampler, TexCoord);
+		float4 emissiveTex = TextureEmissive.Sample(Sampler, TexCoord);
 		if (any(emissive.rgb))
 			emissive *= emissiveTex;
 		else
@@ -200,7 +200,7 @@ float4 ExtractEmissive(MaterialModel mat, float2 TexCoord)
 	return emissive;
 }
 
-float4 ExtractSpecular(MaterialModel mat, float2 TexCoord)
+float4 ExtractSpecular(MaterialModel mat, const sampler Sampler, float2 TexCoord)
 {
 	if (mat.SpecularFactor < 1.0f)
 		return float4(0.0f, 0.0f, 0.0f, mat.SpecularFactor);
@@ -208,7 +208,7 @@ float4 ExtractSpecular(MaterialModel mat, float2 TexCoord)
 	float4 specular = float4(mat.Specular, 1.0f);
 	if (mat.HasTextureSpecular)
 	{
-		float4 specularTex = TextureSpecular.Sample(LinearRepeatSampler, TexCoord);
+		float4 specularTex = TextureSpecular.Sample(Sampler, TexCoord);
 		if (any(specular.rgb))
 			specular *= specularTex;
 		else
@@ -217,7 +217,7 @@ float4 ExtractSpecular(MaterialModel mat, float2 TexCoord)
 	return float4(specular.rgb, mat.SpecularFactor); 
 }
 
-float4 ExtractNormal(MaterialModel mat, float2 TexCoord, float3 normalVS, float3 tangentVS, float3 binormalVS)
+float4 ExtractNormal(MaterialModel mat, const sampler Sampler, float2 TexCoord, float3 normalVS, float3 tangentVS, float3 binormalVS)
 {
 	// Normal mapping
 	if (mat.HasTextureNormalMap)
@@ -226,7 +226,7 @@ float4 ExtractNormal(MaterialModel mat, float2 TexCoord, float3 normalVS, float3
 								normalize( binormalVS),
 								normalize(  normalVS));
 
-		return DoNormalMapping(TBN, TextureNormalMap, LinearRepeatSampler, TexCoord);
+		return DoNormalMapping(TBN, TextureNormalMap, Sampler, TexCoord);
 	}
 	
 	// Bump mapping
@@ -236,13 +236,13 @@ float4 ExtractNormal(MaterialModel mat, float2 TexCoord, float3 normalVS, float3
 								normalize(-binormalVS),
 								normalize( normalVS));
 
-		return DoBumpMapping(TBN, TextureBump, LinearRepeatSampler, TexCoord, mat.BumpFactor);
+		return DoBumpMapping(TBN, TextureBump, Sampler, TexCoord, mat.BumpFactor);
 	}
 
 	return normalize(float4(normalVS, 0.0f));
 }
 
-float2 ExtractDisplacement(MaterialModel mat, float2 TexCoord, float3 normalVS, float3 tangentVS, float3 binormalVS, float3 viewPositionVS, float3 pixelPositionVS)
+float2 ExtractDisplacement(MaterialModel mat, const sampler Sampler, float2 TexCoord, float3 normalVS, float3 tangentVS, float3 binormalVS, float3 viewPositionVS, float3 pixelPositionVS)
 {
 	if (mat.HasTextureDisplacement)
 	{
@@ -252,7 +252,7 @@ float2 ExtractDisplacement(MaterialModel mat, float2 TexCoord, float3 normalVS, 
 			normalize(  normalVS)
 		);
 
-		float2 newTexCoords = DoDisplacementMapping(TBN, TextureDisplacement, LinearRepeatSampler, TexCoord, viewPositionVS, pixelPositionVS);
+		float2 newTexCoords = DoDisplacementMapping(TBN, TextureDisplacement, Sampler, TexCoord, viewPositionVS, pixelPositionVS);
 		if(newTexCoords.x > 1.0 || newTexCoords.y > 1.0 || newTexCoords.x < 0.0 || newTexCoords.y < 0.0)
 			discard; 
 		return newTexCoords;

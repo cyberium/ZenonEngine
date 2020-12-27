@@ -49,10 +49,32 @@ CTerrain::CTerrain(const IBaseManager& BaseManager)
 {
 	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 
-	m_TerrainGeometry = renderDevice.GetObjectsFactory().CreateGeometry();
+	//m_TerrainGeometry = renderDevice.GetObjectsFactory().CreateGeometry();
 
 	std::shared_ptr<IImage> heightMapImage = m_BaseManager.GetManager<IImagesFactory>()->CreateImage("terrain32.png");
+	m_Width = heightMapImage->GetWidth();
+	m_Height = heightMapImage->GetHeight();
 
+	m_HeightsArray = new float[heightMapImage->GetHeight() * heightMapImage->GetWidth()];
+	for (uint32 Y = 0; Y < heightMapImage->GetHeight(); Y += 1)
+	{
+		for (uint32 X = 0; X < heightMapImage->GetWidth(); X += 1)
+		{
+			size_t heightsArrayOffset = Y * m_Width + X;
+
+			size_t imageBBP = heightMapImage->GetBitsPerPixel() / 8;
+			size_t imageArrayOffset = (Y * imageBBP * heightMapImage->GetWidth()) + (X * imageBBP);
+
+
+			//m_HeightsArray[heightsArrayOffset] = Random::Range(0, 12);
+
+
+			m_HeightsArray[heightsArrayOffset] = (float)((const uint8*)heightMapImage->GetData() + imageArrayOffset)[0];
+		}
+	}
+
+
+	/*
 	glm::vec3* tempVertexes = new glm::vec3[heightMapImage->GetHeight() * heightMapImage->GetWidth() * 4];
 	glm::vec3* ttv = tempVertexes;
 
@@ -121,11 +143,12 @@ CTerrain::CTerrain(const IBaseManager& BaseManager)
 	m_TerrainGeometry->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(tempVertexes, heightMapImage->GetHeight() * heightMapImage->GetWidth() * 4));
 	m_TerrainGeometry->SetIndexBuffer(renderDevice.GetObjectsFactory().CreateIndexBuffer(tempIndices, heightMapImage->GetHeight() * heightMapImage->GetWidth() * 6));
 	m_TerrainGeometry->SetBounds(BoundingBox(glm::vec3(-100000.0f), glm::vec3(100000.0f)));
-
+	*/
 }
 
 CTerrain::~CTerrain()
 {
+	delete[] m_HeightsArray;
 }
 
 
@@ -133,7 +156,22 @@ CTerrain::~CTerrain()
 //
 // ITerrain
 //
+const float * CTerrain::GetHeightsArray() const
+{
+	return m_HeightsArray;
+}
+
+size_t CTerrain::GetTerrainWidth() const
+{
+	return m_Width;
+}
+
+size_t CTerrain::GetTerrainHeight() const
+{
+	return m_Height;
+}
+
 std::shared_ptr<IGeometry> CTerrain::GetTerrainGeometry() const
 {
-	return m_TerrainGeometry;
+	return nullptr;
 }

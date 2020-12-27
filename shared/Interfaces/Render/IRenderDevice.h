@@ -89,7 +89,7 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	virtual std::shared_ptr<IBuffer>          CreateVoidVertexBuffer(const void* data, size_t count, size_t offset, size_t stride) = 0;
 	virtual std::shared_ptr<IBuffer>          CreateVoidIndexBuffer(const void* data, size_t count, size_t offset, size_t stride) = 0;
 	virtual std::shared_ptr<IConstantBuffer>  CreateConstantBuffer(const void* data, size_t size) = 0;
-	virtual std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(void* data, size_t count, size_t stride, EAccess cpuAccess = EAccess::None) = 0;
+	virtual std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(const void* data, size_t count, size_t stride, EAccess cpuAccess = EAccess::None) = 0;
 
 	virtual std::shared_ptr<IShader>            LoadShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros = IShader::ShaderMacros(), IShaderInputLayout* CustomLayout = nullptr) = 0;
 
@@ -143,7 +143,7 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	template<typename T>
 	inline std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(const std::vector<T>& data, EAccess cpuAccess = EAccess::None)
 	{
-		return CreateStructuredBuffer((void*)data.data(), data.size(), sizeof(T), cpuAccess);
+		return CreateStructuredBuffer((const void*)data.data(), data.size(), sizeof(T), cpuAccess);
 	}
 };
 

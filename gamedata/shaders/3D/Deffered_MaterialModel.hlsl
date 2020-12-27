@@ -11,15 +11,15 @@ TextureCube TextureSky : register(t15);
 
 DefferedRenderPSOut PS_main(VSOutput IN) : SV_TARGET
 {	
-	float2 displacedTexCoord = ExtractDisplacement(Mat, IN.texCoord, IN.normalVS.xyz, IN.tangentVS.xyz, IN.binormalVS.xyz, float3(0.0f, 0.0f, 0.0f), IN.positionVS.xyz);
+	float2 displacedTexCoord = ExtractDisplacement(Mat, LinearClampSampler, IN.texCoord, IN.normalVS.xyz, IN.tangentVS.xyz, IN.binormalVS.xyz, float3(0.0f, 0.0f, 0.0f), IN.positionVS.xyz);
 	
-	float4 diffuseAndAlpha = ExtractDuffuseAndAlpha(Mat, displacedTexCoord);
+	float4 diffuseAndAlpha = ExtractDuffuseAndAlpha(Mat, LinearClampSampler, displacedTexCoord);
 	if (diffuseAndAlpha.a < 0.05f)
 		discard;
 				
-	//float4 ambient = ExtractAmbient(Mat, displacedTexCoord); // Not used now.
-	float4 emissive = ExtractEmissive(Mat, displacedTexCoord);
-	float4 specular = ExtractSpecular(Mat, displacedTexCoord);
+	//float4 ambient = ExtractAmbient(Mat, LinearClampSampler, displacedTexCoord); // Not used now.
+	float4 emissive = ExtractEmissive(Mat, LinearClampSampler, displacedTexCoord);
+	float4 specular = ExtractSpecular(Mat, LinearClampSampler, displacedTexCoord);
 	float packedSpecularFactor = log2(specular.a) / 10.5f;
 
 	if (Mat.IsEnviorementMappingEnable)
@@ -28,7 +28,7 @@ DefferedRenderPSOut PS_main(VSOutput IN) : SV_TARGET
 		diffuseAndAlpha *= TextureSky.Sample(LinearClampSampler, normalize(refl));
 	}
 
-	float4 normalVS = ExtractNormal(Mat, float2(displacedTexCoord.x, displacedTexCoord.y), IN.normalVS, IN.tangentVS, IN.binormalVS);
+	float4 normalVS = ExtractNormal(Mat, LinearClampSampler, float2(displacedTexCoord.x, displacedTexCoord.y), IN.normalVS, IN.tangentVS, IN.binormalVS);
 
 	DefferedRenderPSOut OUT;
 	OUT.Diffuse = diffuseAndAlpha;

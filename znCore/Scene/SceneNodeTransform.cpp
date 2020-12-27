@@ -158,9 +158,7 @@ void CSceneNode::SetLocalRotationDirection(glm::vec3 Direction)
 	//m_RotationQuaternionProperty->RaiseValueChangedCallback();
 
 	// Rotation (direction)
-	m_RotationDirection.x = glm::cos(rotationEuler.x) * glm::cos(rotationEuler.y); // y
-	m_RotationDirection.y = glm::sin(rotationEuler.y);                             // z
-	m_RotationDirection.z = glm::sin(rotationEuler.x) * glm::cos(rotationEuler.y); // x
+	m_RotationDirection = Direction; 
 	m_RotationDirection = glm::normalize(m_RotationDirection);
 	//m_RotationDirectionProperty->RaiseValueChangedCallback();
 

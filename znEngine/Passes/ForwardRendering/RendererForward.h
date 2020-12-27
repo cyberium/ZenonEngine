@@ -24,7 +24,7 @@ private:
 
 	std::shared_ptr<IRenderPassCreateTypelessList>        m_SceneCreateTypelessListPass;
 	std::shared_ptr<CPassForward_DoRenderScene>           m_MaterialModelPass;
-	std::shared_ptr<CPassForward_DoRenderSceneInstanced>  m_MaterialModelPassInstanced;
+	std::shared_ptr<CTerrainPass>                         m_MaterialTerrainPass;
 
 	std::shared_ptr<IStructuredBuffer>                    m_LightsBuffer;
 	size_t                                                m_LightsCnt;

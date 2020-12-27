@@ -48,6 +48,7 @@ SGPULight CLight::GetGPULightStruct() const
 	SGPULight gpuLightStruct;
 	gpuLightStruct.AmbientColor = ColorRGBA(m_AmbientColor, 1.0f);
 	gpuLightStruct.Color = ColorRGBA(m_Color, 1.0f);
+	gpuLightStruct.Type = m_Type;
 	gpuLightStruct.Range = m_Range;
 	gpuLightStruct.Intensity = m_Intensity;
 	gpuLightStruct.SpotlightAngle = m_SpotlightAngle;

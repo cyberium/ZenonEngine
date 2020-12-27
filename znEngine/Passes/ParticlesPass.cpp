@@ -8,8 +8,6 @@ CParticlesPass::CParticlesPass(IRenderDevice& RenderDevice, IScene& Scene)
 {
 	m_Geometry = GetRenderDevice().GetObjectsFactory().CreateGeometry();
 	m_Geometry->SetPrimitiveTopology(PrimitiveTopology::PointList);
-
-	m_GeomParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 1000, sizeof(SGPUParticle), EAccess::CPUWrite);
 }
 
 CParticlesPass::~CParticlesPass()
@@ -85,7 +83,7 @@ EVisitResult CParticlesPass::Visit(const std::shared_ptr<IParticleSystem>& Parti
 	if (partilces.empty())
 		return EVisitResult::Block;
 
-	if (partilces.size() > m_GeomParticlesBuffer->GetElementCount())
+	if (m_GeomParticlesBuffer == nullptr || partilces.size() != m_GeomParticlesBuffer->GetElementCount())
 		m_GeomParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(partilces, EAccess::CPUWrite);
 	else
 		m_GeomParticlesBuffer->Set(partilces);
@@ -104,7 +102,7 @@ EVisitResult CParticlesPass::Visit(const std::shared_ptr<IParticleSystem>& Parti
 	// Draw geom
 	SGeometryDrawArgs args;
 	args.VertexCnt = partilces.size();
-	m_Geometry->Render(pixelShader, args);
+	m_Geometry->Render(vertexShader, args);
 
 	m_GeomShaderParticlesBufferParameter->Unbind();
 

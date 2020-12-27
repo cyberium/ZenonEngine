@@ -58,7 +58,7 @@ ZN_INTERFACE ZN_API IStructuredBuffer
 	virtual ~IStructuredBuffer() {}
 
 	virtual void Copy(const IStructuredBuffer* other) = 0;
-	virtual void Set(void* data, size_t elementSize, size_t numElements) = 0;
+	virtual void Set(const void* data, size_t elementSize, size_t numElements) = 0;
 	virtual void Clear() = 0;
 
 	// Templates

@@ -84,10 +84,15 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 		OutputRenderTarget
 #endif
 	);
-	//m_MaterialModelPass->SetEnviorementTexture(skyboxPass->GetSkyboxCubeTexture());
 
-	//m_MaterialModelPassInstanced = MakeShared(CPassForward_DoRenderSceneInstanced, m_RenderDevice, m_SceneCreateTypelessListPass);
-	//m_MaterialModelPassInstanced->ConfigurePipeline(OutputRenderTarget, Viewport);
+	m_MaterialTerrainPass = MakeShared(CTerrainPass, m_RenderDevice, m_Scene);
+	m_MaterialTerrainPass->ConfigurePipeline(
+#ifdef ENABLE_HDR
+		HDRRenderTarget
+#else
+		OutputRenderTarget
+#endif
+	);
 
 
 	//
@@ -105,8 +110,8 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	//
 	Add3DPass(m_SceneCreateTypelessListPass);
 	Add3DPass(MakeShared(InvokeFunctionPass, m_RenderDevice, std::bind(&CRendererForward::DoUpdateLights, this)));
+	Add3DPass(m_MaterialTerrainPass);
 	Add3DPass(m_MaterialModelPass);
-	//AddPass(m_MaterialModelPassInstanced);
 
 
 	for (const auto& it : m_BaseManager.GetManager<IznPluginsManager>()->GetAllPlugins())
@@ -177,7 +182,6 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	// DEBUG
 	//
 	Add3DPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
-	Add3DPass(MakeShared(CTerrainPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawLightFrustumPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
@@ -203,8 +207,8 @@ void CRendererForward::DoUpdateLights()
 	{
 		SGPULightVS lightVS;
 		lightVS.Light = lightIt.Light->GetGPULightStruct();
-		lightVS.LightPositionVS                 = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightIt.SceneNode->GetLocalPosition(), 1.0f);
-		lightVS.LightDirectionVS = glm::normalize(m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightIt.SceneNode->GetLocalRotationEuler(), 0.0f));
+		lightVS.LightPositionVS                 = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(500, 300, 500/*lightIt.SceneNode->GetLocalPosition()*/, 1.0f);
+		lightVS.LightDirectionVS = glm::normalize(m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(-0.5, -0.5, -0.5/*lightIt.SceneNode->GetLocalRotationDirection()*/, 0.0f));
 		lightVS.IsEnabled = lightIt.Light->IsEnabled();
 		lightVS.IsCastShadow = lightIt.Light->IsCastShadows();
 		lightsVS.push_back(lightVS);
@@ -221,6 +225,8 @@ void CRendererForward::DoUpdateLights()
 
 	if (m_MaterialModelPass->GetLightsShaderParameter())
 		m_MaterialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
+	if (m_MaterialTerrainPass->GetLightsShaderParameter())
+		m_MaterialTerrainPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
 	//m_MaterialModelPassInstanced->GetLightsShaderParameter()->Set(m_LightsBuffer);
 }
 

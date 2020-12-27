@@ -27,7 +27,7 @@ public:
 	std::shared_ptr<IBuffer>            CreateVoidVertexBuffer(const void* data, size_t count, size_t offset, size_t stride) override;
 	std::shared_ptr<IBuffer>            CreateVoidIndexBuffer(const void* data, size_t count, size_t offset, size_t stride) override;
 	std::shared_ptr<IConstantBuffer>    CreateConstantBuffer(const void* data, size_t size) override;
-	std::shared_ptr<IStructuredBuffer>  CreateStructuredBuffer(void* data, size_t count, size_t stride, EAccess cpuAccess = EAccess::None) override;
+	std::shared_ptr<IStructuredBuffer>  CreateStructuredBuffer(const void* data, size_t count, size_t stride, EAccess cpuAccess = EAccess::None) override;
 
 	std::shared_ptr<IShader>            LoadShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros, IShaderInputLayout* _customLayout = nullptr) override;
 

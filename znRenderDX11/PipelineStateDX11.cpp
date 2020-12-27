@@ -33,7 +33,7 @@ void PipelineStateDX11::Bind()
 
 		shader->Bind();
 
-		if (shader->GetShaderType() == EShaderType::PixelShader)
+		//if (shader->GetShaderType() == EShaderType::PixelShader)
 		{
 			for (const auto& textureIt : m_Textures)
 			{
@@ -61,7 +61,7 @@ void PipelineStateDX11::UnBind()
 		const auto& shader = it.second;
 		_ASSERT(shader != nullptr);
 
-		if (shader->GetShaderType() == EShaderType::PixelShader)
+		//if (shader->GetShaderType() == EShaderType::PixelShader)
 		{
 			for (const auto& textureIt : m_Textures)
 			{

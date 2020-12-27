@@ -9,7 +9,7 @@
 // DON'T USE 'bool'!
 
 
-enum class ZN_API ELightType : uint32_t // Don't delete uint32_t becouse mapped to render
+enum class ZN_API ELightType : uint32 // Don't delete uint32_t becouse mapped to render
 {
 	Point = 0,
 	Spot,
@@ -20,23 +20,23 @@ enum class ZN_API ELightType : uint32_t // Don't delete uint32_t becouse mapped 
 struct __declspec(align(16)) ZN_API SGPULight
 {
 	SGPULight()
-		: AmbientColor(0.1f, 0.1f, 0.1f, 1.0f)
-		, Color(1.0f, 1.0f, 1.0f, 1.0f)
-		, Type(ELightType::Point)
+		: Type(ELightType::Point)
 		, Range(1000.0f)
 		, Intensity(1.0f)
 		, SpotlightAngle(45.0f)
+		, AmbientColor(0.1f, 0.1f, 0.1f, 1.0f)
+		, Color(1.0f, 1.0f, 1.0f, 1.0f)
 	{}
-
-	ColorRGBA AmbientColor;// Ambient color of the light.
-	//--------------------------------------------------------------(16 bytes )
-	ColorRGBA Color;       // Color of the light. Diffuse and specular colors are not separated.
-	//--------------------------------------------------------------(16 bytes )
 	ELightType Type; // The type of the light.
 	float Range; // The range of the light.
 	float Intensity; // The intensity of the light.
 	float SpotlightAngle; // The half angle of the spotlight cone.
 	//--------------------------------------------------------------(16 bytes )
+	ColorRGBA AmbientColor;// Ambient color of the light.
+	//--------------------------------------------------------------(16 bytes )
+	ColorRGBA Color;       // Color of the light. Diffuse and specular colors are not separated.
+	//--------------------------------------------------------------(16 bytes )
+
 };
 
 

@@ -28,22 +28,27 @@ void CSceneDefault::Initialize()
 	__super::Initialize();
 
 	// Light
-	/*{
+	{
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
 		lightNode->SetName("Light");
-		lightNode->SetTranslate(glm::vec3(-300.0f, 500.0f, -500.0f) / 3.0f);
-		lightNode->SetRotation(glm::vec3(0.5f, -0.5f, 0.5f));
+		lightNode->SetLocalPosition(glm::vec3(550.0f, 150.0f, 550.0f));
+		lightNode->SetLocalRotationDirection(glm::vec3(-0.5, -0.5f, -0.5f));
 
-		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
-		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(500.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.1f);
-		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
-	}*/
+		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
+		lightComponent->SetLight(MakeShared(CLight, GetBaseManager()));
+		lightComponent->GetLight()->SetCastShadows(true);
+		lightComponent->GetLight()->SetType(ELightType::Spot);
+		lightComponent->GetLight()->SetAmbientColor(ColorRGB(0.25f));
+		lightComponent->GetLight()->SetColor(ColorRGB(1.0f, 1.0f, 1.0f));
+		lightComponent->GetLight()->SetRange(1000.0f);
+		lightComponent->GetLight()->SetIntensity(1.0077f);
+		lightComponent->GetLight()->SetSpotlightAngle(30.0f);
+
+		lightNode->AddComponent(cSceneNodeLightComponent, lightComponent);
+	}
 
 	// Light
-	{
+	/*{
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
 		lightNode->SetName("Light2");
 		lightNode->SetLocalPosition(glm::vec3(150.0f, 150.0f, 150.0f));
@@ -60,7 +65,7 @@ void CSceneDefault::Initialize()
 		lightComponent->GetLight()->SetSpotlightAngle(30.0f);
 
 		lightNode->AddComponent(cSceneNodeLightComponent, lightComponent);
-	}
+	}*/
 
 	// Camera
 	{

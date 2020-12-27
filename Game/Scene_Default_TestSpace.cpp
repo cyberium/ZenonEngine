@@ -59,21 +59,27 @@ void CSceneDefault::Load3D()
 	// Plane
 	//--------------------------------------------------------------------------
 	{
-		const float cPlaneSize = 5240.0f;
+		const float cPlaneSize = 500.0f;
 		const float cPlaneY = 0.0f;
 
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
-		textMaterial->SetDiffuseColor(ColorRGB(0.3f, 0.3f, 1.0f));
+		textMaterial->SetDiffuseColor(ColorRGB(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularColor(ColorRGB(1.0f, 1.0f, 1.0f));
 
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_albedo.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_normal-ogl.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_ao.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_height.png"));
+
+
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
-		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
+		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreatePlane());
 
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
 		node->SetName("Ground");
-		node->SetPosition(glm::vec3(0, 0, 0));
+		//node->SetPosition(glm::vec3(0, 0, 0));
 		node->SetScale(glm::vec3(cPlaneSize, cPlaneSize, cPlaneSize));
-		node->GetComponentT<IModelComponent>()->SetModel(modelPlane);
+		//node->GetComponentT<IModelComponent>()->SetModel(modelPlane);
 		//node->GetComponent<IModelComponent>()->SetCastShadows(false);
 	}
 
@@ -105,22 +111,33 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 	// Cube Gold
 	//--------------------------------------------------------------------------
-	for (int i = 0; i < 0; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
-		textMaterial->SetSpecularFactor(32.0f);
+		textMaterial->SetSpecularFactor(64.0f);
 		textMaterial->SetBumpFactor(16.0f);
 
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("bricks//bricks2.png"));
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("bricks//bricks2_normal.png"));
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("bricks//bricks2_disp.png"));
 
-		//textMaterial->SetEnviorementMappingEnable(true);
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_albedo.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_normal-ogl.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_ao.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_height.png"));
 
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_albedo.png"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_normal-ogl.png"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_ao.png"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_height.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("aerial_grass_rock_1k_png/aerial_grass_rock_diff_1k.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("aerial_grass_rock_1k_png/aerial_grass_rock_nor_1k.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("aerial_grass_rock_1k_png/aerial_grass_rock_ao_1k.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("aerial_grass_rock_1k_png/aerial_grass_rock_disp_1k.png"));
+
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("aerial_rocks_02_1k_png/aerial_rocks_02_diff_1k.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("aerial_rocks_02_1k_png/aerial_rocks_02_nor_1k.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("aerial_rocks_02_1k_png/aerial_rocks_02_ao_1k.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("aerial_rocks_02_1k_png/aerial_rocks_02_disp_1k.png"));
+
+
+
 
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
@@ -264,11 +281,6 @@ void CSceneDefault::Load3D()
 	{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
 		node->SetName("Terrain");
-		node->SetPosition(glm::vec3(0, 0, 0));
-
-
-
-
 
 		std::shared_ptr<ITerrainComponent> terrainComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ITerrainComponent>(cSceneNodeTerrainComponent, *node);
 		node->AddComponentT<ITerrainComponent>(terrainComponent);
