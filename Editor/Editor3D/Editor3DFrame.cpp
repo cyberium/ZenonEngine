@@ -17,6 +17,8 @@ CEditor3DFrame::CEditor3DFrame(IEditor& Editor, IRenderWindow& RenderWindow)
 	m_EditedScene->AddSceneEventsListener(this);
 	m_EditedScene->Initialize();
 
+	GetEditorQtUIFrame().getMainEditor()->SetOnContexMenu(std::bind(&CEditor3DFrame::OnContextMenu, this, std::placeholders::_1, std::placeholders::_2));
+
 	GetEditorQtUIFrame().getMainEditor()->SetOnDragEnter(std::bind(&CEditor3DFrame::OnDragEnter, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	GetEditorQtUIFrame().getMainEditor()->SetOnDragMove(std::bind(&CEditor3DFrame::OnDragMove, this, std::placeholders::_1, std::placeholders::_2));
 	GetEditorQtUIFrame().getMainEditor()->SetOnDragLeave(std::bind(&CEditor3DFrame::OnDragLeave, this));

@@ -131,7 +131,7 @@ bool CImagePNG::LoadImageData(std::shared_ptr<IFile> File)
 
 	png_bytep* rowPtrs = ZN_NEW png_bytep[m_Height];
 	for (uint32 i = 0; i < m_Height; i++)
-		rowPtrs[i] = GetLine(i);
+		rowPtrs[i] = GetLineEx(i);
 
 	png_read_image(pngPtr, rowPtrs);
 
@@ -243,7 +243,7 @@ std::shared_ptr<IByteBuffer> CImagePNG::SaveToMemory()
 
 	png_bytep* rowPtrs = ZN_NEW png_bytep[image->GetHeight()];
 	for (uint32 i = 0; i < image->GetHeight(); i++)
-		rowPtrs[i] = std::dynamic_pointer_cast<CImagePNG>(image)->GetLine(i);
+		rowPtrs[i] = image->GetLineEx(i);
 
 	png_write_image(pngPtr, rowPtrs);
 

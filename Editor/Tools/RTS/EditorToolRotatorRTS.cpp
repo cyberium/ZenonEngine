@@ -120,7 +120,16 @@ void CEditorToolRotatorRTS::OnNodeSelected(const std::shared_ptr<ISceneNode> Sel
 {
 	m_RotatingNode = SelectedNode;
 	m_RotatorRoot->SetPosition(SelectedNode->GetPosition());
-	m_RotatorRoot->SetScale(glm::vec3(SelectedNode->GetComponentT<IColliderComponent>()->GetBounds().getRadius()));
+
+	glm::vec3 scale(1.0f);
+	if (auto collider = SelectedNode->GetComponentT<IColliderComponent>())
+	{
+		const auto& worldBounds = collider->GetWorldBounds();
+		if (false == worldBounds.IsInfinite())
+			scale = glm::vec3(worldBounds.getRadius());
+	}
+
+	m_RotatorRoot->SetScale(scale);
 }
 
 

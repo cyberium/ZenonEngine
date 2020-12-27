@@ -95,7 +95,9 @@ bool CModelTreeViewItem::Load()
 					loader.MakeCenterIsX0Z = true;
 				if (m_ModelFileName.find("cliffBrown") != std::string::npos)
 					loader.MakeCenterIsX0Z = true;
-				//loader.ApplyFullTransform = true;
+
+				if (m_ModelFileName.find("models_td") != std::string::npos)
+					loader.ApplyFullTransform = true;
 
 
 				std::shared_ptr<IModel> fbxModel = m_BaseManager.GetManager<IznModelsFactory>()->LoadModel(m_ModelFileName, &loader);

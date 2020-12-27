@@ -11,6 +11,7 @@ ZN_INTERFACE IMaterial;
 ZN_INTERFACE ISceneNodeComponent;
 ZN_INTERFACE ILight;
 ZN_INTERFACE IParticleSystem;
+ZN_INTERFACE ITerrain;
 // FORWARD END
 
 enum ZN_API EVisitResult : size_t
@@ -41,4 +42,5 @@ ZN_INTERFACE ZN_API IVisitor
 	virtual EVisitResult Visit(const std::shared_ptr<ISceneNodeComponent>& Component) = 0;
 	virtual EVisitResult Visit(const std::shared_ptr<ILight>& Light) = 0;
 	virtual EVisitResult Visit(const std::shared_ptr<IParticleSystem>& ParticleSystem) = 0;
+	virtual EVisitResult Visit(const std::shared_ptr<ITerrain>& Terrain) = 0;
 };

@@ -84,9 +84,10 @@ glm::vec3 CCameraComponent::GetPosition() const
 
 void CCameraComponent::SetDirection(glm::vec3 Direction)
 {
-	ISceneNode& sceneNode3D = const_cast<ISceneNode&>(GetOwnerNode());
-	sceneNode3D.SetLocalRotationEuler(Direction);
-	m_View_Dirty = true;
+	throw CException("Not implemented.");
+	//ISceneNode& sceneNode3D = const_cast<ISceneNode&>(GetOwnerNode());
+	//sceneNode3D.SetLocalRotationEuler(Direction);
+	//m_View_Dirty = true;
 }
 
 glm::vec3 CCameraComponent::GetDirection() const

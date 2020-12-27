@@ -53,3 +53,32 @@ ZN_INTERFACE ZN_API IPhysicsComponent
 
 	virtual glm::vec3 GetPhysicsPosition() const = 0;
 };
+
+
+
+
+
+
+
+ZN_INTERFACE ZN_API ITerrain
+	: public virtual IObject
+{
+	virtual ~ITerrain() {}
+
+	virtual std::shared_ptr<IGeometry> GetTerrainGeometry() const = 0;
+};
+
+
+
+
+//
+// 
+//
+ZN_INTERFACE ZN_API ITerrainComponent
+{
+	ZN_OBJECTCLASS(cSceneNodeTerrainComponent);
+
+	virtual ~ITerrainComponent() {}
+
+	virtual std::shared_ptr<ITerrain> GetTerrain() const = 0;
+};

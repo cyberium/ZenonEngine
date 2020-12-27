@@ -177,6 +177,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	// DEBUG
 	//
 	Add3DPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	Add3DPass(MakeShared(CTerrainPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawLightFrustumPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
@@ -213,7 +214,7 @@ void CRendererForward::DoUpdateLights()
 	if (m_LightsCnt == 0)
 		return;
 
-	if (lightsVS.size() > m_LightsBuffer->GetElementCount())
+	if (lightsVS.size() != m_LightsBuffer->GetElementCount())
 		m_LightsBuffer = m_RenderDevice.GetObjectsFactory().CreateStructuredBuffer(lightsVS, EAccess::CPUWrite);
 	else
 		m_LightsBuffer->Set(lightsVS);

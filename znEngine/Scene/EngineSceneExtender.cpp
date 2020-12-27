@@ -24,6 +24,8 @@
 #include "RTS/SceneNodes/SceneNodeRTSBullet.h"
 #include "RTS/SceneNodes/SceneNodeRTSTower.h"
 
+#include "RTS/Components/TerrainComponent.h"
+
 void EngineSceneTypesExtender(IBaseManager& BaseManager)
 {
 	//
@@ -163,5 +165,9 @@ void EngineSceneTypesExtender(IBaseManager& BaseManager)
 	componentsEngineCreator->AddClass(cSceneNodeCameraComponent, "CameraComponent",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
 		return MakeShared(CCameraComponent, static_cast<const IComponentCreationArgs*>(ObjectCreationArgs)->GetSceneNode());
+	});
+	componentsEngineCreator->AddClass(cSceneNodeTerrainComponent, "TerrainComponent", [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
+	{
+		return MakeShared(CTerrainComponent, static_cast<const IComponentCreationArgs*>(ObjectCreationArgs)->GetSceneNode());
 	});
 }

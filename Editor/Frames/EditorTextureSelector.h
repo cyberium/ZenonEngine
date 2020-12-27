@@ -14,6 +14,9 @@ public:
 	CEditorTextureSelector(QWidget * Parent, IEditor& Editor);
 	virtual ~CEditorTextureSelector();
 
+protected:
+	void closeEvent(QCloseEvent * event) override;
+
 private:
 	IEditor& m_Editor;
 	Ui::EditorTextureSelector m_UI;

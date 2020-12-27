@@ -149,8 +149,8 @@ void CParticlesComponent::ClearUnusedParticlesSystem()
 		const auto& particleSystem = *it;
 		if (false == particleSystem->IsEnableCreatingNewParticles() && particleSystem->GetGPUParticles().empty())
 		{
-			it = m_ParticleSystems.erase(it);
 			GetProperties()->RemoveProperty(particleSystem->GetProperties());
+			it = m_ParticleSystems.erase(it);
 			continue;
 		}
 

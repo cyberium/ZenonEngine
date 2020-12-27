@@ -21,6 +21,7 @@ public:
 	virtual EVisitResult Visit(const std::shared_ptr<ISceneNodeComponent>& Component) override;
 	virtual EVisitResult Visit(const std::shared_ptr<ILight>& light) override;
 	virtual EVisitResult Visit(const std::shared_ptr<IParticleSystem>& ParticleSystem) override;
+	virtual EVisitResult Visit(const std::shared_ptr<ITerrain>& Terrain) override;
 
 protected:
 	IScene& GetScene() const;

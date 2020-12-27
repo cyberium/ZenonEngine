@@ -134,7 +134,7 @@ bool CImageDDS::LoadRGB(const DDSURFACEDESC2& desc, std::shared_ptr<IFile> io)
 	size_t delta = filePitch - m_Stride;
 	for (uint32 i = 0; i < m_Height; i++)
 	{
-		io->readBytes(GetLine(i), m_Stride);
+		io->readBytes(GetLineEx(i), m_Stride);
 		io->seekRelative(delta);
 	}
 
@@ -192,7 +192,7 @@ bool CImageDDS::LoadDXT_Helper(std::shared_ptr<IFile> io)
 
 			// TODO: probably need some endian work here
 			uint8 *pbSrc = (uint8 *)input_buffer;
-			uint8 *pbDst = GetLine(y);
+			uint8 *pbDst = GetLineEx(y);
 
 			if (m_Width >= 4)
 			{
@@ -215,7 +215,7 @@ bool CImageDDS::LoadDXT_Helper(std::shared_ptr<IFile> io)
 		io->readBytes(input_buffer, sizeof(typename INFO::Block) * inputLine);
 		// TODO: probably need some endian work here
 		uint8 *pbSrc = (uint8 *)input_buffer;
-		uint8 *pbDst = GetLine(y);
+		uint8 *pbDst = GetLineEx(y);
 
 		if (m_Width >= 4)
 		{

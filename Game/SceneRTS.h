@@ -55,4 +55,7 @@ private:
 
 	// Tower creating
 	std::shared_ptr<ISceneNode> m_CurrentTowerNode;
+	std::vector<std::shared_ptr<ISceneNode>> m_CreatedTowers;
+
+	// Selection
 };

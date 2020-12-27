@@ -48,16 +48,7 @@ std::shared_ptr<ISceneNode> CTowersStorage::CreateTower(const std::string& Tower
 	std::shared_ptr<ISceneNode> sceneNode = m_BaseManager.GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNodeFactory>()->LoadSceneNode3DXML(firstXMLChild, Scene);
 	sceneNode->MakeMeOrphan();
 
-	std::shared_ptr<ISceneNodeRTSTower> towerNode = nullptr;
-	for (const auto& child : sceneNode->GetChilds())
-	{
-		if (auto childAsRTSTower = std::dynamic_pointer_cast<ISceneNodeRTSTower>(child))
-		{
-			towerNode = childAsRTSTower;
-			break;
-		}
-	}
-
+	std::shared_ptr<ISceneNodeRTSTower> towerNode = std::dynamic_pointer_cast<ISceneNodeRTSTower>(sceneNode);
 
 	towerNode->SetAttackDamageMin(towersIt->AttackDamageMin);
 	towerNode->SetAttackDamageMax(towersIt->AttackDamageMax);

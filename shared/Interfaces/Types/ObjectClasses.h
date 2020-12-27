@@ -67,3 +67,4 @@ const ObjectClass cSceneNodePortalsComponent    = UINT16_MAX - 506u;
 const ObjectClass cSceneNodeLightComponent      = UINT16_MAX - 507u;
 const ObjectClass cSceneNodeCameraComponent     = UINT16_MAX - 508u;
 const ObjectClass cSceneNodeAnimationComponent  = UINT16_MAX - 509u;
+const ObjectClass cSceneNodeTerrainComponent    = UINT16_MAX - 510u;

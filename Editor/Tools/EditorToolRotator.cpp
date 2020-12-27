@@ -169,7 +169,16 @@ void CEditorToolRotator::OnNodeSelected(const std::shared_ptr<ISceneNode> Select
 	m_RotatingNode = SelectedNode;
 	m_RotatorRoot->SetPosition(SelectedNode->GetPosition());
 	m_RotatorRoot->SetRotationQuaternion(SelectedNode->GetRotationQuaternion());
-	m_RotatorRoot->SetScale(glm::vec3(SelectedNode->GetComponentT<IColliderComponent>()->GetBounds().getRadius()));
+
+	glm::vec3 scale(1.0f);
+	if (auto collider = SelectedNode->GetComponentT<IColliderComponent>())
+	{
+		const auto& worldBounds = collider->GetWorldBounds();
+		if (false == worldBounds.IsInfinite())
+			scale = glm::vec3(worldBounds.getRadius());
+	}
+
+	m_RotatorRoot->SetScale(scale);
 }
 
 

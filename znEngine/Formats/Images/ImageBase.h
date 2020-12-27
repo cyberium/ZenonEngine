@@ -20,15 +20,19 @@ public:
 	uint32 GetBitsPerPixel() const override;
 	uint32 GetStride() const override;
 	bool IsTransperent() const override;
+
 	const uint8* GetData() const override;
+	uint8* GetDataEx() override;
+
+	const uint8* GetLine(uint32 Line) const override;
+	uint8* GetLineEx(uint32 Line) override;
+
 	size_t GetDataSize() const override;
 	void Resize(uint32 NewWidth, uint32 NewHeight) override;
-	uint8* GetDataEx() override;
+	
 	std::shared_ptr<IImage> ConvertAnyTo32Bit() override;
 	std::shared_ptr<IByteBuffer> SaveToMemory() override;
 
-protected:
-	uint8* GetLine(uint32 Line) const;
 
 protected:
 	uint32 m_Width;

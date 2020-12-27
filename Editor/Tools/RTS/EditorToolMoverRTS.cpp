@@ -154,7 +154,16 @@ void CEditorToolMoverRTS::OnNodeSelected(const std::shared_ptr<ISceneNode> Selec
 {
 	m_MovingNode = SelectedNode;
 	m_MoverRoot->SetPosition(SelectedNode->GetPosition());
-	m_MoverRoot->SetScale(glm::vec3(SelectedNode->GetComponentT<IColliderComponent>()->GetBounds().getRadius() / 50.0f));
+
+	glm::vec3 scale(1.0f);
+	if (auto collider = SelectedNode->GetComponentT<IColliderComponent>())
+	{
+		const auto& worldBounds = collider->GetWorldBounds();
+		if (false == worldBounds.IsInfinite())
+			scale = glm::vec3(worldBounds.getRadius());
+	}
+
+	m_MoverRoot->SetScale(scale / 50.0f);
 }
 
 

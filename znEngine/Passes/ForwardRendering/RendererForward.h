@@ -6,6 +6,8 @@
 #include "PassForward_DoRenderScene.h"
 #include "PassForward_DoRenderSceneInstanced.h"
 #include "../RTSGround_Pass.h"
+#include "../TerrainPass.h"
+
 
 class ZN_API CRendererForward
 	: public RendererBase

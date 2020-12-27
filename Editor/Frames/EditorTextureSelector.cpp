@@ -13,3 +13,13 @@ CEditorTextureSelector::CEditorTextureSelector(QWidget * Parent, IEditor& Editor
 CEditorTextureSelector::~CEditorTextureSelector()
 {
 }
+
+
+
+//
+// Protected
+//
+void CEditorTextureSelector::closeEvent(QCloseEvent * event)
+{
+	Log::Error("Closed");
+}

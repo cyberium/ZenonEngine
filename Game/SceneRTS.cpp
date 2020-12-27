@@ -42,7 +42,8 @@ void CSceneRTS::Initialize()
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
 		lightNode->SetName("Light");
 		lightNode->SetLocalPosition(glm::vec3(150.0f, 150.0f, 150.0f));
-		lightNode->SetLocalRotationEuler(glm::vec3(-45.0f, -75.0f, -45.0f));
+		lightNode->SetLocalRotationEuler(glm::vec3(225.0f, -45.0f, 0.0f));
+		//lightNode->SetLocalRotationDirection(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
 		lightComponent->SetLight(MakeShared(CLight, GetBaseManager()));
@@ -216,20 +217,37 @@ void CSceneRTS::OnUpdate(UpdateEventArgs & e)
 
 bool CSceneRTS::OnMousePressed(const MouseButtonEventArgs& e, const Ray& RayToWorld)
 {
-	if (e.Button == MouseButton::Left)
+	if (m_CurrentTowerNode != nullptr)
 	{
-		CreateTower();
+		if (e.Button == MouseButton::Left)
+		{
+			CreateTower();
+			return true;
+		}
+		else if (e.Button == MouseButton::Right)
+		{
+			CancelTower();
+			return true;
+		}
 	}
-	else if (e.Button == MouseButton::Right)
+	else
 	{
-		CancelTower();
+
 	}
+
 	return __super::OnMousePressed(e, RayToWorld);
 }
 
 void CSceneRTS::OnMouseMoved(const MouseMotionEventArgs& e, const Ray & RayToWorld)
 {
-	MoveTower(RayToWorld);
+	if (m_CurrentTowerNode != nullptr)
+	{
+		MoveTower(RayToWorld);
+	}
+	else
+	{
+
+	}
 
 	__super::OnMouseMoved(e, RayToWorld);
 }
@@ -264,123 +282,10 @@ void CSceneRTS::CreateUnitsModels()
 		wave0.IndervalMS = 1500;
 		m_RTSWaves.push_back(wave0);
 	}
-
-	/*
-	{
-		SRTSWave wave0;
-		wave0.Model = m_UnitsStorage->GetModel(0); // CreateUnitModel("Toon_RTS/models/WK_archer.FBX", "Toon_RTS/animation/archer/WK_archer_03_run.FBX", "Toon_RTS/animation/archer/WK_archer_10_death_A.FBX");
-		wave0.Count = 2;
-		wave0.IndervalMS = 3500;
-		m_RTSWaves.push_back(wave0);
-	}
-
-	{
-		SRTSWave wave1;
-		wave1.Model = m_UnitsStorage->GetModel(1); //CreateUnitModel("Toon_RTS/models/WK_catapult.FBX", "Toon_RTS/animation/catapult/WK_catapult_02_move.FBX", "Toon_RTS/animation/catapult/WK_catapult_04_death.FBX");
-		wave1.Count = 2;
-		wave1.IndervalMS = 3500;
-		m_RTSWaves.push_back(wave1);
-	}
-
-	{
-		SRTSWave wave2;
-		wave2.Model = m_UnitsStorage->GetModel(2); //CreateUnitModel("Toon_RTS/models/WK_cavalry.FBX", "Toon_RTS/animation/cavalry/WK_cavalry_sword_02_walk.FBX", "Toon_RTS/animation/cavalry/WK_cavalry_sword_09_death_A.FBX");
-		wave2.Count = 2;
-		wave2.IndervalMS = 3500;
-		m_RTSWaves.push_back(wave2);
-	}
-
-	{
-		SRTSWave wave3;
-		wave3.Model = m_UnitsStorage->GetModel(3); //CreateUnitModel("Toon_RTS/models/WK_heavy_infantry.FBX", "Toon_RTS/animation/heavy_infantry/WK_heavy_infantry_03_run.FBX", "Toon_RTS/animation/heavy_infantry/WK_heavy_infantry_09_death_A.FBX");
-		wave3.Count = 2;
-		wave3.IndervalMS = 3500;
-		m_RTSWaves.push_back(wave3);
-	}
-
-	{
-		SRTSWave wave4;
-		wave4.Model = m_UnitsStorage->GetModel(4); //CreateUnitModel("Toon_RTS/models/WK_worker.FBX", "Toon_RTS/animation/worker/WK_worker_03_run.FBX", "Toon_RTS/animation/worker/WK_worker_05_death_A.FBX");
-		wave4.Count = 2;
-		wave4.IndervalMS = 3500;
-		m_RTSWaves.push_back(wave4);
-	}*/
-}
-
-std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::string RunAnimationName, std::string DeathAnimationName)
-{
-	auto filesManager = GetBaseManager().GetManager<IFilesManager>();
-
-	auto fileNameStruct = Utils::SplitFilename(ModelName);
-	auto existingXMLModel = fileNameStruct.NameWithoutExtension + ".znxmdl";
-	if (filesManager->IsFileExists(existingXMLModel))
-		return GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(existingXMLModel);
-
-	CznFBXLoaderParams fbxLoaderParams;
-	fbxLoaderParams.TexturesPathRoot = "Toon_RTS/models/textures/";
-	fbxLoaderParams.OverrideTextureByMaterial["WK_StandardUnits_Blue"] = "WK_StandardUnits_Blue.png";
-	fbxLoaderParams.OverrideTextureByMaterial["WK_Horse"] = "WK_Horse_A.png";
-
-	auto fbxModelsLoader = GetBaseManager().GetManager<IznModelsFactory>()->GetLoaderForModel("fbx");
-	_ASSERT(fbxModelsLoader != nullptr);
-	auto fbxSceneLoader = std::dynamic_pointer_cast<IFBXSceneLoader>(fbxModelsLoader);
-	_ASSERT(fbxSceneLoader != nullptr);
-
-	// Original skeleton
-	std::shared_ptr<IFile> modelFile = filesManager->Open(ModelName);
-	auto originalSkeletonModel = fbxSceneLoader->LoadScene(modelFile, &fbxLoaderParams)->MergeModels();
-	
-	// Fix materials
-	for (const auto& connection : originalSkeletonModel->GetConnections())
-	{
-		std::dynamic_pointer_cast<MaterialModel>(connection.Material)->SetDiffuseColor(ColorRGB(1.0f));
-		std::dynamic_pointer_cast<MaterialModel>(connection.Material)->SetDiffuseFactor(1.0f);
-	}
-
-	// Animated skeleton
-	std::shared_ptr<IFile> animationFile = filesManager->Open(RunAnimationName);
-	auto animatedSkeletonModel = fbxSceneLoader->LoadScene(animationFile, &fbxLoaderParams)->MergeModels();
-	for (const auto& anim : animatedSkeletonModel->GetAnimations())
-		originalSkeletonModel->AddAnimation("run", anim.second);
-
-	auto animatedSkeletonModel2 = fbxSceneLoader->LoadScene(DeathAnimationName, &fbxLoaderParams)->MergeModels();
-	for (const auto& anim : animatedSkeletonModel2->GetAnimations())
-		originalSkeletonModel->AddAnimation("death", anim.second);
-
-	std::shared_ptr<IFile> modelResult = nullptr;
-
-	{
-		std::string znmdlFilename = modelFile->Name_NoExtension() + ".znmdl";
-		auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(originalSkeletonModel, znmdlFilename);
-		znMdlFile->Save();
-
-		//modelResult = znMdlFile;
-	}
-
-	{
-		std::string znxmdlFilename = modelFile->Name_NoExtension() + ".znxmdl";
-		auto znMdlXMLFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(originalSkeletonModel, znxmdlFilename);
-		znMdlXMLFile->Save();
-
-		modelResult = znMdlXMLFile;
-	}
-
-	try
-	{
-		return GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(modelResult);
-	}
-	catch (const CException& e)
-	{
-		Log::Error("Error while loading converted model.");
-		Log::Error("--->%s", e.MessageCStr());
-		throw;
-	}
 }
 
 void CSceneRTS::CreateUnit()
 {
-
-
 	const auto& currentWave = m_RTSWaves.at(m_RTSCurrentWave);
 
 	auto newRTSUnit = CreateSceneNodeCast<ISceneNodeRTSUnit>(cSceneNodeRTSUnit);
@@ -403,10 +308,8 @@ void CSceneRTS::CreateUnit()
 
 void CSceneRTS::CreateTower()
 {
-	if (m_CurrentTowerNode == nullptr)
-		return;
-
 	auto createdTower = std::dynamic_pointer_cast<ISceneNode>(m_CurrentTowerNode->Copy());
+	m_CreatedTowers.push_back(createdTower);
 
 	m_CurrentTowerNode->MakeMeOrphan();
 	m_CurrentTowerNode.reset();
@@ -414,9 +317,6 @@ void CSceneRTS::CreateTower()
 
 void CSceneRTS::CancelTower()
 {
-	if (m_CurrentTowerNode == nullptr)
-		return;
-
 	m_CurrentTowerNode->MakeMeOrphan();
 	m_CurrentTowerNode.reset();
 }

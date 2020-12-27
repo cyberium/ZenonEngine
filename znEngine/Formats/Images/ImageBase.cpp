@@ -64,10 +64,43 @@ const uint8* CImageBase::GetData() const
 	return m_Data.data();
 }
 
+uint8* CImageBase::GetDataEx()
+{
+	return m_Data.data();
+}
+
+
+const uint8* CImageBase::GetLine(uint32 Line) const
+{
+	if (m_Data.empty())
+		throw CException("Data is empty.");
+
+	if (Line >= m_Height)
+		throw CException("Line '%d' is bigger then height '%d'.", Line, m_Height);
+
+	return (const uint8*)m_Data.data() + (Line * m_Stride);
+}
+
+uint8* CImageBase::GetLineEx(uint32 Line)
+{
+	if (m_Data.empty())
+		throw CException("Data is empty.");
+
+	if (Line >= m_Height)
+		throw CException("Line '%d' is bigger then height '%d'.", Line, m_Height);
+
+	return (uint8*)m_Data.data() + (Line * m_Stride);
+}
+
+
+
 size_t CImageBase::GetDataSize() const
 {
 	return m_Stride * GetHeight();
 }
+
+
+
 
 void CImageBase::Resize(uint32 NewWidth, uint32 NewHeight)
 {
@@ -122,10 +155,7 @@ void CImageBase::Resize(uint32 NewWidth, uint32 NewHeight)
 
 }
 
-uint8* CImageBase::GetDataEx()
-{
-	return m_Data.data();
-}
+
 
 #define FI_RGBA_RED				0
 #define FI_RGBA_GREEN			1
@@ -144,7 +174,7 @@ std::shared_ptr<IImage> CImageBase::ConvertAnyTo32Bit()
 	for (uint32 rows = 0; rows < m_Height; rows++)
 	{
 		const uint8* sourceLine = GetLine(rows);
-		uint8* destLine = destImage->GetLine(rows);
+		uint8* destLine = destImage->GetLineEx(rows);
 
 		for (uint32 cols = 0; cols < m_Width; cols++)
 		{
@@ -168,20 +198,4 @@ std::shared_ptr<IImage> CImageBase::ConvertAnyTo32Bit()
 std::shared_ptr<IByteBuffer> CImageBase::SaveToMemory()
 {
 	throw CException("Not implemented.");
-}
-
-
-
-//
-// Protected
-//
-uint8* CImageBase::GetLine(uint32 Line) const
-{
-	if (m_Data.empty())
-		throw CException("Data is empty.");
-
-	if (Line >= m_Height)
-		throw CException("Line '%d' is bigger then height '%d'.", Line, m_Height);
-
-	return (uint8*)m_Data.data() + (Line * m_Stride);
 }

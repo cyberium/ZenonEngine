@@ -11,24 +11,20 @@ CLightComponent::CLightComponent(const ISceneNode& OwnerNode)
 {
 	GetProperties()->SetName("LightComponent");
 
-	std::shared_ptr<CPropertyWrapped<ColorRGB>> ambientColor = MakeShared(CPropertyWrapped<ColorRGB>, "AmbientColor", "descr", ColorRGB(0.2f));
-	ambientColor->SetValueSetter(std::bind(&ILight::SetAmbientColor, m_Light, std::placeholders::_1));
-	ambientColor->SetValueGetter(std::bind(&ILight::GetAmbientColor, m_Light));
+	/*std::shared_ptr<CPropertyWrapped<ColorRGB>> ambientColor = MakeShared(CPropertyWrapped<ColorRGB>, "AmbientColor", "descr", ColorRGB(0.2f));
+	ambientColor->SetValueSetter(std::bind(&ILight::SetAmbientColor, GetLight(), std::placeholders::_1));
+	ambientColor->SetValueGetter(std::bind(&ILight::GetAmbientColor, GetLight()));
 	GetProperties()->AddProperty(ambientColor);
 
 	std::shared_ptr<CPropertyWrapped<ColorRGB>> diffuseColor = MakeShared(CPropertyWrapped<ColorRGB>, "DiffuseColor", "descr", ColorRGB(1.0f));
-	diffuseColor->SetValueSetter(std::bind(&ILight::SetColor, m_Light, std::placeholders::_1));
-	diffuseColor->SetValueGetter(std::bind(&ILight::GetColor, m_Light));
+	diffuseColor->SetValueSetter(std::bind(&ILight::SetColor, GetLight(), std::placeholders::_1));
+	diffuseColor->SetValueGetter(std::bind(&ILight::GetColor, GetLight()));
 	GetProperties()->AddProperty(diffuseColor);
 
 	std::shared_ptr<CPropertyWrapped<float>> range = MakeShared(CPropertyWrapped<float>, "Range", "descr", 1000.0f);
-	range->SetValueSetter(std::bind(&ILight::SetRange, m_Light, std::placeholders::_1));
-	range->SetValueGetter(std::bind(&ILight::GetRange, m_Light));
-	GetProperties()->AddProperty(range);
-
-	glm::vec4 a, b;
-
-	a * b;
+	range->SetValueSetter(std::bind(&ILight::SetRange, GetLight(), std::placeholders::_1));
+	range->SetValueGetter(std::bind(&ILight::GetRange, GetLight()));
+	GetProperties()->AddProperty(range);*/
 }
 
 CLightComponent::~CLightComponent()
@@ -46,7 +42,7 @@ void CLightComponent::SetLight(std::shared_ptr<ILight> Light)
 	m_Light = Light;
 
 	std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetPosition(GetOwnerNode().GetLocalPosition());
-	std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetRotation(GetOwnerNode().GetLocalRotationEuler());
+	std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetRotation(GetOwnerNode().GetLocalRotationDirection());
 }
 
 std::shared_ptr<ILight> CLightComponent::GetLight() const
@@ -64,7 +60,7 @@ void CLightComponent::OnMessage(const ISceneNodeComponent * Component, Component
 	if (Message == UUID_OnWorldTransformChanged)
 	{
 		std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetPosition(GetOwnerNode().GetLocalPosition());
-		std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetRotation(GetOwnerNode().GetLocalRotationEuler());
+		std::dynamic_pointer_cast<ILightInternal>(m_Light)->SetRotation(GetOwnerNode().GetLocalRotationDirection());
 	}
 }
 

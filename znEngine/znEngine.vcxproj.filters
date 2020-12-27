@@ -106,6 +106,9 @@
     <Filter Include="Passes\Debug">
       <UniqueIdentifier>{77860b93-43be-46f5-bd1e-057836c9a656}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RTS\Components">
+      <UniqueIdentifier>{0b897560-a853-4b79-b0f8-03b4f2628094}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -386,6 +389,15 @@
       <Filter>Passes\Debug</Filter>
     </ClCompile>
     <ClCompile Include="ApplicationBase.cpp" />
+    <ClCompile Include="RTS\Components\TerrainComponent.cpp">
+      <Filter>RTS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\TerrainPass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="RTS\Components\Terrain.cpp">
+      <Filter>RTS\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -676,6 +688,15 @@
       <Filter>Passes\Debug</Filter>
     </ClInclude>
     <ClInclude Include="ApplicationBase.h" />
+    <ClInclude Include="RTS\Components\TerrainComponent.h">
+      <Filter>RTS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\TerrainPass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="RTS\Components\Terrain.h">
+      <Filter>RTS\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Formats\Images\DDSFormat.inl">

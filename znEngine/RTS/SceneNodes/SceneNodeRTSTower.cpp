@@ -9,6 +9,7 @@
 
 namespace
 {
+	const glm::vec3 cAttackPointDefault = glm::vec3(0.0f, 0.0f, 0.0f);
 	const float cAttackDamageMinDefault = 2.0f;
 	const float cAttackDamageMaxDefault = 4.0f;
 	const float cAttackSpeedDefault = 60.0f;
@@ -17,6 +18,7 @@ namespace
 
 CSceneNodeRTSTower::CSceneNodeRTSTower(IScene & Scene)
 	: CSceneNode(Scene)
+	, m_AttackPoint(cAttackPointDefault)
 	, m_AttackDamageMin(cAttackDamageMinDefault)
 	, m_AttackDamageMax(cAttackDamageMaxDefault)
 	, m_AttackSpeed(cAttackSpeedDefault)
@@ -27,6 +29,12 @@ CSceneNodeRTSTower::CSceneNodeRTSTower(IScene & Scene)
 	// Unit properties
 	{
 		auto towerPropsGroup = MakeShared(CPropertiesGroup, "Tower", "descr");
+		GetProperties()->AddProperty(towerPropsGroup);
+
+		auto attackPoint = MakeShared(CPropertyWrapped<glm::vec3>, "AttackPoint", "descr", cAttackPointDefault);
+		attackPoint->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackPoint, this, std::placeholders::_1));
+		attackPoint->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackPoint, this));
+		towerPropsGroup->AddProperty(attackPoint);
 
 		auto attackDamageMin = MakeShared(CPropertyWrapped<float>, "AttackDamageMin", "descr", cAttackDamageMinDefault);
 		attackDamageMin->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackDamageMin, this, std::placeholders::_1));
@@ -47,8 +55,6 @@ CSceneNodeRTSTower::CSceneNodeRTSTower(IScene & Scene)
 		AttackRange->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackRange, this, std::placeholders::_1));
 		AttackRange->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackRange, this));
 		towerPropsGroup->AddProperty(AttackRange);
-
-		GetProperties()->AddProperty(towerPropsGroup);
 	}
 }
 
@@ -60,6 +66,16 @@ CSceneNodeRTSTower::~CSceneNodeRTSTower()
 //
 // ISceneNodeRTSTower 
 //
+void CSceneNodeRTSTower::SetAttackPoint(glm::vec3 AttackPoint)
+{
+	m_AttackPoint = AttackPoint;
+}
+
+glm::vec3 CSceneNodeRTSTower::GetAttackPoint() const
+{
+	return m_AttackPoint;
+}
+
 void CSceneNodeRTSTower::SetAttackDamageMin(float AttackDamageMin)
 {
 	m_AttackDamageMin = AttackDamageMin;
@@ -122,7 +138,7 @@ void CSceneNodeRTSTower::Update(const UpdateEventArgs & e)
 		return;
 
 	auto bullet = GetScene().CreateSceneNodeCast<ISceneNodeRTSBullet>(cSceneNodeRTSBullet);
-	bullet->SetPosition(GetPosition());
+	bullet->SetPosition(GetWorldTransfom() * glm::vec4(GetAttackPoint(), 1.0f));
 	bullet->SetTarget(currentTarget);
 
 	m_LastAttackTime = e.TotalTime;

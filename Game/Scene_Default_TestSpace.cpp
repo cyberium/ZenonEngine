@@ -153,6 +153,7 @@ void CSceneDefault::Load3D()
 	}*/
 
 	
+	/*
 	auto unitsStorage = MakeShared(CUnitsStorage, GetBaseManager());
 
 	{
@@ -174,7 +175,7 @@ void CSceneDefault::Load3D()
 		node->GetComponentT<IModelComponent>()->SetModel(unitsStorage->GetModel(0));
 		//node->GetComponentT<IModelComponent>()->PlayAnimation("idle", true);
 	}
-
+	*/
 	
 
 	/*{
@@ -256,4 +257,20 @@ void CSceneDefault::Load3D()
 		node->GetComponentT<IModelComponent>()->SetModel(znMdlFile);
 		//node->GetComponentT<IModelComponent>()->PlayAnimation("run", true);
 	}*/
+
+	//--------------------------------------------------------------------------
+	// Terrain
+	//--------------------------------------------------------------------------
+	{
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
+		node->SetName("Terrain");
+		node->SetPosition(glm::vec3(0, 0, 0));
+
+
+
+
+
+		std::shared_ptr<ITerrainComponent> terrainComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ITerrainComponent>(cSceneNodeTerrainComponent, *node);
+		node->AddComponentT<ITerrainComponent>(terrainComponent);
+	}
 }

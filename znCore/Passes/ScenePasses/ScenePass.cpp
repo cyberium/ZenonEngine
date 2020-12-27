@@ -59,6 +59,11 @@ EVisitResult ScenePass::Visit(const std::shared_ptr<IParticleSystem>& ParticleSy
 	return EVisitResult::Block;
 }
 
+EVisitResult ScenePass::Visit(const std::shared_ptr<ITerrain>& Terrain)
+{
+	return EVisitResult::Block;
+}
+
 
 
 //
