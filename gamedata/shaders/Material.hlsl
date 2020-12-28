@@ -126,15 +126,6 @@ float2 DoDisplacementMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv, 
 		currentLayerDepth += layerDepth;
 	}
 	
-	/*uint iter = 0u;
-	while (currentLayerDepth < currentDepthMapValue)
-	{
-
-		
-		if (iter++ > DISPLACEMENT_LAYERS_COUNT)
-			break;
-	}*/
-
 	// находим текстурные координаты перед найденной точкой пересечения, т.е. делаем "шаг назад"
 	float2 prevTexCoords = currentTexCoords + deltaTexCoords;
 

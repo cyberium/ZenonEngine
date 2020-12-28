@@ -65,15 +65,15 @@ void CSceneNode::Initialize()
 		m_RotationEulerAnglesProperty->SetValueGetter(std::bind(&CSceneNode::GetLocalRotationEuler, this));
 		propertiesGroup->AddProperty(m_RotationEulerAnglesProperty);
 
-		//m_RotationQuaternionProperty = MakeShared(CPropertyWrappedQuat, "RotationQuat", "TODO", glm::quat(0.0f, 0.0f, 0.0f, 1.0f));
-		//m_RotationQuaternionProperty->SetValueSetter(std::bind(&CSceneNode::SetRotationQuaternion, this, std::placeholders::_1));
-		//m_RotationQuaternionProperty->SetValueGetter(std::bind(&CSceneNode::GetRotationQuaternion, this));
-		//propertiesGroup->AddProperty(m_RotationQuaternionProperty);
+		m_RotationQuaternionProperty = MakeShared(CPropertyWrappedQuat, "RotationQuat", "TODO", glm::quat(0.0f, 0.0f, 0.0f, 1.0f));
+		m_RotationQuaternionProperty->SetValueSetter(std::bind(&CSceneNode::SetRotationQuaternion, this, std::placeholders::_1));
+		m_RotationQuaternionProperty->SetValueGetter(std::bind(&CSceneNode::GetRotationQuaternion, this));
+		propertiesGroup->AddProperty(m_RotationQuaternionProperty);
 
-		//m_RotationDirectionProperty = MakeShared(CPropertyWrappedVec3, "RotationDir", "TODO", glm::vec3(1.0f, 0.0f, 0.0f));
-		//m_RotationDirectionProperty->SetValueSetter(std::bind(&CSceneNode::SetLocalRotationDirection, this, std::placeholders::_1));
-		//m_RotationDirectionProperty->SetValueGetter(std::bind(&CSceneNode::GetLocalRotationDirection, this));
-		//propertiesGroup->AddProperty(m_RotationDirectionProperty);
+		m_RotationDirectionProperty = MakeShared(CPropertyWrappedVec3, "RotationDir", "TODO", glm::vec3(1.0f, 0.0f, 0.0f));
+		m_RotationDirectionProperty->SetValueSetter(std::bind(&CSceneNode::SetLocalRotationDirection, this, std::placeholders::_1));
+		m_RotationDirectionProperty->SetValueGetter(std::bind(&CSceneNode::GetLocalRotationDirection, this));
+		propertiesGroup->AddProperty(m_RotationDirectionProperty);
 
 		m_ScaleProperty = MakeShared(CPropertyWrappedVec3, "Scale", "TODO", glm::vec3(1.0f));
 		m_ScaleProperty->SetValueSetter(std::bind(&CSceneNode::SetLocalScale, this, std::placeholders::_1));

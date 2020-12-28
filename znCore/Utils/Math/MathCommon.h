@@ -63,6 +63,14 @@ inline glm::vec3 DecomposeScaleMatrix(const glm::mat4& Matrix)
 	return scale;
 }
 
+inline glm::vec3 QuatToEuler(const glm::quat& Quat)
+{
+	float yaw, pitch, roll;
+	glm::extractEulerAngleXYZ(glm::toMat4(Quat), yaw, pitch, roll);
+
+	return glm::vec3(yaw, pitch, roll);
+}
+
 
 
 inline glm::vec3 Fix_X0Z(const glm::vec3& _vec)

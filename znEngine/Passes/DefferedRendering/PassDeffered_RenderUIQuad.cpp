@@ -118,10 +118,8 @@ void CPassDeffered_RenderUIQuad::FillLightParamsForCurrentIteration(const Render
 
 	// GPULightVS
 	lightResult.Light = LightElement.Light->GetGPULightStruct();
-	//lightResult.LightPositionVS =                 camera->GetViewMatrix() * glm::vec4(LightElement.SceneNode->GetPosition(), 1.0f);
-	//lightResult.LightDirectionVS = glm::normalize(camera->GetViewMatrix() * glm::vec4(LightElement.SceneNode->GetLocalRotationEuler(), 0.0f));
-	lightResult.LightPositionVS = camera->GetViewMatrix() * glm::vec4(500, 100, 500/*lightIt.SceneNode->GetLocalPosition()*/, 1.0f);
-	lightResult.LightDirectionVS = glm::normalize(camera->GetViewMatrix() * glm::vec4(-0.5, -0.5, -0.5/*lightIt.SceneNode->GetLocalRotationDirection()*/, 0.0f));
+	lightResult.LightPositionVS =                 camera->GetViewMatrix() * glm::vec4(LightElement.SceneNode->GetPosition(), 1.0f);
+	lightResult.LightDirectionVS = glm::normalize(camera->GetViewMatrix() * glm::vec4(LightElement.SceneNode->GetLocalRotationDirection(), 0.0f));
 	lightResult.IsEnabled = LightElement.Light->IsEnabled();
 	lightResult.IsCastShadow = LightElement.Light->IsCastShadows();
 

@@ -98,14 +98,14 @@ void CSceneNode::SetLocalRotationEuler(glm::vec3 Rotation)
 	// Rotation (quaternion)
 	glm::vec3 rotationEulerRadians = glm::radians(Rotation);
 	m_RotationQuaternion = glm::toQuat(glm::eulerAngleXYZ(rotationEulerRadians.x, rotationEulerRadians.y, rotationEulerRadians.z));
-	//m_RotationQuaternionProperty->RaiseValueChangedCallback();
+	m_RotationQuaternionProperty->RaiseValueChangedCallback();
 
 	// Rotation (direction)
 	m_RotationDirection.x = glm::cos(rotationEulerRadians.x) * glm::cos(rotationEulerRadians.y); // y
 	m_RotationDirection.y = glm::sin(rotationEulerRadians.y);                                    // z
 	m_RotationDirection.z = glm::sin(rotationEulerRadians.x) * glm::cos(rotationEulerRadians.y); // x
 	m_RotationDirection = glm::normalize(m_RotationDirection);
-	//m_RotationDirectionProperty->RaiseValueChangedCallback();
+	m_RotationDirectionProperty->RaiseValueChangedCallback();
 
 	UpdateLocalTransform();
 }
@@ -119,20 +119,20 @@ void CSceneNode::SetLocalRotationQuaternion(glm::quat Rotation)
 {
 	// Rotation (eulerAngles)
 	//glm::quat conjurated = glm::conjugate(Rotation);
-	glm::vec3 rotationEuler = glm::eulerAngles(Rotation);
+	glm::vec3 rotationEuler = QuatToEuler(Rotation);
 	m_RotationEulerAngles = glm::degrees(rotationEuler);
 	m_RotationEulerAnglesProperty->RaiseValueChangedCallback();
 
 	// Rotation (quaternion)
 	m_RotationQuaternion = Rotation;
-	//m_RotationQuaternionProperty->RaiseValueChangedCallback();
+	m_RotationQuaternionProperty->RaiseValueChangedCallback();
 
 	// Rotation (direction)
 	m_RotationDirection.x = glm::cos(rotationEuler.x) * glm::cos(rotationEuler.y); // y
 	m_RotationDirection.y = glm::sin(rotationEuler.y);                             // z
 	m_RotationDirection.z = glm::sin(rotationEuler.x) * glm::cos(rotationEuler.y); // x
 	m_RotationDirection = glm::normalize(m_RotationDirection);
-	//m_RotationDirectionProperty->RaiseValueChangedCallback();
+	m_RotationDirectionProperty->RaiseValueChangedCallback();
 
 	UpdateLocalTransform();
 }
@@ -149,18 +149,20 @@ void CSceneNode::SetLocalRotationDirection(glm::vec3 Direction)
 	glm::quat lootAtQuat = glm::conjugate(glm::toQuat(glm::lookAt(glm::vec3(0.0f), normalizedDirection, glm::vec3(0.0f, 1.0f, 0.0f))));
 
 	// Rotation (eulerAngles)
-	glm::vec3 rotationEuler = glm::eulerAngles(lootAtQuat);
+	glm::vec3 rotationEuler = QuatToEuler(lootAtQuat);
 	m_RotationEulerAngles = glm::degrees(rotationEuler);
 	m_RotationEulerAnglesProperty->RaiseValueChangedCallback();
 
 	// Rotation (quaternion)
 	m_RotationQuaternion = lootAtQuat;
-	//m_RotationQuaternionProperty->RaiseValueChangedCallback();
+	m_RotationQuaternionProperty->RaiseValueChangedCallback();
 
 	// Rotation (direction)
-	m_RotationDirection = Direction; 
+	m_RotationDirection.x = glm::cos(rotationEuler.x) * glm::cos(rotationEuler.y); // y
+	m_RotationDirection.y = glm::sin(rotationEuler.y);                             // z
+	m_RotationDirection.z = glm::sin(rotationEuler.x) * glm::cos(rotationEuler.y); // x
 	m_RotationDirection = glm::normalize(m_RotationDirection);
-	//m_RotationDirectionProperty->RaiseValueChangedCallback();
+	m_RotationDirectionProperty->RaiseValueChangedCallback();
 
 	UpdateLocalTransform();
 }
@@ -192,30 +194,27 @@ void CSceneNode::SetLocalTransform(const glm::mat4& localTransform)
 	glm::vec3 scale;
 	glm::quat rotationQuat;
 	glm::vec3 position;
-	glm::vec3 skew;
-	glm::vec4 perspective;
-	if (false == glm::decompose(m_LocalTransform, scale, rotationQuat, position, skew, perspective))
-		throw CException("Unable to decompose local transform.");
+	DecomposeMatrix(m_LocalTransform, &position, &rotationQuat, &scale);
 
 	// Position
 	m_LocalPosition = position;
 	m_LocalPositionProperty->RaiseValueChangedCallback();
 
 	// Rotation (eulerAngles)
-	glm::vec3 rotationEuler = glm::eulerAngles(rotationQuat);
+	glm::vec3 rotationEuler = QuatToEuler(rotationQuat);
 	m_RotationEulerAngles = glm::degrees(rotationEuler);
 	m_RotationEulerAnglesProperty->RaiseValueChangedCallback();
 
 	// Rotation (quaternion)
-	m_RotationQuaternion = rotationQuat; // glm::eulerAngles(glm::conjugate(rotation)); //  glm::vec3(glm::pitch(rotation), -glm::yaw(rotation), glm::roll(rotation));
-	//m_RotationQuaternionProperty->RaiseValueChangedCallback();
+	m_RotationQuaternion = rotationQuat;
+	m_RotationQuaternionProperty->RaiseValueChangedCallback();
 
 	// Rotation (direction)
-	//m_RotationDirection.x = glm::cos(rotationEuler.x) * glm::cos(rotationEuler.y); // y
-	//m_RotationDirection.y = glm::sin(rotationEuler.y);                             // z
-	//m_RotationDirection.z = glm::sin(rotationEuler.x) * glm::cos(rotationEuler.y); // x
-	//m_RotationDirection = glm::normalize(m_RotationDirection);
-	//m_RotationDirectionProperty->RaiseValueChangedCallback();
+	m_RotationDirection.x = glm::cos(rotationEuler.x) * glm::cos(rotationEuler.y); // y
+	m_RotationDirection.y = glm::sin(rotationEuler.y);                             // z
+	m_RotationDirection.z = glm::sin(rotationEuler.x) * glm::cos(rotationEuler.y); // x
+	m_RotationDirection = glm::normalize(m_RotationDirection);
+	m_RotationDirectionProperty->RaiseValueChangedCallback();
 
 	// Scale
 	m_Scale = scale;
