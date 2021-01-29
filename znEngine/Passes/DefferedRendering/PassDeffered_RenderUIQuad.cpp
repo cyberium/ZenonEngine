@@ -4,28 +4,16 @@
 #include "PassDeffered_RenderUIQuad.h"
 
 
-struct __declspec(align(16)) SGPULightVS
-{
-	SGPULight  Light;
-	// 48 bytes
-	glm::vec4  LightPositionVS;
-	// 16 bytes
-	glm::vec4  LightDirectionVS;
-	// 16 bytes
-	uint32      IsEnabled;
-	uint32      IsCastShadow;
-	glm::vec2   __padding;
-	// 16 bytes
-};
 
 
-CPassDeffered_RenderUIQuad::CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneCreateTypelessListPass, std::shared_ptr<IRenderTarget> GBufferRenderTarget, std::shared_ptr<ITexture> MergedShadowTexture)
+
+CPassDeffered_RenderUIQuad::CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneCreateTypelessListPass, std::shared_ptr<IRenderTarget> GBufferRenderTarget, std::shared_ptr<IPassDeffered_ShadowMaps> DefferedRenderShadowMaps)
 	: RenderPassPipelined(RenderDevice)
 	, m_SceneCreateTypelessListPass(SceneCreateTypelessListPass)
 	, m_GBufferRenderTarget(GBufferRenderTarget)
-	, m_MergedShadowTexture(MergedShadowTexture)
+	, m_ShadowMaps(DefferedRenderShadowMaps)
 {
-	m_GPUDefferedLightVSBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SGPULightVS());
+	m_GPULightVSDefferedBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SGPULightVSDeffered());
 }
 
 CPassDeffered_RenderUIQuad::~CPassDeffered_RenderUIQuad()
@@ -39,23 +27,33 @@ CPassDeffered_RenderUIQuad::~CPassDeffered_RenderUIQuad()
 //
 void CPassDeffered_RenderUIQuad::Render(RenderEventArgs& e)
 {
-
-	m_ShadowMapTextureParameter->SetTexture(m_MergedShadowTexture);
-	m_ShadowMapTextureParameter->Bind();
-
-	for (const auto& lightIt : m_SceneCreateTypelessListPass->GetLightList())
+	for (const auto& map : m_ShadowMaps->GetShadowMaps())
 	{
-		FillLightParamsForCurrentIteration(e, lightIt);
+		if (map.LightNode->IsCastShadows())
+		{
+			m_ShadowMapTextureParameter->SetTexture(map.ShadowTexture);
+			m_ShadowMapTextureParameter->Bind();
+		}
 
-		m_GPUDefferedLightVSParameter->SetConstantBuffer(m_GPUDefferedLightVSBuffer);
+		const auto& lightList = m_SceneCreateTypelessListPass->GetLightList();
+		const auto& light = std::find_if(lightList.begin(), lightList.end(), [&map](const IRenderPassCreateTypelessList::SLightElement& LightElement) -> bool { return LightElement.Light == map.LightNode; });
+		if (light == lightList.end())
+			throw CException("Light not found!!!");
+
+		FillLightParamsForCurrentIteration(e, *light);
+
+		m_GPUDefferedLightVSParameter->SetConstantBuffer(m_GPULightVSDefferedBuffer);
 		m_GPUDefferedLightVSParameter->Bind();
-
-		m_QuadGeometry->Render(GetPipeline().GetVertexShaderPtr());
-		
+		{
+			m_QuadGeometry->Render(GetPipeline().GetVertexShaderPtr());
+		}
 		m_GPUDefferedLightVSParameter->Unbind();
-	}
 
-	m_ShadowMapTextureParameter->Unbind();
+		if (map.LightNode->IsCastShadows())
+		{
+			m_ShadowMapTextureParameter->Unbind();
+		}
+	}
 }
 
 
@@ -72,14 +70,14 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::ConfigurePipel
 	auto samplesCnt = std::to_string(RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0)->GetSamplesCount());
 
 	{
-		auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Deffered_UIQuad.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() } });
+		auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Deffered/Deffered_UIQuad.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() } });
 		vertexShader->LoadInputLayoutFromReflector();
 		GetPipeline().SetShader(vertexShader);
 	}
 
 
 	{
-		auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_UIQuad.hlsl", "PS_DeferredLighting", { {"MULTISAMPLED", samplesCnt.c_str() } });
+		auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered/Deffered_UIQuad.hlsl", "PS_DeferredLighting", { {"MULTISAMPLED", samplesCnt.c_str() } });
 		
 		m_GPUDefferedLightVSParameter = pixelShader->GetShaderParameterByName("GPUDefferedLightVS");
 		_ASSERT(m_GPUDefferedLightVSParameter);
@@ -114,15 +112,21 @@ void CPassDeffered_RenderUIQuad::FillLightParamsForCurrentIteration(const Render
 	const ICameraComponent3D* camera = e.Camera;
 	_ASSERT(camera != nullptr);
 
-	SGPULightVS lightResult;
+	SGPULightVSDeffered lightResult;
 
 	// GPULightVS
-	lightResult.Light = LightElement.Light->GetGPULightStruct();
-	lightResult.LightPositionVS =                 camera->GetViewMatrix() * glm::vec4(LightElement.SceneNode->GetPosition(), 1.0f);
-	lightResult.LightDirectionVS = glm::normalize(camera->GetViewMatrix() * glm::vec4(LightElement.SceneNode->GetLocalRotationDirection(), 0.0f));
-	lightResult.IsEnabled = LightElement.Light->IsEnabled();
-	lightResult.IsCastShadow = LightElement.Light->IsCastShadows();
+	lightResult.LightVS.Light = LightElement.Light->GetGPULightStruct();
+	lightResult.LightVS.LightPositionVS =                 camera->GetViewMatrix() * glm::vec4(LightElement.SceneNode->GetPosition(), 1.0f);
+	lightResult.LightVS.LightDirectionVS = glm::normalize(camera->GetViewMatrix() * glm::vec4(LightElement.SceneNode->GetLocalRotationDirection(), 0.0f));
+	lightResult.LightVS.IsEnabled = LightElement.Light->IsEnabled();
+	lightResult.LightVS.IsCastShadow = LightElement.Light->IsCastShadows();
+	
+	// GPULightVSDeffered
+	if (LightElement.Light->IsCastShadows())
+	{
+		lightResult.LightViewMatrix = LightElement.Light->GetViewMatrix();
+		lightResult.LightProjectionMatrix = LightElement.Light->GetProjectionMatrix();
+	}
 
-	// GPUDefferedLightVS
-	m_GPUDefferedLightVSBuffer->Set(lightResult);
+	m_GPULightVSDefferedBuffer->Set(lightResult);
 }

@@ -109,7 +109,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_MergeShadowMaps::ConfigurePi
 //
 // Protected
 //
-void CPassDeffered_MergeShadowMaps::BindShadowMapToShader(const RenderEventArgs& e, const CPassDeffered_ShadowMaps::SShadowMap& ShadowMap)
+void CPassDeffered_MergeShadowMaps::BindShadowMapToShader(const RenderEventArgs& e, const SShadowMap& ShadowMap)
 {
 	const ICameraComponent3D* camera = e.Camera;
 	_ASSERT(camera != nullptr);

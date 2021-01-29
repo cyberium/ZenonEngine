@@ -36,7 +36,7 @@ std::shared_ptr<IRenderPassPipelined> CRTSGround_Pass::ConfigurePipeline(std::sh
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
 		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", { { "INSTANCED", "1" } });
-		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Forward.hlsl", "PS_main");
+		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Forward/Forward_ModelPS.hlsl", "PS_main");
 	}
 	vertexShader->LoadInputLayoutFromReflector();
 

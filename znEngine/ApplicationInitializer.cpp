@@ -66,8 +66,8 @@ void CApplicationBase::InitializeEngineInternal()
 	// Files
 	{
 		GetBaseManager().AddManager<IFilesManager>(MakeShared(CFilesManager, GetBaseManager()));
-		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::USERDATA, MakeShared(CLocalFilesStorage, "O:/ZenonEngine_userdata/"));
-		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLocalFilesStorage, "O:/ZenonEngine_assets/"));
+		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::USERDATA, MakeShared(CLocalFilesStorage, "D:/ZenonEngine_userdata/"));
+		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLocalFilesStorage, "D:/ZenonEngine_assets/"));
 		//GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLibraryResourceFileStotage, GetModuleHandle(L"znEngine.dll")));
 		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLocalFilesStorage, "gamedata/"));
 	}
@@ -96,7 +96,7 @@ void CApplicationBase::InitializeEngineInternal()
 			auto settingsFilesystem = MakeShared(CPropertiesGroup, "FileSystem", "descr");
 			settingsFilesystem->AddProperty(MakeShared(CProperty<std::string>, "UserdataPath", "desc", "userdata/"));
 
-			settingsFilesystem->GetPropertyT<std::string>("UserdataPath")->Set("O:/ZenonEngine_userdata/");
+			settingsFilesystem->GetPropertyT<std::string>("UserdataPath")->Set("D:/ZenonEngine_userdata/");
 
 			GetBaseManager().GetManager<ISettings>()->AddGroup(settingsFilesystem);
 		}

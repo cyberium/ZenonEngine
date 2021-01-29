@@ -91,7 +91,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 
 	// Pixel shader
 	{
-		auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_MaterialModel.hlsl", "PS_main");
+		auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered/Deffered_ModelPS.hlsl", "PS_main");
 		GetPipeline().SetShader(pixelShader);
 	}
 

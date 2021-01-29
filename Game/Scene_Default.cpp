@@ -33,6 +33,7 @@ void CSceneDefault::Initialize()
 		lightNode->SetName("Light");
 		lightNode->SetLocalPosition(glm::vec3(550.0f, 250.0f, 550.0f));
 		lightNode->SetLocalRotationDirection(glm::vec3(-0.5, -0.5f, -0.5f));
+		//lightNode->SetLocalRotationEuler(glm::vec3(45.0f, -45.0f, 0.0f));
 
 		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
 		lightComponent->SetLight(MakeShared(CLight, GetBaseManager()));

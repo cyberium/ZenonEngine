@@ -57,7 +57,7 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 
 	// Pixel shader
 	{
-		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Forward.hlsl", "PS_main");
+		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Forward/Forward_ModelPS.hlsl", "PS_main");
 
 		m_ShaderLightsBufferParameter = pixelShader->GetShaderParameterByName("GPULightsVS");
 		_ASSERT(m_ShaderLightsBufferParameter);

@@ -70,11 +70,6 @@ void CPassDeffered_ShadowMaps::CreateShadowPipeline()
 	m_ShadowPipeline = shadowPipeline;
 }
 
-const std::vector<CPassDeffered_ShadowMaps::SShadowMap>& CPassDeffered_ShadowMaps::GetShadowMaps() const
-{
-	return m_ShadowMaps;
-}
-
 
 
 //
@@ -95,26 +90,26 @@ void CPassDeffered_ShadowMaps::Render(RenderEventArgs& e)
 		if (false == lightIt.Light->IsEnabled())
 			continue;
 
-		if (false == lightIt.Light->IsCastShadows())
-			continue;
-
 		SShadowMap shadowMap;
 		shadowMap.SceneNode = lightIt.SceneNode;
 		shadowMap.LightNode = lightIt.Light;
 
-		m_ShadowPipeline->Bind();
+		if (lightIt.Light->IsCastShadows())
 		{
-			m_ShadowRenderTarget->Clear();
+			m_ShadowPipeline->Bind();
+			{
+				m_ShadowRenderTarget->Clear();
 
-			BindPerFrameParamsForCurrentIteration(lightIt.Light);
+				BindPerFrameParamsForCurrentIteration(lightIt.Light);
 
-			RenderScene();
+				RenderScene();
 
-			auto shadowTexture = GetShadowMapTexture();
-			shadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
-			shadowMap.ShadowTexture = shadowTexture;
+				auto shadowTexture = GetShadowMapTexture();
+				shadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+				shadowMap.ShadowTexture = shadowTexture;
+			}
+			m_ShadowPipeline->UnBind();
 		}
-		m_ShadowPipeline->UnBind();
 
 		m_ShadowMaps.push_back(shadowMap);
 	}
@@ -123,6 +118,16 @@ void CPassDeffered_ShadowMaps::Render(RenderEventArgs& e)
 void CPassDeffered_ShadowMaps::PostRender(RenderEventArgs& e)
 {
 	RenderPass::PostRender(e);
+}
+
+
+
+//
+// IPassDeffered_ShadowMaps
+//
+const ShadowMaps_t& CPassDeffered_ShadowMaps::GetShadowMaps() const
+{
+	return m_ShadowMaps;
 }
 
 

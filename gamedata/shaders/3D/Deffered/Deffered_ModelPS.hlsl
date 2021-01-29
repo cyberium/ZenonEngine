@@ -16,17 +16,17 @@ DefferedRenderPSOut PS_main(VSOutput IN) : SV_TARGET
 	float4 diffuseAndAlpha = ExtractDuffuseAndAlpha(Mat, LinearClampSampler, displacedTexCoord);
 	if (diffuseAndAlpha.a < 0.05f)
 		discard;
-				
-	//float4 ambient = ExtractAmbient(Mat, LinearClampSampler, displacedTexCoord); // Not used now.
-	float4 emissive = ExtractEmissive(Mat, LinearClampSampler, displacedTexCoord);
-	float4 specular = ExtractSpecular(Mat, LinearClampSampler, displacedTexCoord);
-	float packedSpecularFactor = log2(specular.a) / 10.5f;
 
 	if (Mat.IsEnviorementMappingEnable)
 	{
 		const float3 refl = mul((float3x3)PF.InverseView, reflect(-normalize(float3(0.0f, 0.0f, 0.0f) - IN.positionVS), normalize(IN.normalVS)));
 		diffuseAndAlpha *= TextureSky.Sample(LinearClampSampler, normalize(refl));
 	}
+				
+	//float4 ambient = ExtractAmbient(Mat, LinearClampSampler, displacedTexCoord); // Not used now.
+	float4 emissive = ExtractEmissive(Mat, LinearClampSampler, displacedTexCoord);
+	float4 specular = ExtractSpecular(Mat, LinearClampSampler, displacedTexCoord);
+	float packedSpecularFactor = log2(specular.a) / 10.5f;
 
 	float4 normalVS = ExtractNormal(Mat, LinearClampSampler, float2(displacedTexCoord.x, displacedTexCoord.y), IN.normalVS, IN.tangentVS, IN.binormalVS);
 

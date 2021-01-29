@@ -129,7 +129,7 @@ void CEditorResourceBrowser::Initialize()
 	GetEditorQtUIFrame().getResourcesBrowser()->setSelectionMode(QAbstractItemView::SingleSelection);
 	
 	CResourceFilesystem fileSystem;
-	fileSystem.Initailize("O:/ZenonEngine_userdata");
+	fileSystem.Initailize("D:/ZenonEngine_userdata");
 	//fileSystem.PrintFilesystem();
 
 	GetEditorQtUIFrame().getResourcesBrowser()->Refresh();

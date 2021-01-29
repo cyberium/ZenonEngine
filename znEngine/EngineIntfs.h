@@ -238,3 +238,22 @@ ZN_INTERFACE ZN_API IUIControlText
 	virtual void SetColor(glm::vec4 Color) = 0;
 	virtual glm::vec4 GetColor() const = 0;
 };
+
+
+
+
+
+struct __declspec(align(16)) SGPULightVS
+{
+	SGPULight  Light;
+	// 48 bytes
+	glm::vec4  LightPositionVS;
+	// 16 bytes
+	glm::vec4  LightDirectionVS;
+	// 16 bytes
+	uint32      IsEnabled;
+	uint32      IsCastShadow;
+	glm::vec2   __padding;
+	// 16 bytes
+};
+

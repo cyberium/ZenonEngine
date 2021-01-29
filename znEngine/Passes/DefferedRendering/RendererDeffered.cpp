@@ -46,14 +46,14 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	m_ShadowMapsPass = MakeShared(CPassDeffered_ShadowMaps, m_RenderDevice, m_SceneCreateTypelessListPass);
 	m_ShadowMapsPass->CreateShadowPipeline();
 
-	m_MergeShadowMapsPass = MakeShared(CPassDeffered_MergeShadowMaps, m_RenderDevice, m_RenderScenePass->GetGBufferRenderTarget(), m_ShadowMapsPass);
-	m_MergeShadowMapsPass->ConfigurePipeline(OutputRenderTarget);
+	//m_MergeShadowMapsPass = MakeShared(CPassDeffered_MergeShadowMaps, m_RenderDevice, m_RenderScenePass->GetGBufferRenderTarget(), m_ShadowMapsPass);
+	//m_MergeShadowMapsPass->ConfigurePipeline(OutputRenderTarget);
 
-	auto shadowMapsGaussHorizontalPass = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, m_MergeShadowMapsPass->GetMergedShadowMapTexture(), true);
-	shadowMapsGaussHorizontalPass->ConfigurePipeline(OutputRenderTarget);
+	//auto shadowMapsGaussHorizontalPass = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, m_MergeShadowMapsPass->GetMergedShadowMapTexture(), true);
+	//shadowMapsGaussHorizontalPass->ConfigurePipeline(OutputRenderTarget);
 
-	auto shadowMapsGaussVerticalPass = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, shadowMapsGaussHorizontalPass->GetOutputTexture(), false);
-	shadowMapsGaussVerticalPass->ConfigurePipeline(OutputRenderTarget);
+	//auto shadowMapsGaussVerticalPass = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, shadowMapsGaussHorizontalPass->GetOutputTexture(), false);
+	//shadowMapsGaussVerticalPass->ConfigurePipeline(OutputRenderTarget);
 
 
 #ifdef ENABLE_HDR
@@ -64,7 +64,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, m_RenderScenePass->GetGBufferRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
 #endif
 
-	m_Deffered_UIQuadPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_SceneCreateTypelessListPass, m_RenderScenePass->GetGBufferRenderTarget(), shadowMapsGaussVerticalPass->GetOutputTexture());
+	m_Deffered_UIQuadPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_SceneCreateTypelessListPass, m_RenderScenePass->GetGBufferRenderTarget(), m_ShadowMapsPass);
 	m_Deffered_UIQuadPass->ConfigurePipeline(OutputRenderTarget);
 
 	//
@@ -89,12 +89,12 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	Add3DPass(m_ShadowMapsPass);
 
 	// 3. Merge shadowmaps
-	Add3DPass(m_MergeShadowMapsPass);
+	//Add3DPass(m_MergeShadowMapsPass);
 
 	// 3.a Process shadowmaps
-	Add3DPass(shadowMapsGaussHorizontalPass);
-	Add3DPass(shadowMapsGaussVerticalPass);
-
+	//Add3DPass(shadowMapsGaussHorizontalPass);
+	//Add3DPass(shadowMapsGaussVerticalPass);
+	
 	Add3DPass(MakeShared(CSkyboxPass, m_RenderDevice)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 
 	// 4. Process GBuffer, lights and shadow map

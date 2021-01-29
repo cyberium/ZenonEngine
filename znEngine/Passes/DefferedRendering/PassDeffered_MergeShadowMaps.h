@@ -18,7 +18,7 @@ public:
 	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget) override;
 
 protected:
-	void BindShadowMapToShader(const RenderEventArgs& e, const CPassDeffered_ShadowMaps::SShadowMap& ShadowMap);
+	void BindShadowMapToShader(const RenderEventArgs& e, const SShadowMap& ShadowMap);
 
 private: 
 	std::shared_ptr<IGeometry> m_QuadGeometry;

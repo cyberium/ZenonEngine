@@ -129,6 +129,8 @@ Guid CObjectClassFactory::ReadGUID(const std::shared_ptr<IByteBuffer>& Bytes)
 		Bytes->seek(pos);
 		throw;
 	}
+
+	Bytes->seek(pos);
 }
 
 std::shared_ptr<IByteBuffer> CObjectClassFactory::WriteGUID(Guid Guid)
@@ -139,7 +141,7 @@ std::shared_ptr<IByteBuffer> CObjectClassFactory::WriteGUID(Guid Guid)
 	return byteBuffer;
 }
 
-IBaseManager & CObjectClassFactory::GetBaseManager() const
+IBaseManager& CObjectClassFactory::GetBaseManager() const
 {
 	return m_BaseManager;
 }

@@ -4,6 +4,7 @@
 #include "ByteBufferHelper.h"
 
 const char * cNewLineSymbol = "\r\n";
+const char * cNewLineSymbol2 = "\n";
 
 
 bool Utils::ByteBufferHelper::readLine(IByteBuffer * ByteBuffer, std::string* String)
@@ -13,7 +14,21 @@ bool Utils::ByteBufferHelper::readLine(IByteBuffer * ByteBuffer, std::string* St
 	if (ByteBuffer->isEof())
 		return false;
 
-	size_t lastGoodCharPos = std::string((const char*)(ByteBuffer->getDataFromCurrent()), ByteBuffer->getSize() - ByteBuffer->getPos()).find_first_of(cNewLineSymbol);
+	std::string strategy = "\r\n";
+
+	std::string currentString = std::string((const char*)(ByteBuffer->getDataFromCurrent()), ByteBuffer->getSize() - ByteBuffer->getPos());
+	if (currentString.find(cNewLineSymbol) != std::string::npos)
+	{
+		strategy = cNewLineSymbol;
+	}
+	else if (currentString.find(cNewLineSymbol2) != std::string::npos)
+	{
+		strategy = cNewLineSymbol2;
+	}
+
+	
+
+	size_t lastGoodCharPos = std::string((const char*)(ByteBuffer->getDataFromCurrent()), ByteBuffer->getSize() - ByteBuffer->getPos()).find_first_of(strategy);
 	_ASSERT(ByteBuffer->getPos() + lastGoodCharPos < ByteBuffer->getSize());
 	if (lastGoodCharPos != std::string::npos)
 	{
@@ -26,8 +41,8 @@ bool Utils::ByteBufferHelper::readLine(IByteBuffer * ByteBuffer, std::string* St
 			String->append(buff);
 		}
 
-		if (false == ByteBuffer->seekRelative(::strlen(cNewLineSymbol))) // Skip \r\n
-			return false;
+		if (false == ByteBuffer->seekRelative(strategy.length()))
+				return false;
 		return true;
 	}
 

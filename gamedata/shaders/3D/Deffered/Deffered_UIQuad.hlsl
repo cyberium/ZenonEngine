@@ -1,5 +1,6 @@
 #include "CommonInclude.hlsl"
 #include "Light.hlsl"
+#include "3D\ShadowsUtils.hlsl"
 
 #ifndef MULTISAMPLED
 #pragma message( "MULTISAMPLED undefined. Default to 1.")
@@ -110,21 +111,21 @@ float4 PS_DeferredLighting(VS_Output VSOut
 	float3 diffuseLight  = diffuseAndAlpha.rgb * lit.Diffuse.rgb;
 	float3 specularLight = specular.rgb        * lit.Specular.rgb;
 	
-	/*if (CurrentLightVS.IsCastShadow)
+	if (CurrentLightVS.IsCastShadow)
 	{
 		const float4 PModel = mul(PF.InverseView, PView);
-		float shadowFactor = IsShadowed(LightProjectionMatrix, LightViewMatrix, ShadowMapTexture, PModel);
+		float shadowFactor = IsShadowed(LightProjectionMatrix, LightViewMatrix, PModel, ShadowMapTexture);
 		shadowFactor -= 0.1f;
 		shadowFactor = saturate(shadowFactor);
 		
 		if (shadowFactor > 0.0f)
 			return float4(ambientLight + (diffuseLight + specularLight) * (1.0f - shadowFactor), 1.0f);
-	}*/
+	}
 	
 
-	const float shadowFactor = ShadowMapTexture.Load(int3(texCoord, 0)).r;
-	if (shadowFactor > 0.05f)
-		return float4(ambientLight + (diffuseLight + specularLight) * (1.0f - shadowFactor), 1.0f);
+	//const float shadowFactor = ShadowMapTexture.Load(int3(texCoord, 0)).r;
+	//if (shadowFactor > 0.05f)
+	//	return float4(ambientLight + (diffuseLight + specularLight) * (1.0f - shadowFactor), 1.0f);
 
 	float3 resultColor = ambientLight + diffuseLight + specularLight;
 	resultColor += positionVS.rgb;

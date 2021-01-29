@@ -81,7 +81,7 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderSceneInstanced::Confi
 	__super::ConfigurePipeline(RenderTarget);
 
 	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", { {"INSTANCED", "1" } });
-	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Forward.hlsl", "PS_main");
+	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Forward/Forward_ModelPS.hlsl", "PS_main");
 	vertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES

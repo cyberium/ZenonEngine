@@ -145,8 +145,13 @@ glm::quat CSceneNode::GetLocalRotationQuaternion() const
 void CSceneNode::SetLocalRotationDirection(glm::vec3 Direction)
 {
 	glm::vec3 normalizedDirection = glm::normalize(Direction);
+	if (normalizedDirection == glm::vec3(0.0f))
+		return;
 
-	glm::quat lootAtQuat = glm::conjugate(glm::toQuat(glm::lookAt(glm::vec3(0.0f), normalizedDirection, glm::vec3(0.0f, 1.0f, 0.0f))));
+
+	glm::mat4 orientation = glm::orientation(normalizedDirection, glm::vec3(0.0f, 1.0f, 0.0f));
+
+	glm::quat lootAtQuat = glm::conjugate(glm::toQuat(orientation));
 
 	// Rotation (eulerAngles)
 	glm::vec3 rotationEuler = QuatToEuler(lootAtQuat);

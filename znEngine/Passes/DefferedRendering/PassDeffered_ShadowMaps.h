@@ -2,28 +2,38 @@
 
 #include "../Scene/SceneCreateTypelessListPass.h"
 
+struct SShadowMap
+{
+	std::shared_ptr<const ISceneNode>  SceneNode;
+	std::shared_ptr<const ILight>      LightNode;
+	std::shared_ptr<ITexture>          ShadowTexture;
+};
+typedef std::vector<SShadowMap> ShadowMaps_t;
+
+ZN_INTERFACE IPassDeffered_ShadowMaps
+{
+	virtual ~IPassDeffered_ShadowMaps() {}
+
+	virtual const ShadowMaps_t& GetShadowMaps() const = 0;
+};
+
 class ZN_API CPassDeffered_ShadowMaps
 	: public RenderPass
+	, public IPassDeffered_ShadowMaps
 {
-public:
-	struct SShadowMap
-	{
-		std::shared_ptr<const ISceneNode>  SceneNode;
-		std::shared_ptr<const ILight>      LightNode;
-		std::shared_ptr<ITexture>          ShadowTexture;
-	};
-
 public:
 	CPassDeffered_ShadowMaps(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& BuildRenderListPass);
 	virtual ~CPassDeffered_ShadowMaps();
 
 	void CreateShadowPipeline();
-	const std::vector<SShadowMap>& GetShadowMaps() const;
 
 	// IRenderPass
 	void PreRender(RenderEventArgs& e) override;
 	void Render(RenderEventArgs& e) override;
 	void PostRender(RenderEventArgs& e) override;
+
+	// IPassDeffered_ShadowMaps
+	const ShadowMaps_t& GetShadowMaps() const override;
 
 protected:
 	std::shared_ptr<IRenderTarget> CreateShadowRT();
@@ -53,10 +63,10 @@ private:
 	IShaderParameter* m_ShaderBonesBufferParameter;
 
 private:
-	std::vector<SShadowMap> m_ShadowMaps;
+	ShadowMaps_t m_ShadowMaps;
 
 	mutable size_t m_CurrentShadowMapTexture;
-	std::vector <std::shared_ptr<ITexture>> m_ShadowMapsTexturesCache;
+	std::vector<std::shared_ptr<ITexture>> m_ShadowMapsTexturesCache;
 
 private:
 	std::shared_ptr<IRenderPassCreateTypelessList> m_SceneCreateTypelessListPass;

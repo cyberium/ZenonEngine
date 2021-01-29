@@ -46,6 +46,7 @@ std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::string& ModelFile
 	// Find existsing cached
 	{
 		std::lock_guard<std::mutex> lock(m_LockMutex);
+
 		const auto& iter = m_ModelsByName.find(ModelFileName);
 		if (iter != m_ModelsByName.end())
 		{

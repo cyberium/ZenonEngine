@@ -48,11 +48,6 @@ EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<IGeometry>& Geometr
 	return EVisitResult::Block;
 }
 
-EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<ISceneNodeComponent>& Component)
-{
-	return EVisitResult::Block;
-}
-
 EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<ILight>& light)
 {
 	return EVisitResult::Block;
