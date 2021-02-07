@@ -11,11 +11,6 @@ ZN_INTERFACE ZN_API IApplication
 {
 	virtual ~IApplication() = 0 {};
 
-	virtual std::unique_ptr<IznNativeWindow>         CreateNativeWindow(const std::string& WindowName, glm::ivec2 WindowSize) const = 0;
-	virtual std::unique_ptr<IznNativeWindow>         CreateNativeWindowProxy(IznNativeWindow& SourceNativeWindow) const = 0;
-	virtual IRenderDevice&                           CreateRenderDevice(RenderDeviceType DeviceType) = 0;
-	virtual void                                     AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow) = 0;
-	virtual void                                     CloseRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow) = 0;
 	virtual void                                     DoBeforeRun() = 0;
 	virtual int                                      DoRun() = 0;
 	virtual void                                     DoAfterRun() = 0;

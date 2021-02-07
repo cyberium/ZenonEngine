@@ -6,8 +6,6 @@
 namespace
 {
 	const char* cDefaultText = "<empty>";
-	const 
-
 	const glm::vec4 cDefaultColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
@@ -41,7 +39,7 @@ void CUIControlText::Initialize()
 	//m_OffsetProperty = MakeShared(CProperty<glm::vec2>, "Offset", "Offset of first string character relatieve to local transform.", cDefaultOffset);
 	//GetProperties()->AddProperty(m_OffsetProperty);
 
-	m_ColorProperty = MakeShared(CProperty<glm::vec4>, "Color", "Color of text", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	m_ColorProperty = MakeShared(CProperty<ColorRGBA>, "Color", "Color of text", ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
 	GetProperties()->AddProperty(m_ColorProperty);
 }
 
@@ -101,12 +99,12 @@ glm::vec2 CUIControlText::GetOffset() const
 	return m_OffsetProperty->Get();
 }*/
 
-void CUIControlText::SetColor(glm::vec4 Color)
+void CUIControlText::SetColor(ColorRGBA Color)
 {
 	m_ColorProperty->Set(Color);
 }
 
-glm::vec4 CUIControlText::GetColor() const
+ColorRGBA CUIControlText::GetColor() const
 {
 	return m_ColorProperty->Get();
 }

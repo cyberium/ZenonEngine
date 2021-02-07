@@ -61,9 +61,9 @@ namespace
 		if (TextAlignHorizontal == ETextAlignHorizontal::Left)
 			offsetByAlign.x = 0.0f;
 		else if (TextAlignHorizontal == ETextAlignHorizontal::Center)
-			offsetByAlign.x = - (TextSize.x / 2.0f);
+			offsetByAlign.x = -(TextSize.x / 2.0f);
 		else if (TextAlignHorizontal == ETextAlignHorizontal::Right)
-			offsetByAlign.x = - TextSize.x;
+			offsetByAlign.x = -TextSize.x;
 
 		if (TextAlignVertical == ETextAlignVertical::Top)
 			offsetByAlign.y = 0.0f;
@@ -89,11 +89,8 @@ EVisitResult CUIFontPass::Visit(const std::shared_ptr<IUIControl>& node)
 	BaseUIPass::Visit(node);
 
 	const auto& textToRender = textNode->GetText();
-	const auto& textAlignHorizontal = textNode->GetTextAlignHorizontal();
-	const auto& color = textNode->GetColor();
 	const auto& font = textNode->GetFont();
 
-	glm::vec2 offsetByAlign = CalculateOffsetByAlign(textNode->GetSize(), textNode->GetTextAlignHorizontal(), textNode->GetTextAlignVertical());
 
 	const auto& fontGeometry = font->GetGeometry();
 	const auto& fontGeometryInternal = std::dynamic_pointer_cast<IGeometryInternal>(fontGeometry);
@@ -108,6 +105,9 @@ EVisitResult CUIFontPass::Visit(const std::shared_ptr<IUIControl>& node)
 	{
 		auto currentCharOffset = glm::vec2(0.0f);
 
+		const glm::vec2 textSize = glm::vec2(font->GetWidth(textToRender), font->GetHeight());
+		const glm::vec2 offsetByAlign = CalculateOffsetByAlign(textSize, textNode->GetTextAlignHorizontal(), textNode->GetTextAlignVertical());
+
 		for (size_t i = 0; i < textToRender.length(); i++)
 		{
 			const uint8 ch = static_cast<uint8>(textToRender.c_str()[i]);
@@ -120,7 +120,7 @@ EVisitResult CUIFontPass::Visit(const std::shared_ptr<IUIControl>& node)
 
 			{
 				SFontPerCharacterData fontProperties;
-				fontProperties.Color = color;
+				fontProperties.Color = textNode->GetColor();
 				fontProperties.Offset = currentCharOffset + offsetByAlign;
 			
 				BindPerCharacterData(fontProperties);

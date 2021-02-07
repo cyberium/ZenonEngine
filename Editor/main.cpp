@@ -12,7 +12,7 @@
 
 void main_internal(int argc, char *argv[])
 {
-	CApplication_PlatformWindows app;
+	CApplicationNative_PlatformWindows app;
 	//Application app(Utils::ArgumentsToVector(argc, argv), ::GetModuleHandle(NULL));
 
 	app.GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLocalFilesStorage, ""));

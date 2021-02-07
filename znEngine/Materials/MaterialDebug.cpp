@@ -4,7 +4,7 @@
 #include "MaterialDebug.h"
 
 MaterialDebug::MaterialDebug(IRenderDevice& RenderDevice)
-	: MaterialProxieT(RenderDevice, "MaterialDebug")
+	: MaterialProxieT(RenderDevice.GetObjectsFactory().CreateMaterial("MaterialDebug"))
 {}
 
 MaterialDebug::~MaterialDebug()

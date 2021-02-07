@@ -1,11 +1,16 @@
 #include "CommonInclude.hlsl"
 
-cbuffer PerCharacterData : register(b2)
+cbuffer PerCharacterDataVS : register(b2)
+{
+	float2 Offset;
+	float2 __padding0;
+};
+
+cbuffer PerCharacterDataPS : register(b2)
 {
     float4 Color;
-	float2 Offset;
 	bool IsSelected;
-	uint __padding;
+	float3 __padding1;
 };
 
 Texture2D DiffuseTexture : register(t0);

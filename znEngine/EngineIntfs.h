@@ -235,8 +235,8 @@ ZN_INTERFACE ZN_API IUIControlText
 	//virtual void SetOffset(glm::vec2 Offset) = 0;
 	//virtual glm::vec2 GetOffset() const = 0;
 
-	virtual void SetColor(glm::vec4 Color) = 0;
-	virtual glm::vec4 GetColor() const = 0;
+	virtual void SetColor(ColorRGBA Color) = 0;
+	virtual ColorRGBA GetColor() const = 0;
 };
 
 

@@ -64,7 +64,7 @@ void CUIControlRTSResourcesPanel::Initialize()
 	m_GoldText->SetLocalPosition(glm::vec2(200.0f, 35.0f));
 	m_GoldText->SetFont(GetBaseManager().GetManager<IznFontsManager>()->Add(GetRenderDevice(), "Fonts/consola.ttf", 56));
 	m_GoldText->SetText("888 $");
-	m_GoldText->SetColor(glm::vec4(0.8f, 0.8f, 0.1f, 1.0f));
+	m_GoldText->SetColor(ColorRGBA(0.8f, 0.8f, 0.1f, 1.0f));
 
 	auto material = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
 	material->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Interface Pack/Spritesheet/interfacePack_sheet@2.png"));

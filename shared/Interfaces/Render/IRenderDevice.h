@@ -149,7 +149,6 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 
 
 ZN_INTERFACE ZN_API IRenderDevice
-	: std::enable_shared_from_this<IRenderDevice>
 {
 	virtual ~IRenderDevice() {}
 
@@ -162,4 +161,10 @@ ZN_INTERFACE ZN_API IRenderDevice
 
 	virtual IRenderPrimitivesFactory&  GetPrimitivesFactory() const = 0;
 	virtual IRenderObjectsFactory&     GetObjectsFactory() const = 0;
+};
+
+ZN_INTERFACE ZN_API IRenderDeviceOwner
+{
+	virtual void SetRenderDevice(IRenderDevice * RenderDevice) = 0;
+	virtual IRenderDevice& GetRenderDevice() const = 0;
 };

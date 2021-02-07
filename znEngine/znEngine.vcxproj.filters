@@ -135,9 +135,6 @@
     <ClCompile Include="Formats\Images\ImagesFactory.cpp">
       <Filter>Formats\Images</Filter>
     </ClCompile>
-    <ClCompile Include="Formats\Fonts\Font.cpp">
-      <Filter>Formats\Fonts</Filter>
-    </ClCompile>
     <ClCompile Include="Formats\Fonts\FontsManager.cpp">
       <Filter>Formats\Fonts</Filter>
     </ClCompile>
@@ -388,7 +385,6 @@
     <ClCompile Include="Passes\Debug\DrawNormals.cpp">
       <Filter>Passes\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="ApplicationBase.cpp" />
     <ClCompile Include="RTS\Components\TerrainComponent.cpp">
       <Filter>RTS\Components</Filter>
     </ClCompile>
@@ -397,6 +393,21 @@
     </ClCompile>
     <ClCompile Include="RTS\Components\Terrain.cpp">
       <Filter>RTS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="ApplicationConsole.cpp" />
+    <ClCompile Include="ApplicationNative.cpp" />
+    <ClCompile Include="Formats\Fonts\FontGeometry.cpp">
+      <Filter>Formats\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Fonts\FontMaterial.cpp">
+      <Filter>Formats\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Fonts\Font.cpp">
+      <Filter>Formats\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Fonts\FontModel.cpp">
+      <Filter>Formats\Fonts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -430,9 +441,6 @@
     </ClInclude>
     <ClInclude Include="Formats\Images\ImagesFactory.h">
       <Filter>Formats\Images</Filter>
-    </ClInclude>
-    <ClInclude Include="Formats\Fonts\Font.h">
-      <Filter>Formats\Fonts</Filter>
     </ClInclude>
     <ClInclude Include="Formats\Fonts\FontsManager.h">
       <Filter>Formats\Fonts</Filter>
@@ -687,7 +695,6 @@
     <ClInclude Include="Passes\Debug\DrawNormals.h">
       <Filter>Passes\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="ApplicationBase.h" />
     <ClInclude Include="RTS\Components\TerrainComponent.h">
       <Filter>RTS\Components</Filter>
     </ClInclude>
@@ -696,6 +703,21 @@
     </ClInclude>
     <ClInclude Include="RTS\Components\Terrain.h">
       <Filter>RTS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="ApplicationConsole.h" />
+    <ClInclude Include="ApplicationNative.h" />
+    <ClInclude Include="Formats\Fonts\FontGeometry.h">
+      <Filter>Formats\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Fonts\FontMaterial.h">
+      <Filter>Formats\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Fonts\Font.h">
+      <Filter>Formats\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Fonts\FontModel.h">
+      <Filter>Formats\Fonts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

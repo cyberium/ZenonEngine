@@ -20,7 +20,7 @@ const char* cTextureTypeNames[] =
 };
 
 MaterialModel::MaterialModel(const IBaseManager& BaseManager)
-	: MaterialProxieT(BaseManager.GetApplication().GetRenderDevice(), "MaterialModel")
+	: MaterialProxieT(BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateMaterial("MaterialModel"))
 	, m_BaseManager(BaseManager)
 {
 	// Ambient

@@ -1,5 +1,5 @@
 
-#define DISPLACEMENT_HEIGHT 0.105f
+#define DISPLACEMENT_HEIGHT 0.035f
 #define DISPLACEMENT_LAYERS_COUNT 32u
 
 struct MaterialModel

@@ -2,13 +2,16 @@
 
 #include "MaterialProxie.h"
 
+
+// RenderDevice.GetObjectsFactory().CreateMaterial(MaterialName)
+
 template <typename T>
 class MaterialProxieT
 	: public MaterialProxie
 {
 public:
-	MaterialProxieT(IRenderDevice& RenderDevice, const std::string& MaterialName)
-		: MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial(MaterialName))
+	MaterialProxieT(std::shared_ptr<IMaterial> Material)
+		: MaterialProxie(Material)
 	{
 		InitializeMaterialData(sizeof(T));
 		MaterialData() = T();

@@ -117,6 +117,21 @@ CEditorResourceBrowser::~CEditorResourceBrowser()
 }
 
 
+namespace
+{
+	void Initializer(IEditor& Editor, IEditorQtUIFrame& QTFrame, std::string Folder)
+	{
+		CResourceFilesystem fileSystem;
+		fileSystem.Initailize(Folder);
+		//fileSystem.PrintFilesystem();
+
+		QTFrame.getResourcesBrowser()->Refresh();
+		for (const auto& resourceFile : fileSystem.GetRootFile()->GetChilds())
+			if (auto treeViewItem = ResourceFileToTreeView(Editor, resourceFile))
+				QTFrame.getResourcesBrowser()->AddToRoot(treeViewItem);
+	}
+}
+
 
 //
 // CEditorResourceBrowser
@@ -128,15 +143,7 @@ void CEditorResourceBrowser::Initialize()
 	GetEditorQtUIFrame().getResourcesBrowser()->SetOnContexMenu(std::bind(&CEditorResourceBrowser::OnContextMenuTreeItem, this, std::placeholders::_1, std::placeholders::_2));
 	GetEditorQtUIFrame().getResourcesBrowser()->setSelectionMode(QAbstractItemView::SingleSelection);
 	
-	CResourceFilesystem fileSystem;
-	fileSystem.Initailize("D:/ZenonEngine_userdata");
-	//fileSystem.PrintFilesystem();
-
-	GetEditorQtUIFrame().getResourcesBrowser()->Refresh();
-	for (const auto& resourceFile : fileSystem.GetRootFile()->GetChilds())
-		if (auto treeViewItem = ResourceFileToTreeView(GetEditor(), resourceFile))
-			GetEditorQtUIFrame().getResourcesBrowser()->AddToRoot(treeViewItem);
-			
+	Initializer(GetEditor(), GetEditorQtUIFrame(), "D:/ZenonEngine_userdata");
 }
 
 

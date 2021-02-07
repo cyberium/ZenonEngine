@@ -11,11 +11,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="ApplicationConsole.cpp" />
     <ClCompile Include="ApplicationInitializer.cpp" />
+    <ClCompile Include="ApplicationNative.cpp" />
     <ClCompile Include="AssyncLoader\LoadableObject.cpp" />
     <ClCompile Include="AssyncLoader\Loader.cpp" />
     <ClCompile Include="BaseManager.cpp" />
     <ClCompile Include="Formats\Fonts\Font.cpp" />
+    <ClCompile Include="Formats\Fonts\FontGeometry.cpp" />
+    <ClCompile Include="Formats\Fonts\FontMaterial.cpp" />
+    <ClCompile Include="Formats\Fonts\FontModel.cpp" />
     <ClCompile Include="Formats\Fonts\FontsManager.cpp" />
     <ClCompile Include="Formats\Images\DDSFormat.cpp" />
     <ClCompile Include="Formats\Images\ImageBase.cpp" />
@@ -74,7 +80,6 @@
     <ClCompile Include="Passes\UI\UIControlPass.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="RenderDeviceFactory.cpp" />
-    <ClCompile Include="ApplicationBase.cpp" />
     <ClCompile Include="RTS\Components\Terrain.cpp" />
     <ClCompile Include="RTS\Components\TerrainComponent.cpp" />
     <ClCompile Include="RTS\Passes\UIRTSUnitPass.cpp" />
@@ -114,11 +119,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\znEngine.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="ApplicationConsole.h" />
+    <ClInclude Include="ApplicationNative.h" />
     <ClInclude Include="AssyncLoader\LoadableObject.h" />
     <ClInclude Include="AssyncLoader\Loader.h" />
     <ClInclude Include="BaseManager.h" />
     <ClInclude Include="EngineIntfs.h" />
     <ClInclude Include="Formats\Fonts\Font.h" />
+    <ClInclude Include="Formats\Fonts\FontGeometry.h" />
+    <ClInclude Include="Formats\Fonts\FontMaterial.h" />
+    <ClInclude Include="Formats\Fonts\FontModel.h" />
     <ClInclude Include="Formats\Fonts\FontsManager.h" />
     <ClInclude Include="Formats\Images\DDSFormat.h" />
     <ClInclude Include="Formats\Images\ImageBase.h" />
@@ -177,7 +188,6 @@
     <ClInclude Include="Passes\UI\UIControlPass.h" />
     <ClInclude Include="PluginsManager.h" />
     <ClInclude Include="RenderDeviceFactory.h" />
-    <ClInclude Include="ApplicationBase.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="RTS\Components\Terrain.h" />
     <ClInclude Include="RTS\Components\TerrainComponent.h" />

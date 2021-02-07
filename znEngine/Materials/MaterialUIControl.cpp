@@ -4,7 +4,7 @@
 #include "MaterialUIControl.h"
 
 CMaterialUIControl::CMaterialUIControl(IRenderDevice& RenderDevice)
-	: MaterialProxieT(RenderDevice, "MaterialUIControl")
+	: MaterialProxieT(RenderDevice.GetObjectsFactory().CreateMaterial("MaterialUIControl"))
 {}
 
 CMaterialUIControl::~CMaterialUIControl()

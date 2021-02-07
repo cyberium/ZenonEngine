@@ -11,7 +11,8 @@
       <Filter>NativeWindow</Filter>
     </ClCompile>
     <ClCompile Include="DebugOutputConsole_PlatformWindows.cpp" />
-    <ClCompile Include="Application_PlatformWindows.cpp" />
+    <ClCompile Include="ApplicationConsole_PlatformWindows.cpp" />
+    <ClCompile Include="ApplicationNative_PlatformWindows.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -27,10 +28,11 @@
       <Filter>NativeWindow</Filter>
     </ClInclude>
     <ClInclude Include="DebugOutputConsole_PlatformWindows.h" />
-    <ClInclude Include="Application_PlatformWindows.h" />
     <ClInclude Include="..\shared\znPlatformWindows.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="ApplicationConsole_PlatformWindows.h" />
+    <ClInclude Include="ApplicationNative_PlatformWindows.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

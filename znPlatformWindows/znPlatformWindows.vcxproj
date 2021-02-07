@@ -11,7 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Application_PlatformWindows.cpp" />
+    <ClCompile Include="ApplicationConsole_PlatformWindows.cpp" />
+    <ClCompile Include="ApplicationNative_PlatformWindows.cpp" />
     <ClCompile Include="DebugOutputConsole_PlatformWindows.cpp" />
     <ClCompile Include="NativeWindowProxy_PlatformWindows.cpp" />
     <ClCompile Include="NativeWindow_PlatformWindows.cpp" />
@@ -22,7 +23,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\znPlatformWindows.h" />
-    <ClInclude Include="Application_PlatformWindows.h" />
+    <ClInclude Include="ApplicationConsole_PlatformWindows.h" />
+    <ClInclude Include="ApplicationNative_PlatformWindows.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="DebugOutputConsole_PlatformWindows.h" />
     <ClInclude Include="NativeWindowProxy_PlatformWindows.h" />

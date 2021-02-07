@@ -2,8 +2,9 @@
 
 #include "../znEngine/common.h"
 
-#include "../znEngine/ApplicationBase.h"
-
+#include "../znEngine/Application.h"
+#include "../znEngine/ApplicationConsole.h"
+#include "../znEngine/ApplicationNative.h"
 
 // Loader
 #include "../znEngine/AssyncLoader/LoadableObject.h"

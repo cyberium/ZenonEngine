@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // General
-#include "ApplicationBase.h"
+#include "Application.h"
 
 // Additional
 #include "BaseManager.h"
@@ -36,7 +36,7 @@
 #include "ThreadPool.h"
 
 
-void CApplicationBase::PreInitializeEngine()
+void CApplication::PreInitializeEngine()
 {
 	Random::Initialize();
 
@@ -52,7 +52,7 @@ void CApplicationBase::PreInitializeEngine()
 	}
 }
 
-void CApplicationBase::InitializeEngineInternal()
+void CApplication::InitializeEngineInternal(std::initializer_list<std::string> Plugins)
 {
 	auto application_PlatformBase = dynamic_cast<IApplication_PlatformBase*>(this);
 	if (application_PlatformBase == nullptr)
@@ -162,12 +162,7 @@ void CApplicationBase::InitializeEngineInternal()
 
 	// Plugins
 	{
-		std::vector<std::string> plugins;
-		plugins.push_back("znRenderDX11.dll");
-		//plugins.push_back("znPluginM2Models.dll");
-		plugins.push_back("znPluginFBXModels.dll");
-
-		for (const auto& p : plugins)
+		for (const auto& p : Plugins)
 		{
 			try
 			{

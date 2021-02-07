@@ -9,7 +9,7 @@ namespace
 			, Offset(0.0f, 0.0f)
 			, IsSelected(0)
 		{}
-		glm::vec4 Color;
+		ColorRGBA Color;
 		// 16 bytes
 
 		glm::vec2 Offset;

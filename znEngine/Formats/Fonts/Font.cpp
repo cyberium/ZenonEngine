@@ -13,7 +13,7 @@ CFont::CFont(std::shared_ptr<ITexture> Texture, std::shared_ptr<IGeometry> FontG
 
 CFont::~CFont()
 {
-	Log::Info("Font deleted!!!");
+
 }
 
 
