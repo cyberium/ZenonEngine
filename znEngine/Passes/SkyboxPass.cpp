@@ -20,6 +20,7 @@ CSkyboxPass::~CSkyboxPass()
 std::shared_ptr<ITexture> CSkyboxPass::GetSkyboxCubeTexture() const
 {
 	return m_SkyCubeTexture;
+
 }
 
 
