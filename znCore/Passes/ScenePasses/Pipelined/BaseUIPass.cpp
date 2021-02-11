@@ -40,7 +40,7 @@ EVisitResult BaseUIPass::Visit(const std::shared_ptr<IUIControl>& sceneNode)
 
 EVisitResult BaseUIPass::Visit(const std::shared_ptr<IModel>& Model)
 {
-	Model->Render();
+	Model->Render(GetRenderEventArgs().PipelineState->GetShaders());
 	return EVisitResult::AllowAll;
 }
 

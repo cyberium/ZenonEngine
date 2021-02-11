@@ -18,7 +18,6 @@ CMaterialUIControl::~CMaterialUIControl()
 void CMaterialUIControl::SetColor(glm::vec4 color)
 {
 	MaterialData().DiffuseColor = color;
-	MarkMaterialDataDirty();
 }
 
 glm::vec4 CMaterialUIControl::GetColor() const
@@ -29,9 +28,8 @@ glm::vec4 CMaterialUIControl::GetColor() const
 void CMaterialUIControl::SetTexture(std::shared_ptr<ITexture> Texture)
 {
 	MaterialData().HasTextureDiffuse = (Texture != nullptr);
-	MarkMaterialDataDirty();
 
-	if (MaterialData().HasTextureDiffuse)
+	if (MaterialDataReadOnly().HasTextureDiffuse)
 		__super::SetTexture(0, Texture);
 }
 

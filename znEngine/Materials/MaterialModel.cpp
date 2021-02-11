@@ -66,7 +66,6 @@ MaterialModel::~MaterialModel()
 void MaterialModel::SetAmbientColor(ColorRGB Color)
 {
 	MaterialData().Ambient = Color;
-	MarkMaterialDataDirty();
 }
 
 ColorRGB MaterialModel::GetAmbientColor() const
@@ -77,7 +76,6 @@ ColorRGB MaterialModel::GetAmbientColor() const
 void MaterialModel::SetAmbientFactor(float Factor)
 {
 	MaterialData().AmbientFactor = Factor;
-	MarkMaterialDataDirty();
 }
 
 
@@ -85,7 +83,6 @@ void MaterialModel::SetAmbientFactor(float Factor)
 void MaterialModel::SetDiffuseColor(ColorRGB Color)
 {
 	MaterialData().Diffuse = Color;
-	MarkMaterialDataDirty();
 }
 
 ColorRGB MaterialModel::GetDiffuseColor() const
@@ -96,7 +93,6 @@ ColorRGB MaterialModel::GetDiffuseColor() const
 void MaterialModel::SetDiffuseFactor(float Factor)
 {
 	MaterialData().DiffuseFactor = Factor;
-	MarkMaterialDataDirty();
 }
 
 
@@ -104,7 +100,6 @@ void MaterialModel::SetDiffuseFactor(float Factor)
 void MaterialModel::SetSpecularColor(ColorRGB Color)
 {
 	MaterialData().Specular = Color;
-	MarkMaterialDataDirty();
 }
 
 ColorRGB MaterialModel::GetSpecularColor() const
@@ -115,7 +110,6 @@ ColorRGB MaterialModel::GetSpecularColor() const
 void MaterialModel::SetSpecularFactor(float Factor)
 {
 	MaterialData().SpecularFactor = Factor;
-	MarkMaterialDataDirty();
 }
 
 
@@ -123,7 +117,6 @@ void MaterialModel::SetSpecularFactor(float Factor)
 void MaterialModel::SetEmissiveColor(ColorRGB Color)
 {
 	MaterialData().Emissive = Color;
-	MarkMaterialDataDirty();
 }
 
 ColorRGB MaterialModel::GetEmissiveColor() const
@@ -134,7 +127,6 @@ ColorRGB MaterialModel::GetEmissiveColor() const
 void MaterialModel::SetEmissiveFactor(float Factor)
 {
 	MaterialData().EmissiveFactor = Factor;
-	MarkMaterialDataDirty();
 }
 
 
@@ -142,13 +134,11 @@ void MaterialModel::SetEmissiveFactor(float Factor)
 void MaterialModel::SetShininess(float Factor)
 {
 	MaterialData().Shininess = Factor;
-	MarkMaterialDataDirty();
 }
 
 void MaterialModel::SetBumpFactor(float Factor)
 {
 	MaterialData().BumpFactor = Factor;
-	MarkMaterialDataDirty();
 }
 
 
@@ -156,7 +146,6 @@ void MaterialModel::SetBumpFactor(float Factor)
 void MaterialModel::SetEnviorementMappingEnable(bool Value)
 {
 	MaterialData().IsEnviorementMappingEnable = Value;
-	MarkMaterialDataDirty();
 }
 
 
@@ -168,73 +157,63 @@ void MaterialModel::SetTexture(ETextureType TextureType, std::shared_ptr<ITextur
 		case ETextureType::TextureAmbient:
 		{
 			MaterialData().HasTextureAmbient = true;
-			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureDiffuse:
 		{
 			MaterialData().HasTextureDiffuse = true;
-			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureSpecular:
 		{
 			MaterialData().HasTextureSpecular = true;
-			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureEmissive:
 		{
 			MaterialData().HasTextureEmissive = true;
-			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureShininess:
 		{
 			MaterialData().HasTextureShininess = true;
-			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureNormalMap:
 		{
 			MaterialData().HasTextureNormalMap = true;
-			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureBump:
 		{
 			MaterialData().HasTextureBump = true;
-			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureTransparency:
 		{
 			MaterialData().HasTextureTransparency = true;
-			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureReflection:
 		{
 			MaterialData().HasTextureReflection = true;
-			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureDisplacement:
 		{
 			MaterialData().HasTextureDisplacement = true;
-			MarkMaterialDataDirty();
 		}
 		break;
 		default:
 			_ASSERT(false);
 	};
 
-	MaterialProxie::SetTexture((uint32)TextureType, texture);
+	__super::SetTexture((uint32)TextureType, texture);
 }
 
 std::shared_ptr<ITexture> MaterialModel::GetTexture(ETextureType TextureType) const
 {
-	return MaterialProxie::GetTexture((uint32)TextureType);
+	return __super::GetTexture((uint32)TextureType);
 }
 
 
@@ -303,10 +282,10 @@ void MaterialModel::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 void MaterialModel::PrintInfo()
 {
-	Log::Info("Ambient: [%f, %f, %f]. Factor [%f].", MaterialData().Ambient.r, MaterialData().Ambient.g, MaterialData().Ambient.b, MaterialData().AmbientFactor);
-	Log::Info("Diffuse: [%f, %f, %f]. Factor [%f].", MaterialData().Diffuse.r, MaterialData().Diffuse.g, MaterialData().Diffuse.b, MaterialData().DiffuseFactor);
-	Log::Info("Specular: [%f, %f, %f]. Factor [%f].", MaterialData().Specular.r, MaterialData().Specular.g, MaterialData().Specular.b, MaterialData().SpecularFactor);
-	Log::Info("Emissive: [%f, %f, %f]. Factor [%f].", MaterialData().Emissive.r, MaterialData().Emissive.g, MaterialData().Emissive.b, MaterialData().EmissiveFactor);
+	Log::Info("Ambient: [%f, %f, %f]. Factor [%f].", MaterialDataReadOnly().Ambient.r, MaterialDataReadOnly().Ambient.g, MaterialDataReadOnly().Ambient.b, MaterialDataReadOnly().AmbientFactor);
+	Log::Info("Diffuse: [%f, %f, %f]. Factor [%f].", MaterialDataReadOnly().Diffuse.r, MaterialDataReadOnly().Diffuse.g, MaterialDataReadOnly().Diffuse.b, MaterialDataReadOnly().DiffuseFactor);
+	Log::Info("Specular: [%f, %f, %f]. Factor [%f].", MaterialDataReadOnly().Specular.r, MaterialDataReadOnly().Specular.g, MaterialDataReadOnly().Specular.b, MaterialDataReadOnly().SpecularFactor);
+	Log::Info("Emissive: [%f, %f, %f]. Factor [%f].", MaterialDataReadOnly().Emissive.r, MaterialDataReadOnly().Emissive.g, MaterialDataReadOnly().Emissive.b, MaterialDataReadOnly().EmissiveFactor);
 }
 
 std::string MaterialModel::GetTextureTypeNameByTextureID(ETextureType ID) const

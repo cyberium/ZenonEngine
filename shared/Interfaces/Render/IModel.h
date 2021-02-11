@@ -138,7 +138,7 @@ ZN_INTERFACE ZN_API IModel
 	virtual void                                    AddAnimation(const std::string& AnimationName, const std::shared_ptr<IAnimation>& Animation) = 0;
 	virtual const Animations_t&                     GetAnimations() const = 0;
 
-	virtual bool                                    Render() const = 0;
+	virtual bool                                    Render(const ShaderMap& Shaders) const = 0;
 
 	// For IVisitor
 	virtual void                                    Accept(IVisitor* visitor) = 0;

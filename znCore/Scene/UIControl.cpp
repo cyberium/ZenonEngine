@@ -207,11 +207,10 @@ bool CUIControl::IsPointInBoundsAbs(const glm::vec2& Point)
 void CUIControl::Accept(IVisitor* visitor)
 {
 	EVisitResult visitResult = visitor->Visit(shared_from_this());
-	
-	//if (visitResult & EVisitResult::AllowVisitContent)
-	//{
-	//	AcceptMesh(visitor);
-	//}
+	if (visitResult & EVisitResult::AllowVisitContent)
+	{
+		AcceptContent(visitor);
+	}
 
 	if (visitResult & EVisitResult::AllowVisitChilds)
 	{
@@ -365,6 +364,11 @@ void CUIControl::UpdateWorldTransform()
 	// After world updated, we can update all childs
 	for (const auto& it : GetChilds())
 		std::dynamic_pointer_cast<CUIControl>(it)->UpdateWorldTransform();
+}
+
+EVisitResult CUIControl::AcceptContent(IVisitor * visitor)
+{
+	return EVisitResult::AllowAll;
 }
 
 

@@ -6,7 +6,7 @@ cbuffer PerCharacterDataVS : register(b2)
 	float2 __padding0;
 };
 
-cbuffer PerCharacterDataPS : register(b2)
+cbuffer Material : register(b2)
 {
     float4 Color;
 	bool IsSelected;

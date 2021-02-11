@@ -8,5 +8,5 @@ public:
 	virtual	~ModelDX11();
 
 	// IModel
-	bool Render() const override final;
+	bool Render(const ShaderMap& Shaders) const override final;
 };

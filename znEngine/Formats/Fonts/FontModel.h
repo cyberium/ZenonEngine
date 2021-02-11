@@ -1,17 +1,16 @@
 #pragma once
 
-#include "EngineIntfs.h"
+#include "../../EngineIntfs.h"
 #include "FontMaterial.h"
 #include "FontGeometry.h"
 
-class CFontModel
+class ZN_API CFontModel
 	: public ModelProxie
 {
 public:
-	CFontModel(IRenderDevice& RenderDevice);
+	CFontModel(IRenderDevice& RenderDevice, std::shared_ptr<IznFont> Font);
 	virtual ~CFontModel();
 	
-	// IUIControlText
 	void SetText(std::string Text);
 	std::string GetText() const;
 	void SetTextAlignHorizontal(ETextAlignHorizontal TextAlignHorizontal);
@@ -21,7 +20,11 @@ public:
 	void SetColor(ColorRGBA Color);
 	ColorRGBA GetColor() const;
 
+	// IModel
+	bool Render(const ShaderMap& Shaders) const override;
+
 private:
+	std::shared_ptr<IznFont> m_Font;
 	std::shared_ptr<CFontMaterial> m_Material;
 	std::shared_ptr<CFontGeometry> m_Geometry;
 

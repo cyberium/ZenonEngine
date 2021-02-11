@@ -23,7 +23,7 @@ public:
 	void AddAnimation(const std::string& AnimationName, const std::shared_ptr<IAnimation>& Animation) override;
 	const Animations_t& GetAnimations() const override;
 
-	virtual bool Render() const override;
+	virtual bool Render(const ShaderMap& Shaders) const override;
 	virtual void Accept(IVisitor* visitor) override;
 
 	// IObjectLoadSave

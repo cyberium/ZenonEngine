@@ -47,7 +47,7 @@ EVisitResult Base3DPass::Visit(const std::shared_ptr<ISceneNode>& SceneNode)
 
 EVisitResult Base3DPass::Visit(const std::shared_ptr<IModel>& Model)
 {
-	Model->Render();
+	Model->Render(GetRenderEventArgs().PipelineState->GetShaders());
 	return EVisitResult::AllowAll;
 }
 

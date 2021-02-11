@@ -52,7 +52,7 @@ std::shared_ptr<IznFont> FontsManager::Add(IRenderDevice& RenderDevice, const st
 	if (f == nullptr)
 		throw CException("FontsManager: Error while loading font '%s'.", _fontFileName.c_str());
     
-    std::vector<uint32> charWidth;
+    std::vector<int32> charWidth;
     charWidth.reserve(CFont::NUM_CHARS);
 	uint32 charHeight = 0;
 

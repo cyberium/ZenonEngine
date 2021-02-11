@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Formats/Fonts/FontModel.h"
+
 class ZN_API CUIControlText
 	: public CUIControl
 	, public IUIControlText
@@ -22,10 +24,10 @@ public:
 	void SetColor(ColorRGBA Color) override;
 	ColorRGBA GetColor() const override;
 
+protected:
+	EVisitResult AcceptContent(IVisitor * visitor) override;
+
 private:
-	std::shared_ptr<IznFont>                        m_Font;
-	std::shared_ptr<IPropertyT<std::string>>        m_TextProperty;
-	std::shared_ptr<IPropertyT<ETextAlignHorizontal>> m_TextAlignHorizontalProperty;
-	std::shared_ptr<IPropertyT<ETextAlignVertical>> m_TextAlignVerticalProperty;
-	std::shared_ptr<IPropertyT<ColorRGBA>>          m_ColorProperty;
+	std::shared_ptr<IznFont> m_Font;
+	std::shared_ptr<CFontModel> m_FontModel;
 };

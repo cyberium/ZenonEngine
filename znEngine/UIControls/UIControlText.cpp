@@ -22,9 +22,9 @@ void CUIControlText::Initialize()
 {
 	__super::Initialize();
 
-	m_Font = GetBaseManager().GetManager<IznFontsManager>()->GetMainFont();
+	SetFont(GetBaseManager().GetManager<IznFontsManager>()->GetMainFont());
 
-	m_TextProperty = MakeShared(CProperty<std::string>, "Text", "descr", cDefaultText);
+	/*m_TextProperty = MakeShared(CProperty<std::string>, "Text", "descr", cDefaultText);
 	m_TextProperty->SetValueChangedCallback([this](const std::string& NewValue) {
 		SetSize(GetFont()->GetSize(NewValue));
 	});
@@ -36,11 +36,8 @@ void CUIControlText::Initialize()
 	m_TextAlignVerticalProperty = MakeShared(CProperty<ETextAlignVertical>, "TextAlignVertical", "Text align vertical.", ETextAlignVertical::Top);
 	GetProperties()->AddProperty(m_TextAlignVerticalProperty);
 
-	//m_OffsetProperty = MakeShared(CProperty<glm::vec2>, "Offset", "Offset of first string character relatieve to local transform.", cDefaultOffset);
-	//GetProperties()->AddProperty(m_OffsetProperty);
-
 	m_ColorProperty = MakeShared(CProperty<ColorRGBA>, "Color", "Color of text", ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
-	GetProperties()->AddProperty(m_ColorProperty);
+	GetProperties()->AddProperty(m_ColorProperty);*/
 }
 
 
@@ -51,6 +48,10 @@ void CUIControlText::Initialize()
 void CUIControlText::SetFont(std::shared_ptr<IznFont> Font)
 {
 	m_Font = Font;
+	m_FontModel = MakeShared(CFontModel, GetRenderDevice(), m_Font);
+
+	for (const auto& prop : m_FontModel->GetProperties()->GetProperties())
+		GetProperties()->AddProperty(prop.second);
 }
 
 std::shared_ptr<IznFont> CUIControlText::GetFont() const
@@ -60,51 +61,50 @@ std::shared_ptr<IznFont> CUIControlText::GetFont() const
 
 void CUIControlText::SetText(std::string Text)
 {
-	m_TextProperty->Set(Text);
+	m_FontModel->SetText(Text);
 }
 
 std::string CUIControlText::GetText() const
 {
-	return m_TextProperty->Get();
+	return m_FontModel->GetText();
 }
 
 void CUIControlText::SetTextAlignHorizontal(ETextAlignHorizontal TextAlignHorizontal)
 {
-	m_TextAlignHorizontalProperty->Set(TextAlignHorizontal);
+	m_FontModel->SetTextAlignHorizontal(TextAlignHorizontal);
 }
 
 ETextAlignHorizontal CUIControlText::GetTextAlignHorizontal() const
 {
-	return m_TextAlignHorizontalProperty->Get();
+	return m_FontModel->GetTextAlignHorizontal();
 }
 
 void CUIControlText::SetTextAlignVertical(ETextAlignVertical TextAlignVertical)
 {
-	m_TextAlignVerticalProperty->Set(TextAlignVertical);
+	m_FontModel->SetTextAlignVertical(TextAlignVertical);
 }
 
 ETextAlignVertical CUIControlText::GetTextAlignVertical() const
 {
-	return m_TextAlignVerticalProperty->Get();
+	return m_FontModel->GetTextAlignVertical();
 }
-
-
-/*void CUIControlText::SetOffset(glm::vec2 Offset)
-{
-	m_OffsetProperty->Set(Offset);
-}
-
-glm::vec2 CUIControlText::GetOffset() const
-{
-	return m_OffsetProperty->Get();
-}*/
 
 void CUIControlText::SetColor(ColorRGBA Color)
 {
-	m_ColorProperty->Set(Color);
+	m_FontModel->SetColor(Color);
 }
 
 ColorRGBA CUIControlText::GetColor() const
 {
-	return m_ColorProperty->Get();
+	return m_FontModel->GetColor();
+}
+
+
+
+//
+// Protected
+//
+EVisitResult CUIControlText::AcceptContent(IVisitor * visitor)
+{
+	return visitor->Visit(m_FontModel);
 }

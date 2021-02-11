@@ -108,3 +108,4 @@ void MaterialProxie::MarkMaterialDataDirty()
 {
 	std::dynamic_pointer_cast<IMaterialDataOwner>(m_Material)->MarkMaterialDataDirty();
 }
+

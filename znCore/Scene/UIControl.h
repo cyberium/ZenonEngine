@@ -74,6 +74,8 @@ protected:
 	virtual void									UpdateLocalTransform();
 	virtual void									UpdateWorldTransform();
 
+	virtual EVisitResult                            AcceptContent(IVisitor* visitor);
+
 public: // Syntetic events // TODO: Make private
 	bool                                            IsMouseOnNode() const;
 	void                                            DoMouseEntered();

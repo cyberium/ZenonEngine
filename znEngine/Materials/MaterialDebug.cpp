@@ -18,7 +18,6 @@ MaterialDebug::~MaterialDebug()
 void MaterialDebug::SetDiffuseColor(const glm::vec4& diffuse)
 {
 	MaterialData().DiffuseColor = diffuse;
-	MarkMaterialDataDirty();
 }
 
 glm::vec4 MaterialDebug::GetDiffuseColor() const
@@ -29,9 +28,8 @@ glm::vec4 MaterialDebug::GetDiffuseColor() const
 void MaterialDebug::SetTexture(std::shared_ptr<ITexture> Texture)
 {
 	MaterialData().HasTextureDiffuse = (Texture != nullptr);
-	MarkMaterialDataDirty();
 
-	if (MaterialData().HasTextureDiffuse)
+	if (MaterialDataReadOnly().HasTextureDiffuse)
 		__super::SetTexture(0, Texture);
 }
 

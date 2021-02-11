@@ -41,36 +41,40 @@ void CFontGeometry::Render(const IShader * VertexShader, const std::shared_ptr<I
 {
 	Render_BindAllBuffers(VertexShader);
 	{
+		const auto lines = Utils::SplitTextToLines(Text);
+		const auto textSize = Font->GetTextSize(lines);
+		const auto offsetByAlign = CalculateOffsetByAlign(textSize, TextAlignHorizontal, TextAlignVertical);
+
 		auto currentCharOffset = glm::vec2(0.0f);
-
-		const glm::vec2 textSize = glm::vec2(Font->GetWidth(Text), Font->GetHeight());
-		const glm::vec2 offsetByAlign = CalculateOffsetByAlign(textSize, TextAlignHorizontal, TextAlignVertical);
-
-		for (size_t i = 0; i < Text.length(); i++)
+		for (const auto& line : lines)
 		{
-			const uint8 ch = static_cast<uint8>(Text.c_str()[i]);
-			if (ch == '\n')
+			const auto lineSize = Font->GetLineSize(line);
+
+			for (auto i = 0; i < line.length(); i++)
 			{
-				currentCharOffset.x = 0.0f;
-				currentCharOffset.y += static_cast<float>(Font->GetHeight()) + 0.01f;
-				continue;
+				const uint8 ch = static_cast<uint8>(line.c_str()[i]);
+				if (ch == '\n')
+					throw CException("Line must not contains new-line symbols.");
+
+				{
+					SGPUPerCharacterDataVS fontProperties;
+					fontProperties.Offset = currentCharOffset + offsetByAlign;
+
+					BindPerCharacterVSData(VertexShader, fontProperties);
+				}
+
+				{
+					SGeometryDrawArgs GeometryDrawArgs;
+					GeometryDrawArgs.VertexStartLocation = (ch) * 6;
+					GeometryDrawArgs.VertexCnt = 6;
+					Render_Draw(GeometryDrawArgs);
+				}
+
+				currentCharOffset.x += static_cast<float>(Font->GetCharSize(ch).x) + 0.01f;
 			}
 
-			{
-				SGPUPerCharacterDataVS fontProperties;
-				fontProperties.Offset = currentCharOffset + offsetByAlign;
-
-				BindPerCharacterVSData(VertexShader, fontProperties);
-			}
-
-			{
-				SGeometryDrawArgs GeometryDrawArgs;
-				GeometryDrawArgs.VertexStartLocation = (ch) * 6;
-				GeometryDrawArgs.VertexCnt = 6;
-				Render_Draw(GeometryDrawArgs);
-			}
-
-			currentCharOffset.x += static_cast<float>(textSize.x) + 0.01f;
+			currentCharOffset.x = 0.0f;
+			currentCharOffset.y += static_cast<float>(lineSize.y) + 0.01f;
 		}
 	}
 	Render_UnbindAllBuffers(VertexShader);

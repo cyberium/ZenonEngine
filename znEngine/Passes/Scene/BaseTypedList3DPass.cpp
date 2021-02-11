@@ -79,7 +79,7 @@ void CBaseList3DPass::DoRenderSceneNode(const std::shared_ptr<const ISceneNode>&
 
 void CBaseList3DPass::DoRenderModel(const std::shared_ptr<const IModel>& Model)
 {
-	Model->Render();
+	Model->Render(GetRenderEventArgs().PipelineState->GetShaders());
 }
 
 void CBaseList3DPass::DoRenderGeometry(const std::shared_ptr<const IGeometry>& Geometry, const std::shared_ptr<const IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)

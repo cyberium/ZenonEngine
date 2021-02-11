@@ -348,6 +348,9 @@
     <ClCompile Include="Scene\SceneNodeTransform.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Properties\PropertyProxy.cpp">
+      <Filter>Properties</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -845,5 +848,11 @@
     <ClInclude Include="..\shared\Interfaces\Platform\PlatformWindows.h">
       <Filter>__Interfaces\Platform</Filter>
     </ClInclude>
+    <ClInclude Include="Properties\PropertyProxy.h">
+      <Filter>Properties</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

@@ -24,6 +24,7 @@ protected:
 	{
 		void* materialData = GetMaterialDataEx();
 		_ASSERT(materialData != nullptr);
+		MarkMaterialDataDirty();
 		return *reinterpret_cast<T*>(materialData);
 	}
 

@@ -55,8 +55,7 @@ void MaterialDX11::BindForShader(const IShader* shader) const
 
 	if (m_ConstantBuffer)
 	{
-		auto* materialParameter = shader->GetShaderParameterByName("Material");
-		if (materialParameter)
+		if (auto materialParameter = shader->GetShaderParameterByName("Material"))
 		{
 			materialParameter->SetConstantBuffer(m_ConstantBuffer);
 			materialParameter->Bind();
@@ -70,8 +69,7 @@ void MaterialDX11::UnbindForShader(const IShader* shader) const
 
 	if (m_ConstantBuffer)
 	{
-		auto* materialParameter = shader->GetShaderParameterByName("Material");
-		if (materialParameter)
+		if (auto materialParameter = shader->GetShaderParameterByName("Material"))
 		{
 			materialParameter->Unbind();
 		}

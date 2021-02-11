@@ -131,6 +131,7 @@
     <ClCompile Include="Properties\PropertyBase.cpp" />
     <ClCompile Include="Properties\PropertyGroup.cpp" />
     <ClCompile Include="Properties\PropertyGroupProxy.cpp" />
+    <ClCompile Include="Properties\PropertyProxy.cpp" />
     <ClCompile Include="Proxies\GeometryProxie.cpp" />
     <ClCompile Include="Proxies\MaterialProxie.cpp" />
     <ClCompile Include="Proxies\ModelProxie.cpp" />
@@ -295,6 +296,7 @@
     <ClInclude Include="Properties\PropertyBase.h" />
     <ClInclude Include="Properties\PropertyGroup.h" />
     <ClInclude Include="Properties\PropertyGroupProxy.h" />
+    <ClInclude Include="Properties\PropertyProxy.h" />
     <ClInclude Include="Proxies\GeometryProxie.h" />
     <ClInclude Include="Proxies\MaterialProxie.h" />
     <ClInclude Include="Proxies\MaterialProxieT.h" />
@@ -326,6 +328,9 @@
     <ClInclude Include="XML\XMLManager.h" />
     <ClInclude Include="XML\XMLReader.h" />
     <ClInclude Include="XML\XMLWriter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A4E6F769-0036-4128-A409-495D9207F587}</ProjectGuid>

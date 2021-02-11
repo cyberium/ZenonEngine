@@ -18,7 +18,7 @@ ModelDX11::~ModelDX11()
 //
 // IModel
 //
-bool ModelDX11::Render() const
+bool ModelDX11::Render(const ShaderMap& Shaders) const
 {
 	return true;
 }

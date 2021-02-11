@@ -9,13 +9,18 @@ namespace
 	const glm::vec4 cDefaultColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-CFontModel::CFontModel(IRenderDevice& RenderDevice)
+CFontModel::CFontModel(IRenderDevice& RenderDevice, std::shared_ptr<IznFont> Font)
 	: ModelProxie(RenderDevice.GetObjectsFactory().CreateModel())
+	, m_Font(Font)
 {
+	m_Material = MakeShared(CFontMaterial, RenderDevice);
+	m_Material->SetTexture(Font->GetTexture());
+
+	m_Geometry = MakeShared(CFontGeometry, RenderDevice, Font->GetGeometry());
+
+	GetProperties()->SetName("FontModel");
+
 	m_TextProperty = MakeShared(CProperty<std::string>, "Text", "descr", cDefaultText);
-	//m_TextProperty->SetValueChangedCallback([this](const std::string& NewValue) {
-	//	SetSize(GetFont()->GetSize(NewValue));
-	//});
 	GetProperties()->AddProperty(m_TextProperty);
 
 	m_TextAlignHorizontalProperty = MakeShared(CProperty<ETextAlignHorizontal>, "TextAlignHorizontal", "Text align horizontal.", ETextAlignHorizontal::Left);
@@ -23,9 +28,6 @@ CFontModel::CFontModel(IRenderDevice& RenderDevice)
 
 	m_TextAlignVerticalProperty = MakeShared(CProperty<ETextAlignVertical>, "TextAlignVertical", "Text align vertical.", ETextAlignVertical::Top);
 	GetProperties()->AddProperty(m_TextAlignVerticalProperty);
-
-	//m_OffsetProperty = MakeShared(CProperty<glm::vec2>, "Offset", "Offset of first string character relatieve to local transform.", cDefaultOffset);
-	//GetProperties()->AddProperty(m_OffsetProperty);
 
 	m_ColorProperty = MakeShared(CProperty<ColorRGBA>, "Color", "Color of text", ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
 	GetProperties()->AddProperty(m_ColorProperty);
@@ -65,23 +67,30 @@ ETextAlignVertical CFontModel::GetTextAlignVertical() const
 	return m_TextAlignVerticalProperty->Get();
 }
 
-
-/*void CFontModel::SetOffset(glm::vec2 Offset)
-{
-	m_OffsetProperty->Set(Offset);
-}
-
-glm::vec2 CFontModel::GetOffset() const
-{
-	return m_OffsetProperty->Get();
-}*/
-
 void CFontModel::SetColor(ColorRGBA Color)
 {
+	m_Material->SetColor(Color);
 	m_ColorProperty->Set(Color);
 }
 
 ColorRGBA CFontModel::GetColor() const
 {
 	return m_ColorProperty->Get();
+}
+
+
+
+//
+// IModel
+//
+bool CFontModel::Render(const ShaderMap& Shaders) const
+{
+	auto vertexShader = Shaders.at(EShaderType::VertexShader).get();
+	auto pixelShader = Shaders.at(EShaderType::PixelShader).get();
+
+	m_Material->Bind(pixelShader);
+	m_Geometry->Render(vertexShader, m_Font, m_TextProperty->Get(), m_TextAlignHorizontalProperty->Get(), m_TextAlignVerticalProperty->Get());
+	m_Material->Unbind(pixelShader);
+
+	return true;
 }

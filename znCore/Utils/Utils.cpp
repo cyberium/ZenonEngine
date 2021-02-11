@@ -43,6 +43,27 @@ namespace Utils
 		return str;
 	}
 
+	std::vector<std::string> SplitTextToLines(const std::string& Text)
+	{
+		std::vector<std::string> lines;
+
+		std::string currentLine = "";
+		for (auto i = 0; i < Text.length(); i++)
+		{
+			const auto currentChar = Text[i];
+			if (currentChar == '\n')
+			{
+				lines.push_back(currentLine);
+				currentLine.clear();
+				continue;
+			}
+
+			currentLine += currentChar;
+		}
+
+		return lines;
+	}
+
 	std::vector<std::string> ArgumentsToVector(int argumentsCount, char * arguments[])
 	{
 		std::vector<std::string> argumnets;

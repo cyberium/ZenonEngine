@@ -4,7 +4,7 @@
 #include "MaterialEditorTool.h"
 
 MaterialEditorTool::MaterialEditorTool(IRenderDevice& RenderDevice)
-	: MaterialProxieT(RenderDevice, "MaterialEditorTool")
+	: MaterialProxieT(RenderDevice.GetObjectsFactory().CreateMaterial("MaterialEditorTool"))
 {}
 
 MaterialEditorTool::~MaterialEditorTool()
@@ -18,5 +18,4 @@ glm::vec4 MaterialEditorTool::GetColor() const
 void MaterialEditorTool::SetColor(const glm::vec4& Color)
 {
 	MaterialData().Color = Color;
-	MarkMaterialDataDirty();
 }

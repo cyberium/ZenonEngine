@@ -65,9 +65,9 @@ const Animations_t& ModelProxie::GetAnimations() const
 
 
 
-bool ModelProxie::Render() const
+bool ModelProxie::Render(const ShaderMap& Shaders) const
 {
-	return m_Model->Render();
+	return m_Model->Render(Shaders);
 }
 
 void ModelProxie::Accept(IVisitor* visitor)
