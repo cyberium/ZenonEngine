@@ -44,14 +44,14 @@ EVisitResult CUIControlPass::Visit(const std::shared_ptr<IUIControl>& node)
 		for (const auto& subGeom : textNode->GetSubgeometries())
 		{
 			PerObject perObject(node->GetWorldTransfom());
-			perObject.Model = glm::translate(perObject.Model, glm::vec3(subGeom.Translate.x, subGeom.Translate.y, 0.0f));
-			perObject.Model = glm::scale(perObject.Model, glm::vec3(subGeom.Size.x, subGeom.Size.y, 1.0f));
+			perObject.Model = glm::translate(perObject.Model, glm::vec3(subGeom->GetTranslate().x, subGeom->GetTranslate().y, 0.0f));
+			perObject.Model = glm::scale(perObject.Model, glm::vec3(subGeom->GetSize().x, subGeom->GetSize().y, 1.0f));
 
 			BindPerObjectData(perObject);
 
-			subGeom.Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
-			subGeom.Geom->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), SGeometryDrawArgs());
-			subGeom.Material->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
+			subGeom->GetMaterial()->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
+			subGeom->GetGeom()->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), SGeometryDrawArgs());
+			subGeom->GetMaterial()->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 		}
 
 		return EVisitResult::AllowVisitChilds;

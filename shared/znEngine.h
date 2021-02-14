@@ -56,7 +56,7 @@
 // Materials
 #include "../znEngine/Materials/MaterialDebug.h"
 #include "../znEngine/Materials/MaterialModel.h"
-#include "../znEngine/Materials/MaterialUIControl.h"
+#include "../znEngine/UIControls/Common/UIControlCommonMaterial.h"
 
 // Passes
 #include "../znEngine/Passes/UI/UIFontPass.h"

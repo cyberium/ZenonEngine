@@ -4,7 +4,8 @@
 #include "UIControlRTSResourcesPanel.h"
 
 // Additional
-#include "Materials/MaterialUIControl.h"
+#include "UIControls/Common/UIControlCommonModel.h"
+#include "UIControls/Common/UIControlCommonMaterial.h"
 
 namespace
 {
@@ -66,22 +67,25 @@ void CUIControlRTSResourcesPanel::Initialize()
 	m_GoldText->SetText("888 $");
 	m_GoldText->SetColor(ColorRGBA(0.8f, 0.8f, 0.1f, 1.0f));
 
-	auto material = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
+	auto material = MakeShared(CUIControlCommonMaterial, GetBaseManager().GetApplication().GetRenderDevice());
 	material->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Interface Pack/Spritesheet/interfacePack_sheet@2.png"));
 
+	{
+		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		subGeom->SetTranslate(glm::vec2(0.0f, 0.0f));
+		subGeom->SetSize(cUIWindowCell.CellSize);
+		subGeom->SetMaterial(material);
+		subGeom->SetGeom(GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f), cUIWindowCell.UVCellStart, cUIWindowCell.UVCellEnd));
+		AddSubgeometry(subGeom);
+	}
 
-	SSubgeometry subGeom;
-	subGeom.Translate = glm::vec2(0.0f, 0.0f);
-	subGeom.Size = cUIWindowCell.CellSize;
-	subGeom.Material = material;
-	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f), cUIWindowCell.UVCellStart, cUIWindowCell.UVCellEnd);
-	AddSubgeometry(subGeom);
-
-	subGeom.Translate = glm::vec2(0, cUIWindowCell.CellSize.y - 18);
-	subGeom.Size = cUIWindowCell.CellSize;
-	subGeom.Material = material;
-	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f), cUIWindowCell.UVCellStart, cUIWindowCell.UVCellEnd);
-	AddSubgeometry(subGeom);
-
+	{
+		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		subGeom->SetTranslate(glm::vec2(0, cUIWindowCell.CellSize.y - 18));
+		subGeom->SetSize(cUIWindowCell.CellSize);
+		subGeom->SetMaterial(material);
+		subGeom->SetGeom(GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f), cUIWindowCell.UVCellStart, cUIWindowCell.UVCellEnd));
+		AddSubgeometry(subGeom);
+	}
 	SetSize(cUIWindowCell.CellSize);
 }

@@ -14,7 +14,7 @@ RenderPassMultipipelined::~RenderPassMultipipelined()
 {
 }
 
-void RenderPassMultipipelined::PreRender(IPipelineState& Pipeline, RenderEventArgs & e)
+void RenderPassMultipipelined::PreRender(size_t PipelineIndex, IPipelineState& Pipeline, RenderEventArgs & e)
 {
 	e.PipelineState = &Pipeline;
 	Pipeline.Bind();
@@ -22,11 +22,11 @@ void RenderPassMultipipelined::PreRender(IPipelineState& Pipeline, RenderEventAr
 	BindPerFrameData(Pipeline);
 }
 
-void RenderPassMultipipelined::Render(IPipelineState& Pipeline, RenderEventArgs & e)
+void RenderPassMultipipelined::Render(size_t PipelineIndex, IPipelineState& Pipeline, RenderEventArgs & e)
 {
 }
 
-void RenderPassMultipipelined::PostRender(IPipelineState& Pipeline, RenderEventArgs & e)
+void RenderPassMultipipelined::PostRender(size_t PipelineIndex, IPipelineState& Pipeline, RenderEventArgs & e)
 {
 	Pipeline.UnBind();
 	e.PipelineState = nullptr;
@@ -39,18 +39,20 @@ void RenderPassMultipipelined::PostRender(IPipelineState& Pipeline, RenderEventA
 //
 void RenderPassMultipipelined::Render(RenderEventArgs & e)
 {
-	for (const auto& pipeline : GetPipelines())
+	const auto& pipelines = GetPipelines();
+	for (size_t i = 0; i < pipelines.size(); i++)
 	{
-		PreRender(*pipeline, e);
-		Render(*pipeline, e);
-		PostRender(*pipeline, e);
+		const auto& pipeline = pipelines.at(i);
+		PreRender(i, *pipeline, e);
+		Render(i, *pipeline, e);
+		PostRender(i, *pipeline, e);
 	}
 }
 
 
 
 //
-// IRenderPassPipelined
+// IRenderPassMultipipelinded
 //
 void RenderPassMultipipelined::Configure(std::shared_ptr<IRenderTarget> OutputRenderTarget)
 {
@@ -92,4 +94,10 @@ void RenderPassMultipipelined::BindPerFrameData(IPipelineState& Pipeline) const
 			perFrameParam->Bind();
 		}
 	}
+}
+
+size_t RenderPassMultipipelined::AddPipeline(std::shared_ptr<IPipelineState> Pipeline)
+{
+	m_Pipelines.push_back(Pipeline);
+	return m_Pipelines.size() - 1;
 }

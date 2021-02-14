@@ -30,7 +30,7 @@
 
 #include "Passes/UI/UIFontPass.h"
 #include "Passes/UI/UIControlPass.h"
-
+#include "Passes/UI/ConsolePass.h"
 
 CRendererForward::CRendererForward(IBaseManager& BaseManager, IScene& Scene)
 	: RendererBase(BaseManager, Scene)
@@ -178,6 +178,11 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	//
 	AddUIPass(MakeShared(CUIControlPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	AddUIPass(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+
+
+	std::shared_ptr<CUIConsolePass> consolePass = MakeShared(CUIConsolePass, m_RenderDevice);
+	consolePass->Configure(OutputRenderTarget);
+	AddUIPass(consolePass);
 }
 
 

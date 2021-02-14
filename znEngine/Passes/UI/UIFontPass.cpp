@@ -5,7 +5,7 @@
 
 // Additional
 #include "UIControls/UIControlText.h"
-#include "Formats/Fonts/FontModel.h"
+#include "UIControls/Text/UITextModel.h"
 
 CUIFontPass::CUIFontPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: BaseUIPass(Scene)
@@ -51,49 +51,21 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared
 }
 
 
-namespace
-{
-	glm::vec2 CalculateOffsetByAlign(const glm::vec2 TextSize, ETextAlignHorizontal TextAlignHorizontal, ETextAlignVertical TextAlignVertical)
-	{
-		glm::vec2 offsetByAlign = glm::vec2(0.0f);
-
-		if (TextAlignHorizontal == ETextAlignHorizontal::Left)
-			offsetByAlign.x = 0.0f;
-		else if (TextAlignHorizontal == ETextAlignHorizontal::Center)
-			offsetByAlign.x = -(TextSize.x / 2.0f);
-		else if (TextAlignHorizontal == ETextAlignHorizontal::Right)
-			offsetByAlign.x = -TextSize.x;
-
-		if (TextAlignVertical == ETextAlignVertical::Top)
-			offsetByAlign.y = 0.0f;
-		else if (TextAlignVertical == ETextAlignVertical::Center)
-			offsetByAlign.y = -(TextSize.y / 2.0f);
-		else if (TextAlignVertical == ETextAlignVertical::Bottom)
-			offsetByAlign.y = -TextSize.y;
-
-		return offsetByAlign;
-	}
-}
-
-
 //
 // IVisitor
 //
 EVisitResult CUIFontPass::Visit(const std::shared_ptr<IUIControl>& node)
 {
-	auto textNode = std::dynamic_pointer_cast<CUIControlText>(node);
-	if (textNode == nullptr)
-		return EVisitResult::AllowVisitChilds;
+	if (auto textNode = std::dynamic_pointer_cast<IUIControlText>(node))
+		return __super::Visit(node);
 
-	return __super::Visit(node);
+	return EVisitResult::AllowVisitChilds;
 }
 
 EVisitResult CUIFontPass::Visit(const std::shared_ptr<IModel>& Model)
 {
-	if (auto fontModel = std::dynamic_pointer_cast<CFontModel>(Model))
-	{
-		fontModel->Render(GetPipeline().GetShaders());
-	}
+	if (auto fontModel = std::dynamic_pointer_cast<CUITextModel>(Model))
+		return __super::Visit(fontModel);
 
 	return EVisitResult::AllowAll;
 }

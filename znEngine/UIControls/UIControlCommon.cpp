@@ -25,12 +25,12 @@ void CUIControlCommon::Initialize()
 //
 // IUIControlCommon
 //
-void CUIControlCommon::AddSubgeometry(const SSubgeometry & Subgeometry)
+void CUIControlCommon::AddSubgeometry(const std::shared_ptr<IUIControlModel>& Subgeometry)
 {
 	m_Subgeometries.push_back(Subgeometry);
 }
 
-const std::vector<IUIControlCommon::SSubgeometry>& CUIControlCommon::GetSubgeometries() const
+const std::vector<std::shared_ptr<IUIControlModel>>& CUIControlCommon::GetSubgeometries() const
 {
 	return m_Subgeometries;
 }
@@ -40,7 +40,7 @@ void CUIControlCommon::ClearSubgeometries()
 	m_Subgeometries.clear();
 }
 
-std::vector<CUIControlCommon::SSubgeometry>& CUIControlCommon::GetSubgeometries()
+std::vector<std::shared_ptr<IUIControlModel>>& CUIControlCommon::GetSubgeometries()
 {
 	return m_Subgeometries;
 }

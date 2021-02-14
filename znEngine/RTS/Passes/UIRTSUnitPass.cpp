@@ -4,7 +4,7 @@
 #include "UIRTSUnitPass.h"
 
 // Additional
-#include "Materials/MaterialUIControl.h"
+#include "UIControls/Common/UIControlCommonMaterial.h"
 
 namespace
 {
@@ -36,10 +36,10 @@ namespace
 CUIRTSUnitPass::CUIRTSUnitPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: BaseUIPass(Scene)
 {
-	m_HPBarOutlineMaterial = MakeShared(CMaterialUIControl, GetRenderDevice());
+	m_HPBarOutlineMaterial = MakeShared(CUIControlCommonMaterial, GetRenderDevice());
 	m_HPBarOutlineMaterial->SetColor(glm::vec4(hpBarOutlineColor, 1.0f));
 
-	m_HPBarMaterial = MakeShared(CMaterialUIControl, GetRenderDevice());
+	m_HPBarMaterial = MakeShared(CUIControlCommonMaterial, GetRenderDevice());
 
 	m_HPBarOutlineGeometry = GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(outlineHPBarSize);
 	m_HPBarGeometry = GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(inlineHPBarSize);

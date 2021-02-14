@@ -1,32 +1,34 @@
 #pragma once
 
-#if 0 
+#if 1 
 
-class ZN_API CUIControlConsolePass
-	: public RenderPassPipelined
+#include "UIControls/Text/UITextModel.h"
+
+class ZN_API CUIConsolePass
+	: public RenderPassMultipipelined
 {
 public:
-	CUIControlConsolePass(IRenderDevice& RenderDevice);
-	virtual ~CUIControlConsolePass();
+	CUIConsolePass(IRenderDevice& RenderDevice);
+	virtual ~CUIConsolePass();
 
 	// IRenderPass
-	void Render(RenderEventArgs& e) override;
+	void Render(size_t PipelineIndex, IPipelineState& Pipeline, RenderEventArgs & e) override;
 
 	// IRenderPassPipelined
-	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget) override;
+	virtual void Configure(std::shared_ptr<IRenderTarget> RenderTarget) override;
 
 protected:
-	PerFrame GetPerFrameData() const override final;
+	PerFrame GetPerFrameData(IPipelineState& Pipeline) const override final;
 
 private:
-	std::string m_Text;
-	std::shared_ptr<IznFont> m_Font;
+	size_t m_ColorPipelineIndex;
+	size_t m_FontPipelineIndex;
+
+	std::shared_ptr<CUITextModel> m_FontModel;
+
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 	IShaderParameter* m_PerObjectParameter;
 
-private:
-	std::shared_ptr<IConstantBuffer>   m_FontBuffer;
-	IShaderParameter*                  m_FontBufferParameter;
 };
 
 #endif

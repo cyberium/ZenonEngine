@@ -16,13 +16,13 @@ namespace
 	};
 }
 
-class ZN_API CMaterialUIControl
+class ZN_API CUIControlCommonMaterial
 	: public MaterialProxieT<SMaterialUIControlProperties>
 	, public IMaterialUIControl
 {
 public:
-	CMaterialUIControl(IRenderDevice& RenderDevice);
-	virtual ~CMaterialUIControl();
+	CUIControlCommonMaterial(IRenderDevice& RenderDevice);
+	virtual ~CUIControlCommonMaterial();
 
 	// IMaterialUIControl
 	void SetColor(glm::vec4 color) override;

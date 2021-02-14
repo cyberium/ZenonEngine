@@ -19,9 +19,6 @@
     <ClCompile Include="AssyncLoader\Loader.cpp" />
     <ClCompile Include="BaseManager.cpp" />
     <ClCompile Include="Formats\Fonts\Font.cpp" />
-    <ClCompile Include="Formats\Fonts\FontGeometry.cpp" />
-    <ClCompile Include="Formats\Fonts\FontMaterial.cpp" />
-    <ClCompile Include="Formats\Fonts\FontModel.cpp" />
     <ClCompile Include="Formats\Fonts\FontsManager.cpp" />
     <ClCompile Include="Formats\Images\DDSFormat.cpp" />
     <ClCompile Include="Formats\Images\ImageBase.cpp" />
@@ -72,8 +69,6 @@
     <ClCompile Include="Passes\Technical\SetShaderParameterPass.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
     <ClCompile Include="Materials\MaterialModel.cpp" />
-    <ClCompile Include="Materials\MaterialUIControl.cpp" />
-    <ClCompile Include="Materials\UI_Line_Material.cpp" />
     <ClCompile Include="Passes\TerrainPass.cpp" />
     <ClCompile Include="Passes\UI\ConsolePass.cpp" />
     <ClCompile Include="Passes\UI\UIFontPass.cpp" />
@@ -114,6 +109,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="UIControls\Common\UIControlCommonMaterial.cpp" />
+    <ClCompile Include="UIControls\Common\UIControlCommonModel.cpp" />
+    <ClCompile Include="UIControls\Text\UITextGeometry.cpp" />
+    <ClCompile Include="UIControls\Text\UITextMaterial.cpp" />
+    <ClCompile Include="UIControls\Text\UITextModel.cpp" />
     <ClCompile Include="UIControls\UIControlCommon.cpp" />
     <ClCompile Include="UIControls\UIControlText.cpp" />
   </ItemGroup>
@@ -127,9 +127,6 @@
     <ClInclude Include="BaseManager.h" />
     <ClInclude Include="EngineIntfs.h" />
     <ClInclude Include="Formats\Fonts\Font.h" />
-    <ClInclude Include="Formats\Fonts\FontGeometry.h" />
-    <ClInclude Include="Formats\Fonts\FontMaterial.h" />
-    <ClInclude Include="Formats\Fonts\FontModel.h" />
     <ClInclude Include="Formats\Fonts\FontsManager.h" />
     <ClInclude Include="Formats\Images\DDSFormat.h" />
     <ClInclude Include="Formats\Images\ImageBase.h" />
@@ -180,8 +177,6 @@
     <ClInclude Include="Passes\Technical\SetShaderParameterPass.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />
     <ClInclude Include="Materials\MaterialModel.h" />
-    <ClInclude Include="Materials\MaterialUIControl.h" />
-    <ClInclude Include="Materials\UI_Line_Material.h" />
     <ClInclude Include="Passes\TerrainPass.h" />
     <ClInclude Include="Passes\UI\ConsolePass.h" />
     <ClInclude Include="Passes\UI\UIFontPass.h" />
@@ -222,6 +217,11 @@
     <ClInclude Include="Settings\Settings.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ThreadPool.h" />
+    <ClInclude Include="UIControls\Common\UIControlCommonMaterial.h" />
+    <ClInclude Include="UIControls\Common\UIControlCommonModel.h" />
+    <ClInclude Include="UIControls\Text\UITextGeometry.h" />
+    <ClInclude Include="UIControls\Text\UITextMaterial.h" />
+    <ClInclude Include="UIControls\Text\UITextModel.h" />
     <ClInclude Include="UIControls\UIControlCommon.h" />
     <ClInclude Include="UIControls\UIControlText.h" />
   </ItemGroup>

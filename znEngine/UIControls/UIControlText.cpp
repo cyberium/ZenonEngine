@@ -48,10 +48,12 @@ void CUIControlText::Initialize()
 void CUIControlText::SetFont(std::shared_ptr<IznFont> Font)
 {
 	m_Font = Font;
-	m_FontModel = MakeShared(CFontModel, GetRenderDevice(), m_Font);
+	m_FontModel = MakeShared(CUITextModel, GetRenderDevice(), m_Font);
 
 	for (const auto& prop : m_FontModel->GetProperties()->GetProperties())
+	{
 		GetProperties()->AddProperty(prop.second);
+	}
 }
 
 std::shared_ptr<IznFont> CUIControlText::GetFont() const

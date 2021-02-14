@@ -17,6 +17,7 @@
 #include "../znCore/Passes/RendererBase.h"
 #include "../znCore/Passes/RenderPass.h"
 #include "../znCore/Passes/RenderPassPipelined.h"
+#include "../znCore/Passes/RenderPassMultipipelined.h"
 #include "../znCore/Passes/ScenePasses/ScenePass.h"
 #include "../znCore/Passes/ScenePasses/Pipelined/ScenePassPipelined.h"
 #include "../znCore/Passes/ScenePasses/Pipelined/Base3DPass.h"

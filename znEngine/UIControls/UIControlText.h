@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Formats/Fonts/FontModel.h"
+#include "Text/UITextModel.h"
 
 class ZN_API CUIControlText
 	: public CUIControl
@@ -29,5 +29,5 @@ protected:
 
 private:
 	std::shared_ptr<IznFont> m_Font;
-	std::shared_ptr<CFontModel> m_FontModel;
+	std::shared_ptr<CUITextModel> m_FontModel;
 };

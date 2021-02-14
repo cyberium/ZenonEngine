@@ -3,8 +3,9 @@
 // General
 #include "UIControlRTSTowerBtn.h"
 
-// Additional
-#include "Materials/MaterialUIControl.h"
+// Additional]
+#include "UIControls/Common/UIControlCommonModel.h"
+#include "UIControls/Common/UIControlCommonMaterial.h"
 
 namespace
 {
@@ -49,14 +50,14 @@ void CUIControlRTSTowerBtn::Initialize()
 
 	m_ButtonContent = GetScene().CreateUIControlTCast<IUIControlCommon>(shared_from_this());
 
-	std::shared_ptr<CMaterialUIControl> contentMaterial = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
+	std::shared_ptr<CUIControlCommonMaterial> contentMaterial = MakeShared(CUIControlCommonMaterial, GetBaseManager().GetApplication().GetRenderDevice());
 	//contentMaterial->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 0.7f));
 
-	SSubgeometry subGeom;
-	subGeom.Translate = glm::vec2(14.0f, 14.0f);
-	subGeom.Size = glm::vec2(58);
-	subGeom.Material = contentMaterial;
-	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f));
+	auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+	subGeom->SetTranslate(glm::vec2(14.0f, 14.0f));
+	subGeom->SetSize(glm::vec2(58));
+	subGeom->SetMaterial(contentMaterial);
+	subGeom->SetGeom(GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f)));
 	m_ButtonContent->AddSubgeometry(subGeom);
 
 
@@ -75,16 +76,16 @@ void CUIControlRTSTowerBtn::Initialize()
 		}
 
 		{
-			std::shared_ptr<CMaterialUIControl> goldPanelMaterial = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
+			std::shared_ptr<CUIControlCommonMaterial> goldPanelMaterial = MakeShared(CUIControlCommonMaterial, GetBaseManager().GetApplication().GetRenderDevice());
 			goldPanelMaterial->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Interface Pack/Spritesheet/interfacePack_sheet@2.png"));
 
 			SUISpreadsheetCell goldPanelCell(glm::vec2(320.0f, 1152.0f), glm::vec2(80.0f, 40.0f), glm::vec2(1193.0f, 1193.0f));
 
-			SSubgeometry subGeom;
-			subGeom.Translate = glm::vec2(0.0f, 0.0f);
-			subGeom.Size = goldPanelCell.CellSize;
-			subGeom.Material = goldPanelMaterial;
-			subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f), goldPanelCell.UVCellStart, goldPanelCell.UVCellEnd);
+			auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+			subGeom->SetTranslate(glm::vec2(0.0f, 0.0f));
+			subGeom->SetSize(goldPanelCell.CellSize);
+			subGeom->SetMaterial(goldPanelMaterial);
+			subGeom->SetGeom(GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f), goldPanelCell.UVCellStart, goldPanelCell.UVCellEnd));
 			goldPanel->AddSubgeometry(subGeom);
 		}
 	}
@@ -96,14 +97,14 @@ void CUIControlRTSTowerBtn::Initialize()
 
 void CUIControlRTSTowerBtn::SetTowerTexture(std::shared_ptr<ITexture> Texture)
 {
-	m_ButtonContent->GetSubgeometries()[0].Material->SetTexture(Texture);
+	m_ButtonContent->GetSubgeometries()[0]->GetMaterial()->SetTexture(Texture);
 }
 
 void CUIControlRTSTowerBtn::OnMouseEntered()
 {
 	for (auto& subGeometry : GetSubgeometries())
 	{
-		std::dynamic_pointer_cast<CMaterialUIControl>(subGeometry.Material)->SetColor(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+		std::dynamic_pointer_cast<CUIControlCommonMaterial>(subGeometry->GetMaterial())->SetColor(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
 	}
 }
 
@@ -111,7 +112,7 @@ void CUIControlRTSTowerBtn::OnMouseLeaved()
 {
 	for (auto& subGeometry : GetSubgeometries())
 	{
-		std::dynamic_pointer_cast<CMaterialUIControl>(subGeometry.Material)->SetColor(glm::vec4(1.0f));
+		std::dynamic_pointer_cast<CUIControlCommonMaterial>(subGeometry->GetMaterial())->SetColor(glm::vec4(1.0f));
 	}
 }
 
@@ -127,19 +128,19 @@ void CUIControlRTSTowerBtn::CreateWindowGeometry(float Width)
 
 	SetSize(sizeDiv3 + glm::vec2(Width, 0.0f) + sizeDiv3);
 
-	std::shared_ptr<CMaterialUIControl> uiMaterial = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
+	std::shared_ptr<CUIControlCommonMaterial> uiMaterial = MakeShared(CUIControlCommonMaterial, GetBaseManager().GetApplication().GetRenderDevice());
 	uiMaterial->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Interface Pack/Spritesheet/interfacePack_sheet@2.png"));
 
 	// Left-Top
 	{
-		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(0.0f, 0.0f);
-		subGeom.Size = sizeDiv3;
-		subGeom.Material = uiMaterial;
-		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
+		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		subGeom->SetTranslate(glm::vec2(0.0f, 0.0f));
+		subGeom->SetSize(sizeDiv3);
+		subGeom->SetMaterial(uiMaterial);
+		subGeom->SetGeom(GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
 			cUIWindowCell.UVCellStart + 0.0f * sizeDiv3UV,
 			cUIWindowCell.UVCellStart + 1.0f * sizeDiv3UV
-		);
+		));
 		AddSubgeometry(subGeom);
 	}
 
@@ -147,14 +148,14 @@ void CUIControlRTSTowerBtn::CreateWindowGeometry(float Width)
 
 	// Left-Bottom
 	{
-		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(0.0f, sizeDiv3.y);
-		subGeom.Size = sizeDiv3;
-		subGeom.Material = uiMaterial;
-		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
+		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		subGeom->SetTranslate(glm::vec2(0.0f, sizeDiv3.y));
+		subGeom->SetSize(sizeDiv3);
+		subGeom->SetMaterial(uiMaterial);
+		subGeom->SetGeom(GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
 			glm::vec2(cUIWindowCell.UVCellStart.x + 0.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 2.0f * sizeDiv3UV.y),
 			glm::vec2(cUIWindowCell.UVCellStart.x + 1.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 3.0f * sizeDiv3UV.y)
-		);
+		));
 		AddSubgeometry(subGeom);
 	}
 
@@ -162,14 +163,14 @@ void CUIControlRTSTowerBtn::CreateWindowGeometry(float Width)
 
 	// Right-Top
 	{
-		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(sizeDiv3.x + Width, 0.0f);
-		subGeom.Size = sizeDiv3;
-		subGeom.Material = uiMaterial;
-		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
+		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		subGeom->SetTranslate(glm::vec2(sizeDiv3.x + Width, 0.0f));
+		subGeom->SetSize(sizeDiv3);
+		subGeom->SetMaterial(uiMaterial);
+		subGeom->SetGeom(GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
 			glm::vec2(cUIWindowCell.UVCellStart.x + 2.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y),
 			glm::vec2(cUIWindowCell.UVCellStart.x + 3.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 1.0f * sizeDiv3UV.y)
-		);
+		));
 		AddSubgeometry(subGeom);
 	}
 
@@ -177,14 +178,14 @@ void CUIControlRTSTowerBtn::CreateWindowGeometry(float Width)
 
 	// Right-Bottom
 	{
-		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(sizeDiv3.x + Width, sizeDiv3.y);
-		subGeom.Size = sizeDiv3;
-		subGeom.Material = uiMaterial;
-		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
+		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		subGeom->SetTranslate(glm::vec2(sizeDiv3.x + Width, sizeDiv3.y));
+		subGeom->SetSize(sizeDiv3);
+		subGeom->SetMaterial(uiMaterial);
+		subGeom->SetGeom(GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
 			cUIWindowCell.UVCellStart + 2.0f * sizeDiv3UV,
 			cUIWindowCell.UVCellStart + 3.0f * sizeDiv3UV
-		);
+		));
 		AddSubgeometry(subGeom);
 	}
 
@@ -192,14 +193,14 @@ void CUIControlRTSTowerBtn::CreateWindowGeometry(float Width)
 
 	// Top
 	{
-		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(sizeDiv3.x, 0.0f);
-		subGeom.Size = glm::vec2(Width, sizeDiv3.y);
-		subGeom.Material = uiMaterial;
-		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
+		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		subGeom->SetTranslate(glm::vec2(sizeDiv3.x, 0.0f));
+		subGeom->SetSize(glm::vec2(Width, sizeDiv3.y));
+		subGeom->SetMaterial(uiMaterial);
+		subGeom->SetGeom(GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
 			glm::vec2(cUIWindowCell.UVCellStart.x + 1.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 0.0f * sizeDiv3UV.y),
 			glm::vec2(cUIWindowCell.UVCellStart.x + 2.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 1.0f * sizeDiv3UV.y)
-		);
+		));
 		AddSubgeometry(subGeom);
 	}
 
@@ -207,14 +208,14 @@ void CUIControlRTSTowerBtn::CreateWindowGeometry(float Width)
 
 	// Bottom
 	{
-		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(sizeDiv3.x, sizeDiv3.y); 
-		subGeom.Size = glm::vec2(Width, sizeDiv3.y);
-		subGeom.Material = uiMaterial;
-		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
+		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		subGeom->SetTranslate(glm::vec2(sizeDiv3.x, sizeDiv3.y));
+		subGeom->SetSize(glm::vec2(Width, sizeDiv3.y));
+		subGeom->SetMaterial(uiMaterial);
+		subGeom->SetGeom(GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
 			glm::vec2(cUIWindowCell.UVCellStart.x + 1.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 2.0f * sizeDiv3UV.y),
 			glm::vec2(cUIWindowCell.UVCellStart.x + 2.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 3.0f * sizeDiv3UV.y)
-		);
+		));
 		AddSubgeometry(subGeom);
 	}
 }

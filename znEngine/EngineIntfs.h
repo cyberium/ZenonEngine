@@ -179,22 +179,42 @@ ZN_INTERFACE ZN_API ISceneNodeRTSPath
 };
 
 
+ZN_INTERFACE ZN_API IMaterialUIControl
+	: public virtual IMaterial
+{
+	virtual ~IMaterialUIControl() {}
+
+	virtual void SetColor(glm::vec4 color) = 0;
+	virtual glm::vec4 GetColor() const = 0;
+	virtual void SetTexture(std::shared_ptr<ITexture> Texture) = 0;
+	virtual std::shared_ptr<ITexture> GetTexture() const = 0;
+};
+
+
+ZN_INTERFACE ZN_API IUIControlModel
+	: public virtual IModel
+{
+	virtual ~IUIControlModel() {}
+
+	virtual void SetTranslate(const glm::vec2& Translate) = 0;
+	virtual glm::vec2 GetTranslate() const = 0;
+	virtual void SetSize(const glm::vec2& Size) = 0;
+	virtual glm::vec2 GetSize() const = 0;
+	virtual void SetMaterial(std::shared_ptr<IMaterialUIControl> Material) = 0;
+	virtual std::shared_ptr<IMaterialUIControl> GetMaterial() const = 0;
+	virtual void SetGeom(std::shared_ptr<IGeometry> Geom) = 0;
+	virtual std::shared_ptr<IGeometry> GetGeom() const = 0;
+};
+
+
 ZN_INTERFACE ZN_API IUIControlCommon
 	: public virtual IUIControl
 {
-	struct ZN_API SSubgeometry
-	{
-		glm::vec2                           Translate;
-		glm::vec2                           Size;
-		std::shared_ptr<IMaterialUIControl> Material;
-		std::shared_ptr<IGeometry>          Geom;
-	};
-
 	ZN_OBJECTCLASS(cUIControlCommon);
 	virtual ~IUIControlCommon() {}
 
-	virtual void AddSubgeometry(const IUIControlCommon::SSubgeometry& Subgeometry) = 0;
-	virtual const std::vector<IUIControlCommon::SSubgeometry>& GetSubgeometries() const = 0;
+	virtual void AddSubgeometry(const std::shared_ptr<IUIControlModel>& Model) = 0;
+	virtual const std::vector<std::shared_ptr<IUIControlModel>>& GetSubgeometries() const = 0;
 	virtual void ClearSubgeometries() = 0;
 };
 

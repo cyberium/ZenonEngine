@@ -100,6 +100,12 @@
     <Filter Include="__Interfaces\Platform">
       <UniqueIdentifier>{21253664-1b89-423e-a8dc-904b66130a06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Math">
+      <UniqueIdentifier>{68aa5323-d9fd-4fb0-b617-d0c767a31247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Database">
+      <UniqueIdentifier>{71640bfa-d047-49b1-bf40-ced9b1e0eaa7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -797,9 +803,6 @@
     <ClInclude Include="..\shared\Interfaces\Render\ISkeleton.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Math\MathCommon.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Properties\Properties.h">
       <Filter>Properties</Filter>
     </ClInclude>
@@ -850,6 +853,9 @@
     </ClInclude>
     <ClInclude Include="Properties\PropertyProxy.h">
       <Filter>Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Math\MathCommon.h">
+      <Filter>Utils\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

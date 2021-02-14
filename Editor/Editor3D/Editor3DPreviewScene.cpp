@@ -127,7 +127,7 @@ void CEditor3DPreviewScene::SetTexture(std::shared_ptr<ITexture> Texture)
 
 	Clean();
 
-	std::shared_ptr<CMaterialUIControl> contentMaterial = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
+	std::shared_ptr<CUIControlCommonMaterial> contentMaterial = MakeShared(CUIControlCommonMaterial, GetBaseManager().GetApplication().GetRenderDevice());
 	contentMaterial->SetTexture(Texture);
 
 	auto textureBounds = CalculateTextureSize(Texture->GetSize(), GetRenderWindow().GetViewport().GetSize());

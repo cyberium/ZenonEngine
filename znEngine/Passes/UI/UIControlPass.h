@@ -13,6 +13,7 @@ public:
 	// IVisitor
 	virtual EVisitResult Visit(const std::shared_ptr<IUIControl>& node) override;
 	virtual EVisitResult Visit(const std::shared_ptr<IModel>& Model) override;
+
 private:
 
 };

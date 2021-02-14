@@ -28,9 +28,6 @@
     <Filter Include="Formats\Fonts">
       <UniqueIdentifier>{42e015df-4a5d-4cd0-a2db-2356c165cd3a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Materials\UI materials">
-      <UniqueIdentifier>{2341db42-48fb-4ccf-a7d0-ae8d040f8087}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Passes\Technical">
       <UniqueIdentifier>{ee871fb8-2974-4629-a7f9-72e3b2816735}</UniqueIdentifier>
     </Filter>
@@ -109,6 +106,12 @@
     <Filter Include="RTS\Components">
       <UniqueIdentifier>{0b897560-a853-4b79-b0f8-03b4f2628094}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UIControls\Text">
+      <UniqueIdentifier>{4130358e-ab72-49c0-a48d-8468323ff8d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIControls\Common">
+      <UniqueIdentifier>{5e0280bb-fa43-4d8b-aedc-03c9483e84bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -137,9 +140,6 @@
     </ClCompile>
     <ClCompile Include="Formats\Fonts\FontsManager.cpp">
       <Filter>Formats\Fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="Materials\UI_Line_Material.cpp">
-      <Filter>Materials\UI materials</Filter>
     </ClCompile>
     <ClCompile Include="Passes\Technical\BeginQueryPass.cpp">
       <Filter>Passes\Technical</Filter>
@@ -255,16 +255,10 @@
     <ClCompile Include="Scene\EngineSceneExtender.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Materials\MaterialUIControl.cpp">
-      <Filter>Materials\UI materials</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\UI\UIControlPass.cpp">
       <Filter>Passes\UI</Filter>
     </ClCompile>
     <ClCompile Include="UIControls\UIControlCommon.cpp">
-      <Filter>UIControls</Filter>
-    </ClCompile>
-    <ClCompile Include="UIControls\UIControlText.cpp">
       <Filter>UIControls</Filter>
     </ClCompile>
     <ClCompile Include="Passes\UI\ConsolePass.cpp">
@@ -397,17 +391,26 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ApplicationConsole.cpp" />
     <ClCompile Include="ApplicationNative.cpp" />
-    <ClCompile Include="Formats\Fonts\FontGeometry.cpp">
-      <Filter>Formats\Fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="Formats\Fonts\FontMaterial.cpp">
-      <Filter>Formats\Fonts</Filter>
-    </ClCompile>
     <ClCompile Include="Formats\Fonts\Font.cpp">
       <Filter>Formats\Fonts</Filter>
     </ClCompile>
-    <ClCompile Include="Formats\Fonts\FontModel.cpp">
-      <Filter>Formats\Fonts</Filter>
+    <ClCompile Include="UIControls\Text\UITextGeometry.cpp">
+      <Filter>UIControls\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="UIControls\Text\UITextMaterial.cpp">
+      <Filter>UIControls\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="UIControls\Text\UITextModel.cpp">
+      <Filter>UIControls\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="UIControls\UIControlText.cpp">
+      <Filter>UIControls</Filter>
+    </ClCompile>
+    <ClCompile Include="UIControls\Common\UIControlCommonMaterial.cpp">
+      <Filter>UIControls\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="UIControls\Common\UIControlCommonModel.cpp">
+      <Filter>UIControls\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -444,9 +447,6 @@
     </ClInclude>
     <ClInclude Include="Formats\Fonts\FontsManager.h">
       <Filter>Formats\Fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="Materials\UI_Line_Material.h">
-      <Filter>Materials\UI materials</Filter>
     </ClInclude>
     <ClInclude Include="Passes\Technical\BeginQueryPass.h">
       <Filter>Passes\Technical</Filter>
@@ -562,16 +562,10 @@
     <ClInclude Include="Scene\EngineSceneExtender.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Materials\MaterialUIControl.h">
-      <Filter>Materials\UI materials</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\UI\UIControlPass.h">
       <Filter>Passes\UI</Filter>
     </ClInclude>
     <ClInclude Include="UIControls\UIControlCommon.h">
-      <Filter>UIControls</Filter>
-    </ClInclude>
-    <ClInclude Include="UIControls\UIControlText.h">
       <Filter>UIControls</Filter>
     </ClInclude>
     <ClInclude Include="Passes\UI\ConsolePass.h">
@@ -707,17 +701,26 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationConsole.h" />
     <ClInclude Include="ApplicationNative.h" />
-    <ClInclude Include="Formats\Fonts\FontGeometry.h">
-      <Filter>Formats\Fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="Formats\Fonts\FontMaterial.h">
-      <Filter>Formats\Fonts</Filter>
-    </ClInclude>
     <ClInclude Include="Formats\Fonts\Font.h">
       <Filter>Formats\Fonts</Filter>
     </ClInclude>
-    <ClInclude Include="Formats\Fonts\FontModel.h">
-      <Filter>Formats\Fonts</Filter>
+    <ClInclude Include="UIControls\Text\UITextGeometry.h">
+      <Filter>UIControls\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControls\Text\UITextMaterial.h">
+      <Filter>UIControls\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControls\Text\UITextModel.h">
+      <Filter>UIControls\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControls\UIControlText.h">
+      <Filter>UIControls</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControls\Common\UIControlCommonMaterial.h">
+      <Filter>UIControls\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControls\Common\UIControlCommonModel.h">
+      <Filter>UIControls\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
