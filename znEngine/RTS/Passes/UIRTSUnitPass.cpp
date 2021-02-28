@@ -4,18 +4,18 @@
 #include "UIRTSUnitPass.h"
 
 // Additional
-#include "UIControls/Common/UIControlCommonMaterial.h"
+#include "UIControls/Common/UICommonMaterial.h"
 
 namespace
 {
 	const glm::vec2 outlineHPBarSize = glm::vec2(50.0f, 7.0f);
 	const glm::vec2 inlineHPBarSize = glm::vec2(45.0f, 3.0f);
 
-	const glm::vec3 hpBarOutlineColor = glm::vec3(0.1f, 0.2f, 0.1f);
+	const ColorRGB  hpBarOutlineColor = ColorRGB(0.1f, 0.2f, 0.1f);
 
-	const glm::vec3 hpBarColorLow = glm::vec3(0.745f, 0.0f, 0.0f);
-	const glm::vec3 hpBarColorMiddle = glm::vec3(1.0f, 0.55f, 0.1f);
-	const glm::vec3 hpBarColorHigh = glm::vec3(0.4f, 0.8f, 0.0f);
+	const ColorRGB hpBarColorLow = ColorRGB(0.745f, 0.0f, 0.0f);
+	const ColorRGB hpBarColorMiddle = ColorRGB(1.0f, 0.55f, 0.1f);
+	const ColorRGB hpBarColorHigh = ColorRGB(0.4f, 0.8f, 0.0f);
 
 	template<class T>
 	inline T interpolateLinear(const float r, const T& v1, const T& v2)
@@ -36,10 +36,10 @@ namespace
 CUIRTSUnitPass::CUIRTSUnitPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: BaseUIPass(Scene)
 {
-	m_HPBarOutlineMaterial = MakeShared(CUIControlCommonMaterial, GetRenderDevice());
-	m_HPBarOutlineMaterial->SetColor(glm::vec4(hpBarOutlineColor, 1.0f));
+	m_HPBarOutlineMaterial = MakeShared(CUICommonMaterial, GetRenderDevice());
+	m_HPBarOutlineMaterial->SetColor(ColorRGBA(hpBarOutlineColor, 1.0f));
 
-	m_HPBarMaterial = MakeShared(CUIControlCommonMaterial, GetRenderDevice());
+	m_HPBarMaterial = MakeShared(CUICommonMaterial, GetRenderDevice());
 
 	m_HPBarOutlineGeometry = GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(outlineHPBarSize);
 	m_HPBarGeometry = GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(inlineHPBarSize);
@@ -117,7 +117,7 @@ void CUIRTSUnitPass::Render(RenderEventArgs & e)
 
 			BindPerObjectData(perObject);
 
-			m_HPBarMaterial->SetColor(glm::vec4(InterpolateHealthColor(unitHealth, 0.5f, hpBarColorLow, hpBarColorMiddle, hpBarColorHigh), 1.0f));
+			m_HPBarMaterial->SetColor(ColorRGBA(InterpolateHealthColor(unitHealth, 0.5f, hpBarColorLow, hpBarColorMiddle, hpBarColorHigh), 1.0f));
 
 			m_HPBarMaterial->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 			m_HPBarGeometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), SGeometryDrawArgs());
@@ -135,10 +135,10 @@ std::shared_ptr<IRenderPassPipelined> CUIRTSUnitPass::ConfigurePipeline(std::sha
 {
 	BaseUIPass::ConfigurePipeline(RenderTarget);
 	
-	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Texture.hlsl", "VS_main");
+	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UIControlCommon.hlsl", "VS_main");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UI_Texture.hlsl", "PS_main");
+	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UIControlCommon.hlsl", "PS_main");
 
 	// Material
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);

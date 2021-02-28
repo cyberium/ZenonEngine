@@ -6,7 +6,7 @@
 // Additional
 #include "Materials/MaterialModel.h"
 #include "Materials/MaterialDebug.h"
-#include "UIControls/Common/UIControlCommonMaterial.h"
+#include "UIControls/Common/UICommonMaterial.h"
 
 CMaterialsFactory::CMaterialsFactory(IBaseManager & BaseManager)
 	: m_BaseManager(BaseManager)
@@ -42,7 +42,7 @@ std::shared_ptr<IMaterial> CMaterialsFactory::CreateMaterial(std::string ObjectT
 	}
 	else if (ObjectType == "MaterialUIControl")
 	{
-		return MakeShared(CUIControlCommonMaterial, m_BaseManager.GetApplication().GetRenderDevice());
+		return MakeShared(CUICommonMaterial, m_BaseManager.GetApplication().GetRenderDevice());
 	}
 
 	throw CException("Unknown material type '%s'.", ObjectType);

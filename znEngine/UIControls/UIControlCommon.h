@@ -12,13 +12,16 @@ public:
 	void Initialize() override;
 
 	// IUIControlCommon
-	void AddSubgeometry(const std::shared_ptr<IUIControlModel>& Model) override;
-	const std::vector<std::shared_ptr<IUIControlModel>>& GetSubgeometries() const override;
+	void AddSubgeometry(const std::shared_ptr<IUIControlCommonModel>& Model) override;
+	const std::vector<std::shared_ptr<IUIControlCommonModel>>& GetSubgeometries() const override;
 	void ClearSubgeometries();
 
 protected:
-	std::vector<std::shared_ptr<IUIControlModel>>& GetSubgeometries();
+	EVisitResult AcceptContent(IVisitor* visitor);
+
+protected:
+	std::vector<std::shared_ptr<IUIControlCommonModel>>& GetSubgeometries();
 
 private:
-	std::vector<std::shared_ptr<IUIControlModel>> m_Subgeometries;
+	std::vector<std::shared_ptr<IUIControlCommonModel>> m_Subgeometries;
 };

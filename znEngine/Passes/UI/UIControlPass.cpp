@@ -5,6 +5,7 @@
 
 // Additional
 #include "UIControls/UIControlCommon.h"
+#include "UIControls/Common/UICommonModel.h"
 
 CUIControlPass::CUIControlPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: BaseUIPass(Scene)
@@ -19,12 +20,12 @@ CUIControlPass::~CUIControlPass()
 //
 std::shared_ptr<IRenderPassPipelined> CUIControlPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	BaseUIPass::ConfigurePipeline(RenderTarget);
+	__super::ConfigurePipeline(RenderTarget);
 	
-	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Texture.hlsl", "VS_main");
+	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UIControlCommon.hlsl", "VS_main");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UI_Texture.hlsl", "PS_main");
+	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UIControlCommon.hlsl", "PS_main");
 
 	// Material
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
@@ -39,20 +40,24 @@ std::shared_ptr<IRenderPassPipelined> CUIControlPass::ConfigurePipeline(std::sha
 //
 EVisitResult CUIControlPass::Visit(const std::shared_ptr<IUIControl>& node)
 {
-	if (auto textNode = std::dynamic_pointer_cast<const CUIControlCommon>(node))
+	if (auto textNode = std::dynamic_pointer_cast<const IUIControlCommon>(node))
 	{
-		for (const auto& subGeom : textNode->GetSubgeometries())
-		{
-			PerObject perObject(node->GetWorldTransfom());
-			perObject.Model = glm::translate(perObject.Model, glm::vec3(subGeom->GetTranslate().x, subGeom->GetTranslate().y, 0.0f));
-			perObject.Model = glm::scale(perObject.Model, glm::vec3(subGeom->GetSize().x, subGeom->GetSize().y, 1.0f));
+		PerObject perObject(node->GetWorldTransfom());
+		//perObject.Model = glm::translate(perObject.Model, glm::vec3(subGeom->GetTranslate().x, subGeom->GetTranslate().y, 0.0f));
+		//perObject.Model = glm::scale(perObject.Model, glm::vec3(subGeom->GetSize().x, subGeom->GetSize().y, 1.0f));
 
-			BindPerObjectData(perObject);
+		BindPerObjectData(perObject);
+
+		/*for (const auto& subGeom : textNode->GetSubgeometries())
+		{
+
+
+			__super::Visit(node);
 
 			subGeom->GetMaterial()->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 			subGeom->GetGeom()->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), SGeometryDrawArgs());
 			subGeom->GetMaterial()->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
-		}
+		}*/
 
 		return EVisitResult::AllowVisitChilds;
 	}
@@ -62,6 +67,8 @@ EVisitResult CUIControlPass::Visit(const std::shared_ptr<IUIControl>& node)
 
 EVisitResult CUIControlPass::Visit(const std::shared_ptr<IModel>& Model)
 {
-	//return __super::Visit(Model);
-	return EVisitResult::Block;
+	if (auto commonModel = std::dynamic_pointer_cast<IUIControlCommonModel>(Model))
+		return __super::Visit(commonModel);
+
+	return EVisitResult::AllowAll;
 }

@@ -17,7 +17,7 @@ public:
 	ETextAlignHorizontal GetTextAlignHorizontal() const;
 	void SetTextAlignVertical(ETextAlignVertical TextAlignVertical);
 	ETextAlignVertical GetTextAlignVertical() const;
-	void SetColor(ColorRGBA Color);
+	void SetColor(const ColorRGBA& Color);
 	ColorRGBA GetColor() const;
 
 	// IModel

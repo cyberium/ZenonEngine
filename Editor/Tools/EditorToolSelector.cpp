@@ -137,7 +137,7 @@ void CEditorToolSelector::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 {
 	m_SelectionTexture = GetScene().CreateUIControlTCast<IUIControlCommon>();
 
-	auto selectionMaterial = MakeShared(CUIControlCommonMaterial, GetRenderDevice());
+	auto selectionMaterial = MakeShared(CUICommonMaterial, GetRenderDevice());
 	selectionMaterial->SetColor(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
 
 	IUIControlCommon::SSubgeometry subGeometry;

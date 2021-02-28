@@ -44,25 +44,24 @@
 
 // UIControls
 #include "../znEngine/UIControls/UIControlCommon.h"
+#include "../znEngine/UIControls/Common/UICommonMaterial.h"
+
 #include "../znEngine/UIControls/UIControlText.h"
+
 
 // UIControls: RTS
 #include "../znEngine/RTS/UIControls/UIControlRTSResourcesPanel.h"
 #include "../znEngine/RTS/UIControls/UIControlRTSTowersPanel.h"
 #include "../znEngine/RTS/UIControls/UIControlRTSTowerBtn.h"
 
-
-
 // Materials
 #include "../znEngine/Materials/MaterialDebug.h"
 #include "../znEngine/Materials/MaterialModel.h"
-#include "../znEngine/UIControls/Common/UIControlCommonMaterial.h"
+
 
 // Passes
 #include "../znEngine/Passes/UI/UIFontPass.h"
 #include "../znEngine/Passes/UI/UIControlPass.h"
-
-
 
 #include "../znEngine/Passes/ForwardRendering/RendererForward.h"
 #include "../znEngine/Passes/DefferedRendering/RendererDeffered.h"

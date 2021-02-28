@@ -2,7 +2,7 @@
 
 #include "../Scene/SceneCreateTypelessListPass.h"
 
-struct SShadowMap
+struct ZN_API SShadowMap
 {
 	std::shared_ptr<const ISceneNode>  SceneNode;
 	std::shared_ptr<const ILight>      LightNode;
@@ -10,7 +10,7 @@ struct SShadowMap
 };
 typedef std::vector<SShadowMap> ShadowMaps_t;
 
-ZN_INTERFACE IPassDeffered_ShadowMaps
+ZN_INTERFACE ZN_API IPassDeffered_ShadowMaps
 {
 	virtual ~IPassDeffered_ShadowMaps() {}
 

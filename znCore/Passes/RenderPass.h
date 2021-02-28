@@ -4,9 +4,28 @@ struct __declspec(align(16)) ZN_API PerObject
 {
 	glm::mat4 Model;
 
-	PerObject()
+	explicit PerObject()
 		: Model(glm::mat4(1.0f))
 	{}
+
+	explicit PerObject(const glm::vec2& Translation, float Rotation = 0.0f, const glm::vec2& Scale = glm::vec2(1.0f))
+		: Model(glm::mat4(1.0f))
+	{
+		Model = glm::translate(Model, glm::vec3(Translation, 1.0f));
+		Model = glm::rotate(Model, Rotation, glm::vec3(0.0f, 0.0f, 1.0f));
+		Model = glm::scale(Model, glm::vec3(Scale, 1.0f));
+	}
+
+	explicit PerObject(const glm::vec3& Translation, const glm::vec3& Rotation = glm::vec3(0.0f), const glm::vec3& Scale = glm::vec3(1.0f))
+		: Model(glm::mat4(1.0f))
+	{
+		Model = glm::translate(Model, Translation);
+		Model = glm::rotate(Model, Rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+		Model = glm::rotate(Model, Rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+		Model = glm::rotate(Model, Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+		Model = glm::scale(Model, Scale);
+	}
+
 	explicit PerObject(const glm::mat4& Matrix)
 		: Model(Matrix)
 	{}

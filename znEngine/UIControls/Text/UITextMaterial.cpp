@@ -4,7 +4,7 @@
 #include "UITextMaterial.h"
 
 CUITextMaterial::CUITextMaterial(const IRenderDevice & RenderDevice)
-	: MaterialProxieT<SGPUPerCharacterDataPS>(RenderDevice.GetObjectsFactory().CreateMaterial("FontMaterial"))
+	: MaterialProxieT<SUITextMaterialData>(RenderDevice.GetObjectsFactory().CreateMaterial("FontMaterial"))
 {
 }
 

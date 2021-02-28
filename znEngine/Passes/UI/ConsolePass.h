@@ -1,7 +1,6 @@
 #pragma once
 
-#if 1 
-
+#include "UIControls/Common/UICommonModel.h"
 #include "UIControls/Text/UITextModel.h"
 
 class ZN_API CUIConsolePass
@@ -24,11 +23,10 @@ private:
 	size_t m_ColorPipelineIndex;
 	size_t m_FontPipelineIndex;
 
+	std::shared_ptr<CUICommonModel> m_ColorModel;
 	std::shared_ptr<CUITextModel> m_FontModel;
 
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
-	IShaderParameter* m_PerObjectParameter;
+	//IShaderParameter* m_PerObjectParameter;
 
 };
-
-#endif

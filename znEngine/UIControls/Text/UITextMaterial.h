@@ -1,21 +1,24 @@
 #pragma once
 
-struct __declspec(align(16)) SGPUPerCharacterDataPS
+namespace
 {
-	SGPUPerCharacterDataPS()
-		: Color(1.0f, 1.0f, 1.0f, 1.0f)
-		, IsSelected(0)
-	{}
-	ColorRGBA Color;
-	// 16 bytes
+	struct __declspec(align(16)) SUITextMaterialData
+	{
+		SUITextMaterialData()
+			: Color(1.0f, 1.0f, 1.0f, 1.0f)
+			, IsSelected(0)
+		{}
+		ColorRGBA Color;
+		// 16 bytes
 
-	uint32 IsSelected;
-	glm::vec3 Padding;
-	// 16 bytes
-};
+		uint32 IsSelected;
+		glm::vec3 Padding;
+		// 16 bytes
+	};
+}
 
-class CUITextMaterial
-	: public MaterialProxieT<SGPUPerCharacterDataPS>
+class ZN_API CUITextMaterial
+	: public MaterialProxieT<SUITextMaterialData>
 {
 public:
 	CUITextMaterial(const IRenderDevice& RenderDevice);

@@ -1,11 +1,5 @@
 #include "CommonInclude.hlsl"
 
-cbuffer PerCharacterDataVS : register(b2)
-{
-	float2 Offset;
-	float2 __padding0;
-};
-
 cbuffer Material : register(b2)
 {
     float4 Color;
@@ -13,8 +7,13 @@ cbuffer Material : register(b2)
 	float3 __padding1;
 };
 
+cbuffer PerCharacterDataVS : register(b3)
+{
+	float2 Offset;
+	float2 __padding0;
+};
+
 Texture2D DiffuseTexture : register(t0);
-sampler DiffuseTextureSampler : register(s0);
 
 VSOutputUI VS_main(VSInputUI IN)
 {
@@ -30,7 +29,7 @@ VSOutputUI VS_main(VSInputUI IN)
 
 float4 PS_main(VSOutputUI IN) : SV_TARGET
 {
-	const float fontAlpha = DiffuseTexture.Sample(DiffuseTextureSampler, IN.texCoord).a;
+	const float fontAlpha = DiffuseTexture.Sample(LinearClampSampler, IN.texCoord).a;
 
 	float4 diffuseColor = float4(Color.rgb, Color.a * fontAlpha);
 	if (IsSelected)

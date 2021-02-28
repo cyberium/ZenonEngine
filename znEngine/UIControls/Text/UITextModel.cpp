@@ -67,7 +67,7 @@ ETextAlignVertical CUITextModel::GetTextAlignVertical() const
 	return m_TextAlignVerticalProperty->Get();
 }
 
-void CUITextModel::SetColor(ColorRGBA Color)
+void CUITextModel::SetColor(const ColorRGBA& Color)
 {
 	m_Material->SetColor(Color);
 	m_ColorProperty->Set(Color);

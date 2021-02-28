@@ -179,29 +179,38 @@ ZN_INTERFACE ZN_API ISceneNodeRTSPath
 };
 
 
-ZN_INTERFACE ZN_API IMaterialUIControl
+
+
+
+
+
+
+
+#pragma region Control common
+
+ZN_INTERFACE ZN_API IUIControlCommonMaterial
 	: public virtual IMaterial
 {
-	virtual ~IMaterialUIControl() {}
+	virtual ~IUIControlCommonMaterial() {}
 
-	virtual void SetColor(glm::vec4 color) = 0;
-	virtual glm::vec4 GetColor() const = 0;
+	virtual void SetColor(ColorRGBA color) = 0;
+	virtual ColorRGBA GetColor() const = 0;
 	virtual void SetTexture(std::shared_ptr<ITexture> Texture) = 0;
 	virtual std::shared_ptr<ITexture> GetTexture() const = 0;
 };
 
 
-ZN_INTERFACE ZN_API IUIControlModel
+ZN_INTERFACE ZN_API IUIControlCommonModel
 	: public virtual IModel
 {
-	virtual ~IUIControlModel() {}
+	virtual ~IUIControlCommonModel() {}
 
 	virtual void SetTranslate(const glm::vec2& Translate) = 0;
 	virtual glm::vec2 GetTranslate() const = 0;
 	virtual void SetSize(const glm::vec2& Size) = 0;
 	virtual glm::vec2 GetSize() const = 0;
-	virtual void SetMaterial(std::shared_ptr<IMaterialUIControl> Material) = 0;
-	virtual std::shared_ptr<IMaterialUIControl> GetMaterial() const = 0;
+	virtual void SetMaterial(std::shared_ptr<IUIControlCommonMaterial> Material) = 0;
+	virtual std::shared_ptr<IUIControlCommonMaterial> GetMaterial() const = 0;
 	virtual void SetGeom(std::shared_ptr<IGeometry> Geom) = 0;
 	virtual std::shared_ptr<IGeometry> GetGeom() const = 0;
 };
@@ -213,10 +222,21 @@ ZN_INTERFACE ZN_API IUIControlCommon
 	ZN_OBJECTCLASS(cUIControlCommon);
 	virtual ~IUIControlCommon() {}
 
-	virtual void AddSubgeometry(const std::shared_ptr<IUIControlModel>& Model) = 0;
-	virtual const std::vector<std::shared_ptr<IUIControlModel>>& GetSubgeometries() const = 0;
+	virtual void AddSubgeometry(const std::shared_ptr<IUIControlCommonModel>& Model) = 0;
+	virtual const std::vector<std::shared_ptr<IUIControlCommonModel>>& GetSubgeometries() const = 0;
 	virtual void ClearSubgeometries() = 0;
 };
+
+#pragma endregion
+
+
+
+
+
+
+
+
+#pragma region Control common
 
 
 enum class ZN_API ETextAlignHorizontal : uint32
@@ -252,14 +272,11 @@ ZN_INTERFACE ZN_API IUIControlText
 	virtual void SetTextAlignVertical(ETextAlignVertical TextAlignVertical) = 0;
 	virtual ETextAlignVertical GetTextAlignVertical() const = 0;
 
-	//virtual void SetOffset(glm::vec2 Offset) = 0;
-	//virtual glm::vec2 GetOffset() const = 0;
-
 	virtual void SetColor(ColorRGBA Color) = 0;
 	virtual ColorRGBA GetColor() const = 0;
 };
 
-
+#pragma endregion
 
 
 

@@ -6,6 +6,12 @@ cbuffer Material : register(b2)
 	bool HasDiffuseTexture;
 };
 
+cbuffer Subgeometry : register(b3)
+{
+    float2 Translate;
+	float2 Size;
+};
+
 Texture2D DiffuseTexture : register(t0);
 
 float4 PS_main(VSOutputUI IN) : SV_TARGET

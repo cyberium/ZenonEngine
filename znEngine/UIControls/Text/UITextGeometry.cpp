@@ -32,7 +32,7 @@ namespace
 CUITextGeometry::CUITextGeometry(IRenderDevice& RenderDevice, std::shared_ptr<IGeometry> OriginalGeometry)
 	: GeometryProxie(OriginalGeometry)
 {
-	m_FontBuffer = RenderDevice.GetObjectsFactory().CreateConstantBuffer(SGPUPerCharacterDataVS());
+	m_FontBuffer = RenderDevice.GetObjectsFactory().CreateConstantBuffer(SUITextGeometryData());
 }
 
 CUITextGeometry::~CUITextGeometry()
@@ -58,7 +58,7 @@ void CUITextGeometry::Render(const IShader * VertexShader, const std::shared_ptr
 				if (ch == '\n')
 					throw CException("Line must not contains new-line symbols.");
 
-				BindPerCharacterVSData(VertexShader, SGPUPerCharacterDataVS(currentCharOffset + offsetByAlign));
+				BindPerCharacterVSData(VertexShader, SUITextGeometryData(currentCharOffset + offsetByAlign));
 
 				{
 					SGeometryDrawArgs GeometryDrawArgs;
@@ -77,7 +77,7 @@ void CUITextGeometry::Render(const IShader * VertexShader, const std::shared_ptr
 	Render_UnbindAllBuffers(VertexShader);
 }
 
-void CUITextGeometry::BindPerCharacterVSData(const IShader * VertexShader, const SGPUPerCharacterDataVS& GPUPerCharacterDataVS)
+void CUITextGeometry::BindPerCharacterVSData(const IShader * VertexShader, const SUITextGeometryData& GPUPerCharacterDataVS)
 {
 	m_FontBuffer->Set(GPUPerCharacterDataVS);
 

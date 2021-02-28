@@ -4,8 +4,8 @@
 #include "UIControlRTSResourcesPanel.h"
 
 // Additional
-#include "UIControls/Common/UIControlCommonModel.h"
-#include "UIControls/Common/UIControlCommonMaterial.h"
+#include "UIControls/Common/UICommonModel.h"
+#include "UIControls/Common/UICommonMaterial.h"
 
 namespace
 {
@@ -67,11 +67,11 @@ void CUIControlRTSResourcesPanel::Initialize()
 	m_GoldText->SetText("888 $");
 	m_GoldText->SetColor(ColorRGBA(0.8f, 0.8f, 0.1f, 1.0f));
 
-	auto material = MakeShared(CUIControlCommonMaterial, GetBaseManager().GetApplication().GetRenderDevice());
+	auto material = MakeShared(CUICommonMaterial, GetBaseManager().GetApplication().GetRenderDevice());
 	material->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Interface Pack/Spritesheet/interfacePack_sheet@2.png"));
 
 	{
-		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		auto subGeom = MakeShared(CUICommonModel, GetRenderDevice());
 		subGeom->SetTranslate(glm::vec2(0.0f, 0.0f));
 		subGeom->SetSize(cUIWindowCell.CellSize);
 		subGeom->SetMaterial(material);
@@ -80,7 +80,7 @@ void CUIControlRTSResourcesPanel::Initialize()
 	}
 
 	{
-		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		auto subGeom = MakeShared(CUICommonModel, GetRenderDevice());
 		subGeom->SetTranslate(glm::vec2(0, cUIWindowCell.CellSize.y - 18));
 		subGeom->SetSize(cUIWindowCell.CellSize);
 		subGeom->SetMaterial(material);

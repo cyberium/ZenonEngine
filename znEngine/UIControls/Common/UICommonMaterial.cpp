@@ -1,13 +1,13 @@
 #include "stdafx.h"
 
 // General
-#include "UIControlCommonMaterial.h"
+#include "UICommonMaterial.h"
 
-CUIControlCommonMaterial::CUIControlCommonMaterial(IRenderDevice& RenderDevice)
+CUICommonMaterial::CUICommonMaterial(IRenderDevice& RenderDevice)
 	: MaterialProxieT(RenderDevice.GetObjectsFactory().CreateMaterial("MaterialUIControl"))
 {}
 
-CUIControlCommonMaterial::~CUIControlCommonMaterial()
+CUICommonMaterial::~CUICommonMaterial()
 {}
 
 
@@ -15,17 +15,17 @@ CUIControlCommonMaterial::~CUIControlCommonMaterial()
 //
 // CMaterialUIControl
 //
-void CUIControlCommonMaterial::SetColor(glm::vec4 color)
+void CUICommonMaterial::SetColor(ColorRGBA color)
 {
 	MaterialData().DiffuseColor = color;
 }
 
-glm::vec4 CUIControlCommonMaterial::GetColor() const
+ColorRGBA CUICommonMaterial::GetColor() const
 {
 	return MaterialDataReadOnly().DiffuseColor;
 }
 
-void CUIControlCommonMaterial::SetTexture(std::shared_ptr<ITexture> Texture)
+void CUICommonMaterial::SetTexture(std::shared_ptr<ITexture> Texture)
 {
 	MaterialData().HasTextureDiffuse = (Texture != nullptr);
 
@@ -33,7 +33,7 @@ void CUIControlCommonMaterial::SetTexture(std::shared_ptr<ITexture> Texture)
 		__super::SetTexture(0, Texture);
 }
 
-std::shared_ptr<ITexture> CUIControlCommonMaterial::GetTexture() const
+std::shared_ptr<ITexture> CUICommonMaterial::GetTexture() const
 {
 	return __super::GetTexture(0);
 }

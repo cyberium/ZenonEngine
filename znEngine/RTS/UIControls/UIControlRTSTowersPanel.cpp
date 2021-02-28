@@ -4,8 +4,8 @@
 #include "UIControlRTSTowersPanel.h"
 
 // Additional
-#include "UIControls/Common/UIControlCommonModel.h"
-#include "UIControls/Common/UIControlCommonMaterial.h"
+#include "UIControls/Common/UICommonModel.h"
+#include "UIControls/Common/UICommonMaterial.h"
 
 namespace
 {
@@ -135,7 +135,7 @@ void CUIControlRTSTowersPanel::CreateWindowGeometry(glm::vec2 Size)
 
 	SetSize(sizeDiv3 + Size + sizeDiv3);
 
-	std::shared_ptr<CUIControlCommonMaterial> uiMaterial = MakeShared(CUIControlCommonMaterial, GetBaseManager().GetApplication().GetRenderDevice());
+	std::shared_ptr<CUICommonMaterial> uiMaterial = MakeShared(CUICommonMaterial, GetBaseManager().GetApplication().GetRenderDevice());
 	uiMaterial->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Interface Pack/Spritesheet/interfacePack_sheet@2.png"));
 
 
@@ -144,7 +144,7 @@ void CUIControlRTSTowersPanel::CreateWindowGeometry(glm::vec2 Size)
 
 	// Left-Top
 	{
-		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		auto subGeom = MakeShared(CUICommonModel, GetRenderDevice());
 		subGeom->SetTranslate(glm::vec2(-sizeDiv3.x, -sizeDiv3.y));
 		subGeom->SetSize(sizeDiv3);
 		subGeom->SetMaterial(uiMaterial);
@@ -159,7 +159,7 @@ void CUIControlRTSTowersPanel::CreateWindowGeometry(glm::vec2 Size)
 
 	// Left
 	{
-		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		auto subGeom = MakeShared(CUICommonModel, GetRenderDevice());
 		subGeom->SetTranslate(glm::vec2(-sizeDiv3.x, 0.0f));
 		subGeom->SetSize(glm::vec2(sizeDiv3.x, Size.y));
 		subGeom->SetMaterial(uiMaterial);
@@ -174,7 +174,7 @@ void CUIControlRTSTowersPanel::CreateWindowGeometry(glm::vec2 Size)
 
 	// Left-Bottom
 	{
-		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		auto subGeom = MakeShared(CUICommonModel, GetRenderDevice());
 		subGeom->SetTranslate(glm::vec2(-sizeDiv3.x, Size.y));
 		subGeom->SetSize(sizeDiv3);
 		subGeom->SetMaterial(uiMaterial);
@@ -189,7 +189,7 @@ void CUIControlRTSTowersPanel::CreateWindowGeometry(glm::vec2 Size)
 
 	// Right-Top
 	{
-		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		auto subGeom = MakeShared(CUICommonModel, GetRenderDevice());
 		subGeom->SetTranslate(glm::vec2(Size.x, -sizeDiv3.y));
 		subGeom->SetSize(sizeDiv3);
 		subGeom->SetMaterial(uiMaterial);
@@ -204,7 +204,7 @@ void CUIControlRTSTowersPanel::CreateWindowGeometry(glm::vec2 Size)
 
 	// Right
 	{
-		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		auto subGeom = MakeShared(CUICommonModel, GetRenderDevice());
 		subGeom->SetTranslate(glm::vec2(Size.x, 0.0f));
 		subGeom->SetSize(glm::vec2(sizeDiv3.x, Size.y));
 		subGeom->SetMaterial(uiMaterial);
@@ -219,7 +219,7 @@ void CUIControlRTSTowersPanel::CreateWindowGeometry(glm::vec2 Size)
 
 	// Right-Bottom
 	{
-		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		auto subGeom = MakeShared(CUICommonModel, GetRenderDevice());
 		subGeom->SetTranslate(glm::vec2(Size.x, Size.y));
 		subGeom->SetSize(sizeDiv3);
 		subGeom->SetMaterial(uiMaterial);
@@ -234,7 +234,7 @@ void CUIControlRTSTowersPanel::CreateWindowGeometry(glm::vec2 Size)
 
 	// Top
 	{
-		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		auto subGeom = MakeShared(CUICommonModel, GetRenderDevice());
 		subGeom->SetTranslate(glm::vec2(0.0f, -sizeDiv3.y));
 		subGeom->SetSize(glm::vec2(Size.x, sizeDiv3.y));
 		subGeom->SetMaterial(uiMaterial);
@@ -249,7 +249,7 @@ void CUIControlRTSTowersPanel::CreateWindowGeometry(glm::vec2 Size)
 
 	// Bottom
 	{
-		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		auto subGeom = MakeShared(CUICommonModel, GetRenderDevice());
 		subGeom->SetTranslate(glm::vec2(0.0f, Size.y));
 		subGeom->SetSize(glm::vec2(Size.x, sizeDiv3.y));
 		subGeom->SetMaterial(uiMaterial);
@@ -264,11 +264,11 @@ void CUIControlRTSTowersPanel::CreateWindowGeometry(glm::vec2 Size)
 
 	// Center
 	{
-		std::shared_ptr<CUIControlCommonMaterial> uiMaterialCenter = MakeShared(CUIControlCommonMaterial, GetBaseManager().GetApplication().GetRenderDevice());
+		std::shared_ptr<CUICommonMaterial> uiMaterialCenter = MakeShared(CUICommonMaterial, GetBaseManager().GetApplication().GetRenderDevice());
 		uiMaterialCenter->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Interface Pack/Spritesheet/interfacePack_sheet@2.png"));
-		uiMaterialCenter->SetColor(glm::vec4(0.8f, 1.0f, 1.0f, 1.0f));
+		uiMaterialCenter->SetColor(ColorRGBA(0.8f, 1.0f, 1.0f, 1.0f));
 
-		auto subGeom = MakeShared(CUIControlCommonModel, GetRenderDevice());
+		auto subGeom = MakeShared(CUICommonModel, GetRenderDevice());
 		subGeom->SetTranslate(glm::vec2(0.0f, 0.0f));
 		subGeom->SetSize(glm::vec2(Size.x, Size.y));
 		subGeom->SetMaterial(uiMaterial);
