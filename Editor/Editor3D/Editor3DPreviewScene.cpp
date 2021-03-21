@@ -132,13 +132,13 @@ void CEditor3DPreviewScene::SetTexture(std::shared_ptr<ITexture> Texture)
 
 	auto textureBounds = CalculateTextureSize(Texture->GetSize(), GetRenderWindow().GetViewport().GetSize());
 
-	IUIControlCommon::SSubgeometry subGeom;
+	/*IUIControlCommon::SSubgeometry subGeom;
 	subGeom.Translate = textureBounds.second;
 	subGeom.Size = textureBounds.first;
 	subGeom.Material = contentMaterial;
-	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f));
+	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f));*/
 
-	m_TextureNode->AddSubgeometry(subGeom);
+	//m_TextureNode->AddSubgeometry(subGeom);
 }
 
 void CEditor3DPreviewScene::SetParticleSystem(std::shared_ptr<IParticleSystem> ParticleSystem)

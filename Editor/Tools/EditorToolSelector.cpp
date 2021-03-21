@@ -138,14 +138,14 @@ void CEditorToolSelector::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 	m_SelectionTexture = GetScene().CreateUIControlTCast<IUIControlCommon>();
 
 	auto selectionMaterial = MakeShared(CUICommonMaterial, GetRenderDevice());
-	selectionMaterial->SetColor(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
+	selectionMaterial->SetColor(ColorRGBA(0.1f, 0.3f, 1.0f, 0.3f));
 
-	IUIControlCommon::SSubgeometry subGeometry;
+	/*IUIControlCommon::SSubgeometry subGeometry;
 	subGeometry.Translate = glm::vec2(0.0f);
 	subGeometry.Size = glm::vec2(1.0f);
 	subGeometry.Geom = GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f));
 	subGeometry.Material = selectionMaterial;
-	m_SelectionTexture->AddSubgeometry(subGeometry);
+	m_SelectionTexture->AddSubgeometry(subGeometry);*/
 
 	m_DrawSelectionPass = MakeShared(CDrawSelectionPass, GetRenderDevice(), *this);
 	m_DrawSelectionPass->ConfigurePipeline(RenderTarget);
